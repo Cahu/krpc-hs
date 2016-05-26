@@ -1,0 +1,49 @@
+name:                krpc-hs
+version:             0.1.0
+description:         A client for KRPC
+license:             GPL-3
+license-file:        LICENSE
+author:              Cahu
+copyright:           2016 Cahu
+build-type:          Simple
+-- extra-source-files:
+cabal-version:       >=1.10
+
+library
+  hs-source-dirs:      src
+  ghc-options:         -Wall
+  exposed-modules:     KRPCHS
+                     , KRPCHS.Requests
+                     , KRPCHS.NetworkUtils
+                     , KRPCHS.SerializeUtils
+                     , KRPCHS.SpaceCenter
+                     , KRPCHS.KerbalAlarmClock
+                     , KRPCHS.InfernalRobotics
+                     , PB.KRPC
+                     , PB.KRPC.Argument
+                     , PB.KRPC.Class
+                     , PB.KRPC.Dictionary
+                     , PB.KRPC.DictionaryEntry
+                     , PB.KRPC.Enumeration
+                     , PB.KRPC.EnumerationValue
+                     , PB.KRPC.List
+                     , PB.KRPC.Parameter
+                     , PB.KRPC.Procedure
+                     , PB.KRPC.Request
+                     , PB.KRPC.Response
+                     , PB.KRPC.Service
+                     , PB.KRPC.Services
+                     , PB.KRPC.Set
+                     , PB.KRPC.Status
+                     , PB.KRPC.StreamMessage
+                     , PB.KRPC.StreamResponse
+                     , PB.KRPC.Tuple
+  build-depends:       base >= 4.7 && < 5
+                     , mtl
+                     , network
+                     , text
+                     , bytestring
+                     , containers
+                     , protocol-buffers
+                     , protocol-buffers-descriptor
+  default-language:    Haskell2010
