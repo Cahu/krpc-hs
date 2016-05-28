@@ -105,8 +105,5 @@ instance PbSerializable Bool where
 
 
 instance PbSerializable Text where
-    decodePb bytes = case B.toUtf8 bytes of
-        Left  i -> Left  $ show i
-        Right u -> Right $ T.pack $ P.toString u
-    encodePb = B.utf8 . P.fromString . T.unpack
-
+    decodePb bytes = (T.pack . P.toString) <$> (decodePb_ 9 bytes :: Either String B.Utf8)
+    encodePb t     = W.runPut (W.wirePut 9 (P.fromString $ T.unpack t))
