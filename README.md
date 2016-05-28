@@ -47,17 +47,15 @@ main :: IO ()
 main =
     withRPCClient    "Demo" "127.0.0.1" "50000" $ \client -> do
     withStreamClient client "127.0.0.1" "50001" $ \streamClient -> do
-        utStream <- runRPCProg client makeUTStream
-        runStreamProg streamClient (streamProg utStream)
+        runRPCProg client (exampleProg streamClient)
 
-makeUTStream :: RPCContext (KRPCStream Double)
-makeUTStream = getUTStream
-
-streamProg :: KRPCStream Double -> StreamContext ()
-streamProg utStream = forever $ do
-    msg <- getStreamMessage
-    ut  <- getStreamResult utStream msg
-    liftIO $ putStrLn (show ut)
+exampleProg :: StreamClient -> RPCContext ()
+exampleProg streamClient = do
+    utStream <- getUTStream
+    forever $ do
+        msg <- getStreamMessage streamClient
+        ut  <- getStreamResult utStream msg
+        liftIO $ putStrLn (show ut)
 ```
 
 Similar to the RPCContext, a StreamContext is a ReaderT on top of IO.

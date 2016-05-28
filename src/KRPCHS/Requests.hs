@@ -14,14 +14,9 @@ module KRPCHS.Requests
 ( RPCClient(..)
 , StreamClient(..)
 , RPCContext
-, StreamContext
-, runRPCProg
-, runStreamProg
 
 , KRPCStream(..)
 , KRPCStreamMsg(..)
-, getStreamMessage
-, getStreamResult
 
 , makeArgument
 , makeArgumentTuple3
@@ -29,8 +24,11 @@ module KRPCHS.Requests
 , processResponse
 , makeRequest
 , sendRequest
+, recvResponse
 , makeStream
 , extractMessage
+, extractStreamMessage
+, extractStreamResponse
 , extractValue
 , extractList
 , extractMap
@@ -70,8 +68,8 @@ data RPCClient    = RPCClient    { rpcSocket    :: Socket, clientId :: BS.ByteSt
 data StreamClient = StreamClient { streamSocket :: Socket }
 
 
-type RPCContext    = ReaderT RPCClient    IO
-type StreamContext = ReaderT StreamClient IO
+type RPCContext = ReaderT RPCClient IO
+
 
 data KRPCStream a = KRPCStream
     { streamId        :: Int
@@ -80,14 +78,6 @@ data KRPCStream a = KRPCStream
 
 data KRPCStreamMsg = KRPCStreamMsg
     { streamMsg :: M.Map Int KRes.Response }
-
-
-runRPCProg :: RPCClient -> RPCContext a -> IO a
-runRPCProg = flip runReaderT
-
-
-runStreamProg :: StreamClient -> StreamContext a -> IO a
-runStreamProg = flip runReaderT
 
 
 checkError :: KRes.Response -> Either String ()
@@ -202,20 +192,10 @@ extractStreamResponse streamRes = do
     res <- KStreamRes.response streamRes
     return $ (fromIntegral sid, res)
 
+
 extractStreamMessage :: KStreamMsg.StreamMessage -> [(Int, KRes.Response)]
 extractStreamMessage msg = catMaybes $ map extractStreamResponse responseList
     where responseList = Data.Foldable.toList (KStreamMsg.responses msg)
-
-getStreamMessage :: StreamContext KRPCStreamMsg
-getStreamMessage = do
-    sock <- asks streamSocket
-    res  <- liftIO $ recvResponse sock
-    return $ KRPCStreamMsg $ M.fromList (extractStreamMessage res)
-
-
-getStreamResult :: KRPCStream a -> KRPCStreamMsg -> StreamContext (Either String a)
-getStreamResult KRPCStream{..} KRPCStreamMsg{..} = return $
-    maybe (Left "No result for this stream") (streamExtractor) (M.lookup streamId streamMsg)
 
 
 makeArgument :: (PbSerializable a) => P.Word32 -> a -> KArg.Argument
