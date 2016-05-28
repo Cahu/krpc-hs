@@ -6,6 +6,7 @@ module KRPCHS
 , RPCContext
 
 , KRPCStream
+, KRPCStreamMsg
 , getStreamMessage
 , getStreamResult
 
