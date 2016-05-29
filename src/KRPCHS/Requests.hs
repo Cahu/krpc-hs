@@ -1,4 +1,5 @@
 {-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
 
 {- Implementation notes:
@@ -13,7 +14,7 @@
 module KRPCHS.Requests
 ( RPCClient(..)
 , StreamClient(..)
-, RPCContext
+, RPCContext(..)
 
 , KRPCStream(..)
 , KRPCStreamMsg(..)
@@ -68,7 +69,8 @@ data RPCClient    = RPCClient    { rpcSocket    :: Socket, clientId :: BS.ByteSt
 data StreamClient = StreamClient { streamSocket :: Socket }
 
 
-type RPCContext = ReaderT RPCClient IO
+newtype RPCContext a = RPCContext { runRPCContext :: ReaderT RPCClient IO a }
+    deriving (Functor, Applicative, Monad, MonadIO, MonadReader RPCClient)
 
 
 data KRPCStream a = KRPCStream

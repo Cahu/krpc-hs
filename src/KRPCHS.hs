@@ -87,7 +87,7 @@ withStreamClient RPCClient{..} host port func = do
 
 
 runRPCProg :: RPCClient -> RPCContext a -> IO a
-runRPCProg = flip runReaderT
+runRPCProg client ctx = runReaderT (runRPCContext ctx) client
 
 
 getStatus :: RPCContext (Either String KRPC.Status)
