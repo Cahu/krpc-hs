@@ -2,6 +2,26 @@
 
 KRPC Hors Service is a client for [KRPC](https://github.com/krpc/krpc) -- a mod for Kerbal Space Program -- written in Haskell.
 
+## How to use
+
+I recommend you use stack to build this library:
+``` bash
+~/krpc-hs$ stack build
+```
+
+You can use haddock to generate basic documentation, for instance:
+```bash
+~/krpc-hs$ stack haddock
+```
+
+Tell stack where to find krpc-hs in your project's `stack.yaml` file:
+
+```yaml
+# Local packages, usually specified by relative directory name
+packages:
+- '.'
+- '/home/user/krpc-hs'
+```
 
 ## Example of usage
 
@@ -35,9 +55,6 @@ munLandingProgram = do
     ...
 ```
 
-Under the hood, an RPCContext is a ReaderT on top of IO.
-
-
 ### Using streams
 
 ```haskell
@@ -54,18 +71,18 @@ exampleProg streamClient = do
     utStream <- getUTStream
     forever $ do
         msg <- getStreamMessage streamClient
-        ut  <- getStreamResult utStream msg
-        liftIO $ putStrLn (show ut)
+        when (messageHasResultFor utStream msg) $ do
+            ut  <- getStreamResult utStream msg
+            liftIO $ putStrLn (show ut)
 ```
 
-Similar to the RPCContext, a StreamContext is a ReaderT on top of IO.
 
+## Notes
 
-You might have noticed that all KRPC functions (such as `getUT`, `getUTStream`) are tiny programs you can call directly using `runRPCProg`.
-
+* `RPCContext` is a ReaderT on top of IO and it derives MonadThrow, MonadCatch, MonadMask (from the `exception` module).
+* You should always check that a stream message has a result for the stream you are going to use with `messageHasResultFor` because there will be some delay between the moment you ask for a new stream and the moment you start receiving results. In the event you use `getStreamResult` on a message with no result for the specified stream, an exception will be thrown.
 
 ## TODO
 
 * Documentation
 * Cleanup the code generator and make it available
-* Find a better way to handle exceptions

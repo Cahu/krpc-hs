@@ -1,6 +1,6 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 
-module KRPCHS.SerializeUtils
+module KRPCHS.Internal.SerializeUtils
 ( PbSerializable
 , decodePb
 , encodePb
@@ -10,6 +10,8 @@ module KRPCHS.SerializeUtils
 import Data.Int
 import Data.Word
 import Data.Text as T
+
+import KRPCHS.Internal.ProtocolError
 
 import qualified Text.ProtocolBuffers             as P
 import qualified Text.ProtocolBuffers.Get         as G
@@ -51,51 +53,51 @@ import qualified Text.ProtocolBuffers.WireMessage as W
 
 
 
-decodePb_ :: (W.Wire a) => B.FieldType -> B.ByteString -> Either String a
+decodePb_ :: (W.Wire a) => B.FieldType -> B.ByteString -> Either ProtocolError a
 decodePb_ pbType bytes =
     case W.runGet (W.wireGet pbType) bytes of
         G.Finished _ _ v -> Right v
-        G.Failed   _ s   -> Left s
-        _                -> Left "partial"
+        G.Failed   _ s   -> Left $ DecodeFailure s
+        _                -> Left $ DecodeFailure "partial"
 
 
 class PbSerializable a where
-    decodePb :: B.ByteString -> Either String a
+    decodePb :: B.ByteString -> Either ProtocolError a
     encodePb :: a -> B.ByteString
 
 
 instance PbSerializable Double where
-    decodePb bytes = realToFrac <$> (decodePb_ 1 bytes :: Either String B.Double)
+    decodePb bytes = realToFrac <$> (decodePb_ 1 bytes :: Either ProtocolError B.Double)
     encodePb f     = W.runPut (W.wirePut 1 (realToFrac f :: B.Double))
 
 
 instance PbSerializable Float where
-    decodePb bytes = realToFrac <$> (decodePb_ 2 bytes :: Either String B.Float)
+    decodePb bytes = realToFrac <$> (decodePb_ 2 bytes :: Either ProtocolError B.Float)
     encodePb f     = W.runPut (W.wirePut 2 (realToFrac f :: B.Float))
 
 
 instance PbSerializable Int where
-    decodePb bytes = fromIntegral <$> (decodePb_ 4 bytes :: Either String B.Word64)
+    decodePb bytes = fromIntegral <$> (decodePb_ 4 bytes :: Either ProtocolError B.Word64)
     encodePb i     = W.runPut (W.wirePut 4 (fromIntegral i :: B.Word64))
 
 
 instance PbSerializable Int32 where
-    decodePb bytes = fromIntegral <$> (decodePb_ 5 bytes :: Either String B.Int32)
+    decodePb bytes = fromIntegral <$> (decodePb_ 5 bytes :: Either ProtocolError B.Int32)
     encodePb i     = W.runPut (W.wirePut 5 (fromIntegral i :: B.Int32))
 
 
 instance PbSerializable Int64 where
-    decodePb bytes = fromIntegral <$> (decodePb_ 3 bytes :: Either String B.Int64)
+    decodePb bytes = fromIntegral <$> (decodePb_ 3 bytes :: Either ProtocolError B.Int64)
     encodePb i     = W.runPut (W.wirePut 3 (fromIntegral i :: B.Int64))
 
 
 instance PbSerializable Word32 where
-    decodePb bytes = fromIntegral <$> (decodePb_ 13 bytes :: Either String B.Word32)
+    decodePb bytes = fromIntegral <$> (decodePb_ 13 bytes :: Either ProtocolError B.Word32)
     encodePb i     = W.runPut (W.wirePut 13 (fromIntegral i :: B.Word32))
 
 
 instance PbSerializable Word64 where
-    decodePb bytes = fromIntegral <$> (decodePb_ 4 bytes :: Either String B.Word64)
+    decodePb bytes = fromIntegral <$> (decodePb_ 4 bytes :: Either ProtocolError B.Word64)
     encodePb i     = W.runPut (W.wirePut 4 (fromIntegral i :: B.Word64))
 
 
@@ -105,5 +107,5 @@ instance PbSerializable Bool where
 
 
 instance PbSerializable Text where
-    decodePb bytes = (T.pack . P.toString) <$> (decodePb_ 9 bytes :: Either String B.Utf8)
+    decodePb bytes = (T.pack . P.toString) <$> (decodePb_ 9 bytes :: Either ProtocolError B.Utf8)
     encodePb t     = W.runPut (W.wirePut 9 (P.fromString $ T.unpack t))

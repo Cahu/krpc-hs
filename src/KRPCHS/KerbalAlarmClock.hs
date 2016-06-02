@@ -53,8 +53,8 @@ module KRPCHS.KerbalAlarmClock
 
 import Data.Text
 
-import KRPCHS.Requests
-import KRPCHS.SerializeUtils
+import KRPCHS.Internal.Requests
+import KRPCHS.Internal.SerializeUtils
 
 import KRPCHS.SpaceCenter
 

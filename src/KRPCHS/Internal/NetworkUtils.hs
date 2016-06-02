@@ -1,4 +1,4 @@
-module KRPCHS.NetworkUtils
+module KRPCHS.Internal.NetworkUtils
 ( helloMsg
 , helloStreamMsg
 , connNameMsg
@@ -9,7 +9,7 @@ module KRPCHS.NetworkUtils
 ) where
 
 
-import KRPCHS.SerializeUtils
+import KRPCHS.Internal.SerializeUtils
 
 import Control.Monad
 
@@ -58,11 +58,9 @@ recvId sock = recvN sock 16
 recvMsg :: Socket -> IO BS.ByteString
 recvMsg sock = do
     sz <- recvSize BS.empty
-    case sz of
-        Left err  -> fail err
-        Right sz' -> recvN sock (fromIntegral sz')
+    recvN sock (fromIntegral sz)
     where
-        recvSize :: BS.ByteString -> IO (Either String Word64)
+        recvSize :: BS.ByteString -> IO Word64
         recvSize sz
             | BC.length sz > 10 = fail "Malformed message"
             | otherwise = do
@@ -70,7 +68,7 @@ recvMsg sock = do
                 let sz'  = BS.append sz b
                     more = testBit (BS.head b) 7
                 if more then recvSize sz'
-                        else return (decodePb $ BL.fromStrict sz')
+                        else either (fail "Malformed message") (return) (decodePb $ BL.fromStrict sz')
 
 
 sendMsg :: (ReflectDescriptor msg, Wire msg) => Socket -> msg -> IO ()

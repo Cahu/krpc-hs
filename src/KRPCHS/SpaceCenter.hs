@@ -1101,8 +1101,8 @@ import Data.Int
 import Data.Word
 import Data.Text
 
-import KRPCHS.Requests
-import KRPCHS.SerializeUtils
+import KRPCHS.Internal.Requests
+import KRPCHS.Internal.SerializeUtils
 
 
 newtype AutoPilot = AutoPilot { autoPilotId :: Int }

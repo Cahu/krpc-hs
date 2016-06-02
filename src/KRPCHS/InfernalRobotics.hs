@@ -82,8 +82,8 @@ module KRPCHS.InfernalRobotics
 
 import Data.Text
 
-import KRPCHS.Requests
-import KRPCHS.SerializeUtils
+import KRPCHS.Internal.Requests
+import KRPCHS.Internal.SerializeUtils
 
 
 newtype ControlGroup = ControlGroup { controlGroupId :: Int }

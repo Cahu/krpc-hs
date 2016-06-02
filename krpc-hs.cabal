@@ -1,5 +1,5 @@
 name:                krpc-hs
-version:             0.2.1
+version:             0.3.0
 description:         A client for KRPC
 license:             GPL-3
 license-file:        LICENSE
@@ -13,12 +13,13 @@ library
   hs-source-dirs:      src
   ghc-options:         -Wall
   exposed-modules:     KRPCHS
-                     , KRPCHS.Requests
-                     , KRPCHS.NetworkUtils
-                     , KRPCHS.SerializeUtils
                      , KRPCHS.SpaceCenter
-                     , KRPCHS.KerbalAlarmClock
                      , KRPCHS.InfernalRobotics
+                     , KRPCHS.KerbalAlarmClock
+                     , KRPCHS.Internal.Requests
+                     , KRPCHS.Internal.ProtocolError
+                     , KRPCHS.Internal.NetworkUtils
+                     , KRPCHS.Internal.SerializeUtils
                      , PB.KRPC
                      , PB.KRPC.Argument
                      , PB.KRPC.Class
@@ -39,6 +40,7 @@ library
                      , PB.KRPC.StreamResponse
                      , PB.KRPC.Tuple
   build-depends:       base >= 4.7 && < 5
+                     , exceptions
                      , mtl
                      , network
                      , text
