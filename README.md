@@ -23,7 +23,7 @@ packages:
 - '/home/user/krpc-hs'
 ```
 
-## Example of usage
+## Examples
 
 ### Simple RPC
 
