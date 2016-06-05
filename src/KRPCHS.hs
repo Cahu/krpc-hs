@@ -38,7 +38,6 @@ import Control.Monad.Catch
 import Control.Monad.Trans
 import Control.Monad.Reader
 
-import Data.Maybe
 import qualified Data.Map as M
 import qualified Data.ByteString.Char8 as BS
 import Network.Socket.ByteString
@@ -114,7 +113,7 @@ getStreamMessage StreamClient{..} = do
 
 messageHasResultFor :: KRPCStream a -> KRPCStreamMsg -> Bool
 messageHasResultFor KRPCStream{..} KRPCStreamMsg{..} =
-    isJust (M.lookup streamId streamMsg)
+    M.member streamId streamMsg
 
 
 getStreamResult :: KRPCStream a -> KRPCStreamMsg -> RPCContext a
