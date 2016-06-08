@@ -1,26 +1,23 @@
 # KRPC Hors Service
 
-KRPC Hors Service is a client for [KRPC](https://github.com/krpc/krpc) -- a mod for Kerbal Space Program -- written in Haskell.
+KRPC Hors Service is a client for [kRPC](https://github.com/krpc/krpc) -- a mod
+for Kerbal Space Program -- written in Haskell.
 
 ## How to use
 
-I recommend you use stack to build this library:
-``` bash
-~/krpc-hs$ stack build
-```
-
-You can use haddock to generate basic documentation, for instance:
-```bash
-~/krpc-hs$ stack haddock
-```
-
-Tell stack where to find krpc-hs in your project's `stack.yaml` file:
+The simplest way to use this library is with
+[Stack](http://docs.haskellstack.org) by adding the dependance to your
+project's stack.yaml file (replace vX.Y.Z by the release tag you want to use or
+a commit hash):
 
 ```yaml
 # Local packages, usually specified by relative directory name
 packages:
 - '.'
-- '/home/user/krpc-hs'
+- extra-dep: true
+  location:
+    git: git@github.com:cahu/krpc-hs
+    commit: vX.Y.Z
 ```
 
 ## Examples
