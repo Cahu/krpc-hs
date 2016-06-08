@@ -20,6 +20,27 @@ packages:
     commit: vX.Y.Z
 ```
 
+Alternatively, you can clone the project in a directory of your choice and run
+these commands:
+
+``` bash
+~/krpc-hs$ stack build
+```
+
+You can use haddock to generate basic documentation, for instance:
+```bash
+~/krpc-hs$ stack haddock
+```
+
+Tell stack where to find krpc-hs in your project's `stack.yaml` file:
+
+```yaml
+# Local packages, usually specified by relative directory name
+packages:
+- '.'
+- '/home/user/krpc-hs'
+```
+
 ## Examples
 
 ### Simple RPC
