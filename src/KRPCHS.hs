@@ -17,6 +17,7 @@ module KRPCHS
 , runRPCProg
 
 , KRPC.Status(..)
+, KRPC.Service(..)
 , KRPC.Services(..)
 , getStatus
 , getServices
@@ -31,6 +32,7 @@ import KRPCHS.Internal.ProtocolError
 import KRPCHS.Internal.NetworkUtils
 
 import qualified PB.KRPC.Status   as KRPC
+import qualified PB.KRPC.Service  as KRPC
 import qualified PB.KRPC.Services as KRPC
 
 import Network.Socket
