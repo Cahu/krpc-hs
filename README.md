@@ -6,7 +6,7 @@ for Kerbal Space Program -- written in Haskell.
 ## How to use
 
 The simplest way to use this library is with
-[Stack](http://docs.haskellstack.org) by adding the dependance to your
+[Stack](http://docs.haskellstack.org) by adding the dependence to your
 project's stack.yaml file (replace vX.Y.Z by the release tag you want to use or
 a commit hash):
 
