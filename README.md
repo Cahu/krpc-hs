@@ -1,45 +1,47 @@
 # KRPC Hors Service
 
-KRPC Hors Service is a client for [kRPC](https://github.com/krpc/krpc) -- a mod
-for Kerbal Space Program -- written in Haskell.
+KRPC Hors Service is a client for [kRPC] -- a mod for Kerbal Space Program --
+written in Haskell.
+
+[kRPC]: https://github.com/krpc/krpc
 
 ## How to use
 
-The simplest way to use this library is with
-[Stack](http://docs.haskellstack.org) by adding the dependence to your
-project's stack.yaml file (replace vX.Y.Z by the release tag you want to use or
-a commit hash):
+*   The simplest way to use this library is with
+	[Stack](http://docs.haskellstack.org) by adding the dependence to your
+	project's stack.yaml file (replace vX.Y.Z by the release tag you want to use or
+	a commit hash):
 
-```yaml
-# Local packages, usually specified by relative directory name
-packages:
-- '.'
-- extra-dep: true
-  location:
-    git: git@github.com:cahu/krpc-hs
-    commit: vX.Y.Z
-```
+	```yaml
+	# Local packages, usually specified by relative directory name
+	packages:
+	- '.'
+	- extra-dep: true
+	  location:
+	    git: git@github.com:cahu/krpc-hs
+	    commit: vX.Y.Z
+	```
 
-Alternatively, you can clone the project in a directory of your choice and run
-these commands:
+*   Alternatively, you can clone the project in a directory of your choice and run
+	these commands:
+	``` bash
+	~/krpc-hs$ stack build
+	```
+	You can use haddock to generate basic documentation, for instance:
+	```bash
+	~/krpc-hs$ stack haddock
+	```
+	Tell stack where to find krpc-hs in your project's `stack.yaml` file:
+	```yaml
+	# Local packages, usually specified by relative directory name
+	packages:
+	- '.'
+	- '/home/user/krpc-hs'
+	```
 
-``` bash
-~/krpc-hs$ stack build
-```
+*   If you don't want to use stack, then the usual `cabal build` should work
+	with maybe some small tweaking of the `.cabal` file.
 
-You can use haddock to generate basic documentation, for instance:
-```bash
-~/krpc-hs$ stack haddock
-```
-
-Tell stack where to find krpc-hs in your project's `stack.yaml` file:
-
-```yaml
-# Local packages, usually specified by relative directory name
-packages:
-- '.'
-- '/home/user/krpc-hs'
-```
 
 ## Examples
 
@@ -90,15 +92,20 @@ exampleProg streamClient = do
     forever $ do
         msg <- getStreamMessage streamClient
         when (messageHasResultFor utStream msg) $ do
-            ut  <- getStreamResult utStream msg
+            ut <- getStreamResult utStream msg
             liftIO $ putStrLn (show ut)
 ```
 
 
 ## Notes
 
-* `RPCContext` is a ReaderT on top of IO and it derives MonadThrow, MonadCatch, MonadMask (from the `exception` module).
-* You should always check that a stream message has a result for the stream you are going to use with `messageHasResultFor` because there will be some delay between the moment you ask for a new stream and the moment you start receiving results. In the event you use `getStreamResult` on a message with no result for the specified stream, an exception will be thrown.
+* `RPCContext` is a ReaderT on top of IO and it derives MonadThrow, MonadCatch,
+  MonadMask (from the `exception` module).
+* You should always check that a stream message has a result for the stream you
+  are going to use with `messageHasResultFor` because there will be some delay
+  between the moment you ask for a new stream and the moment you start
+  receiving results. In the event you use `getStreamResult` on a message with
+  no result for the specified stream, an exception will be thrown.
 
 ## TODO
 
