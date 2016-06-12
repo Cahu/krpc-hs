@@ -49,6 +49,8 @@ written in Haskell.
 
 ```haskell
 import KRPCHS
+import KRPCHS.UI
+import KRPCHS.SpaceCenter
 
 main :: IO ()
 main =
@@ -59,11 +61,12 @@ main =
         runRPCProg client munTransferProgram
         runRPCProg client munLandingProgram
 
+
 liftOffProgram :: RPCContext ()
 liftOffProgram = do
+	countDown 10          -- call another program
     ut <- getUT           -- get the date
     v  <- getActiveVessel -- get our current vessel
-    liftIO $ putStrLn $ "Mission start at " ++ show ut
     ... do some other things
 
 munTransferProgram :: RPCContext ()
@@ -73,7 +76,13 @@ munTransferProgram = do
 munLandingProgram :: RPCContext ()
 munLandingProgram = do
     ...
+
+countDown :: Int -> RPCContext ()
+countDown n = forM_ (reverse [ 1 .. n ]) $ \sec -> do
+    void   $ message (T.pack $ show sec) 1 MessagePosition'TopCenter
+    liftIO $ threadDelay 1000000
 ```
+
 
 ### Using streams
 
