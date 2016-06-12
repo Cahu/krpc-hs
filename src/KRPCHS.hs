@@ -118,10 +118,10 @@ messageHasResultFor KRPCStream{..} KRPCStreamMsg{..} =
     M.member streamId streamMsg
 
 
-getStreamResult :: KRPCStream a -> KRPCStreamMsg -> RPCContext a
+getStreamResult :: (KRPCResponseExtractable a) => KRPCStream a -> KRPCStreamMsg -> RPCContext a
 getStreamResult KRPCStream{..} KRPCStreamMsg{..} =
     maybe (throwM NoSuchStream)
-          (\x -> either (throwM) (return) (streamExtractor x))
+          (\x -> either (throwM) (return) (extract x))
           (M.lookup streamId streamMsg)
 
 

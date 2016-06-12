@@ -16,6 +16,9 @@ library
                      , KRPCHS.SpaceCenter
                      , KRPCHS.InfernalRobotics
                      , KRPCHS.KerbalAlarmClock
+                     , KRPCHS.Drawing
+                     , KRPCHS.RemoteTech
+                     , KRPCHS.UI
                      , KRPCHS.Internal.Requests
                      , KRPCHS.Internal.ProtocolError
                      , KRPCHS.Internal.NetworkUtils

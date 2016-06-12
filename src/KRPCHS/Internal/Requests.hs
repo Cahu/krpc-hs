@@ -27,23 +27,19 @@ module KRPCHS.Internal.Requests
 , KRPCStream(..)
 , KRPCStreamMsg(..)
 
+, KRPCResponseExtractable
+, extract
+
 , makeArgument
-, makeArgumentTuple3
-, makeArgumentTuple4
 , processResponse
 , makeRequest
 , sendRequest
 , recvResponse
 , makeStream
+, extractNothing
 , extractMessage
 , extractStreamMessage
 , extractStreamResponse
-, extractValue
-, extractList
-, extractMap
-, extractTuple3
-, extractTuple4
-, extractNothing
 ) where
 
 
@@ -58,17 +54,16 @@ import KRPCHS.Internal.SerializeUtils
 import qualified PB.KRPC.Argument        as KArg
 import qualified PB.KRPC.Request         as KReq
 import qualified PB.KRPC.Response        as KRes
-import qualified PB.KRPC.List            as KList
-import qualified PB.KRPC.Tuple           as KTuple
-import qualified PB.KRPC.Dictionary      as KDict
-import qualified PB.KRPC.DictionaryEntry as KDictE
 import qualified PB.KRPC.StreamMessage   as KStreamMsg
 import qualified PB.KRPC.StreamResponse  as KStreamRes
 
+import Data.Int
+import Data.Word
 import Data.Maybe
-import qualified Data.Map              as M
-import qualified Data.Sequence         as Seq
+import qualified Data.Text as T
+import qualified Data.Map  as M
 import qualified Data.Foldable
+import qualified Data.Sequence as Seq
 
 import qualified Data.ByteString       as BS
 import qualified Data.ByteString.Lazy  as BL
@@ -83,14 +78,43 @@ newtype RPCContext a = RPCContext { runRPCContext :: ReaderT RPCClient IO a }
     deriving (Functor, Applicative, Monad, MonadIO, MonadReader RPCClient, MonadThrow, MonadCatch, MonadMask)
 
 
-data KRPCStream a = KRPCStream
-    { streamId        :: Int
-    , streamExtractor :: KRes.Response -> Either ProtocolError a }
+newtype KRPCStream a = KRPCStream { streamId :: Int }
+
+newtype KRPCStreamMsg = KRPCStreamMsg { streamMsg :: M.Map Int KRes.Response }
 
 
-data KRPCStreamMsg = KRPCStreamMsg
-    { streamMsg :: M.Map Int KRes.Response }
+class (PbSerializable a) => KRPCResponseExtractable a where
+    extract :: (PbSerializable a) => KRes.Response -> Either ProtocolError a
+    extract r = do
+        checkError r
+        maybe (Left ResponseEmpty) (decodePb) (KRes.return_value r)
 
+instance KRPCResponseExtractable Bool
+instance KRPCResponseExtractable Float
+instance KRPCResponseExtractable Double
+instance KRPCResponseExtractable Int
+instance KRPCResponseExtractable Int32
+instance KRPCResponseExtractable Int64
+instance KRPCResponseExtractable Word32
+instance KRPCResponseExtractable Word64
+instance KRPCResponseExtractable T.Text
+instance (PbSerializable a, PbSerializable b)                                     => KRPCResponseExtractable (a, b)
+instance (PbSerializable a, PbSerializable b, PbSerializable c)                   => KRPCResponseExtractable (a, b, c)
+instance (PbSerializable a, PbSerializable b, PbSerializable c, PbSerializable d) => KRPCResponseExtractable (a, b, c, d)
+
+instance (PbSerializable a) => KRPCResponseExtractable [a] where
+    extract r = do
+        checkError r
+        case (KRes.return_value r) of
+            Nothing    -> Right []
+            Just bytes -> decodePb bytes
+
+instance (Ord k, PbSerializable k, PbSerializable v) => KRPCResponseExtractable (M.Map k v) where
+    extract r = do
+        checkError r
+        case (KRes.return_value r) of
+            Nothing    -> Right M.empty
+            Just bytes -> decodePb bytes
 
 
 checkError :: KRes.Response -> Either ProtocolError ()
@@ -99,70 +123,10 @@ checkError r = case (KRes.has_error r) of
     _         -> return ()
 
 
-messageGet :: (P.Wire a, P.ReflectDescriptor a) => BL.ByteString -> Either ProtocolError a
-messageGet bytes = either (Left . DecodeFailure) (return . fst) (P.messageGet bytes)
-
-
-messagePut :: (P.Wire a, P.ReflectDescriptor a) => a -> BL.ByteString
-messagePut = P.messagePut
-
-
 extractMessage :: (P.Wire a, P.ReflectDescriptor a) => KRes.Response -> Either ProtocolError a
 extractMessage r = do
     checkError r
     maybe (Left ResponseEmpty) (messageGet) (KRes.return_value r)
-
-
-extractValue :: (PbSerializable a) => KRes.Response -> Either ProtocolError a
-extractValue r = do
-    checkError r
-    maybe (Left ResponseEmpty) (decodePb) (KRes.return_value r)
-
-
-extractTuple3 :: (PbSerializable a, PbSerializable b, PbSerializable c)
-              => KRes.Response 
-              -> Either ProtocolError (a, b, c)
-extractTuple3 r = do
-    s <- extractMessage r
-    let (a:b:c:_) = Data.Foldable.toList $ KTuple.items s
-    a' <- decodePb a
-    b' <- decodePb b
-    c' <- decodePb c
-    return (a', b', c')
-
-
-extractTuple4 :: (PbSerializable a, PbSerializable b, PbSerializable c, PbSerializable d)
-              => KRes.Response 
-              -> Either ProtocolError (a, b, c, d)
-extractTuple4 r = do
-    s <- extractMessage r
-    let (a:b:c:d:_) = Data.Foldable.toList $ KTuple.items s
-    a' <- decodePb a
-    b' <- decodePb b
-    c' <- decodePb c
-    d' <- decodePb d
-    return (a', b', c', d')
-
-
-extractMap :: (Ord a, PbSerializable a, PbSerializable b)
-           => KRes.Response
-           -> Either ProtocolError (M.Map a b)
-extractMap r = case (extractMessage r) of
-    Right s             -> M.fromList <$> mapM extractKeyVal (Data.Foldable.toList $ KDict.entries s)
-    Left  ResponseEmpty -> Right M.empty
-    Left  err           -> Left  err
-    where
-        extractKeyVal e = do
-            k <- maybe (Left $ DecodeFailure "No key") (decodePb) (KDictE.key   e)
-            v <- maybe (Left $ DecodeFailure "No val") (decodePb) (KDictE.value e)
-            return (k, v)
-
-
-extractList :: (PbSerializable a) => KRes.Response -> Either ProtocolError [a]
-extractList r = case extractMessage r of
-    Right s             -> mapM decodePb $ Data.Foldable.toList $ KList.items s
-    Left  ResponseEmpty -> Right []
-    Left  err           -> Left  err
 
 
 -- Dummy extractor that only checks if the response has no error
@@ -170,7 +134,7 @@ extractNothing :: KRes.Response -> Either ProtocolError Bool
 extractNothing r = checkError r >> return True
 
 
-processResponse ::  (KRes.Response -> Either ProtocolError a) -> KRes.Response -> RPCContext a
+processResponse :: (KRes.Response -> Either ProtocolError a) -> KRes.Response -> RPCContext a
 processResponse extractor res = either (throwM) (return) (extractor res)
 
 
@@ -185,6 +149,10 @@ recvResponse :: (P.Wire a, P.ReflectDescriptor a) => Socket -> IO a
 recvResponse sock = do
     msg <- recvMsg sock
     either (throwM) (return) (messageGet (BL.fromStrict msg))
+
+
+makeArgument :: (PbSerializable a) => P.Word32 -> a -> KArg.Argument
+makeArgument position arg = KArg.Argument (Just position) (Just $ encodePb arg)
 
 
 makeRequest :: String -> String -> [KArg.Argument] -> KReq.Request
@@ -209,36 +177,3 @@ extractStreamResponse streamRes = do
 extractStreamMessage :: KStreamMsg.StreamMessage -> [(Int, KRes.Response)]
 extractStreamMessage msg = catMaybes $ map extractStreamResponse responseList
     where responseList = Data.Foldable.toList (KStreamMsg.responses msg)
-
-
-makeArgument :: (PbSerializable a) => P.Word32 -> a -> KArg.Argument
-makeArgument position arg = KArg.Argument (Just position) (Just $ encodePb arg)
-
-
-makeArgumentTuple3 :: (PbSerializable a, PbSerializable b, PbSerializable c)
-                   => P.Word32
-                   -> (a, b, c)
-                   -> KArg.Argument
-makeArgumentTuple3 position (a, b, c) =
-    let
-        a'    = encodePb a
-        b'    = encodePb b
-        c'    = encodePb c
-        tuple = KTuple.Tuple $ Seq.fromList [a', b', c']
-    in
-        KArg.Argument (Just position) (Just $ P.messagePut tuple)
-
-
-makeArgumentTuple4 :: (PbSerializable a, PbSerializable b, PbSerializable c, PbSerializable d)
-                   => P.Word32
-                   -> (a, b, c, d)
-                   -> KArg.Argument
-makeArgumentTuple4 position (a, b, c, d) =
-    let
-        a'    = encodePb a
-        b'    = encodePb b
-        c'    = encodePb c
-        d'    = encodePb d
-        tuple = KTuple.Tuple $ Seq.fromList [a', b', c', d']
-    in
-        KArg.Argument (Just position) (Just $ P.messagePut tuple)

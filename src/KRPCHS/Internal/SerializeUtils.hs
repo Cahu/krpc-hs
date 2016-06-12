@@ -4,12 +4,18 @@ module KRPCHS.Internal.SerializeUtils
 ( PbSerializable
 , decodePb
 , encodePb
+, messagePut
+, messageGet
 ) where
 
 
 import Data.Int
 import Data.Word
-import Data.Text as T
+import qualified Data.Text as T
+
+import qualified Data.Foldable
+import qualified Data.Sequence as Seq
+import qualified Data.Map      as M
 
 import KRPCHS.Internal.ProtocolError
 
@@ -18,6 +24,10 @@ import qualified Text.ProtocolBuffers.Get         as G
 import qualified Text.ProtocolBuffers.Basic       as B
 import qualified Text.ProtocolBuffers.WireMessage as W
 
+import qualified PB.KRPC.List            as KList
+import qualified PB.KRPC.Tuple           as KTuple
+import qualified PB.KRPC.Dictionary      as KDict
+import qualified PB.KRPC.DictionaryEntry as KDictE
 
 {- This is a wrapper around Text.ProtocolBuffers' internal (de-)serialization
  - functions. As far as I know, there is no better way to extract ints and
@@ -51,6 +61,14 @@ import qualified Text.ProtocolBuffers.WireMessage as W
    TYPE_SINT64         = 18;  // Uses ZigZag encoding.-
  - -}
 
+
+
+messageGet :: (P.Wire a, P.ReflectDescriptor a) => B.ByteString -> Either ProtocolError a
+messageGet bytes = either (Left . DecodeFailure) (return . fst) (P.messageGet bytes)
+
+
+messagePut :: (P.Wire a, P.ReflectDescriptor a) => a -> B.ByteString
+messagePut = P.messagePut
 
 
 decodePb_ :: (W.Wire a) => B.FieldType -> B.ByteString -> Either ProtocolError a
@@ -106,6 +124,79 @@ instance PbSerializable Bool where
     encodePb b = W.runPut (W.wirePut 8 b)
 
 
-instance PbSerializable Text where
+instance PbSerializable T.Text where
     decodePb bytes = (T.pack . P.toString) <$> (decodePb_ 9 bytes :: Either ProtocolError B.Utf8)
     encodePb t     = W.runPut (W.wirePut 9 (P.fromString $ T.unpack t))
+
+
+instance (PbSerializable a) => PbSerializable [a] where
+    encodePb = messagePut . KList.List . Seq.fromList . map encodePb
+    decodePb bytes = do
+        l <- messageGet bytes
+        mapM decodePb $ Data.Foldable.toList (KList.items l)
+
+
+instance (Ord k, PbSerializable k, PbSerializable v) => PbSerializable (M.Map k v) where
+    encodePb = undefined
+    decodePb bytes = do
+        m <- messageGet bytes
+        M.fromList <$> mapM extractKeyVal (Data.Foldable.toList $ KDict.entries m)
+        where
+            extractKeyVal e = do
+                k <- maybe (Left $ DecodeFailure "No key") (decodePb) (KDictE.key   e)
+                v <- maybe (Left $ DecodeFailure "No val") (decodePb) (KDictE.value e)
+                return (k, v)
+
+
+instance (PbSerializable a, PbSerializable b) => PbSerializable (a, b) where
+    encodePb (a, b) =
+        let a' = encodePb a
+            b' = encodePb b
+            tuple = KTuple.Tuple $ Seq.fromList [a', b']
+        in
+            messagePut tuple
+
+    decodePb bytes = do
+        s <- messageGet bytes
+        let (a:b:_) = Data.Foldable.toList $ KTuple.items s
+        a' <- decodePb a
+        b' <- decodePb b
+        return (a', b')
+
+
+instance (PbSerializable a, PbSerializable b, PbSerializable c) => PbSerializable (a, b, c) where
+    encodePb (a, b, c) =
+        let a' = encodePb a
+            b' = encodePb b
+            c' = encodePb c
+            tuple = KTuple.Tuple $ Seq.fromList [a', b', c']
+        in
+            messagePut tuple
+
+    decodePb bytes = do
+        s <- messageGet bytes
+        let (a:b:c:_) = Data.Foldable.toList $ KTuple.items s
+        a' <- decodePb a
+        b' <- decodePb b
+        c' <- decodePb c
+        return (a', b', c')
+
+
+instance (PbSerializable a, PbSerializable b, PbSerializable c, PbSerializable d) => PbSerializable (a, b, c, d) where
+    encodePb (a, b, c, d) = 
+        let a' = encodePb a
+            b' = encodePb b
+            c' = encodePb c
+            d' = encodePb d
+            tuple = KTuple.Tuple $ Seq.fromList [a', b', c', d']
+        in
+            messagePut tuple
+
+    decodePb bytes = do
+        s <- messageGet bytes
+        let (a:b:c:d:_) = Data.Foldable.toList $ KTuple.items s
+        a' <- decodePb a
+        b' <- decodePb b
+        c' <- decodePb c
+        d' <- decodePb d
+        return (a', b', c', d')
