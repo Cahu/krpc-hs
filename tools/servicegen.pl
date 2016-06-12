@@ -60,7 +60,7 @@ while (my ($serviceName, $def) = each %$json)
 			doc    => cleanup_doc($enumDef->{documentation})
 		};
 
-        push @exports, "$enumName(..)";
+		push @exports, "$enumName(..)";
 	}
 
 	foreach my $proxyName (sort keys %{ $def->{classes} })
@@ -72,7 +72,7 @@ while (my ($serviceName, $def) = each %$json)
 			doc  => cleanup_doc($proxyDef->{documentation}),
 		};
 
-        push @exports, $proxyName;
+		push @exports, $proxyName;
 	}
 
 	foreach my $procName (sort keys %{ $def->{procedures} })
@@ -82,8 +82,8 @@ while (my ($serviceName, $def) = each %$json)
 		my ($proc, $deps) = process_procedure($procName, $procDef);
 
 		push @procs, $proc;
-        push @exports, $proc->{name};
-        push @exports, $proc->{name} . 'Stream' if ($proc->{ret});
+		push @exports, $proc->{name};
+		push @exports, $proc->{name} . 'Stream' if ($proc->{ret});
 
 		foreach my $d (@$deps)
 		{
@@ -103,7 +103,7 @@ while (my ($serviceName, $def) = each %$json)
 		imports     => [ sort keys %dependencies ],
 		exports     => \@exports,
 	})
-        || die "$Template::ERROR\n";
+		|| die "$Template::ERROR\n";
 }
 
 
