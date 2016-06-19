@@ -1868,7 +1868,7 @@ autoPilotSetPIDParameters thisArg kpArg kiArg kdArg = do
 
 
 {-
- - Set (<see cref="M:SpaceCenter.AutoPilot.TargetDirection" />) from a pitch and heading angle.<param name="pitch">Target pitch angle, in degrees between -90° and +90°.<param name="heading">Target heading angle, in degrees between 0° and 360°.
+ - Set (<see cref="M:SpaceCenter.AutoPilot.TargetDirection" />) from a pitch and heading angle.<param name="pitch">Target pitch angle, in degrees between -90Â° and +90Â°.<param name="heading">Target heading angle, in degrees between 0Â° and 360Â°.
  -}
 autoPilotTargetPitchAndHeading :: KRPCHS.SpaceCenter.AutoPilot -> Float -> Float -> RPCContext (Bool)
 autoPilotTargetPitchAndHeading thisArg pitchArg headingArg = do
@@ -2972,9 +2972,9 @@ getCelestialBodyOrbitalReferenceFrameStream thisArg = do
  - The reference frame that is fixed relative to the celestial body.
  - <list type="bullet">The origin is at the center of the body.The axes rotate with the body.The x-axis points from the center of the body
  - towards the intersection of the prime meridian and equator (the
- - position at 0° longitude, 0° latitude).The y-axis points from the center of the body
+ - position at 0Â° longitude, 0Â° latitude).The y-axis points from the center of the body
  - towards the north pole.The z-axis points from the center of the body
- - towards the equator at 90°E longitude.
+ - towards the equator at 90Â°E longitude.
  -}
 getCelestialBodyReferenceFrame :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
 getCelestialBodyReferenceFrame thisArg = do
@@ -5212,7 +5212,7 @@ getFlightGForceStream thisArg = do
 
 
 {-
- - The heading angle of the vessel relative to north, in degrees. A value between 0° and 360°.
+ - The heading angle of the vessel relative to north, in degrees. A value between 0Â° and 360Â°.
  -}
 getFlightHeading :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
 getFlightHeading thisArg = do
@@ -5377,7 +5377,7 @@ getFlightNormalStream thisArg = do
 
 
 {-
- - The pitch angle of the vessel relative to the horizon, in degrees. A value between -90° and +90°.
+ - The pitch angle of the vessel relative to the horizon, in degrees. A value between -90Â° and +90Â°.
  -}
 getFlightPitch :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
 getFlightPitch thisArg = do
@@ -5449,7 +5449,7 @@ getFlightRetrogradeStream thisArg = do
 
 
 {-
- - The roll angle of the vessel relative to the horizon, in degrees. A value between -180° and +180°.
+ - The roll angle of the vessel relative to the horizon, in degrees. A value between -180Â° and +180Â°.
  -}
 getFlightRoll :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
 getFlightRoll thisArg = do

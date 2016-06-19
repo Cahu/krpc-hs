@@ -300,6 +300,7 @@ sub haskell_type
 sub cleanup_doc
 {
 	my ($doc) = @_;
+	utf8::encode($doc);
 	$doc =~ s@(\s+)?</?\w+/?>(\s+)?@@gr
 }
 
