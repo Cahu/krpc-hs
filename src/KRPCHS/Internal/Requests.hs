@@ -1,24 +1,6 @@
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
-
-{- Implementation notes:
- -
- - 1/ KRPC uses protocol buffers v3 but the library we use only support v2.
- - Fortunatelly, KRPC doesn't use v3 features so we can adapt the .proto file
- - by adding some annotations ('optional') to fields. However, this has
- - implications. For instance, we are unable to distinguish an empty list from
- - the absence of a list.
- -
- - 2/ Two types of exception are thrown from an RPCContext: IO exceptions and
- - 'ExceptT' exceptions.
- -  * IO exceptions are thrown when an IO error or a protocol issue (malformed
- -  message, decoding failure, ...) is - encountered.
- -  * ExceptT - exceptions are meant to be handled within the RPCContext and
- -  are thrown when the program running in the RPCContext can recover from them
- -  (missing stream response, ...).
- -}
-
 module KRPCHS.Internal.Requests
 ( RPCClient(..)
 , StreamClient(..)
