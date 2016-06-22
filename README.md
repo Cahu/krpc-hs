@@ -88,6 +88,7 @@ countDown n = forM_ (reverse [ 1 .. n ]) $ \sec -> do
 
 ```haskell
 import KRPCHS
+import KRPCHS.SpaceCenter
 
 main :: IO ()
 main =
@@ -115,8 +116,3 @@ exampleProg streamClient = do
   between the moment you ask for a new stream and the moment you start
   receiving results. In the event you use `getStreamResult` on a message with
   no result for the specified stream, an exception will be thrown.
-
-## TODO
-
-* Documentation
-* Cleanup the code generator and make it available
