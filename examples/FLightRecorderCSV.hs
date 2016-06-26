@@ -19,6 +19,8 @@ data TelemetryData = TelemetryData
     { altitude  :: Double
     , latitude  :: Double
     , longitude :: Double
+    , mass      :: Float
+    , thrust    :: Float
     }
 
 
@@ -39,9 +41,11 @@ telemetryProg streamClient = do
     altitudeStream  <- getFlightMeanAltitudeStream flight
     latitudeStream  <- getFlightLatitudeStream     flight
     longitudeStream <- getFlightLongitudeStream    flight
+    massStream      <- getVesselMassStream         vessel
+    thrustStream    <- getVesselThrustStream       vessel
 
     -- get results and print csv
-    liftIO $ putStrLn "altitude;latitude;longitude"
+    liftIO $ putStrLn "altitude;latitude;longitude;mass;thrust"
     forever $ do
         msg <- getStreamMessage streamClient
 
@@ -49,14 +53,16 @@ telemetryProg streamClient = do
             altitude  <- getStreamResult altitudeStream  msg
             latitude  <- getStreamResult latitudeStream  msg
             longitude <- getStreamResult longitudeStream msg
-            return $ TelemetryData altitude latitude longitude)
+            mass      <- getStreamResult massStream      msg
+            thrust    <- getStreamResult thrustStream    msg
+            return $ TelemetryData{..})
 
         case ok of
             Right telemetry    -> liftIO $ printTelemetryCSV telemetry
-            Left  NoSuchStream -> return () -- this can happen
+            Left  NoSuchStream -> return () -- this can happen during the first few loops
             Left  err          -> throwM err
 
 
 printTelemetryCSV :: TelemetryData -> IO ()
 printTelemetryCSV TelemetryData{..} =
-    putStrLn $ intercalate ";" [show altitude, show latitude, show longitude]
+    putStrLn $ intercalate ";" [show altitude, show latitude, show longitude, show mass, show thrust]
