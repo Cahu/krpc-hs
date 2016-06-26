@@ -24,6 +24,7 @@ module KRPCHS.SpaceCenter
 , Decoupler
 , DockingPort
 , Engine
+, Experiment
 , Fairing
 , Flight
 , Intake
@@ -37,6 +38,7 @@ module KRPCHS.SpaceCenter
 , Parachute
 , Part
 , Parts
+, Propellant
 , RCS
 , Radiator
 , ReactionWheel
@@ -46,46 +48,74 @@ module KRPCHS.SpaceCenter
 , ResourceHarvester
 , ResourceTransfer
 , Resources
+, ScienceData
 , Sensor
 , SolarPanel
 , Thruster
 , Vessel
 , autoPilotDisengage
 , autoPilotEngage
-, autoPilotSetPIDParameters
 , autoPilotTargetPitchAndHeading
 , autoPilotWait
+, getAutoPilotAttenuationAngle
+, getAutoPilotAttenuationAngleStream
+, getAutoPilotAutoTune
+, getAutoPilotAutoTuneStream
+, getAutoPilotDecelerationTime
+, getAutoPilotDecelerationTimeStream
 , getAutoPilotError
 , getAutoPilotErrorStream
-, getAutoPilotMaxRollSpeed
-, getAutoPilotMaxRollSpeedStream
-, getAutoPilotMaxRotationSpeed
-, getAutoPilotMaxRotationSpeedStream
+, getAutoPilotHeadingError
+, getAutoPilotHeadingErrorStream
+, getAutoPilotOvershoot
+, getAutoPilotOvershootStream
+, getAutoPilotPitchError
+, getAutoPilotPitchErrorStream
+, getAutoPilotPitchPIDGains
+, getAutoPilotPitchPIDGainsStream
 , getAutoPilotReferenceFrame
 , getAutoPilotReferenceFrameStream
 , getAutoPilotRollError
 , getAutoPilotRollErrorStream
-, getAutoPilotRollSpeedMultiplier
-, getAutoPilotRollSpeedMultiplierStream
-, getAutoPilotRotationSpeedMultiplier
-, getAutoPilotRotationSpeedMultiplierStream
+, getAutoPilotRollPIDGains
+, getAutoPilotRollPIDGainsStream
+, getAutoPilotRollThreshold
+, getAutoPilotRollThresholdStream
 , getAutoPilotSAS
 , getAutoPilotSASStream
 , getAutoPilotSASMode
 , getAutoPilotSASModeStream
+, getAutoPilotStoppingTime
+, getAutoPilotStoppingTimeStream
 , getAutoPilotTargetDirection
 , getAutoPilotTargetDirectionStream
+, getAutoPilotTargetHeading
+, getAutoPilotTargetHeadingStream
+, getAutoPilotTargetPitch
+, getAutoPilotTargetPitchStream
 , getAutoPilotTargetRoll
 , getAutoPilotTargetRollStream
-, setAutoPilotMaxRollSpeed
-, setAutoPilotMaxRotationSpeed
+, getAutoPilotTimeToPeak
+, getAutoPilotTimeToPeakStream
+, getAutoPilotYawPIDGains
+, getAutoPilotYawPIDGainsStream
+, setAutoPilotAttenuationAngle
+, setAutoPilotAutoTune
+, setAutoPilotDecelerationTime
+, setAutoPilotOvershoot
+, setAutoPilotPitchPIDGains
 , setAutoPilotReferenceFrame
-, setAutoPilotRollSpeedMultiplier
-, setAutoPilotRotationSpeedMultiplier
+, setAutoPilotRollPIDGains
+, setAutoPilotRollThreshold
 , setAutoPilotSAS
 , setAutoPilotSASMode
+, setAutoPilotStoppingTime
 , setAutoPilotTargetDirection
+, setAutoPilotTargetHeading
+, setAutoPilotTargetPitch
 , setAutoPilotTargetRoll
+, setAutoPilotTimeToPeak
+, setAutoPilotYawPIDGains
 , getCameraDefaultDistance
 , getCameraDefaultDistanceStream
 , getCameraDistance
@@ -335,6 +365,8 @@ module KRPCHS.SpaceCenter
 , getEngineModesStream
 , getEnginePart
 , getEnginePartStream
+, getEnginePropellantNames
+, getEnginePropellantNamesStream
 , getEnginePropellantRatios
 , getEnginePropellantRatiosStream
 , getEnginePropellants
@@ -359,6 +391,22 @@ module KRPCHS.SpaceCenter
 , setEngineGimbalLocked
 , setEngineMode
 , setEngineThrustLimit
+, experimentDump
+, experimentReset
+, experimentRun
+, experimentTransmit
+, getExperimentData
+, getExperimentDataStream
+, getExperimentDeployed
+, getExperimentDeployedStream
+, getExperimentHasData
+, getExperimentHasDataStream
+, getExperimentInoperable
+, getExperimentInoperableStream
+, getExperimentPart
+, getExperimentPartStream
+, getExperimentRerunnable
+, getExperimentRerunnableStream
 , fairingJettison
 , getFairingJettisoned
 , getFairingJettisonedStream
@@ -478,8 +526,11 @@ module KRPCHS.SpaceCenter
 , launchClampRelease
 , getLaunchClampPart
 , getLaunchClampPartStream
+, launchVessel
 , launchVesselFromSPH
 , launchVesselFromVAB
+, launchableVessels
+, launchableVesselsStream
 , getLightActive
 , getLightActiveStream
 , getLightColor
@@ -646,6 +697,8 @@ module KRPCHS.SpaceCenter
 , getPartDynamicPressureStream
 , getPartEngine
 , getPartEngineStream
+, getPartExperiment
+, getPartExperimentStream
 , getPartFairing
 , getPartFairingStream
 , getPartFuelLinesFrom
@@ -762,6 +815,8 @@ module KRPCHS.SpaceCenter
 , getPartsDockingPortsStream
 , getPartsEngines
 , getPartsEnginesStream
+, getPartsExperiments
+, getPartsExperimentsStream
 , getPartsFairings
 , getPartsFairingsStream
 , getPartsIntakes
@@ -793,6 +848,28 @@ module KRPCHS.SpaceCenter
 , getPartsSolarPanels
 , getPartsSolarPanelsStream
 , setPartsControlling
+, getPropellantConnectedResources
+, getPropellantConnectedResourcesStream
+, getPropellantCurrentAmount
+, getPropellantCurrentAmountStream
+, getPropellantCurrentRequirement
+, getPropellantCurrentRequirementStream
+, getPropellantDrawStackGauge
+, getPropellantDrawStackGaugeStream
+, getPropellantIgnoreForIsp
+, getPropellantIgnoreForIspStream
+, getPropellantIgnoreForThrustCurve
+, getPropellantIgnoreForThrustCurveStream
+, getPropellantIsDeprived
+, getPropellantIsDeprivedStream
+, getPropellantName
+, getPropellantNameStream
+, getPropellantRatio
+, getPropellantRatioStream
+, getPropellantTotalResourceAvailable
+, getPropellantTotalResourceAvailableStream
+, getPropellantTotalResourceCapacity
+, getPropellantTotalResourceCapacityStream
 , quickload
 , quicksave
 , getRCSActive
@@ -931,9 +1008,18 @@ module KRPCHS.SpaceCenter
 , resourcesWithResourceStream
 , getResourcesAll
 , getResourcesAllStream
+, getResourcesEnabled
+, getResourcesEnabledStream
 , getResourcesNames
 , getResourcesNamesStream
+, setResourcesEnabled
 , save
+, getScienceDataDataAmount
+, getScienceDataDataAmountStream
+, getScienceDataScienceValue
+, getScienceDataScienceValueStream
+, getScienceDataTransmitValue
+, getScienceDataTransmitValueStream
 , getSensorActive
 , getSensorActiveStream
 , getSensorPart
@@ -988,6 +1074,7 @@ module KRPCHS.SpaceCenter
 , vesselFlightStream
 , vesselPosition
 , vesselPositionStream
+, vesselRecover
 , vesselResourcesInDecoupleStage
 , vesselResourcesInDecoupleStageStream
 , vesselRotation
@@ -1034,6 +1121,8 @@ module KRPCHS.SpaceCenter
 , getVesselOrbitalReferenceFrameStream
 , getVesselParts
 , getVesselPartsStream
+, getVesselRecoverable
+, getVesselRecoverableStream
 , getVesselReferenceFrame
 , getVesselReferenceFrameStream
 , getVesselResources
@@ -1120,6 +1209,7 @@ instance KRPCResponseExtractable AutoPilot
 
 {-
  - Controls the game's camera.
+ - Obtained by calling <see cref="M:SpaceCenter.Camera" />.
  -}
 newtype Camera = Camera { cameraId :: Int }
     deriving (Show, Eq, Ord)
@@ -1131,7 +1221,7 @@ instance PbSerializable Camera where
 instance KRPCResponseExtractable Camera
 
 {-
- - Obtained by calling <see cref="M:SpaceCenter.Part.CargoBay" />.
+ - A cargo bay. Obtained by calling <see cref="M:SpaceCenter.Part.CargoBay" />.
  -}
 newtype CargoBay = CargoBay { cargoBayId :: Int }
     deriving (Show, Eq, Ord)
@@ -1144,6 +1234,7 @@ instance KRPCResponseExtractable CargoBay
 
 {-
  - Represents a celestial body (such as a planet or moon).
+ - See <see cref="M:SpaceCenter.Bodies" />.
  -}
 newtype CelestialBody = CelestialBody { celestialBodyId :: Int }
     deriving (Show, Eq, Ord)
@@ -1157,7 +1248,8 @@ instance KRPCResponseExtractable CelestialBody
 {-
  - Used to manipulate the controls of a vessel. This includes adjusting the
  - throttle, enabling/disabling systems such as SAS and RCS, or altering the
- - direction in which the vessel is pointing.Control inputs (such as pitch, yaw and roll) are zeroed when all clients
+ - direction in which the vessel is pointing.
+ - Obtained by calling <see cref="M:SpaceCenter.Vessel.Control" />.Control inputs (such as pitch, yaw and roll) are zeroed when all clients
  - that have set one or more of these inputs are no longer connected.
  -}
 newtype Control = Control { controlId :: Int }
@@ -1170,8 +1262,7 @@ instance PbSerializable Control where
 instance KRPCResponseExtractable Control
 
 {-
- - Obtained by calling <see cref="M:SpaceCenter.Part.ControlSurface" />.
- - Provides functionality to interact with aerodynamic control surfaces.
+ - An aerodynamic control surface. Obtained by calling <see cref="M:SpaceCenter.Part.ControlSurface" />.
  -}
 newtype ControlSurface = ControlSurface { controlSurfaceId :: Int }
     deriving (Show, Eq, Ord)
@@ -1183,7 +1274,7 @@ instance PbSerializable ControlSurface where
 instance KRPCResponseExtractable ControlSurface
 
 {-
- - Obtained by calling <see cref="M:SpaceCenter.Part.Decoupler" />
+ - A decoupler. Obtained by calling <see cref="M:SpaceCenter.Part.Decoupler" />
  -}
 newtype Decoupler = Decoupler { decouplerId :: Int }
     deriving (Show, Eq, Ord)
@@ -1195,7 +1286,7 @@ instance PbSerializable Decoupler where
 instance KRPCResponseExtractable Decoupler
 
 {-
- - Obtained by calling <see cref="M:SpaceCenter.Part.DockingPort" />
+ - A docking port. Obtained by calling <see cref="M:SpaceCenter.Part.DockingPort" />
  -}
 newtype DockingPort = DockingPort { dockingPortId :: Int }
     deriving (Show, Eq, Ord)
@@ -1207,9 +1298,9 @@ instance PbSerializable DockingPort where
 instance KRPCResponseExtractable DockingPort
 
 {-
- - Obtained by calling <see cref="M:SpaceCenter.Part.Engine" />.Provides functionality to interact with engines of various types,
- - for example liquid fuelled gimballed engines, solid rocket boosters and jet engines.
- - For RCS thrusters <see cref="M:SpaceCenter.Part.RCS" />.
+ - An engine, including ones of various types.
+ - For example liquid fuelled gimballed engines, solid rocket boosters and jet engines.
+ - Obtained by calling <see cref="M:SpaceCenter.Part.Engine" />.For RCS thrusters <see cref="M:SpaceCenter.Part.RCS" />.
  -}
 newtype Engine = Engine { engineId :: Int }
     deriving (Show, Eq, Ord)
@@ -1221,7 +1312,19 @@ instance PbSerializable Engine where
 instance KRPCResponseExtractable Engine
 
 {-
- - Obtained by calling <see cref="M:SpaceCenter.Part.Fairing" />.
+ - Obtained by calling <see cref="M:SpaceCenter.Part.Experiment" />.
+ -}
+newtype Experiment = Experiment { experimentId :: Int }
+    deriving (Show, Eq, Ord)
+
+instance PbSerializable Experiment where
+    encodePb   = encodePb . experimentId
+    decodePb b = Experiment <$> decodePb b
+
+instance KRPCResponseExtractable Experiment
+
+{-
+ - A fairing. Obtained by calling <see cref="M:SpaceCenter.Part.Fairing" />.
  -}
 newtype Fairing = Fairing { fairingId :: Int }
     deriving (Show, Eq, Ord)
@@ -1235,7 +1338,8 @@ instance KRPCResponseExtractable Fairing
 {-
  - Used to get flight telemetry for a vessel, by calling <see cref="M:SpaceCenter.Vessel.Flight" />.
  - All of the information returned by this class is given in the reference frame
- - passed to that method.To get orbital information, such as the apoapsis or inclination, see <see cref="T:SpaceCenter.Orbit" />.
+ - passed to that method.
+ - Obtained by calling <see cref="M:SpaceCenter.Vessel.Flight" />.To get orbital information, such as the apoapsis or inclination, see <see cref="T:SpaceCenter.Orbit" />.
  -}
 newtype Flight = Flight { flightId :: Int }
     deriving (Show, Eq, Ord)
@@ -1247,7 +1351,7 @@ instance PbSerializable Flight where
 instance KRPCResponseExtractable Flight
 
 {-
- - Obtained by calling <see cref="M:SpaceCenter.Part.Intake" />.
+ - An air intake. Obtained by calling <see cref="M:SpaceCenter.Part.Intake" />.
  -}
 newtype Intake = Intake { intakeId :: Int }
     deriving (Show, Eq, Ord)
@@ -1259,7 +1363,7 @@ instance PbSerializable Intake where
 instance KRPCResponseExtractable Intake
 
 {-
- - Obtained by calling <see cref="M:SpaceCenter.Part.LandingGear" />.
+ - Landing gear with wheels. Obtained by calling <see cref="M:SpaceCenter.Part.LandingGear" />.
  -}
 newtype LandingGear = LandingGear { landingGearId :: Int }
     deriving (Show, Eq, Ord)
@@ -1271,7 +1375,7 @@ instance PbSerializable LandingGear where
 instance KRPCResponseExtractable LandingGear
 
 {-
- - Obtained by calling <see cref="M:SpaceCenter.Part.LandingLeg" />.
+ - A landing leg. Obtained by calling <see cref="M:SpaceCenter.Part.LandingLeg" />.
  -}
 newtype LandingLeg = LandingLeg { landingLegId :: Int }
     deriving (Show, Eq, Ord)
@@ -1283,7 +1387,7 @@ instance PbSerializable LandingLeg where
 instance KRPCResponseExtractable LandingLeg
 
 {-
- - Obtained by calling <see cref="M:SpaceCenter.Part.LaunchClamp" />.
+ - A launch clamp. Obtained by calling <see cref="M:SpaceCenter.Part.LaunchClamp" />.
  -}
 newtype LaunchClamp = LaunchClamp { launchClampId :: Int }
     deriving (Show, Eq, Ord)
@@ -1295,7 +1399,7 @@ instance PbSerializable LaunchClamp where
 instance KRPCResponseExtractable LaunchClamp
 
 {-
- - Obtained by calling <see cref="M:SpaceCenter.Part.Light" />.
+ - A light. Obtained by calling <see cref="M:SpaceCenter.Part.Light" />.
  -}
 newtype Light = Light { lightId :: Int }
     deriving (Show, Eq, Ord)
@@ -1307,12 +1411,12 @@ instance PbSerializable Light where
 instance KRPCResponseExtractable Light
 
 {-
+ - This can be used to interact with a specific part module. This includes part modules in stock KSP,
+ - and those added by mods.
  - In KSP, each part has zero or more
  - <a href="http://wiki.kerbalspaceprogram.com/wiki/CFG_File_Documentation#MODULES">PartModulesassociated with it. Each one contains some of the functionality of the part.
- - For example, an engine has a "ModuleEngines" PartModule that contains all the
+ - For example, an engine has a "ModuleEngines" part module that contains all the
  - functionality of an engine.
- - This class allows you to interact with KSPs PartModules, and any PartModules
- - that have been added by other mods.
  -}
 newtype Module = Module { moduleId :: Int }
     deriving (Show, Eq, Ord)
@@ -1350,7 +1454,7 @@ instance PbSerializable Orbit where
 instance KRPCResponseExtractable Orbit
 
 {-
- - Obtained by calling <see cref="M:SpaceCenter.Part.Parachute" />.
+ - A parachute. Obtained by calling <see cref="M:SpaceCenter.Part.Parachute" />.
  -}
 newtype Parachute = Parachute { parachuteId :: Int }
     deriving (Show, Eq, Ord)
@@ -1362,8 +1466,8 @@ instance PbSerializable Parachute where
 instance KRPCResponseExtractable Parachute
 
 {-
- - Instances of this class represents a part. A vessel is made of multiple parts.
- - Instances can be obtained by various methods in <see cref="T:SpaceCenter.Parts" />.
+ - Represents an individual part. Vessels are made up of multiple parts.
+ - Instances of this class can be obtained by several methods in <see cref="T:SpaceCenter.Parts" />.
  -}
 newtype Part = Part { partId :: Int }
     deriving (Show, Eq, Ord)
@@ -1388,8 +1492,19 @@ instance PbSerializable Parts where
 instance KRPCResponseExtractable Parts
 
 {-
- - Obtained by calling <see cref="M:SpaceCenter.Part.RCS" />.
- - Provides functionality to interact with RCS blocks and thrusters.
+ - A propellant for an engine. Obtains by calling <see cref="M:SpaceCenter.Engine.Propellants" />.
+ -}
+newtype Propellant = Propellant { propellantId :: Int }
+    deriving (Show, Eq, Ord)
+
+instance PbSerializable Propellant where
+    encodePb   = encodePb . propellantId
+    decodePb b = Propellant <$> decodePb b
+
+instance KRPCResponseExtractable Propellant
+
+{-
+ - An RCS block or thruster. Obtained by calling <see cref="M:SpaceCenter.Part.RCS" />.
  -}
 newtype RCS = RCS { rCSId :: Int }
     deriving (Show, Eq, Ord)
@@ -1401,7 +1516,7 @@ instance PbSerializable RCS where
 instance KRPCResponseExtractable RCS
 
 {-
- - Obtained by calling <see cref="M:SpaceCenter.Part.Radiator" />.
+ - A radiator. Obtained by calling <see cref="M:SpaceCenter.Part.Radiator" />.
  -}
 newtype Radiator = Radiator { radiatorId :: Int }
     deriving (Show, Eq, Ord)
@@ -1413,7 +1528,7 @@ instance PbSerializable Radiator where
 instance KRPCResponseExtractable Radiator
 
 {-
- - Obtained by calling <see cref="M:SpaceCenter.Part.ReactionWheel" />.
+ - A reaction wheel. Obtained by calling <see cref="M:SpaceCenter.Part.ReactionWheel" />.
  -}
 newtype ReactionWheel = ReactionWheel { reactionWheelId :: Int }
     deriving (Show, Eq, Ord)
@@ -1440,7 +1555,8 @@ instance PbSerializable ReferenceFrame where
 instance KRPCResponseExtractable ReferenceFrame
 
 {-
- - A resource stored within a part.
+ - An individual resource stored within a part.
+ - Created using methods in the <see cref="T:SpaceCenter.Resources" /> class.
  -}
 newtype Resource = Resource { resourceId :: Int }
     deriving (Show, Eq, Ord)
@@ -1452,7 +1568,7 @@ instance PbSerializable Resource where
 instance KRPCResponseExtractable Resource
 
 {-
- - Obtained by calling <see cref="M:SpaceCenter.Part.ResourceConverter" />.
+ - A resource converter. Obtained by calling <see cref="M:SpaceCenter.Part.ResourceConverter" />.
  -}
 newtype ResourceConverter = ResourceConverter { resourceConverterId :: Int }
     deriving (Show, Eq, Ord)
@@ -1464,7 +1580,7 @@ instance PbSerializable ResourceConverter where
 instance KRPCResponseExtractable ResourceConverter
 
 {-
- - Obtained by calling <see cref="M:SpaceCenter.Part.ResourceHarvester" />.
+ - A resource harvester (drill). Obtained by calling <see cref="M:SpaceCenter.Part.ResourceHarvester" />.
  -}
 newtype ResourceHarvester = ResourceHarvester { resourceHarvesterId :: Int }
     deriving (Show, Eq, Ord)
@@ -1488,6 +1604,7 @@ instance PbSerializable ResourceTransfer where
 instance KRPCResponseExtractable ResourceTransfer
 
 {-
+ - Represents the collection of resources stored in a vessel, stage or part.
  - Created by calling <see cref="M:SpaceCenter.Vessel.Resources" />,
  - <see cref="M:SpaceCenter.Vessel.ResourcesInDecoupleStage" /> or
  - <see cref="M:SpaceCenter.Part.Resources" />.
@@ -1502,7 +1619,19 @@ instance PbSerializable Resources where
 instance KRPCResponseExtractable Resources
 
 {-
- - Obtained by calling <see cref="M:SpaceCenter.Part.Sensor" />.
+ - Obtained by calling <see cref="M:SpaceCenter.Experiment.Data" />.
+ -}
+newtype ScienceData = ScienceData { scienceDataId :: Int }
+    deriving (Show, Eq, Ord)
+
+instance PbSerializable ScienceData where
+    encodePb   = encodePb . scienceDataId
+    decodePb b = ScienceData <$> decodePb b
+
+instance KRPCResponseExtractable ScienceData
+
+{-
+ - A sensor, such as a thermometer. Obtained by calling <see cref="M:SpaceCenter.Part.Sensor" />.
  -}
 newtype Sensor = Sensor { sensorId :: Int }
     deriving (Show, Eq, Ord)
@@ -1514,7 +1643,7 @@ instance PbSerializable Sensor where
 instance KRPCResponseExtractable Sensor
 
 {-
- - Obtained by calling <see cref="M:SpaceCenter.Part.SolarPanel" />.
+ - A solar panel. Obtained by calling <see cref="M:SpaceCenter.Part.SolarPanel" />.
  -}
 newtype SolarPanel = SolarPanel { solarPanelId :: Int }
     deriving (Show, Eq, Ord)
@@ -1542,6 +1671,7 @@ instance KRPCResponseExtractable Thruster
 {-
  - These objects are used to interact with vessels in KSP. This includes getting
  - orbital and flight data, manipulating control inputs and managing resources.
+ - Created using <see cref="M:SpaceCenter.ActiveVessel" /> or <see cref="M:SpaceCenter.Vessels" />.
  -}
 newtype Vessel = Vessel { vesselId :: Int }
     deriving (Show, Eq, Ord)
@@ -1573,7 +1703,7 @@ instance PbSerializable CameraMode where
 instance KRPCResponseExtractable CameraMode
 
 {-
- - See <see cref="M:SpaceCenter.CargoBay.State" />.
+ - The state of a cargo bay. See <see cref="M:SpaceCenter.CargoBay.State" />.
  -}
 data CargoBayState
     = CargoBayState'Open
@@ -1589,7 +1719,7 @@ instance PbSerializable CargoBayState where
 instance KRPCResponseExtractable CargoBayState
 
 {-
- - See <see cref="M:SpaceCenter.DockingPort.State" />.
+ - The state of a docking port. See <see cref="M:SpaceCenter.DockingPort.State" />.
  -}
 data DockingPortState
     = DockingPortState'Ready
@@ -1607,7 +1737,7 @@ instance PbSerializable DockingPortState where
 instance KRPCResponseExtractable DockingPortState
 
 {-
- - See <see cref="M:SpaceCenter.LandingGear.State" />.
+ - The state of a landing gear. See <see cref="M:SpaceCenter.LandingGear.State" />.
  -}
 data LandingGearState
     = LandingGearState'Deployed
@@ -1624,7 +1754,7 @@ instance PbSerializable LandingGearState where
 instance KRPCResponseExtractable LandingGearState
 
 {-
- - See <see cref="M:SpaceCenter.LandingLeg.State" />.
+ - The state of a landing leg. See <see cref="M:SpaceCenter.LandingLeg.State" />.
  -}
 data LandingLegState
     = LandingLegState'Deployed
@@ -1641,7 +1771,7 @@ instance PbSerializable LandingLegState where
 instance KRPCResponseExtractable LandingLegState
 
 {-
- - See <see cref="M:SpaceCenter.Parachute.State" />.
+ - The state of a parachute. See <see cref="M:SpaceCenter.Parachute.State" />.
  -}
 data ParachuteState
     = ParachuteState'Active
@@ -1658,7 +1788,7 @@ instance PbSerializable ParachuteState where
 instance KRPCResponseExtractable ParachuteState
 
 {-
- - <see cref="T:SpaceCenter.RadiatorState" />
+ - The state of a radiator. <see cref="T:SpaceCenter.RadiatorState" />
  -}
 data RadiatorState
     = RadiatorState'Extended
@@ -1675,7 +1805,7 @@ instance PbSerializable RadiatorState where
 instance KRPCResponseExtractable RadiatorState
 
 {-
- - See <see cref="M:SpaceCenter.ResourceConverter.State" />.
+ - The state of a resource converter. See <see cref="M:SpaceCenter.ResourceConverter.State" />.
  -}
 data ResourceConverterState
     = ResourceConverterState'Running
@@ -1693,7 +1823,7 @@ instance PbSerializable ResourceConverterState where
 instance KRPCResponseExtractable ResourceConverterState
 
 {-
- - See <see cref="M:SpaceCenter.Resources.FlowMode" />.
+ - The way in which a resource flows between parts. See <see cref="M:SpaceCenter.Resources.FlowMode" />.
  -}
 data ResourceFlowMode
     = ResourceFlowMode'Vessel
@@ -1709,7 +1839,7 @@ instance PbSerializable ResourceFlowMode where
 instance KRPCResponseExtractable ResourceFlowMode
 
 {-
- - See <see cref="M:SpaceCenter.ResourceHarvester.State" />.
+ - The state of a resource harvester. See <see cref="M:SpaceCenter.ResourceHarvester.State" />.
  -}
 data ResourceHarvesterState
     = ResourceHarvesterState'Deploying
@@ -1748,7 +1878,7 @@ instance PbSerializable SASMode where
 instance KRPCResponseExtractable SASMode
 
 {-
- - See <see cref="M:SpaceCenter.SolarPanel.State" />.
+ - The state of a solar panel. See <see cref="M:SpaceCenter.SolarPanel.State" />.
  -}
 data SolarPanelState
     = SolarPanelState'Extended
@@ -1765,6 +1895,7 @@ instance PbSerializable SolarPanelState where
 instance KRPCResponseExtractable SolarPanelState
 
 {-
+ - The mode of the speed reported in the navball.
  - See <see cref="M:SpaceCenter.Control.SpeedMode" />.
  -}
 data SpeedMode
@@ -1780,6 +1911,7 @@ instance PbSerializable SpeedMode where
 instance KRPCResponseExtractable SpeedMode
 
 {-
+ - The situation a vessel is in.
  - See <see cref="M:SpaceCenter.Vessel.Situation" />.
  -}
 data VesselSituation
@@ -1800,6 +1932,7 @@ instance PbSerializable VesselSituation where
 instance KRPCResponseExtractable VesselSituation
 
 {-
+ - The type of a vessel.
  - See <see cref="M:SpaceCenter.Vessel.Type" />.
  -}
 data VesselType
@@ -1819,6 +1952,7 @@ instance PbSerializable VesselType where
 instance KRPCResponseExtractable VesselType
 
 {-
+ - The time warp mode.
  - Returned by <see cref="T:SpaceCenter.WarpMode" />
  -}
 data WarpMode
@@ -1857,18 +1991,7 @@ autoPilotEngage thisArg = do
 
 
 {-
- - Sets the gains for the rotation rate PID controller.<param name="kp">Proportional gain.<param name="ki">Integral gain.<param name="kd">Derivative gain.
- -}
-autoPilotSetPIDParameters :: KRPCHS.SpaceCenter.AutoPilot -> Float -> Float -> Float -> RPCContext (Bool)
-autoPilotSetPIDParameters thisArg kpArg kiArg kdArg = do
-    let r = makeRequest "SpaceCenter" "AutoPilot_SetPIDParameters" [makeArgument 0 thisArg, makeArgument 1 kpArg, makeArgument 2 kiArg, makeArgument 3 kdArg]
-    res <- sendRequest r
-    processResponse extractNothing res
-      
-
-
-{-
- - Set (<see cref="M:SpaceCenter.AutoPilot.TargetDirection" />) from a pitch and heading angle.<param name="pitch">Target pitch angle, in degrees between -90° and +90°.<param name="heading">Target heading angle, in degrees between 0° and 360°.
+ - Set target pitch and heading angles.<param name="pitch">Target pitch angle, in degrees between -90° and +90°.<param name="heading">Target heading angle, in degrees between 0° and 360°.
  -}
 autoPilotTargetPitchAndHeading :: KRPCHS.SpaceCenter.AutoPilot -> Float -> Float -> RPCContext (Bool)
 autoPilotTargetPitchAndHeading thisArg pitchArg headingArg = do
@@ -1879,7 +2002,7 @@ autoPilotTargetPitchAndHeading thisArg pitchArg headingArg = do
 
 
 {-
- - Blocks until the vessel is pointing in the target direction (if set) and has the target roll (if set).
+ - Blocks until the vessel is pointing in the target direction and has the target roll (if set).
  -}
 autoPilotWait :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Bool)
 autoPilotWait thisArg = do
@@ -1890,10 +2013,71 @@ autoPilotWait thisArg = do
 
 
 {-
+ - The angle at which the autopilot considers the vessel to be pointing close to the target.
+ - This determines the midpoint of the target velocity attenuation function.
+ - A vector of three angles, in degrees, one for each of the pitch, roll and yaw axes.
+ - Defaults to 1° for each axis.
+ -}
+getAutoPilotAttenuationAngle :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext ((Double, Double, Double))
+getAutoPilotAttenuationAngle thisArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_get_AttenuationAngle" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getAutoPilotAttenuationAngleStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
+getAutoPilotAttenuationAngleStream thisArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_get_AttenuationAngle" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - Whether the rotation rate controllers PID parameters should be automatically tuned using the
+ - vessels moment of inertia and available torque. Defaults totrue.
+ - See <see cref="M:SpaceCenter.AutoPilot.TimeToPeak" /> and  <see cref="M:SpaceCenter.AutoPilot.Overshoot" />.
+ -}
+getAutoPilotAutoTune :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Bool)
+getAutoPilotAutoTune thisArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_get_AutoTune" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getAutoPilotAutoTuneStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Bool))
+getAutoPilotAutoTuneStream thisArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_get_AutoTune" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - The time the vessel should take to come to a stop pointing in the target direction.
+ - This determines the angular acceleration used to decelerate the vessel.
+ - A vector of three times, in seconds, one for each of the pitch, roll and yaw axes.
+ - Defaults to 5 seconds for each axis.
+ -}
+getAutoPilotDecelerationTime :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext ((Double, Double, Double))
+getAutoPilotDecelerationTime thisArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_get_DecelerationTime" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getAutoPilotDecelerationTimeStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
+getAutoPilotDecelerationTimeStream thisArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_get_DecelerationTime" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
  - The error, in degrees, between the direction the ship has been asked
  - to point in and the direction it is pointing in. Returns zero if the auto-pilot
- - has not been engaged, SAS is not enabled, SAS is in stability assist mode,
- - or no target direction is set.
+ - has not been engaged and SAS is not enabled or is in stability assist mode.
  -}
 getAutoPilotError :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Float)
 getAutoPilotError thisArg = do
@@ -1911,17 +2095,18 @@ getAutoPilotErrorStream thisArg = do
 
 
 {-
- - Maximum target roll speed. Defaults to 1.
+ - The error, in degrees, between the vessels current and target heading.
+ - Returns zero if the auto-pilot has not been engaged.
  -}
-getAutoPilotMaxRollSpeed :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Float)
-getAutoPilotMaxRollSpeed thisArg = do
-    let r = makeRequest "SpaceCenter" "AutoPilot_get_MaxRollSpeed" [makeArgument 0 thisArg]
+getAutoPilotHeadingError :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Float)
+getAutoPilotHeadingError thisArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_get_HeadingError" [makeArgument 0 thisArg]
     res <- sendRequest r
     processResponse extract res 
 
-getAutoPilotMaxRollSpeedStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Float))
-getAutoPilotMaxRollSpeedStream thisArg = do
-    let r = makeRequest "SpaceCenter" "AutoPilot_get_MaxRollSpeed" [makeArgument 0 thisArg]
+getAutoPilotHeadingErrorStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Float))
+getAutoPilotHeadingErrorStream thisArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_get_HeadingError" [makeArgument 0 thisArg]
         s = makeStream r
     res <- sendRequest s
     sid <- processResponse extract res
@@ -1929,17 +2114,56 @@ getAutoPilotMaxRollSpeedStream thisArg = do
 
 
 {-
- - Maximum target rotation speed. Defaults to 1.
+ - The target overshoot percentage used to autotune the PID controllers.
+ - A vector of three values, between 0 and 1, for each of the pitch, roll and yaw axes.
+ - Defaults to 0.01 for each axis.
  -}
-getAutoPilotMaxRotationSpeed :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Float)
-getAutoPilotMaxRotationSpeed thisArg = do
-    let r = makeRequest "SpaceCenter" "AutoPilot_get_MaxRotationSpeed" [makeArgument 0 thisArg]
+getAutoPilotOvershoot :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext ((Double, Double, Double))
+getAutoPilotOvershoot thisArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_get_Overshoot" [makeArgument 0 thisArg]
     res <- sendRequest r
     processResponse extract res 
 
-getAutoPilotMaxRotationSpeedStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Float))
-getAutoPilotMaxRotationSpeedStream thisArg = do
-    let r = makeRequest "SpaceCenter" "AutoPilot_get_MaxRotationSpeed" [makeArgument 0 thisArg]
+getAutoPilotOvershootStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
+getAutoPilotOvershootStream thisArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_get_Overshoot" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - The error, in degrees, between the vessels current and target pitch.
+ - Returns zero if the auto-pilot has not been engaged.
+ -}
+getAutoPilotPitchError :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Float)
+getAutoPilotPitchError thisArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_get_PitchError" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getAutoPilotPitchErrorStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Float))
+getAutoPilotPitchErrorStream thisArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_get_PitchError" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - Gains for the pitch PID controller.When <see cref="M:SpaceCenter.AutoPilot.AutoTune" /> is true, these values are updated automatically, which will overwrite any manual changes.
+ -}
+getAutoPilotPitchPIDGains :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext ((Double, Double, Double))
+getAutoPilotPitchPIDGains thisArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_get_PitchPIDGains" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getAutoPilotPitchPIDGainsStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
+getAutoPilotPitchPIDGainsStream thisArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_get_PitchPIDGains" [makeArgument 0 thisArg]
         s = makeStream r
     res <- sendRequest s
     sid <- processResponse extract res
@@ -1965,9 +2189,8 @@ getAutoPilotReferenceFrameStream thisArg = do
 
 
 {-
- - The error, in degrees, between the roll the ship has been asked to be
- - in and the actual roll. Returns zero if the auto-pilot has not been engaged
- - or no target roll is set.
+ - The error, in degrees, between the vessels current and target roll.
+ - Returns zero if the auto-pilot has not been engaged or no target roll is set.
  -}
 getAutoPilotRollError :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Float)
 getAutoPilotRollError thisArg = do
@@ -1985,17 +2208,17 @@ getAutoPilotRollErrorStream thisArg = do
 
 
 {-
- - Target roll speed multiplier. Defaults to 1.
+ - Gains for the roll PID controller.When <see cref="M:SpaceCenter.AutoPilot.AutoTune" /> is true, these values are updated automatically, which will overwrite any manual changes.
  -}
-getAutoPilotRollSpeedMultiplier :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Float)
-getAutoPilotRollSpeedMultiplier thisArg = do
-    let r = makeRequest "SpaceCenter" "AutoPilot_get_RollSpeedMultiplier" [makeArgument 0 thisArg]
+getAutoPilotRollPIDGains :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext ((Double, Double, Double))
+getAutoPilotRollPIDGains thisArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_get_RollPIDGains" [makeArgument 0 thisArg]
     res <- sendRequest r
     processResponse extract res 
 
-getAutoPilotRollSpeedMultiplierStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Float))
-getAutoPilotRollSpeedMultiplierStream thisArg = do
-    let r = makeRequest "SpaceCenter" "AutoPilot_get_RollSpeedMultiplier" [makeArgument 0 thisArg]
+getAutoPilotRollPIDGainsStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
+getAutoPilotRollPIDGainsStream thisArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_get_RollPIDGains" [makeArgument 0 thisArg]
         s = makeStream r
     res <- sendRequest s
     sid <- processResponse extract res
@@ -2003,17 +2226,18 @@ getAutoPilotRollSpeedMultiplierStream thisArg = do
 
 
 {-
- - Target rotation speed multiplier. Defaults to 1.
+ - The threshold at which the autopilot will try to match the target roll angle, if any.
+ - Defaults to 5 degrees.
  -}
-getAutoPilotRotationSpeedMultiplier :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Float)
-getAutoPilotRotationSpeedMultiplier thisArg = do
-    let r = makeRequest "SpaceCenter" "AutoPilot_get_RotationSpeedMultiplier" [makeArgument 0 thisArg]
+getAutoPilotRollThreshold :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Double)
+getAutoPilotRollThreshold thisArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_get_RollThreshold" [makeArgument 0 thisArg]
     res <- sendRequest r
     processResponse extract res 
 
-getAutoPilotRotationSpeedMultiplierStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Float))
-getAutoPilotRotationSpeedMultiplierStream thisArg = do
-    let r = makeRequest "SpaceCenter" "AutoPilot_get_RotationSpeedMultiplier" [makeArgument 0 thisArg]
+getAutoPilotRollThresholdStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Double))
+getAutoPilotRollThresholdStream thisArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_get_RollThreshold" [makeArgument 0 thisArg]
         s = makeStream r
     res <- sendRequest s
     sid <- processResponse extract res
@@ -2040,8 +2264,7 @@ getAutoPilotSASStream thisArg = do
 
 {-
  - The current <see cref="T:SpaceCenter.SASMode" />.
- - These modes are equivalent to the mode buttons to
- - the left of the navball that appear when SAS is enabled.Equivalent to <see cref="M:SpaceCenter.Control.SASMode" />
+ - These modes are equivalent to the mode buttons to the left of the navball that appear when SAS is enabled.Equivalent to <see cref="M:SpaceCenter.Control.SASMode" />
  -}
 getAutoPilotSASMode :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCHS.SpaceCenter.SASMode)
 getAutoPilotSASMode thisArg = do
@@ -2059,7 +2282,28 @@ getAutoPilotSASModeStream thisArg = do
 
 
 {-
- - The target direction.nullif no target direction is set.
+ - The maximum amount of time that the vessel should need to come to a complete stop.
+ - This determines the maximum angular velocity of the vessel.
+ - A vector of three stopping times, in seconds, one for each of the pitch, roll and yaw axes.
+ - Defaults to 0.5 seconds for each axis.
+ -}
+getAutoPilotStoppingTime :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext ((Double, Double, Double))
+getAutoPilotStoppingTime thisArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_get_StoppingTime" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getAutoPilotStoppingTimeStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
+getAutoPilotStoppingTimeStream thisArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_get_StoppingTime" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - Direction vector corresponding to the target pitch and heading.
  -}
 getAutoPilotTargetDirection :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext ((Double, Double, Double))
 getAutoPilotTargetDirection thisArg = do
@@ -2070,6 +2314,42 @@ getAutoPilotTargetDirection thisArg = do
 getAutoPilotTargetDirectionStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
 getAutoPilotTargetDirectionStream thisArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_get_TargetDirection" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - The target heading, in degrees, between 0° and 360°.
+ -}
+getAutoPilotTargetHeading :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Float)
+getAutoPilotTargetHeading thisArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_get_TargetHeading" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getAutoPilotTargetHeadingStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Float))
+getAutoPilotTargetHeadingStream thisArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_get_TargetHeading" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - The target pitch, in degrees, between -90° and +90°.
+ -}
+getAutoPilotTargetPitch :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Float)
+getAutoPilotTargetPitch thisArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_get_TargetPitch" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getAutoPilotTargetPitchStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Float))
+getAutoPilotTargetPitchStream thisArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_get_TargetPitch" [makeArgument 0 thisArg]
         s = makeStream r
     res <- sendRequest s
     sid <- processResponse extract res
@@ -2095,22 +2375,103 @@ getAutoPilotTargetRollStream thisArg = do
 
 
 {-
- - Maximum target roll speed. Defaults to 1.
+ - The target time to peak used to autotune the PID controllers.
+ - A vector of three times, in seconds, for each of the pitch, roll and yaw axes.
+ - Defaults to 3 seconds for each axis.
  -}
-setAutoPilotMaxRollSpeed :: KRPCHS.SpaceCenter.AutoPilot -> Float -> RPCContext (Bool)
-setAutoPilotMaxRollSpeed thisArg valueArg = do
-    let r = makeRequest "SpaceCenter" "AutoPilot_set_MaxRollSpeed" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+getAutoPilotTimeToPeak :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext ((Double, Double, Double))
+getAutoPilotTimeToPeak thisArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_get_TimeToPeak" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getAutoPilotTimeToPeakStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
+getAutoPilotTimeToPeakStream thisArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_get_TimeToPeak" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - Gains for the yaw PID controller.When <see cref="M:SpaceCenter.AutoPilot.AutoTune" /> is true, these values are updated automatically, which will overwrite any manual changes.
+ -}
+getAutoPilotYawPIDGains :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext ((Double, Double, Double))
+getAutoPilotYawPIDGains thisArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_get_YawPIDGains" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getAutoPilotYawPIDGainsStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
+getAutoPilotYawPIDGainsStream thisArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_get_YawPIDGains" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - The angle at which the autopilot considers the vessel to be pointing close to the target.
+ - This determines the midpoint of the target velocity attenuation function.
+ - A vector of three angles, in degrees, one for each of the pitch, roll and yaw axes.
+ - Defaults to 1° for each axis.
+ -}
+setAutoPilotAttenuationAngle :: KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> RPCContext (Bool)
+setAutoPilotAttenuationAngle thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_set_AttenuationAngle" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
     processResponse extractNothing res
       
 
 
 {-
- - Maximum target rotation speed. Defaults to 1.
+ - Whether the rotation rate controllers PID parameters should be automatically tuned using the
+ - vessels moment of inertia and available torque. Defaults totrue.
+ - See <see cref="M:SpaceCenter.AutoPilot.TimeToPeak" /> and  <see cref="M:SpaceCenter.AutoPilot.Overshoot" />.
  -}
-setAutoPilotMaxRotationSpeed :: KRPCHS.SpaceCenter.AutoPilot -> Float -> RPCContext (Bool)
-setAutoPilotMaxRotationSpeed thisArg valueArg = do
-    let r = makeRequest "SpaceCenter" "AutoPilot_set_MaxRotationSpeed" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+setAutoPilotAutoTune :: KRPCHS.SpaceCenter.AutoPilot -> Bool -> RPCContext (Bool)
+setAutoPilotAutoTune thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_set_AutoTune" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse extractNothing res
+      
+
+
+{-
+ - The time the vessel should take to come to a stop pointing in the target direction.
+ - This determines the angular acceleration used to decelerate the vessel.
+ - A vector of three times, in seconds, one for each of the pitch, roll and yaw axes.
+ - Defaults to 5 seconds for each axis.
+ -}
+setAutoPilotDecelerationTime :: KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> RPCContext (Bool)
+setAutoPilotDecelerationTime thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_set_DecelerationTime" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse extractNothing res
+      
+
+
+{-
+ - The target overshoot percentage used to autotune the PID controllers.
+ - A vector of three values, between 0 and 1, for each of the pitch, roll and yaw axes.
+ - Defaults to 0.01 for each axis.
+ -}
+setAutoPilotOvershoot :: KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> RPCContext (Bool)
+setAutoPilotOvershoot thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_set_Overshoot" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse extractNothing res
+      
+
+
+{-
+ - Gains for the pitch PID controller.When <see cref="M:SpaceCenter.AutoPilot.AutoTune" /> is true, these values are updated automatically, which will overwrite any manual changes.
+ -}
+setAutoPilotPitchPIDGains :: KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> RPCContext (Bool)
+setAutoPilotPitchPIDGains thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_set_PitchPIDGains" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
     processResponse extractNothing res
       
@@ -2128,22 +2489,23 @@ setAutoPilotReferenceFrame thisArg valueArg = do
 
 
 {-
- - Target roll speed multiplier. Defaults to 1.
+ - Gains for the roll PID controller.When <see cref="M:SpaceCenter.AutoPilot.AutoTune" /> is true, these values are updated automatically, which will overwrite any manual changes.
  -}
-setAutoPilotRollSpeedMultiplier :: KRPCHS.SpaceCenter.AutoPilot -> Float -> RPCContext (Bool)
-setAutoPilotRollSpeedMultiplier thisArg valueArg = do
-    let r = makeRequest "SpaceCenter" "AutoPilot_set_RollSpeedMultiplier" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+setAutoPilotRollPIDGains :: KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> RPCContext (Bool)
+setAutoPilotRollPIDGains thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_set_RollPIDGains" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
     processResponse extractNothing res
       
 
 
 {-
- - Target rotation speed multiplier. Defaults to 1.
+ - The threshold at which the autopilot will try to match the target roll angle, if any.
+ - Defaults to 5 degrees.
  -}
-setAutoPilotRotationSpeedMultiplier :: KRPCHS.SpaceCenter.AutoPilot -> Float -> RPCContext (Bool)
-setAutoPilotRotationSpeedMultiplier thisArg valueArg = do
-    let r = makeRequest "SpaceCenter" "AutoPilot_set_RotationSpeedMultiplier" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+setAutoPilotRollThreshold :: KRPCHS.SpaceCenter.AutoPilot -> Double -> RPCContext (Bool)
+setAutoPilotRollThreshold thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_set_RollThreshold" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
     processResponse extractNothing res
       
@@ -2162,8 +2524,7 @@ setAutoPilotSAS thisArg valueArg = do
 
 {-
  - The current <see cref="T:SpaceCenter.SASMode" />.
- - These modes are equivalent to the mode buttons to
- - the left of the navball that appear when SAS is enabled.Equivalent to <see cref="M:SpaceCenter.Control.SASMode" />
+ - These modes are equivalent to the mode buttons to the left of the navball that appear when SAS is enabled.Equivalent to <see cref="M:SpaceCenter.Control.SASMode" />
  -}
 setAutoPilotSASMode :: KRPCHS.SpaceCenter.AutoPilot -> KRPCHS.SpaceCenter.SASMode -> RPCContext (Bool)
 setAutoPilotSASMode thisArg valueArg = do
@@ -2174,11 +2535,47 @@ setAutoPilotSASMode thisArg valueArg = do
 
 
 {-
- - The target direction.nullif no target direction is set.
+ - The maximum amount of time that the vessel should need to come to a complete stop.
+ - This determines the maximum angular velocity of the vessel.
+ - A vector of three stopping times, in seconds, one for each of the pitch, roll and yaw axes.
+ - Defaults to 0.5 seconds for each axis.
+ -}
+setAutoPilotStoppingTime :: KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> RPCContext (Bool)
+setAutoPilotStoppingTime thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_set_StoppingTime" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse extractNothing res
+      
+
+
+{-
+ - Direction vector corresponding to the target pitch and heading.
  -}
 setAutoPilotTargetDirection :: KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> RPCContext (Bool)
 setAutoPilotTargetDirection thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_set_TargetDirection" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse extractNothing res
+      
+
+
+{-
+ - The target heading, in degrees, between 0° and 360°.
+ -}
+setAutoPilotTargetHeading :: KRPCHS.SpaceCenter.AutoPilot -> Float -> RPCContext (Bool)
+setAutoPilotTargetHeading thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_set_TargetHeading" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse extractNothing res
+      
+
+
+{-
+ - The target pitch, in degrees, between -90° and +90°.
+ -}
+setAutoPilotTargetPitch :: KRPCHS.SpaceCenter.AutoPilot -> Float -> RPCContext (Bool)
+setAutoPilotTargetPitch thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_set_TargetPitch" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
     processResponse extractNothing res
       
@@ -2190,6 +2587,30 @@ setAutoPilotTargetDirection thisArg valueArg = do
 setAutoPilotTargetRoll :: KRPCHS.SpaceCenter.AutoPilot -> Float -> RPCContext (Bool)
 setAutoPilotTargetRoll thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_set_TargetRoll" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse extractNothing res
+      
+
+
+{-
+ - The target time to peak used to autotune the PID controllers.
+ - A vector of three times, in seconds, for each of the pitch, roll and yaw axes.
+ - Defaults to 3 seconds for each axis.
+ -}
+setAutoPilotTimeToPeak :: KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> RPCContext (Bool)
+setAutoPilotTimeToPeak thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_set_TimeToPeak" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse extractNothing res
+      
+
+
+{-
+ - Gains for the yaw PID controller.When <see cref="M:SpaceCenter.AutoPilot.AutoTune" /> is true, these values are updated automatically, which will overwrite any manual changes.
+ -}
+setAutoPilotYawPIDGains :: KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> RPCContext (Bool)
+setAutoPilotYawPIDGains thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "AutoPilot_set_YawPIDGains" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
     processResponse extractNothing res
       
@@ -4334,10 +4755,10 @@ getEngineAutoModeSwitchStream thisArg = do
 
 
 {-
- - The maximum available amount of thrust that can be produced by the
- - engine, in Newtons. This takes <see cref="M:SpaceCenter.Engine.ThrustLimit" /> into account,
- - and is the amount of thrust produced by the engine when activated and the
- - main throttle is set to 100%. Returns zero if the engine does not have any fuel.
+ - The amount of thrust, in Newtons, that would be produced by the engine
+ - when activated and with its throttle set to 100%.
+ - Returns zero if the engine does not have any fuel.
+ - Takes the engine's current <see cref="M:SpaceCenter.Engine.ThrustLimit" /> and atmospheric conditions into account.
  -}
 getEngineAvailableThrust :: KRPCHS.SpaceCenter.Engine -> RPCContext (Float)
 getEngineAvailableThrust thisArg = do
@@ -4542,10 +4963,8 @@ getEngineKerbinSeaLevelSpecificImpulseStream thisArg = do
 
 
 {-
- - The maximum amount of thrust that can be produced by the engine, in
- - Newtons. This is the amount of thrust produced by the engine when
- - activated, <see cref="M:SpaceCenter.Engine.ThrustLimit" /> is set to 100% and the main vessel's
- - throttle is set to 100%.
+ - The amount of thrust, in Newtons, that would be produced by the engine
+ - when activated and fueled, with its throttle and throttle limiter set to 100%.
  -}
 getEngineMaxThrust :: KRPCHS.SpaceCenter.Engine -> RPCContext (Float)
 getEngineMaxThrust thisArg = do
@@ -4639,8 +5058,27 @@ getEnginePartStream thisArg = do
 
 
 {-
- - The ratios of resources that the engine consumes. A dictionary mapping resource names
- - to the ratios at which they are consumed by the engine.
+ - The names of the propellants that the engine consumes.
+ -}
+getEnginePropellantNames :: KRPCHS.SpaceCenter.Engine -> RPCContext ([Data.Text.Text])
+getEnginePropellantNames thisArg = do
+    let r = makeRequest "SpaceCenter" "Engine_get_PropellantNames" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getEnginePropellantNamesStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream ([Data.Text.Text]))
+getEnginePropellantNamesStream thisArg = do
+    let r = makeRequest "SpaceCenter" "Engine_get_PropellantNames" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - The ratio of resources that the engine consumes. A dictionary mapping resource names
+ - to the ratio at which they are consumed by the engine.For example, if the ratios are 0.6 for LiquidFuel and 0.4 for Oxidizer, then for every 0.6 units of
+ - LiquidFuel that the engine burns, it will burn 0.4 units of Oxidizer.
  -}
 getEnginePropellantRatios :: KRPCHS.SpaceCenter.Engine -> RPCContext (Data.Map.Map (Data.Text.Text) (Float))
 getEnginePropellantRatios thisArg = do
@@ -4658,15 +5096,15 @@ getEnginePropellantRatiosStream thisArg = do
 
 
 {-
- - The names of resources that the engine consumes.
+ - The propellants that the engine consumes.
  -}
-getEnginePropellants :: KRPCHS.SpaceCenter.Engine -> RPCContext ([Data.Text.Text])
+getEnginePropellants :: KRPCHS.SpaceCenter.Engine -> RPCContext ([KRPCHS.SpaceCenter.Propellant])
 getEnginePropellants thisArg = do
     let r = makeRequest "SpaceCenter" "Engine_get_Propellants" [makeArgument 0 thisArg]
     res <- sendRequest r
     processResponse extract res 
 
-getEnginePropellantsStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream ([Data.Text.Text]))
+getEnginePropellantsStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Propellant]))
 getEnginePropellantsStream thisArg = do
     let r = makeRequest "SpaceCenter" "Engine_get_Propellants" [makeArgument 0 thisArg]
         s = makeStream r
@@ -4736,8 +5174,7 @@ getEngineThrottleLockedStream thisArg = do
 
 
 {-
- - The current amount of thrust being produced by the engine, in
- - Newtons. Returns zero if the engine is not active or if it has no fuel.
+ - The current amount of thrust being produced by the engine, in Newtons.
  -}
 getEngineThrust :: KRPCHS.SpaceCenter.Engine -> RPCContext (Float)
 getEngineThrust thisArg = do
@@ -4882,6 +5319,158 @@ setEngineThrustLimit thisArg valueArg = do
     res <- sendRequest r
     processResponse extractNothing res
       
+
+
+{-
+ - Dump the experimental data contained by the experiment.
+ -}
+experimentDump :: KRPCHS.SpaceCenter.Experiment -> RPCContext (Bool)
+experimentDump thisArg = do
+    let r = makeRequest "SpaceCenter" "Experiment_Dump" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extractNothing res
+      
+
+
+{-
+ - Reset the experiment.
+ -}
+experimentReset :: KRPCHS.SpaceCenter.Experiment -> RPCContext (Bool)
+experimentReset thisArg = do
+    let r = makeRequest "SpaceCenter" "Experiment_Reset" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extractNothing res
+      
+
+
+{-
+ - Run the experiment.
+ -}
+experimentRun :: KRPCHS.SpaceCenter.Experiment -> RPCContext (Bool)
+experimentRun thisArg = do
+    let r = makeRequest "SpaceCenter" "Experiment_Run" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extractNothing res
+      
+
+
+{-
+ - Transmit all experimental data contained by this part.
+ -}
+experimentTransmit :: KRPCHS.SpaceCenter.Experiment -> RPCContext (Bool)
+experimentTransmit thisArg = do
+    let r = makeRequest "SpaceCenter" "Experiment_Transmit" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extractNothing res
+      
+
+
+{-
+ - The data contained in this experiment.
+ -}
+getExperimentData :: KRPCHS.SpaceCenter.Experiment -> RPCContext ([KRPCHS.SpaceCenter.ScienceData])
+getExperimentData thisArg = do
+    let r = makeRequest "SpaceCenter" "Experiment_get_Data" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getExperimentDataStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.ScienceData]))
+getExperimentDataStream thisArg = do
+    let r = makeRequest "SpaceCenter" "Experiment_get_Data" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - Whether the experiment has been deployed.
+ -}
+getExperimentDeployed :: KRPCHS.SpaceCenter.Experiment -> RPCContext (Bool)
+getExperimentDeployed thisArg = do
+    let r = makeRequest "SpaceCenter" "Experiment_get_Deployed" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getExperimentDeployedStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream (Bool))
+getExperimentDeployedStream thisArg = do
+    let r = makeRequest "SpaceCenter" "Experiment_get_Deployed" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - Whether the experiment contains data.
+ -}
+getExperimentHasData :: KRPCHS.SpaceCenter.Experiment -> RPCContext (Bool)
+getExperimentHasData thisArg = do
+    let r = makeRequest "SpaceCenter" "Experiment_get_HasData" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getExperimentHasDataStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream (Bool))
+getExperimentHasDataStream thisArg = do
+    let r = makeRequest "SpaceCenter" "Experiment_get_HasData" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - Whether the experiment is inoperable.
+ -}
+getExperimentInoperable :: KRPCHS.SpaceCenter.Experiment -> RPCContext (Bool)
+getExperimentInoperable thisArg = do
+    let r = makeRequest "SpaceCenter" "Experiment_get_Inoperable" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getExperimentInoperableStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream (Bool))
+getExperimentInoperableStream thisArg = do
+    let r = makeRequest "SpaceCenter" "Experiment_get_Inoperable" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - The part object for this experiment.
+ -}
+getExperimentPart :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCHS.SpaceCenter.Part)
+getExperimentPart thisArg = do
+    let r = makeRequest "SpaceCenter" "Experiment_get_Part" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getExperimentPartStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getExperimentPartStream thisArg = do
+    let r = makeRequest "SpaceCenter" "Experiment_get_Part" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - Whether the experiment can be re-run.
+ -}
+getExperimentRerunnable :: KRPCHS.SpaceCenter.Experiment -> RPCContext (Bool)
+getExperimentRerunnable thisArg = do
+    let r = makeRequest "SpaceCenter" "Experiment_get_Rerunnable" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getExperimentRerunnableStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream (Bool))
+getExperimentRerunnableStream thisArg = do
+    let r = makeRequest "SpaceCenter" "Experiment_get_Rerunnable" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
 
 
 {-
@@ -5993,7 +6582,18 @@ getLaunchClampPartStream thisArg = do
 
 
 {-
- - Launch a new vessel from the SPH onto the runway.<param name="name">Name of the vessel's craft file.
+ - Launch a vessel.<param name="craftDirectory">Name of the directory in the current saves "Ships" directory, that contains the craft file. For example"VAB"or"SPH".<param name="name">Name of the vessel to launch. This is the name of the ".craft" file in the save directory, without the ".craft" file extension.<param name="launchSite">Name of the launch site. For example"LaunchPad"or"Runway".
+ -}
+launchVessel :: Data.Text.Text -> Data.Text.Text -> Data.Text.Text -> RPCContext (Bool)
+launchVessel craftDirectoryArg nameArg launchSiteArg = do
+    let r = makeRequest "SpaceCenter" "LaunchVessel" [makeArgument 0 craftDirectoryArg, makeArgument 1 nameArg, makeArgument 2 launchSiteArg]
+    res <- sendRequest r
+    processResponse extractNothing res
+      
+
+
+{-
+ - Launch a new vessel from the SPH onto the runway.<param name="name">Name of the vessel to launch.This is equivalent to calling <see cref="M:SpaceCenter.LaunchVessel" /> with the craft directory set to "SPH" and the launch site set to "Runway".
  -}
 launchVesselFromSPH :: Data.Text.Text -> RPCContext (Bool)
 launchVesselFromSPH nameArg = do
@@ -6004,7 +6604,7 @@ launchVesselFromSPH nameArg = do
 
 
 {-
- - Launch a new vessel from the VAB onto the launchpad.<param name="name">Name of the vessel's craft file.
+ - Launch a new vessel from the VAB onto the launchpad.<param name="name">Name of the vessel to launch.This is equivalent to calling <see cref="M:SpaceCenter.LaunchVessel" /> with the craft directory set to "VAB" and the launch site set to "LaunchPad".
  -}
 launchVesselFromVAB :: Data.Text.Text -> RPCContext (Bool)
 launchVesselFromVAB nameArg = do
@@ -6012,6 +6612,24 @@ launchVesselFromVAB nameArg = do
     res <- sendRequest r
     processResponse extractNothing res
       
+
+
+{-
+ - Returns a list of vessels from the given <paramref name="craftDirectory" /> that can be launched.<param name="craftDirectory">Name of the directory in the current saves "Ships" directory. For example"VAB"or"SPH".
+ -}
+launchableVessels :: Data.Text.Text -> RPCContext ([Data.Text.Text])
+launchableVessels craftDirectoryArg = do
+    let r = makeRequest "SpaceCenter" "LaunchableVessels" [makeArgument 0 craftDirectoryArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+launchableVesselsStream :: Data.Text.Text -> RPCContext (KRPCStream ([Data.Text.Text]))
+launchableVesselsStream craftDirectoryArg = do
+    let r = makeRequest "SpaceCenter" "LaunchableVessels" [makeArgument 0 craftDirectoryArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
 
 
 {-
@@ -7575,6 +8193,24 @@ getPartEngineStream thisArg = do
 
 
 {-
+ - An <see cref="T:SpaceCenter.Experiment" /> if the part is a science experiment, otherwisenull.
+ -}
+getPartExperiment :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.Experiment)
+getPartExperiment thisArg = do
+    let r = makeRequest "SpaceCenter" "Part_get_Experiment" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getPartExperimentStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Experiment))
+getPartExperimentStream thisArg = do
+    let r = makeRequest "SpaceCenter" "Part_get_Experiment" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
  - A <see cref="T:SpaceCenter.Fairing" /> if the part is a fairing, otherwisenull.
  -}
 getPartFairing :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.Fairing)
@@ -8646,6 +9282,24 @@ getPartsEnginesStream thisArg = do
 
 
 {-
+ - A list of all science experiments in the vessel.
+ -}
+getPartsExperiments :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.Experiment])
+getPartsExperiments thisArg = do
+    let r = makeRequest "SpaceCenter" "Parts_get_Experiments" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getPartsExperimentsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Experiment]))
+getPartsExperimentsStream thisArg = do
+    let r = makeRequest "SpaceCenter" "Parts_get_Experiments" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
  - A list of all fairings in the vessel.
  -}
 getPartsFairings :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.Fairing])
@@ -8924,6 +9578,204 @@ setPartsControlling thisArg valueArg = do
     res <- sendRequest r
     processResponse extractNothing res
       
+
+
+{-
+ - The reachable resources connected to this propellant.
+ -}
+getPropellantConnectedResources :: KRPCHS.SpaceCenter.Propellant -> RPCContext ([KRPCHS.SpaceCenter.Resource])
+getPropellantConnectedResources thisArg = do
+    let r = makeRequest "SpaceCenter" "Propellant_get_ConnectedResources" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getPropellantConnectedResourcesStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Resource]))
+getPropellantConnectedResourcesStream thisArg = do
+    let r = makeRequest "SpaceCenter" "Propellant_get_ConnectedResources" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - The current amount of propellant.
+ -}
+getPropellantCurrentAmount :: KRPCHS.SpaceCenter.Propellant -> RPCContext (Double)
+getPropellantCurrentAmount thisArg = do
+    let r = makeRequest "SpaceCenter" "Propellant_get_CurrentAmount" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getPropellantCurrentAmountStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Double))
+getPropellantCurrentAmountStream thisArg = do
+    let r = makeRequest "SpaceCenter" "Propellant_get_CurrentAmount" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - The required amount of propellant.
+ -}
+getPropellantCurrentRequirement :: KRPCHS.SpaceCenter.Propellant -> RPCContext (Double)
+getPropellantCurrentRequirement thisArg = do
+    let r = makeRequest "SpaceCenter" "Propellant_get_CurrentRequirement" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getPropellantCurrentRequirementStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Double))
+getPropellantCurrentRequirementStream thisArg = do
+    let r = makeRequest "SpaceCenter" "Propellant_get_CurrentRequirement" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - If this propellant has a stack gauge or not.
+ -}
+getPropellantDrawStackGauge :: KRPCHS.SpaceCenter.Propellant -> RPCContext (Bool)
+getPropellantDrawStackGauge thisArg = do
+    let r = makeRequest "SpaceCenter" "Propellant_get_DrawStackGauge" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getPropellantDrawStackGaugeStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Bool))
+getPropellantDrawStackGaugeStream thisArg = do
+    let r = makeRequest "SpaceCenter" "Propellant_get_DrawStackGauge" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - If this propellant should be ignored when calculating required mass flow given specific impulse.
+ -}
+getPropellantIgnoreForIsp :: KRPCHS.SpaceCenter.Propellant -> RPCContext (Bool)
+getPropellantIgnoreForIsp thisArg = do
+    let r = makeRequest "SpaceCenter" "Propellant_get_IgnoreForIsp" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getPropellantIgnoreForIspStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Bool))
+getPropellantIgnoreForIspStream thisArg = do
+    let r = makeRequest "SpaceCenter" "Propellant_get_IgnoreForIsp" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - If this propellant should be ignored for thrust curve calculations.
+ -}
+getPropellantIgnoreForThrustCurve :: KRPCHS.SpaceCenter.Propellant -> RPCContext (Bool)
+getPropellantIgnoreForThrustCurve thisArg = do
+    let r = makeRequest "SpaceCenter" "Propellant_get_IgnoreForThrustCurve" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getPropellantIgnoreForThrustCurveStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Bool))
+getPropellantIgnoreForThrustCurveStream thisArg = do
+    let r = makeRequest "SpaceCenter" "Propellant_get_IgnoreForThrustCurve" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - If this propellant is deprived.
+ -}
+getPropellantIsDeprived :: KRPCHS.SpaceCenter.Propellant -> RPCContext (Bool)
+getPropellantIsDeprived thisArg = do
+    let r = makeRequest "SpaceCenter" "Propellant_get_IsDeprived" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getPropellantIsDeprivedStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Bool))
+getPropellantIsDeprivedStream thisArg = do
+    let r = makeRequest "SpaceCenter" "Propellant_get_IsDeprived" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - The name of the propellant.
+ -}
+getPropellantName :: KRPCHS.SpaceCenter.Propellant -> RPCContext (Data.Text.Text)
+getPropellantName thisArg = do
+    let r = makeRequest "SpaceCenter" "Propellant_get_Name" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getPropellantNameStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Data.Text.Text))
+getPropellantNameStream thisArg = do
+    let r = makeRequest "SpaceCenter" "Propellant_get_Name" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - The propellant ratio.
+ -}
+getPropellantRatio :: KRPCHS.SpaceCenter.Propellant -> RPCContext (Float)
+getPropellantRatio thisArg = do
+    let r = makeRequest "SpaceCenter" "Propellant_get_Ratio" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getPropellantRatioStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Float))
+getPropellantRatioStream thisArg = do
+    let r = makeRequest "SpaceCenter" "Propellant_get_Ratio" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - The total amount of the underlying resource currently reachable given resource flow rules.
+ -}
+getPropellantTotalResourceAvailable :: KRPCHS.SpaceCenter.Propellant -> RPCContext (Double)
+getPropellantTotalResourceAvailable thisArg = do
+    let r = makeRequest "SpaceCenter" "Propellant_get_TotalResourceAvailable" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getPropellantTotalResourceAvailableStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Double))
+getPropellantTotalResourceAvailableStream thisArg = do
+    let r = makeRequest "SpaceCenter" "Propellant_get_TotalResourceAvailable" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - The total vehicle capacity for the underlying propellant resource, restricted by resource flow rules.
+ -}
+getPropellantTotalResourceCapacity :: KRPCHS.SpaceCenter.Propellant -> RPCContext (Double)
+getPropellantTotalResourceCapacity thisArg = do
+    let r = makeRequest "SpaceCenter" "Propellant_get_TotalResourceCapacity" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getPropellantTotalResourceCapacityStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Double))
+getPropellantTotalResourceCapacityStream thisArg = do
+    let r = makeRequest "SpaceCenter" "Propellant_get_TotalResourceCapacity" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
 
 
 {-
@@ -10219,6 +11071,24 @@ getResourcesAllStream thisArg = do
 
 
 {-
+ - Whether use of all the resources are enabled.This is true if all of the resources are enabled. If any of the resources are not enabled, this is false.
+ -}
+getResourcesEnabled :: KRPCHS.SpaceCenter.Resources -> RPCContext (Bool)
+getResourcesEnabled thisArg = do
+    let r = makeRequest "SpaceCenter" "Resources_get_Enabled" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getResourcesEnabledStream :: KRPCHS.SpaceCenter.Resources -> RPCContext (KRPCStream (Bool))
+getResourcesEnabledStream thisArg = do
+    let r = makeRequest "SpaceCenter" "Resources_get_Enabled" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
  - A list of resource names that can be stored.
  -}
 getResourcesNames :: KRPCHS.SpaceCenter.Resources -> RPCContext ([Data.Text.Text])
@@ -10237,6 +11107,17 @@ getResourcesNamesStream thisArg = do
 
 
 {-
+ - Whether use of all the resources are enabled.This is true if all of the resources are enabled. If any of the resources are not enabled, this is false.
+ -}
+setResourcesEnabled :: KRPCHS.SpaceCenter.Resources -> Bool -> RPCContext (Bool)
+setResourcesEnabled thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Resources_set_Enabled" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse extractNothing res
+      
+
+
+{-
  - Save the game with a given name.
  - This will create a save file calledname.sfsin the folder of the current save game.
  -}
@@ -10246,6 +11127,60 @@ save nameArg = do
     res <- sendRequest r
     processResponse extractNothing res
       
+
+
+{-
+ - Data amount.
+ -}
+getScienceDataDataAmount :: KRPCHS.SpaceCenter.ScienceData -> RPCContext (Float)
+getScienceDataDataAmount thisArg = do
+    let r = makeRequest "SpaceCenter" "ScienceData_get_DataAmount" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getScienceDataDataAmountStream :: KRPCHS.SpaceCenter.ScienceData -> RPCContext (KRPCStream (Float))
+getScienceDataDataAmountStream thisArg = do
+    let r = makeRequest "SpaceCenter" "ScienceData_get_DataAmount" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - Science value.
+ -}
+getScienceDataScienceValue :: KRPCHS.SpaceCenter.ScienceData -> RPCContext (Float)
+getScienceDataScienceValue thisArg = do
+    let r = makeRequest "SpaceCenter" "ScienceData_get_ScienceValue" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getScienceDataScienceValueStream :: KRPCHS.SpaceCenter.ScienceData -> RPCContext (KRPCStream (Float))
+getScienceDataScienceValueStream thisArg = do
+    let r = makeRequest "SpaceCenter" "ScienceData_get_ScienceValue" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - Transmit value.
+ -}
+getScienceDataTransmitValue :: KRPCHS.SpaceCenter.ScienceData -> RPCContext (Float)
+getScienceDataTransmitValue thisArg = do
+    let r = makeRequest "SpaceCenter" "ScienceData_get_TransmitValue" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getScienceDataTransmitValueStream :: KRPCHS.SpaceCenter.ScienceData -> RPCContext (KRPCStream (Float))
+getScienceDataTransmitValueStream thisArg = do
+    let r = makeRequest "SpaceCenter" "ScienceData_get_TransmitValue" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
 
 
 {-
@@ -10758,6 +11693,17 @@ vesselPositionStream thisArg referenceFrameArg = do
 
 
 {-
+ - Recover the vessel.
+ -}
+vesselRecover :: KRPCHS.SpaceCenter.Vessel -> RPCContext (Bool)
+vesselRecover thisArg = do
+    let r = makeRequest "SpaceCenter" "Vessel_Recover" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extractNothing res
+      
+
+
+{-
  - Returns a <see cref="T:SpaceCenter.Resources" /> object, that can used to get
  - information about resources stored in a given <paramref name="stage" />.<param name="stage">Get resources for parts that are decoupled in this stage.<param name="cumulative">Whenfalse, returns the resources for parts
  - decoupled in just the given stage. Whentruereturns the resources decoupled in
@@ -11200,6 +12146,24 @@ getVesselParts thisArg = do
 getVesselPartsStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Parts))
 getVesselPartsStream thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_Parts" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - Whether the vessel is recoverable.
+ -}
+getVesselRecoverable :: KRPCHS.SpaceCenter.Vessel -> RPCContext (Bool)
+getVesselRecoverable thisArg = do
+    let r = makeRequest "SpaceCenter" "Vessel_get_Recoverable" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getVesselRecoverableStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Bool))
+getVesselRecoverableStream thisArg = do
+    let r = makeRequest "SpaceCenter" "Vessel_get_Recoverable" [makeArgument 0 thisArg]
         s = makeStream r
     res <- sendRequest s
     sid <- processResponse extract res

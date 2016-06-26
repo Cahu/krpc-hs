@@ -4,12 +4,13 @@ module KRPCHS.UI
 , TextAlignment(..)
 , TextAnchor(..)
 , Button
+, Canvas
 , InputField
 , Panel
 , RectTransform
 , Text
-, addPanel
-, addPanelStream
+, addCanvas
+, addCanvasStream
 , buttonRemove
 , getButtonClicked
 , getButtonClickedStream
@@ -21,6 +22,20 @@ module KRPCHS.UI
 , getButtonVisibleStream
 , setButtonClicked
 , setButtonVisible
+, canvasAddButton
+, canvasAddButtonStream
+, canvasAddInputField
+, canvasAddInputFieldStream
+, canvasAddPanel
+, canvasAddPanelStream
+, canvasAddText
+, canvasAddTextStream
+, canvasRemove
+, getCanvasRectTransform
+, getCanvasRectTransformStream
+, getCanvasVisible
+, getCanvasVisibleStream
+, setCanvasVisible
 , clear
 , inputFieldRemove
 , getInputFieldChanged
@@ -111,8 +126,8 @@ module KRPCHS.UI
 , setTextSize
 , setTextStyle
 , setTextVisible
-, getRectTransform
-, getRectTransformStream
+, getStockCanvas
+, getStockCanvasStream
 ) where
 
 import qualified Data.Int
@@ -135,6 +150,18 @@ instance PbSerializable Button where
 instance KRPCResponseExtractable Button
 
 {-
+ - A canvas for user interface elements. See <see cref="M:UI.StockCanvas" /> and <see cref="M:UI.AddCanvas" />.
+ -}
+newtype Canvas = Canvas { canvasId :: Int }
+    deriving (Show, Eq, Ord)
+
+instance PbSerializable Canvas where
+    encodePb   = encodePb . canvasId
+    decodePb b = Canvas <$> decodePb b
+
+instance KRPCResponseExtractable Canvas
+
+{-
  - An input field. See <see cref="M:UI.Panel.AddInputField" />.
  -}
 newtype InputField = InputField { inputFieldId :: Int }
@@ -147,7 +174,7 @@ instance PbSerializable InputField where
 instance KRPCResponseExtractable InputField
 
 {-
- - A container for user interface elements. See <see cref="M:UI.AddPanel" />.
+ - A container for user interface elements. See <see cref="M:UI.Canvas.AddPanel" />.
  -}
 newtype Panel = Panel { panelId :: Int }
     deriving (Show, Eq, Ord)
@@ -254,17 +281,17 @@ instance KRPCResponseExtractable TextAnchor
 
 
 {-
- - Create a new container for user interface elements.<param name="visible">Whether the panel is visible.
+ - Add a new canvas.If you want to add UI elements to KSPs stock UI canvas, use <see cref="M:UI.StockCanvas" />.
  -}
-addPanel :: Bool -> RPCContext (KRPCHS.UI.Panel)
-addPanel visibleArg = do
-    let r = makeRequest "UI" "AddPanel" [makeArgument 0 visibleArg]
+addCanvas :: RPCContext (KRPCHS.UI.Canvas)
+addCanvas  = do
+    let r = makeRequest "UI" "AddCanvas" []
     res <- sendRequest r
     processResponse extract res 
 
-addPanelStream :: Bool -> RPCContext (KRPCStream (KRPCHS.UI.Panel))
-addPanelStream visibleArg = do
-    let r = makeRequest "UI" "AddPanel" [makeArgument 0 visibleArg]
+addCanvasStream :: RPCContext (KRPCStream (KRPCHS.UI.Canvas))
+addCanvasStream  = do
+    let r = makeRequest "UI" "AddCanvas" []
         s = makeStream r
     res <- sendRequest s
     sid <- processResponse extract res
@@ -373,6 +400,136 @@ setButtonClicked thisArg valueArg = do
 setButtonVisible :: KRPCHS.UI.Button -> Bool -> RPCContext (Bool)
 setButtonVisible thisArg valueArg = do
     let r = makeRequest "UI" "Button_set_Visible" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse extractNothing res
+      
+
+
+{-
+ - Add a button to the canvas.<param name="content">The label for the button.<param name="visible">Whether the button is visible.
+ -}
+canvasAddButton :: KRPCHS.UI.Canvas -> Data.Text.Text -> Bool -> RPCContext (KRPCHS.UI.Button)
+canvasAddButton thisArg contentArg visibleArg = do
+    let r = makeRequest "UI" "Canvas_AddButton" [makeArgument 0 thisArg, makeArgument 1 contentArg, makeArgument 2 visibleArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+canvasAddButtonStream :: KRPCHS.UI.Canvas -> Data.Text.Text -> Bool -> RPCContext (KRPCStream (KRPCHS.UI.Button))
+canvasAddButtonStream thisArg contentArg visibleArg = do
+    let r = makeRequest "UI" "Canvas_AddButton" [makeArgument 0 thisArg, makeArgument 1 contentArg, makeArgument 2 visibleArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - Add an input field to the canvas.<param name="visible">Whether the input field is visible.
+ -}
+canvasAddInputField :: KRPCHS.UI.Canvas -> Bool -> RPCContext (KRPCHS.UI.InputField)
+canvasAddInputField thisArg visibleArg = do
+    let r = makeRequest "UI" "Canvas_AddInputField" [makeArgument 0 thisArg, makeArgument 1 visibleArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+canvasAddInputFieldStream :: KRPCHS.UI.Canvas -> Bool -> RPCContext (KRPCStream (KRPCHS.UI.InputField))
+canvasAddInputFieldStream thisArg visibleArg = do
+    let r = makeRequest "UI" "Canvas_AddInputField" [makeArgument 0 thisArg, makeArgument 1 visibleArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - Create a new container for user interface elements.<param name="visible">Whether the panel is visible.
+ -}
+canvasAddPanel :: KRPCHS.UI.Canvas -> Bool -> RPCContext (KRPCHS.UI.Panel)
+canvasAddPanel thisArg visibleArg = do
+    let r = makeRequest "UI" "Canvas_AddPanel" [makeArgument 0 thisArg, makeArgument 1 visibleArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+canvasAddPanelStream :: KRPCHS.UI.Canvas -> Bool -> RPCContext (KRPCStream (KRPCHS.UI.Panel))
+canvasAddPanelStream thisArg visibleArg = do
+    let r = makeRequest "UI" "Canvas_AddPanel" [makeArgument 0 thisArg, makeArgument 1 visibleArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - Add text to the canvas.<param name="content">The text.<param name="visible">Whether the text is visible.
+ -}
+canvasAddText :: KRPCHS.UI.Canvas -> Data.Text.Text -> Bool -> RPCContext (KRPCHS.UI.Text)
+canvasAddText thisArg contentArg visibleArg = do
+    let r = makeRequest "UI" "Canvas_AddText" [makeArgument 0 thisArg, makeArgument 1 contentArg, makeArgument 2 visibleArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+canvasAddTextStream :: KRPCHS.UI.Canvas -> Data.Text.Text -> Bool -> RPCContext (KRPCStream (KRPCHS.UI.Text))
+canvasAddTextStream thisArg contentArg visibleArg = do
+    let r = makeRequest "UI" "Canvas_AddText" [makeArgument 0 thisArg, makeArgument 1 contentArg, makeArgument 2 visibleArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - Remove the UI object.
+ -}
+canvasRemove :: KRPCHS.UI.Canvas -> RPCContext (Bool)
+canvasRemove thisArg = do
+    let r = makeRequest "UI" "Canvas_Remove" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extractNothing res
+      
+
+
+{-
+ - The rect transform for the canvas.
+ -}
+getCanvasRectTransform :: KRPCHS.UI.Canvas -> RPCContext (KRPCHS.UI.RectTransform)
+getCanvasRectTransform thisArg = do
+    let r = makeRequest "UI" "Canvas_get_RectTransform" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getCanvasRectTransformStream :: KRPCHS.UI.Canvas -> RPCContext (KRPCStream (KRPCHS.UI.RectTransform))
+getCanvasRectTransformStream thisArg = do
+    let r = makeRequest "UI" "Canvas_get_RectTransform" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - Whether the UI object is visible.
+ -}
+getCanvasVisible :: KRPCHS.UI.Canvas -> RPCContext (Bool)
+getCanvasVisible thisArg = do
+    let r = makeRequest "UI" "Canvas_get_Visible" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getCanvasVisibleStream :: KRPCHS.UI.Canvas -> RPCContext (KRPCStream (Bool))
+getCanvasVisibleStream thisArg = do
+    let r = makeRequest "UI" "Canvas_get_Visible" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - Whether the UI object is visible.
+ -}
+setCanvasVisible :: KRPCHS.UI.Canvas -> Bool -> RPCContext (Bool)
+setCanvasVisible thisArg valueArg = do
+    let r = makeRequest "UI" "Canvas_set_Visible" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
     processResponse extractNothing res
       
@@ -1248,17 +1405,17 @@ setTextVisible thisArg valueArg = do
 
 
 {-
- - The rect transform for the canvas.
+ - The stock UI canvas.
  -}
-getRectTransform :: RPCContext (KRPCHS.UI.RectTransform)
-getRectTransform  = do
-    let r = makeRequest "UI" "get_RectTransform" []
+getStockCanvas :: RPCContext (KRPCHS.UI.Canvas)
+getStockCanvas  = do
+    let r = makeRequest "UI" "get_StockCanvas" []
     res <- sendRequest r
     processResponse extract res 
 
-getRectTransformStream :: RPCContext (KRPCStream (KRPCHS.UI.RectTransform))
-getRectTransformStream  = do
-    let r = makeRequest "UI" "get_RectTransform" []
+getStockCanvasStream :: RPCContext (KRPCStream (KRPCHS.UI.Canvas))
+getStockCanvasStream  = do
+    let r = makeRequest "UI" "get_StockCanvas" []
         s = makeStream r
     res <- sendRequest s
     sid <- processResponse extract res

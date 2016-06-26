@@ -17,6 +17,8 @@ module KRPCHS.InfernalRobotics
 , getServoGroupForwardKeyStream
 , getServoGroupName
 , getServoGroupNameStream
+, getServoGroupParts
+, getServoGroupPartsStream
 , getServoGroupReverseKey
 , getServoGroupReverseKeyStream
 , getServoGroupServos
@@ -28,6 +30,8 @@ module KRPCHS.InfernalRobotics
 , setServoGroupName
 , setServoGroupReverseKey
 , setServoGroupSpeed
+, servoGroups
+, servoGroupsStream
 , servoWithName
 , servoWithNameStream
 , servoMoveCenter
@@ -61,6 +65,8 @@ module KRPCHS.InfernalRobotics
 , getServoMinPositionStream
 , getServoName
 , getServoNameStream
+, getServoPart
+, getServoPartStream
 , getServoPosition
 , getServoPositionStream
 , getServoSpeed
@@ -74,11 +80,10 @@ module KRPCHS.InfernalRobotics
 , setServoMinPosition
 , setServoName
 , setServoSpeed
-, getServoGroups
-, getServoGroupsStream
 ) where
 
 import qualified Data.Text
+import qualified KRPCHS.SpaceCenter
 
 import KRPCHS.Internal.Requests
 import KRPCHS.Internal.SerializeUtils
@@ -116,18 +121,18 @@ instance KRPCResponseExtractable ServoGroup
 
 
 {-
- - Returns the servo group with the given <paramref name="name" /> ornullif none
- - exists. If multiple servo groups have the same name, only one of them is returned.<param name="name">Name of servo group to find.
+ - Returns the servo group in the given <paramref name="vessel" /> with the given <paramref name="name" />,
+ - ornullif none exists. If multiple servo groups have the same name, only one of them is returned.<param name="vessel">Vessel to check.<param name="name">Name of servo group to find.
  -}
-servoGroupWithName :: Data.Text.Text -> RPCContext (KRPCHS.InfernalRobotics.ServoGroup)
-servoGroupWithName nameArg = do
-    let r = makeRequest "InfernalRobotics" "ServoGroupWithName" [makeArgument 0 nameArg]
+servoGroupWithName :: KRPCHS.SpaceCenter.Vessel -> Data.Text.Text -> RPCContext (KRPCHS.InfernalRobotics.ServoGroup)
+servoGroupWithName vesselArg nameArg = do
+    let r = makeRequest "InfernalRobotics" "ServoGroupWithName" [makeArgument 0 vesselArg, makeArgument 1 nameArg]
     res <- sendRequest r
     processResponse extract res 
 
-servoGroupWithNameStream :: Data.Text.Text -> RPCContext (KRPCStream (KRPCHS.InfernalRobotics.ServoGroup))
-servoGroupWithNameStream nameArg = do
-    let r = makeRequest "InfernalRobotics" "ServoGroupWithName" [makeArgument 0 nameArg]
+servoGroupWithNameStream :: KRPCHS.SpaceCenter.Vessel -> Data.Text.Text -> RPCContext (KRPCStream (KRPCHS.InfernalRobotics.ServoGroup))
+servoGroupWithNameStream vesselArg nameArg = do
+    let r = makeRequest "InfernalRobotics" "ServoGroupWithName" [makeArgument 0 vesselArg, makeArgument 1 nameArg]
         s = makeStream r
     res <- sendRequest s
     sid <- processResponse extract res
@@ -274,6 +279,24 @@ getServoGroupNameStream thisArg = do
 
 
 {-
+ - The parts containing the servos in the group.
+ -}
+getServoGroupParts :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext ([KRPCHS.SpaceCenter.Part])
+getServoGroupParts thisArg = do
+    let r = makeRequest "InfernalRobotics" "ServoGroup_get_Parts" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getServoGroupPartsStream :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
+getServoGroupPartsStream thisArg = do
+    let r = makeRequest "InfernalRobotics" "ServoGroup_get_Parts" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
  - The key assigned to be the "reverse" key for the group.
  -}
 getServoGroupReverseKey :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext (Data.Text.Text)
@@ -383,17 +406,35 @@ setServoGroupSpeed thisArg valueArg = do
 
 
 {-
- - Returns the servo with the given <paramref name="name" />, from all servo groups, ornullif none exists. If multiple servos have the same name, only one of them is returned.<param name="name">Name of the servo to find.
+ - A list of all the servo groups in the given <paramref name="vessel" />.
  -}
-servoWithName :: Data.Text.Text -> RPCContext (KRPCHS.InfernalRobotics.Servo)
-servoWithName nameArg = do
-    let r = makeRequest "InfernalRobotics" "ServoWithName" [makeArgument 0 nameArg]
+servoGroups :: KRPCHS.SpaceCenter.Vessel -> RPCContext ([KRPCHS.InfernalRobotics.ServoGroup])
+servoGroups vesselArg = do
+    let r = makeRequest "InfernalRobotics" "ServoGroups" [makeArgument 0 vesselArg]
     res <- sendRequest r
     processResponse extract res 
 
-servoWithNameStream :: Data.Text.Text -> RPCContext (KRPCStream (KRPCHS.InfernalRobotics.Servo))
-servoWithNameStream nameArg = do
-    let r = makeRequest "InfernalRobotics" "ServoWithName" [makeArgument 0 nameArg]
+servoGroupsStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream ([KRPCHS.InfernalRobotics.ServoGroup]))
+servoGroupsStream vesselArg = do
+    let r = makeRequest "InfernalRobotics" "ServoGroups" [makeArgument 0 vesselArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
+ - Returns the servo in the given <paramref name="vessel" /> with the given <paramref name="name" /> ornullif none exists. If multiple servos have the same name, only one of them is returned.<param name="vessel">Vessel to check.<param name="name">Name of the servo to find.
+ -}
+servoWithName :: KRPCHS.SpaceCenter.Vessel -> Data.Text.Text -> RPCContext (KRPCHS.InfernalRobotics.Servo)
+servoWithName vesselArg nameArg = do
+    let r = makeRequest "InfernalRobotics" "ServoWithName" [makeArgument 0 vesselArg, makeArgument 1 nameArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+servoWithNameStream :: KRPCHS.SpaceCenter.Vessel -> Data.Text.Text -> RPCContext (KRPCStream (KRPCHS.InfernalRobotics.Servo))
+servoWithNameStream vesselArg nameArg = do
+    let r = makeRequest "InfernalRobotics" "ServoWithName" [makeArgument 0 vesselArg, makeArgument 1 nameArg]
         s = makeStream r
     res <- sendRequest s
     sid <- processResponse extract res
@@ -695,6 +736,24 @@ getServoNameStream thisArg = do
 
 
 {-
+ - The part containing the servo.
+ -}
+getServoPart :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCHS.SpaceCenter.Part)
+getServoPart thisArg = do
+    let r = makeRequest "InfernalRobotics" "Servo_get_Part" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse extract res 
+
+getServoPartStream :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getServoPartStream thisArg = do
+    let r = makeRequest "InfernalRobotics" "Servo_get_Part" [makeArgument 0 thisArg]
+        s = makeStream r
+    res <- sendRequest s
+    sid <- processResponse extract res
+    return $ KRPCStream sid 
+
+
+{-
  - The position of the servo.
  -}
 getServoPosition :: KRPCHS.InfernalRobotics.Servo -> RPCContext (Float)
@@ -827,23 +886,5 @@ setServoSpeed thisArg valueArg = do
     res <- sendRequest r
     processResponse extractNothing res
       
-
-
-{-
- - A list of all the servo groups in the active vessel.
- -}
-getServoGroups :: RPCContext ([KRPCHS.InfernalRobotics.ServoGroup])
-getServoGroups  = do
-    let r = makeRequest "InfernalRobotics" "get_ServoGroups" []
-    res <- sendRequest r
-    processResponse extract res 
-
-getServoGroupsStream :: RPCContext (KRPCStream ([KRPCHS.InfernalRobotics.ServoGroup]))
-getServoGroupsStream  = do
-    let r = makeRequest "InfernalRobotics" "get_ServoGroups" []
-        s = makeStream r
-    res <- sendRequest s
-    sid <- processResponse extract res
-    return $ KRPCStream sid 
 
 
