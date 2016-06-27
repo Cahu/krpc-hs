@@ -16,7 +16,8 @@ import Data.List
 
 
 data TelemetryData = TelemetryData
-    { altitude  :: Double
+    { time      :: Double
+    , altitude  :: Double
     , latitude  :: Double
     , longitude :: Double
     , mass      :: Float
@@ -38,6 +39,7 @@ telemetryProg streamClient = do
     flight <- vesselFlight vessel ref
 
     -- install streams
+    timeStream      <- getUTStream
     altitudeStream  <- getFlightMeanAltitudeStream flight
     latitudeStream  <- getFlightLatitudeStream     flight
     longitudeStream <- getFlightLongitudeStream    flight
@@ -45,11 +47,12 @@ telemetryProg streamClient = do
     thrustStream    <- getVesselThrustStream       vessel
 
     -- get results and print csv
-    liftIO $ putStrLn "altitude;latitude;longitude;mass;thrust"
+    liftIO $ putStrLn "time;altitude;latitude;longitude;mass;thrust"
     forever $ do
         msg <- getStreamMessage streamClient
 
         ok <- try (do
+            time      <- getStreamResult timeStream      msg
             altitude  <- getStreamResult altitudeStream  msg
             latitude  <- getStreamResult latitudeStream  msg
             longitude <- getStreamResult longitudeStream msg
@@ -65,4 +68,4 @@ telemetryProg streamClient = do
 
 printTelemetryCSV :: TelemetryData -> IO ()
 printTelemetryCSV TelemetryData{..} =
-    putStrLn $ intercalate ";" [show altitude, show latitude, show longitude, show mass, show thrust]
+    putStrLn $ intercalate ";" [show time, show altitude, show latitude, show longitude, show mass, show thrust]
