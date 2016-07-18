@@ -5,6 +5,12 @@ module Main
 ( main
 ) where
 
+{- NOTE:
+ - If you are aiming for simplicity, killing the rotation of a vessel is more
+ - easily done by activating the SAS or using kRPC's autopilot methods. This
+ - example illustrates how it can be achieved using the basic pitch, yaw and
+ - roll controls ... because it's more fun that way!
+ -}
 
 import KRPCHS
 import KRPCHS.SpaceCenter
