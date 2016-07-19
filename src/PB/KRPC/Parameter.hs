@@ -7,8 +7,8 @@ import qualified Data.Typeable as Prelude'
 import qualified Data.Data as Prelude'
 import qualified Text.ProtocolBuffers.Header as P'
 
-data Parameter = Parameter{name :: !(P'.Maybe P'.Utf8), type' :: !(P'.Maybe P'.Utf8), has_default_argument :: !(P'.Maybe P'.Bool),
-                           default_argument :: !(P'.Maybe P'.ByteString)}
+data Parameter = Parameter{name :: !(P'.Maybe P'.Utf8), type' :: !(P'.Maybe P'.Utf8), has_default_value :: !(P'.Maybe P'.Bool),
+                           default_value :: !(P'.Maybe P'.ByteString)}
                deriving (Prelude'.Show, Prelude'.Eq, Prelude'.Ord, Prelude'.Typeable, Prelude'.Data)
 
 instance P'.Mergeable Parameter where
@@ -50,8 +50,8 @@ instance P'.Wire Parameter where
          = case wire'Tag of
              10 -> Prelude'.fmap (\ !new'Field -> old'Self{name = Prelude'.Just new'Field}) (P'.wireGet 9)
              18 -> Prelude'.fmap (\ !new'Field -> old'Self{type' = Prelude'.Just new'Field}) (P'.wireGet 9)
-             24 -> Prelude'.fmap (\ !new'Field -> old'Self{has_default_argument = Prelude'.Just new'Field}) (P'.wireGet 8)
-             34 -> Prelude'.fmap (\ !new'Field -> old'Self{default_argument = Prelude'.Just new'Field}) (P'.wireGet 12)
+             24 -> Prelude'.fmap (\ !new'Field -> old'Self{has_default_value = Prelude'.Just new'Field}) (P'.wireGet 8)
+             34 -> Prelude'.fmap (\ !new'Field -> old'Self{default_value = Prelude'.Just new'Field}) (P'.wireGet 12)
              _ -> let (field'Number, wire'Type) = P'.splitWireTag wire'Tag in P'.unknown field'Number wire'Type old'Self
 
 instance P'.MessageAPI msg' (msg' -> Parameter) Parameter where
@@ -63,7 +63,7 @@ instance P'.ReflectDescriptor Parameter where
   getMessageInfo _ = P'.GetMessageInfo (P'.fromDistinctAscList []) (P'.fromDistinctAscList [10, 18, 24, 34])
   reflectDescriptorInfo _
    = Prelude'.read
-      "DescriptorInfo {descName = ProtoName {protobufName = FIName \".krpc.schema.Parameter\", haskellPrefix = [MName \"PB\"], parentModule = [MName \"KRPC\"], baseName = MName \"Parameter\"}, descFilePath = [\"PB\",\"KRPC\",\"Parameter.hs\"], isGroup = False, fields = fromList [FieldInfo {fieldName = ProtoFName {protobufName' = FIName \".krpc.schema.Parameter.name\", haskellPrefix' = [MName \"PB\"], parentModule' = [MName \"KRPC\",MName \"Parameter\"], baseName' = FName \"name\", baseNamePrefix' = \"\"}, fieldNumber = FieldId {getFieldId = 1}, wireTag = WireTag {getWireTag = 10}, packedTag = Nothing, wireTagLength = 1, isPacked = False, isRequired = False, canRepeat = False, mightPack = False, typeCode = FieldType {getFieldType = 9}, typeName = Nothing, hsRawDefault = Nothing, hsDefault = Nothing},FieldInfo {fieldName = ProtoFName {protobufName' = FIName \".krpc.schema.Parameter.type\", haskellPrefix' = [MName \"PB\"], parentModule' = [MName \"KRPC\",MName \"Parameter\"], baseName' = FName \"type'\", baseNamePrefix' = \"\"}, fieldNumber = FieldId {getFieldId = 2}, wireTag = WireTag {getWireTag = 18}, packedTag = Nothing, wireTagLength = 1, isPacked = False, isRequired = False, canRepeat = False, mightPack = False, typeCode = FieldType {getFieldType = 9}, typeName = Nothing, hsRawDefault = Nothing, hsDefault = Nothing},FieldInfo {fieldName = ProtoFName {protobufName' = FIName \".krpc.schema.Parameter.has_default_argument\", haskellPrefix' = [MName \"PB\"], parentModule' = [MName \"KRPC\",MName \"Parameter\"], baseName' = FName \"has_default_argument\", baseNamePrefix' = \"\"}, fieldNumber = FieldId {getFieldId = 3}, wireTag = WireTag {getWireTag = 24}, packedTag = Nothing, wireTagLength = 1, isPacked = False, isRequired = False, canRepeat = False, mightPack = False, typeCode = FieldType {getFieldType = 8}, typeName = Nothing, hsRawDefault = Nothing, hsDefault = Nothing},FieldInfo {fieldName = ProtoFName {protobufName' = FIName \".krpc.schema.Parameter.default_argument\", haskellPrefix' = [MName \"PB\"], parentModule' = [MName \"KRPC\",MName \"Parameter\"], baseName' = FName \"default_argument\", baseNamePrefix' = \"\"}, fieldNumber = FieldId {getFieldId = 4}, wireTag = WireTag {getWireTag = 34}, packedTag = Nothing, wireTagLength = 1, isPacked = False, isRequired = False, canRepeat = False, mightPack = False, typeCode = FieldType {getFieldType = 12}, typeName = Nothing, hsRawDefault = Nothing, hsDefault = Nothing}], descOneofs = fromList [], keys = fromList [], extRanges = [], knownKeys = fromList [], storeUnknown = False, lazyFields = False, makeLenses = False}"
+      "DescriptorInfo {descName = ProtoName {protobufName = FIName \".krpc.schema.Parameter\", haskellPrefix = [MName \"PB\"], parentModule = [MName \"KRPC\"], baseName = MName \"Parameter\"}, descFilePath = [\"PB\",\"KRPC\",\"Parameter.hs\"], isGroup = False, fields = fromList [FieldInfo {fieldName = ProtoFName {protobufName' = FIName \".krpc.schema.Parameter.name\", haskellPrefix' = [MName \"PB\"], parentModule' = [MName \"KRPC\",MName \"Parameter\"], baseName' = FName \"name\", baseNamePrefix' = \"\"}, fieldNumber = FieldId {getFieldId = 1}, wireTag = WireTag {getWireTag = 10}, packedTag = Nothing, wireTagLength = 1, isPacked = False, isRequired = False, canRepeat = False, mightPack = False, typeCode = FieldType {getFieldType = 9}, typeName = Nothing, hsRawDefault = Nothing, hsDefault = Nothing},FieldInfo {fieldName = ProtoFName {protobufName' = FIName \".krpc.schema.Parameter.type\", haskellPrefix' = [MName \"PB\"], parentModule' = [MName \"KRPC\",MName \"Parameter\"], baseName' = FName \"type'\", baseNamePrefix' = \"\"}, fieldNumber = FieldId {getFieldId = 2}, wireTag = WireTag {getWireTag = 18}, packedTag = Nothing, wireTagLength = 1, isPacked = False, isRequired = False, canRepeat = False, mightPack = False, typeCode = FieldType {getFieldType = 9}, typeName = Nothing, hsRawDefault = Nothing, hsDefault = Nothing},FieldInfo {fieldName = ProtoFName {protobufName' = FIName \".krpc.schema.Parameter.has_default_value\", haskellPrefix' = [MName \"PB\"], parentModule' = [MName \"KRPC\",MName \"Parameter\"], baseName' = FName \"has_default_value\", baseNamePrefix' = \"\"}, fieldNumber = FieldId {getFieldId = 3}, wireTag = WireTag {getWireTag = 24}, packedTag = Nothing, wireTagLength = 1, isPacked = False, isRequired = False, canRepeat = False, mightPack = False, typeCode = FieldType {getFieldType = 8}, typeName = Nothing, hsRawDefault = Nothing, hsDefault = Nothing},FieldInfo {fieldName = ProtoFName {protobufName' = FIName \".krpc.schema.Parameter.default_value\", haskellPrefix' = [MName \"PB\"], parentModule' = [MName \"KRPC\",MName \"Parameter\"], baseName' = FName \"default_value\", baseNamePrefix' = \"\"}, fieldNumber = FieldId {getFieldId = 4}, wireTag = WireTag {getWireTag = 34}, packedTag = Nothing, wireTagLength = 1, isPacked = False, isRequired = False, canRepeat = False, mightPack = False, typeCode = FieldType {getFieldType = 12}, typeName = Nothing, hsRawDefault = Nothing, hsDefault = Nothing}], descOneofs = fromList [], keys = fromList [], extRanges = [], knownKeys = fromList [], storeUnknown = False, lazyFields = False, makeLenses = False}"
 
 instance P'.TextType Parameter where
   tellT = P'.tellSubMessage
@@ -74,11 +74,11 @@ instance P'.TextMsg Parameter where
    = do
        P'.tellT "name" (name msg)
        P'.tellT "type" (type' msg)
-       P'.tellT "has_default_argument" (has_default_argument msg)
-       P'.tellT "default_argument" (default_argument msg)
+       P'.tellT "has_default_value" (has_default_value msg)
+       P'.tellT "default_value" (default_value msg)
   textGet
    = do
-       mods <- P'.sepEndBy (P'.choice [parse'name, parse'type', parse'has_default_argument, parse'default_argument]) P'.spaces
+       mods <- P'.sepEndBy (P'.choice [parse'name, parse'type', parse'has_default_value, parse'default_value]) P'.spaces
        Prelude'.return (Prelude'.foldl (\ v f -> f v) P'.defaultValue mods)
     where
         parse'name
@@ -91,13 +91,13 @@ instance P'.TextMsg Parameter where
             (do
                v <- P'.getT "type"
                Prelude'.return (\ o -> o{type' = v}))
-        parse'has_default_argument
+        parse'has_default_value
          = P'.try
             (do
-               v <- P'.getT "has_default_argument"
-               Prelude'.return (\ o -> o{has_default_argument = v}))
-        parse'default_argument
+               v <- P'.getT "has_default_value"
+               Prelude'.return (\ o -> o{has_default_value = v}))
+        parse'default_value
          = P'.try
             (do
-               v <- P'.getT "default_argument"
-               Prelude'.return (\ o -> o{default_argument = v}))
+               v <- P'.getT "default_value"
+               Prelude'.return (\ o -> o{default_value = v}))
