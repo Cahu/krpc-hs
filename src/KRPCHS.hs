@@ -7,7 +7,9 @@ module KRPCHS
 
 , KRPCStream
 , KRPCStreamMsg
+, emptyKRPCStreamMsg
 , getStreamMessage
+, messageResultsCount
 , messageHasResultFor
 , removeStream
 , getStreamResult
@@ -111,6 +113,10 @@ getStreamMessage :: StreamClient -> RPCContext KRPCStreamMsg
 getStreamMessage StreamClient{..} = do
     res <- liftIO $ recvResponse streamSocket
     return $ KRPCStreamMsg $ M.fromList (extractStreamMessage res)
+
+
+messageResultsCount :: KRPCStreamMsg -> Int
+messageResultsCount = M.size . streamMsg
 
 
 messageHasResultFor :: KRPCStream a -> KRPCStreamMsg -> Bool

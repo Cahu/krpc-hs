@@ -8,6 +8,7 @@ module KRPCHS.Internal.Requests
 
 , KRPCStream(..)
 , KRPCStreamMsg(..)
+, emptyKRPCStreamMsg
 
 , KRPCResponseExtractable
 , extract
@@ -59,10 +60,14 @@ data StreamClient = StreamClient { streamSocket :: Socket }
 newtype RPCContext a = RPCContext { runRPCContext :: ReaderT RPCClient IO a }
     deriving (Functor, Applicative, Monad, MonadIO, MonadReader RPCClient, MonadThrow, MonadCatch, MonadMask)
 
-
 newtype KRPCStream a = KRPCStream { streamId :: Int }
+    deriving (Show)
 
 newtype KRPCStreamMsg = KRPCStreamMsg { streamMsg :: M.Map Int KRes.Response }
+    deriving (Show)
+
+emptyKRPCStreamMsg :: KRPCStreamMsg
+emptyKRPCStreamMsg = KRPCStreamMsg M.empty
 
 
 class (PbSerializable a) => KRPCResponseExtractable a where
