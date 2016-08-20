@@ -158,9 +158,9 @@ extractStreamResponse :: KStreamRes.StreamResponse -> Maybe (Int, KRes.Response)
 extractStreamResponse streamRes = do
     sid <- KStreamRes.id       streamRes
     res <- KStreamRes.response streamRes
-    return $ (fromIntegral sid, res)
+    return (fromIntegral sid, res)
 
 
 extractStreamMessage :: KStreamMsg.StreamMessage -> [(Int, KRes.Response)]
-extractStreamMessage msg = catMaybes $ map extractStreamResponse responseList
+extractStreamMessage msg = mapMaybe extractStreamResponse responseList
     where responseList = Data.Foldable.toList (KStreamMsg.responses msg)

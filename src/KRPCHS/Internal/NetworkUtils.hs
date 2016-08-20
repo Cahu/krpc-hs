@@ -26,10 +26,10 @@ import Text.ProtocolBuffers
 
 
 helloMsg :: BC.ByteString
-helloMsg = BC.pack $ "HELLO-RPC\x0\x0\x0"
+helloMsg = BC.pack "HELLO-RPC\x0\x0\x0"
 
 helloStreamMsg :: BC.ByteString
-helloStreamMsg = BC.pack $ "HELLO-STREAM"
+helloStreamMsg = BC.pack "HELLO-STREAM"
 
 
 connNameMsg :: String -> BC.ByteString
