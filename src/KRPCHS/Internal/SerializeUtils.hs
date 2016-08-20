@@ -84,6 +84,11 @@ class PbSerializable a where
     encodePb :: a -> B.ByteString
 
 
+instance PbSerializable () where
+    decodePb _ = Right ()
+    encodePb _ = undefined
+
+
 instance PbSerializable Double where
     decodePb bytes = realToFrac <$> (decodePb_ 1 bytes :: Either ProtocolError B.Double)
     encodePb f     = W.runPut (W.wirePut 1 (realToFrac f :: B.Double))

@@ -115,9 +115,9 @@ attitudeProg streamClient = do
                 accel      = if decelTime > 0.2 then maxAccel else (mag2/0.2)
                 accelRatio = realToFrac $ max 0.01 (accel / maxAccel)
             in
-                if | mag2 > rotationTolerance && prod >= 0 -> void . axisControlFunc $ accelRatio
-                   | mag2 > rotationTolerance && prod <  0 -> void . axisControlFunc $ (-accelRatio)
-                   | otherwise -> void . axisControlFunc $ 0
+                if | mag2 > rotationTolerance && prod >= 0 -> axisControlFunc accelRatio
+                   | mag2 > rotationTolerance && prod <  0 -> axisControlFunc (-accelRatio)
+                   | otherwise -> axisControlFunc 0
 
         -- shortcut functions
         killPitch = killRotation (setControlPitch control)

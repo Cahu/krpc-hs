@@ -7,6 +7,7 @@ module KRPCHS.Internal.Requests
 , RPCContext(..)
 
 , KRPCStream(..)
+, KRPCStreamReq(..)
 , KRPCStreamMsg(..)
 , emptyKRPCStreamMsg
 
@@ -19,8 +20,7 @@ module KRPCHS.Internal.Requests
 , sendRequest
 , recvResponse
 , makeStream
-, extractNothing
-, extractMessage
+, requestStream
 , extractStreamMessage
 , extractStreamResponse
 ) where
@@ -63,6 +63,9 @@ newtype RPCContext a = RPCContext { runRPCContext :: ReaderT RPCClient IO a }
 newtype KRPCStream a = KRPCStream { streamId :: Int }
     deriving (Show)
 
+newtype KRPCStreamReq a = KRPCStreamReq { streamReq :: KReq.Request }
+    deriving (Show)
+
 newtype KRPCStreamMsg = KRPCStreamMsg { streamMsg :: M.Map Int KRes.Response }
     deriving (Show)
 
@@ -89,6 +92,11 @@ instance (PbSerializable a, PbSerializable b)                                   
 instance (PbSerializable a, PbSerializable b, PbSerializable c)                   => KRPCResponseExtractable (a, b, c)
 instance (PbSerializable a, PbSerializable b, PbSerializable c, PbSerializable d) => KRPCResponseExtractable (a, b, c, d)
 
+
+instance KRPCResponseExtractable () where
+    extract = checkError
+
+
 instance (PbSerializable a) => KRPCResponseExtractable [a] where
     extract r = do
         checkError r
@@ -110,19 +118,8 @@ checkError r = case (KRes.has_error r) of
     _         -> return ()
 
 
-extractMessage :: (P.Wire a, P.ReflectDescriptor a) => KRes.Response -> Either ProtocolError a
-extractMessage r = do
-    checkError r
-    maybe (Left ResponseEmpty) (messageGet) (KRes.return_value r)
-
-
--- Dummy extractor that only checks if the response has no error
-extractNothing :: KRes.Response -> Either ProtocolError Bool 
-extractNothing r = checkError r >> return True
-
-
-processResponse :: (KRes.Response -> Either ProtocolError a) -> KRes.Response -> RPCContext a
-processResponse extractor res = either (throwM) (return) (extractor res)
+processResponse :: (KRPCResponseExtractable a) => KRes.Response -> RPCContext a
+processResponse res = either (throwM) (return) (extract res)
 
 
 sendRequest :: KReq.Request -> RPCContext KRes.Response
@@ -150,8 +147,16 @@ makeRequest serviceName procName params =
     , arguments = Seq.fromList params }
 
 
-makeStream :: KReq.Request -> KReq.Request
-makeStream r = makeRequest "KRPC" "AddStream" [KArg.Argument (Just 0) (Just $ messagePut r)]
+makeStream :: KReq.Request -> KRPCStreamReq a
+makeStream r = KRPCStreamReq $
+    makeRequest "KRPC" "AddStream" [KArg.Argument (Just 0) (Just $ messagePut r)]
+
+
+requestStream :: KRPCResponseExtractable a => KRPCStreamReq a -> RPCContext (KRPCStream a)
+requestStream KRPCStreamReq{..} = do
+    res <- sendRequest streamReq
+    sid <- processResponse res
+    return (KRPCStream sid)
 
 
 extractStreamResponse :: KStreamRes.StreamResponse -> Maybe (Int, KRes.Response)

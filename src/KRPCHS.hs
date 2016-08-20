@@ -6,11 +6,13 @@ module KRPCHS
 , RPCContext
 
 , KRPCStream
+, KRPCStreamReq
 , KRPCStreamMsg
 , emptyKRPCStreamMsg
 , getStreamMessage
 , messageResultsCount
 , messageHasResultFor
+, addStream
 , removeStream
 , getStreamResult
 
@@ -21,8 +23,8 @@ module KRPCHS
 , KRPC.Status(..)
 , KRPC.Service(..)
 , KRPC.Services(..)
-, getStatus
-, getServices
+--, getStatus
+--, getServices
 
 , ProtocolError(..)
 ) where
@@ -97,16 +99,18 @@ runRPCProg :: RPCClient -> RPCContext a -> IO a
 runRPCProg client ctx = runReaderT (runRPCContext ctx) client
 
 
+{-
 getStatus :: RPCContext KRPC.Status
 getStatus = do
     resp <- sendRequest (makeRequest "KRPC" "GetStatus" [])
-    either (throwM) (return) (extractMessage resp)
+    processResponse resp
 
 
 getServices :: RPCContext KRPC.Services
 getServices = do
     resp <- sendRequest (makeRequest "KRPC" "GetServices" [])
-    either (throwM) (return) (extractMessage resp)
+    processResponse resp
+-}
 
 
 getStreamMessage :: StreamClient -> RPCContext KRPCStreamMsg
@@ -127,12 +131,15 @@ messageHasResultFor KRPCStream{..} KRPCStreamMsg{..} =
 getStreamResult :: (KRPCResponseExtractable a) => KRPCStream a -> KRPCStreamMsg -> RPCContext a
 getStreamResult KRPCStream{..} KRPCStreamMsg{..} =
     maybe (throwM NoSuchStream)
-          (\x -> either (throwM) (return) (extract x))
+          (processResponse)
           (M.lookup streamId streamMsg)
 
 
-removeStream :: KRPCStream a -> RPCContext Bool
+addStream :: (KRPCResponseExtractable a) => KRPCStreamReq a -> RPCContext (KRPCStream a)
+addStream = requestStream
+
+
+removeStream :: KRPCStream a -> RPCContext ()
 removeStream KRPCStream{..} = do
     resp <- sendRequest (makeRequest "KRPC" "RemoveStream" [ makeArgument 0 streamId ])
-    either (throwM) (return) (extractNothing resp)
-
+    processResponse resp

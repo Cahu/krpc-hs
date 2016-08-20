@@ -3,6 +3,7 @@
 use strict;
 use warnings;
 
+use Carp;
 use JSON;
 use Template;
 
@@ -83,7 +84,8 @@ while (my ($serviceName, $def) = each %$json)
 
 		push @procs, $proc;
 		push @exports, $proc->{name};
-		push @exports, $proc->{name} . 'Stream' if ($proc->{ret});
+		push @exports, $proc->{name} . 'Stream'    if ($proc->{ret});
+		push @exports, $proc->{name} . 'StreamReq' if ($proc->{ret});
 
 		foreach my $d (@$deps)
 		{
@@ -224,7 +226,7 @@ sub process_parameters
 	# validate the result
 	for my $i (0 .. $#params)
 	{
-		die "Could not translate parameters" unless ($params[$i]{name} and $params[$i]{type});
+		confess "Could not translate parameters" unless ($params[$i]{name} and $params[$i]{type});
 	}
 
 	return (\@params, [keys %dependencies]);
@@ -292,7 +294,7 @@ sub haskell_type
 	}
 	else
 	{
-		die "Unknown type '$type'"
+		confess "Unknown type '$type'"
 	}
 }
 
@@ -362,34 +364,32 @@ instance KRPCResponseExtractable [% enum.name %]
 {-
 [% proc.doc.replace('{-', '{ -') FILTER format(' - %s') %]
  -}
-[%- ret = proc.ret || 'Bool' %]
 [%- IF types.size > 0 %]
-[% proc.name %] :: [% types.join(' -> ') %] -> RPCContext ([% ret %])
+[% proc.name %] :: [% types.join(' -> ') %] -> RPCContext ([% proc.ret %])
 [%- ELSE %]
-[% proc.name %] :: RPCContext ([% ret %])
+[% proc.name %] :: RPCContext ([% proc.ret %])
 [%- END %]
 [% proc.name %] [% names.join(' ') %] = do
     let r = makeRequest "[% serviceName %]" "[% proc.rpcname %]" [[% args.join(', ') %]]
     res <- sendRequest r
-    [%- IF proc.ret %]
-    processResponse extract res
-    [%- ELSE %]
-    processResponse extractNothing res
-    [% END %] 
+    processResponse res
 [%- IF proc.ret %]
+
+[%- IF types.size > 0 %]
+[% proc.name _ 'StreamReq' %] :: [% types.join(' -> ') %] -> RPCContext (KRPCStreamReq ([% proc.ret %]))
+[%- ELSE %]
+[% proc.name _ 'StreamReq' %] :: RPCContext (KRPCStreamReq ([% proc.ret %]))
+[%- END %]
+[% proc.name _ 'StreamReq' %] [% names.join(' ') %] = do
+    let req = makeRequest "[% serviceName %]" "[% proc.rpcname %]" [[% args.join(', ') %]]
+    return (makeStream req)
 
 [%- IF types.size > 0 %]
 [% proc.name _ 'Stream' %] :: [% types.join(' -> ') %] -> RPCContext (KRPCStream ([% proc.ret %]))
 [%- ELSE %]
 [% proc.name _ 'Stream' %] :: RPCContext (KRPCStream ([% proc.ret %]))
 [%- END %]
-[% proc.name _ 'Stream' %] [% names.join(' ') %] = do
-    let r = makeRequest "[% serviceName %]" "[% proc.rpcname %]" [[% args.join(', ') %]]
-        s = makeStream r
-    res <- sendRequest s
-    sid <- processResponse extract res
-    return $ KRPCStream sid
+[% proc.name _ 'Stream' %] [% names.join(' ') %] = requestStream =<< [% proc.name _ 'StreamReq' %] [% names.join(' ') %]
 [%- END %] 
-
 
 [%- END %]
