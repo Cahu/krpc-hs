@@ -156,13 +156,13 @@ servoGroupWithName vesselArg nameArg = do
     res <- sendRequest r
     processResponse res
 
-servoGroupWithNameStreamReq :: KRPCHS.SpaceCenter.Vessel -> Data.Text.Text -> RPCContext (KRPCStreamReq (KRPCHS.InfernalRobotics.ServoGroup))
-servoGroupWithNameStreamReq vesselArg nameArg = do
+servoGroupWithNameStreamReq :: KRPCHS.SpaceCenter.Vessel -> Data.Text.Text -> KRPCStreamReq (KRPCHS.InfernalRobotics.ServoGroup)
+servoGroupWithNameStreamReq vesselArg nameArg =
     let req = makeRequest "InfernalRobotics" "ServoGroupWithName" [makeArgument 0 vesselArg, makeArgument 1 nameArg]
-    return (makeStream req)
+    in  makeStream req
 
 servoGroupWithNameStream :: KRPCHS.SpaceCenter.Vessel -> Data.Text.Text -> RPCContext (KRPCStream (KRPCHS.InfernalRobotics.ServoGroup))
-servoGroupWithNameStream vesselArg nameArg = requestStream =<< servoGroupWithNameStreamReq vesselArg nameArg 
+servoGroupWithNameStream vesselArg nameArg = requestStream $ servoGroupWithNameStreamReq vesselArg nameArg 
 
 {-
  - Moves all of the servos in the group to the center.
@@ -219,13 +219,13 @@ servoGroupServoWithName thisArg nameArg = do
     res <- sendRequest r
     processResponse res
 
-servoGroupServoWithNameStreamReq :: KRPCHS.InfernalRobotics.ServoGroup -> Data.Text.Text -> RPCContext (KRPCStreamReq (KRPCHS.InfernalRobotics.Servo))
-servoGroupServoWithNameStreamReq thisArg nameArg = do
+servoGroupServoWithNameStreamReq :: KRPCHS.InfernalRobotics.ServoGroup -> Data.Text.Text -> KRPCStreamReq (KRPCHS.InfernalRobotics.Servo)
+servoGroupServoWithNameStreamReq thisArg nameArg =
     let req = makeRequest "InfernalRobotics" "ServoGroup_ServoWithName" [makeArgument 0 thisArg, makeArgument 1 nameArg]
-    return (makeStream req)
+    in  makeStream req
 
 servoGroupServoWithNameStream :: KRPCHS.InfernalRobotics.ServoGroup -> Data.Text.Text -> RPCContext (KRPCStream (KRPCHS.InfernalRobotics.Servo))
-servoGroupServoWithNameStream thisArg nameArg = requestStream =<< servoGroupServoWithNameStreamReq thisArg nameArg 
+servoGroupServoWithNameStream thisArg nameArg = requestStream $ servoGroupServoWithNameStreamReq thisArg nameArg 
 
 {-
  - Stops the servos in the group.
@@ -245,13 +245,13 @@ getServoGroupExpanded thisArg = do
     res <- sendRequest r
     processResponse res
 
-getServoGroupExpandedStreamReq :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext (KRPCStreamReq (Bool))
-getServoGroupExpandedStreamReq thisArg = do
+getServoGroupExpandedStreamReq :: KRPCHS.InfernalRobotics.ServoGroup -> KRPCStreamReq (Bool)
+getServoGroupExpandedStreamReq thisArg =
     let req = makeRequest "InfernalRobotics" "ServoGroup_get_Expanded" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getServoGroupExpandedStream :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext (KRPCStream (Bool))
-getServoGroupExpandedStream thisArg = requestStream =<< getServoGroupExpandedStreamReq thisArg 
+getServoGroupExpandedStream thisArg = requestStream $ getServoGroupExpandedStreamReq thisArg 
 
 {-
  - The key assigned to be the "forward" key for the group.
@@ -262,13 +262,13 @@ getServoGroupForwardKey thisArg = do
     res <- sendRequest r
     processResponse res
 
-getServoGroupForwardKeyStreamReq :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext (KRPCStreamReq (Data.Text.Text))
-getServoGroupForwardKeyStreamReq thisArg = do
+getServoGroupForwardKeyStreamReq :: KRPCHS.InfernalRobotics.ServoGroup -> KRPCStreamReq (Data.Text.Text)
+getServoGroupForwardKeyStreamReq thisArg =
     let req = makeRequest "InfernalRobotics" "ServoGroup_get_ForwardKey" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getServoGroupForwardKeyStream :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext (KRPCStream (Data.Text.Text))
-getServoGroupForwardKeyStream thisArg = requestStream =<< getServoGroupForwardKeyStreamReq thisArg 
+getServoGroupForwardKeyStream thisArg = requestStream $ getServoGroupForwardKeyStreamReq thisArg 
 
 {-
  - The name of the group.
@@ -279,13 +279,13 @@ getServoGroupName thisArg = do
     res <- sendRequest r
     processResponse res
 
-getServoGroupNameStreamReq :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext (KRPCStreamReq (Data.Text.Text))
-getServoGroupNameStreamReq thisArg = do
+getServoGroupNameStreamReq :: KRPCHS.InfernalRobotics.ServoGroup -> KRPCStreamReq (Data.Text.Text)
+getServoGroupNameStreamReq thisArg =
     let req = makeRequest "InfernalRobotics" "ServoGroup_get_Name" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getServoGroupNameStream :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext (KRPCStream (Data.Text.Text))
-getServoGroupNameStream thisArg = requestStream =<< getServoGroupNameStreamReq thisArg 
+getServoGroupNameStream thisArg = requestStream $ getServoGroupNameStreamReq thisArg 
 
 {-
  - The parts containing the servos in the group.
@@ -296,13 +296,13 @@ getServoGroupParts thisArg = do
     res <- sendRequest r
     processResponse res
 
-getServoGroupPartsStreamReq :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext (KRPCStreamReq ([KRPCHS.SpaceCenter.Part]))
-getServoGroupPartsStreamReq thisArg = do
+getServoGroupPartsStreamReq :: KRPCHS.InfernalRobotics.ServoGroup -> KRPCStreamReq ([KRPCHS.SpaceCenter.Part])
+getServoGroupPartsStreamReq thisArg =
     let req = makeRequest "InfernalRobotics" "ServoGroup_get_Parts" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getServoGroupPartsStream :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
-getServoGroupPartsStream thisArg = requestStream =<< getServoGroupPartsStreamReq thisArg 
+getServoGroupPartsStream thisArg = requestStream $ getServoGroupPartsStreamReq thisArg 
 
 {-
  - The key assigned to be the "reverse" key for the group.
@@ -313,13 +313,13 @@ getServoGroupReverseKey thisArg = do
     res <- sendRequest r
     processResponse res
 
-getServoGroupReverseKeyStreamReq :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext (KRPCStreamReq (Data.Text.Text))
-getServoGroupReverseKeyStreamReq thisArg = do
+getServoGroupReverseKeyStreamReq :: KRPCHS.InfernalRobotics.ServoGroup -> KRPCStreamReq (Data.Text.Text)
+getServoGroupReverseKeyStreamReq thisArg =
     let req = makeRequest "InfernalRobotics" "ServoGroup_get_ReverseKey" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getServoGroupReverseKeyStream :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext (KRPCStream (Data.Text.Text))
-getServoGroupReverseKeyStream thisArg = requestStream =<< getServoGroupReverseKeyStreamReq thisArg 
+getServoGroupReverseKeyStream thisArg = requestStream $ getServoGroupReverseKeyStreamReq thisArg 
 
 {-
  - The servos that are in the group.
@@ -330,13 +330,13 @@ getServoGroupServos thisArg = do
     res <- sendRequest r
     processResponse res
 
-getServoGroupServosStreamReq :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext (KRPCStreamReq ([KRPCHS.InfernalRobotics.Servo]))
-getServoGroupServosStreamReq thisArg = do
+getServoGroupServosStreamReq :: KRPCHS.InfernalRobotics.ServoGroup -> KRPCStreamReq ([KRPCHS.InfernalRobotics.Servo])
+getServoGroupServosStreamReq thisArg =
     let req = makeRequest "InfernalRobotics" "ServoGroup_get_Servos" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getServoGroupServosStream :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext (KRPCStream ([KRPCHS.InfernalRobotics.Servo]))
-getServoGroupServosStream thisArg = requestStream =<< getServoGroupServosStreamReq thisArg 
+getServoGroupServosStream thisArg = requestStream $ getServoGroupServosStreamReq thisArg 
 
 {-
  - The speed multiplier for the group.
@@ -347,13 +347,13 @@ getServoGroupSpeed thisArg = do
     res <- sendRequest r
     processResponse res
 
-getServoGroupSpeedStreamReq :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext (KRPCStreamReq (Float))
-getServoGroupSpeedStreamReq thisArg = do
+getServoGroupSpeedStreamReq :: KRPCHS.InfernalRobotics.ServoGroup -> KRPCStreamReq (Float)
+getServoGroupSpeedStreamReq thisArg =
     let req = makeRequest "InfernalRobotics" "ServoGroup_get_Speed" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getServoGroupSpeedStream :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext (KRPCStream (Float))
-getServoGroupSpeedStream thisArg = requestStream =<< getServoGroupSpeedStreamReq thisArg 
+getServoGroupSpeedStream thisArg = requestStream $ getServoGroupSpeedStreamReq thisArg 
 
 {-
  - Whether the group is expanded in the InfernalRobotics UI.
@@ -409,13 +409,13 @@ servoGroups vesselArg = do
     res <- sendRequest r
     processResponse res
 
-servoGroupsStreamReq :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStreamReq ([KRPCHS.InfernalRobotics.ServoGroup]))
-servoGroupsStreamReq vesselArg = do
+servoGroupsStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq ([KRPCHS.InfernalRobotics.ServoGroup])
+servoGroupsStreamReq vesselArg =
     let req = makeRequest "InfernalRobotics" "ServoGroups" [makeArgument 0 vesselArg]
-    return (makeStream req)
+    in  makeStream req
 
 servoGroupsStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream ([KRPCHS.InfernalRobotics.ServoGroup]))
-servoGroupsStream vesselArg = requestStream =<< servoGroupsStreamReq vesselArg 
+servoGroupsStream vesselArg = requestStream $ servoGroupsStreamReq vesselArg 
 
 {-
  - Returns the servo in the given <paramref name="vessel" /> with the given <paramref name="name" /> ornullif none exists. If multiple servos have the same name, only one of them is returned.<param name="vessel">Vessel to check.<param name="name">Name of the servo to find.
@@ -426,13 +426,13 @@ servoWithName vesselArg nameArg = do
     res <- sendRequest r
     processResponse res
 
-servoWithNameStreamReq :: KRPCHS.SpaceCenter.Vessel -> Data.Text.Text -> RPCContext (KRPCStreamReq (KRPCHS.InfernalRobotics.Servo))
-servoWithNameStreamReq vesselArg nameArg = do
+servoWithNameStreamReq :: KRPCHS.SpaceCenter.Vessel -> Data.Text.Text -> KRPCStreamReq (KRPCHS.InfernalRobotics.Servo)
+servoWithNameStreamReq vesselArg nameArg =
     let req = makeRequest "InfernalRobotics" "ServoWithName" [makeArgument 0 vesselArg, makeArgument 1 nameArg]
-    return (makeStream req)
+    in  makeStream req
 
 servoWithNameStream :: KRPCHS.SpaceCenter.Vessel -> Data.Text.Text -> RPCContext (KRPCStream (KRPCHS.InfernalRobotics.Servo))
-servoWithNameStream vesselArg nameArg = requestStream =<< servoWithNameStreamReq vesselArg nameArg 
+servoWithNameStream vesselArg nameArg = requestStream $ servoWithNameStreamReq vesselArg nameArg 
 
 {-
  - Moves the servo to the center.
@@ -507,13 +507,13 @@ getServoAcceleration thisArg = do
     res <- sendRequest r
     processResponse res
 
-getServoAccelerationStreamReq :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStreamReq (Float))
-getServoAccelerationStreamReq thisArg = do
+getServoAccelerationStreamReq :: KRPCHS.InfernalRobotics.Servo -> KRPCStreamReq (Float)
+getServoAccelerationStreamReq thisArg =
     let req = makeRequest "InfernalRobotics" "Servo_get_Acceleration" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getServoAccelerationStream :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStream (Float))
-getServoAccelerationStream thisArg = requestStream =<< getServoAccelerationStreamReq thisArg 
+getServoAccelerationStream thisArg = requestStream $ getServoAccelerationStreamReq thisArg 
 
 {-
  - The speed multiplier of the servo, specified by the part configuration.
@@ -524,13 +524,13 @@ getServoConfigSpeed thisArg = do
     res <- sendRequest r
     processResponse res
 
-getServoConfigSpeedStreamReq :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStreamReq (Float))
-getServoConfigSpeedStreamReq thisArg = do
+getServoConfigSpeedStreamReq :: KRPCHS.InfernalRobotics.Servo -> KRPCStreamReq (Float)
+getServoConfigSpeedStreamReq thisArg =
     let req = makeRequest "InfernalRobotics" "Servo_get_ConfigSpeed" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getServoConfigSpeedStream :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStream (Float))
-getServoConfigSpeedStream thisArg = requestStream =<< getServoConfigSpeedStreamReq thisArg 
+getServoConfigSpeedStream thisArg = requestStream $ getServoConfigSpeedStreamReq thisArg 
 
 {-
  - The current speed at which the servo is moving.
@@ -541,13 +541,13 @@ getServoCurrentSpeed thisArg = do
     res <- sendRequest r
     processResponse res
 
-getServoCurrentSpeedStreamReq :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStreamReq (Float))
-getServoCurrentSpeedStreamReq thisArg = do
+getServoCurrentSpeedStreamReq :: KRPCHS.InfernalRobotics.Servo -> KRPCStreamReq (Float)
+getServoCurrentSpeedStreamReq thisArg =
     let req = makeRequest "InfernalRobotics" "Servo_get_CurrentSpeed" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getServoCurrentSpeedStream :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStream (Float))
-getServoCurrentSpeedStream thisArg = requestStream =<< getServoCurrentSpeedStreamReq thisArg 
+getServoCurrentSpeedStream thisArg = requestStream $ getServoCurrentSpeedStreamReq thisArg 
 
 {-
  - Whether the servos axis is inverted.
@@ -558,13 +558,13 @@ getServoIsAxisInverted thisArg = do
     res <- sendRequest r
     processResponse res
 
-getServoIsAxisInvertedStreamReq :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStreamReq (Bool))
-getServoIsAxisInvertedStreamReq thisArg = do
+getServoIsAxisInvertedStreamReq :: KRPCHS.InfernalRobotics.Servo -> KRPCStreamReq (Bool)
+getServoIsAxisInvertedStreamReq thisArg =
     let req = makeRequest "InfernalRobotics" "Servo_get_IsAxisInverted" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getServoIsAxisInvertedStream :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStream (Bool))
-getServoIsAxisInvertedStream thisArg = requestStream =<< getServoIsAxisInvertedStreamReq thisArg 
+getServoIsAxisInvertedStream thisArg = requestStream $ getServoIsAxisInvertedStreamReq thisArg 
 
 {-
  - Whether the servo is freely moving.
@@ -575,13 +575,13 @@ getServoIsFreeMoving thisArg = do
     res <- sendRequest r
     processResponse res
 
-getServoIsFreeMovingStreamReq :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStreamReq (Bool))
-getServoIsFreeMovingStreamReq thisArg = do
+getServoIsFreeMovingStreamReq :: KRPCHS.InfernalRobotics.Servo -> KRPCStreamReq (Bool)
+getServoIsFreeMovingStreamReq thisArg =
     let req = makeRequest "InfernalRobotics" "Servo_get_IsFreeMoving" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getServoIsFreeMovingStream :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStream (Bool))
-getServoIsFreeMovingStream thisArg = requestStream =<< getServoIsFreeMovingStreamReq thisArg 
+getServoIsFreeMovingStream thisArg = requestStream $ getServoIsFreeMovingStreamReq thisArg 
 
 {-
  - Whether the servo is locked.
@@ -592,13 +592,13 @@ getServoIsLocked thisArg = do
     res <- sendRequest r
     processResponse res
 
-getServoIsLockedStreamReq :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStreamReq (Bool))
-getServoIsLockedStreamReq thisArg = do
+getServoIsLockedStreamReq :: KRPCHS.InfernalRobotics.Servo -> KRPCStreamReq (Bool)
+getServoIsLockedStreamReq thisArg =
     let req = makeRequest "InfernalRobotics" "Servo_get_IsLocked" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getServoIsLockedStream :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStream (Bool))
-getServoIsLockedStream thisArg = requestStream =<< getServoIsLockedStreamReq thisArg 
+getServoIsLockedStream thisArg = requestStream $ getServoIsLockedStreamReq thisArg 
 
 {-
  - Whether the servo is moving.
@@ -609,13 +609,13 @@ getServoIsMoving thisArg = do
     res <- sendRequest r
     processResponse res
 
-getServoIsMovingStreamReq :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStreamReq (Bool))
-getServoIsMovingStreamReq thisArg = do
+getServoIsMovingStreamReq :: KRPCHS.InfernalRobotics.Servo -> KRPCStreamReq (Bool)
+getServoIsMovingStreamReq thisArg =
     let req = makeRequest "InfernalRobotics" "Servo_get_IsMoving" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getServoIsMovingStream :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStream (Bool))
-getServoIsMovingStream thisArg = requestStream =<< getServoIsMovingStreamReq thisArg 
+getServoIsMovingStream thisArg = requestStream $ getServoIsMovingStreamReq thisArg 
 
 {-
  - The maximum position of the servo, specified by the part configuration.
@@ -626,13 +626,13 @@ getServoMaxConfigPosition thisArg = do
     res <- sendRequest r
     processResponse res
 
-getServoMaxConfigPositionStreamReq :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStreamReq (Float))
-getServoMaxConfigPositionStreamReq thisArg = do
+getServoMaxConfigPositionStreamReq :: KRPCHS.InfernalRobotics.Servo -> KRPCStreamReq (Float)
+getServoMaxConfigPositionStreamReq thisArg =
     let req = makeRequest "InfernalRobotics" "Servo_get_MaxConfigPosition" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getServoMaxConfigPositionStream :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStream (Float))
-getServoMaxConfigPositionStream thisArg = requestStream =<< getServoMaxConfigPositionStreamReq thisArg 
+getServoMaxConfigPositionStream thisArg = requestStream $ getServoMaxConfigPositionStreamReq thisArg 
 
 {-
  - The maximum position of the servo, specified by the in-game tweak menu.
@@ -643,13 +643,13 @@ getServoMaxPosition thisArg = do
     res <- sendRequest r
     processResponse res
 
-getServoMaxPositionStreamReq :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStreamReq (Float))
-getServoMaxPositionStreamReq thisArg = do
+getServoMaxPositionStreamReq :: KRPCHS.InfernalRobotics.Servo -> KRPCStreamReq (Float)
+getServoMaxPositionStreamReq thisArg =
     let req = makeRequest "InfernalRobotics" "Servo_get_MaxPosition" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getServoMaxPositionStream :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStream (Float))
-getServoMaxPositionStream thisArg = requestStream =<< getServoMaxPositionStreamReq thisArg 
+getServoMaxPositionStream thisArg = requestStream $ getServoMaxPositionStreamReq thisArg 
 
 {-
  - The minimum position of the servo, specified by the part configuration.
@@ -660,13 +660,13 @@ getServoMinConfigPosition thisArg = do
     res <- sendRequest r
     processResponse res
 
-getServoMinConfigPositionStreamReq :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStreamReq (Float))
-getServoMinConfigPositionStreamReq thisArg = do
+getServoMinConfigPositionStreamReq :: KRPCHS.InfernalRobotics.Servo -> KRPCStreamReq (Float)
+getServoMinConfigPositionStreamReq thisArg =
     let req = makeRequest "InfernalRobotics" "Servo_get_MinConfigPosition" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getServoMinConfigPositionStream :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStream (Float))
-getServoMinConfigPositionStream thisArg = requestStream =<< getServoMinConfigPositionStreamReq thisArg 
+getServoMinConfigPositionStream thisArg = requestStream $ getServoMinConfigPositionStreamReq thisArg 
 
 {-
  - The minimum position of the servo, specified by the in-game tweak menu.
@@ -677,13 +677,13 @@ getServoMinPosition thisArg = do
     res <- sendRequest r
     processResponse res
 
-getServoMinPositionStreamReq :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStreamReq (Float))
-getServoMinPositionStreamReq thisArg = do
+getServoMinPositionStreamReq :: KRPCHS.InfernalRobotics.Servo -> KRPCStreamReq (Float)
+getServoMinPositionStreamReq thisArg =
     let req = makeRequest "InfernalRobotics" "Servo_get_MinPosition" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getServoMinPositionStream :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStream (Float))
-getServoMinPositionStream thisArg = requestStream =<< getServoMinPositionStreamReq thisArg 
+getServoMinPositionStream thisArg = requestStream $ getServoMinPositionStreamReq thisArg 
 
 {-
  - The name of the servo.
@@ -694,13 +694,13 @@ getServoName thisArg = do
     res <- sendRequest r
     processResponse res
 
-getServoNameStreamReq :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStreamReq (Data.Text.Text))
-getServoNameStreamReq thisArg = do
+getServoNameStreamReq :: KRPCHS.InfernalRobotics.Servo -> KRPCStreamReq (Data.Text.Text)
+getServoNameStreamReq thisArg =
     let req = makeRequest "InfernalRobotics" "Servo_get_Name" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getServoNameStream :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStream (Data.Text.Text))
-getServoNameStream thisArg = requestStream =<< getServoNameStreamReq thisArg 
+getServoNameStream thisArg = requestStream $ getServoNameStreamReq thisArg 
 
 {-
  - The part containing the servo.
@@ -711,13 +711,13 @@ getServoPart thisArg = do
     res <- sendRequest r
     processResponse res
 
-getServoPartStreamReq :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStreamReq (KRPCHS.SpaceCenter.Part))
-getServoPartStreamReq thisArg = do
+getServoPartStreamReq :: KRPCHS.InfernalRobotics.Servo -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
+getServoPartStreamReq thisArg =
     let req = makeRequest "InfernalRobotics" "Servo_get_Part" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getServoPartStream :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
-getServoPartStream thisArg = requestStream =<< getServoPartStreamReq thisArg 
+getServoPartStream thisArg = requestStream $ getServoPartStreamReq thisArg 
 
 {-
  - The position of the servo.
@@ -728,13 +728,13 @@ getServoPosition thisArg = do
     res <- sendRequest r
     processResponse res
 
-getServoPositionStreamReq :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStreamReq (Float))
-getServoPositionStreamReq thisArg = do
+getServoPositionStreamReq :: KRPCHS.InfernalRobotics.Servo -> KRPCStreamReq (Float)
+getServoPositionStreamReq thisArg =
     let req = makeRequest "InfernalRobotics" "Servo_get_Position" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getServoPositionStream :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStream (Float))
-getServoPositionStream thisArg = requestStream =<< getServoPositionStreamReq thisArg 
+getServoPositionStream thisArg = requestStream $ getServoPositionStreamReq thisArg 
 
 {-
  - The speed multiplier of the servo, specified by the in-game tweak menu.
@@ -745,13 +745,13 @@ getServoSpeed thisArg = do
     res <- sendRequest r
     processResponse res
 
-getServoSpeedStreamReq :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStreamReq (Float))
-getServoSpeedStreamReq thisArg = do
+getServoSpeedStreamReq :: KRPCHS.InfernalRobotics.Servo -> KRPCStreamReq (Float)
+getServoSpeedStreamReq thisArg =
     let req = makeRequest "InfernalRobotics" "Servo_get_Speed" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getServoSpeedStream :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStream (Float))
-getServoSpeedStream thisArg = requestStream =<< getServoSpeedStreamReq thisArg 
+getServoSpeedStream thisArg = requestStream $ getServoSpeedStreamReq thisArg 
 
 {-
  - The current speed multiplier set in the UI.

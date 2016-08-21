@@ -376,20 +376,20 @@ instance KRPCResponseExtractable [% enum.name %]
 [%- IF proc.ret %]
 
 [%- IF types.size > 0 %]
-[% proc.name _ 'StreamReq' %] :: [% types.join(' -> ') %] -> RPCContext (KRPCStreamReq ([% proc.ret %]))
+[% proc.name _ 'StreamReq' %] :: [% types.join(' -> ') %] -> KRPCStreamReq ([% proc.ret %])
 [%- ELSE %]
-[% proc.name _ 'StreamReq' %] :: RPCContext (KRPCStreamReq ([% proc.ret %]))
+[% proc.name _ 'StreamReq' %] :: KRPCStreamReq ([% proc.ret %])
 [%- END %]
-[% proc.name _ 'StreamReq' %] [% names.join(' ') %] = do
+[% proc.name _ 'StreamReq' %] [% names.join(' ') %] =
     let req = makeRequest "[% serviceName %]" "[% proc.rpcname %]" [[% args.join(', ') %]]
-    return (makeStream req)
+    in  makeStream req
 
 [%- IF types.size > 0 %]
 [% proc.name _ 'Stream' %] :: [% types.join(' -> ') %] -> RPCContext (KRPCStream ([% proc.ret %]))
 [%- ELSE %]
 [% proc.name _ 'Stream' %] :: RPCContext (KRPCStream ([% proc.ret %]))
 [%- END %]
-[% proc.name _ 'Stream' %] [% names.join(' ') %] = requestStream =<< [% proc.name _ 'StreamReq' %] [% names.join(' ') %]
+[% proc.name _ 'Stream' %] [% names.join(' ') %] = requestStream $ [% proc.name _ 'StreamReq' %] [% names.join(' ') %]
 [%- END %] 
 
 [%- END %]

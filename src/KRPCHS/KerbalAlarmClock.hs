@@ -148,13 +148,13 @@ alarmWithName nameArg = do
     res <- sendRequest r
     processResponse res
 
-alarmWithNameStreamReq :: Data.Text.Text -> RPCContext (KRPCStreamReq (KRPCHS.KerbalAlarmClock.Alarm))
-alarmWithNameStreamReq nameArg = do
+alarmWithNameStreamReq :: Data.Text.Text -> KRPCStreamReq (KRPCHS.KerbalAlarmClock.Alarm)
+alarmWithNameStreamReq nameArg =
     let req = makeRequest "KerbalAlarmClock" "AlarmWithName" [makeArgument 0 nameArg]
-    return (makeStream req)
+    in  makeStream req
 
 alarmWithNameStream :: Data.Text.Text -> RPCContext (KRPCStream (KRPCHS.KerbalAlarmClock.Alarm))
-alarmWithNameStream nameArg = requestStream =<< alarmWithNameStreamReq nameArg 
+alarmWithNameStream nameArg = requestStream $ alarmWithNameStreamReq nameArg 
 
 {-
  - Removes the alarm.
@@ -174,13 +174,13 @@ getAlarmAction thisArg = do
     res <- sendRequest r
     processResponse res
 
-getAlarmActionStreamReq :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStreamReq (KRPCHS.KerbalAlarmClock.AlarmAction))
-getAlarmActionStreamReq thisArg = do
+getAlarmActionStreamReq :: KRPCHS.KerbalAlarmClock.Alarm -> KRPCStreamReq (KRPCHS.KerbalAlarmClock.AlarmAction)
+getAlarmActionStreamReq thisArg =
     let req = makeRequest "KerbalAlarmClock" "Alarm_get_Action" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getAlarmActionStream :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStream (KRPCHS.KerbalAlarmClock.AlarmAction))
-getAlarmActionStream thisArg = requestStream =<< getAlarmActionStreamReq thisArg 
+getAlarmActionStream thisArg = requestStream $ getAlarmActionStreamReq thisArg 
 
 {-
  - The unique identifier for the alarm.
@@ -191,13 +191,13 @@ getAlarmID thisArg = do
     res <- sendRequest r
     processResponse res
 
-getAlarmIDStreamReq :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStreamReq (Data.Text.Text))
-getAlarmIDStreamReq thisArg = do
+getAlarmIDStreamReq :: KRPCHS.KerbalAlarmClock.Alarm -> KRPCStreamReq (Data.Text.Text)
+getAlarmIDStreamReq thisArg =
     let req = makeRequest "KerbalAlarmClock" "Alarm_get_ID" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getAlarmIDStream :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStream (Data.Text.Text))
-getAlarmIDStream thisArg = requestStream =<< getAlarmIDStreamReq thisArg 
+getAlarmIDStream thisArg = requestStream $ getAlarmIDStreamReq thisArg 
 
 {-
  - The number of seconds before the event that the alarm will fire.
@@ -208,13 +208,13 @@ getAlarmMargin thisArg = do
     res <- sendRequest r
     processResponse res
 
-getAlarmMarginStreamReq :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStreamReq (Double))
-getAlarmMarginStreamReq thisArg = do
+getAlarmMarginStreamReq :: KRPCHS.KerbalAlarmClock.Alarm -> KRPCStreamReq (Double)
+getAlarmMarginStreamReq thisArg =
     let req = makeRequest "KerbalAlarmClock" "Alarm_get_Margin" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getAlarmMarginStream :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStream (Double))
-getAlarmMarginStream thisArg = requestStream =<< getAlarmMarginStreamReq thisArg 
+getAlarmMarginStream thisArg = requestStream $ getAlarmMarginStreamReq thisArg 
 
 {-
  - The short name of the alarm.
@@ -225,13 +225,13 @@ getAlarmName thisArg = do
     res <- sendRequest r
     processResponse res
 
-getAlarmNameStreamReq :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStreamReq (Data.Text.Text))
-getAlarmNameStreamReq thisArg = do
+getAlarmNameStreamReq :: KRPCHS.KerbalAlarmClock.Alarm -> KRPCStreamReq (Data.Text.Text)
+getAlarmNameStreamReq thisArg =
     let req = makeRequest "KerbalAlarmClock" "Alarm_get_Name" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getAlarmNameStream :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStream (Data.Text.Text))
-getAlarmNameStream thisArg = requestStream =<< getAlarmNameStreamReq thisArg 
+getAlarmNameStream thisArg = requestStream $ getAlarmNameStreamReq thisArg 
 
 {-
  - The long description of the alarm.
@@ -242,13 +242,13 @@ getAlarmNotes thisArg = do
     res <- sendRequest r
     processResponse res
 
-getAlarmNotesStreamReq :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStreamReq (Data.Text.Text))
-getAlarmNotesStreamReq thisArg = do
+getAlarmNotesStreamReq :: KRPCHS.KerbalAlarmClock.Alarm -> KRPCStreamReq (Data.Text.Text)
+getAlarmNotesStreamReq thisArg =
     let req = makeRequest "KerbalAlarmClock" "Alarm_get_Notes" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getAlarmNotesStream :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStream (Data.Text.Text))
-getAlarmNotesStream thisArg = requestStream =<< getAlarmNotesStreamReq thisArg 
+getAlarmNotesStream thisArg = requestStream $ getAlarmNotesStreamReq thisArg 
 
 {-
  - The number of seconds until the alarm will fire.
@@ -259,13 +259,13 @@ getAlarmRemaining thisArg = do
     res <- sendRequest r
     processResponse res
 
-getAlarmRemainingStreamReq :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStreamReq (Double))
-getAlarmRemainingStreamReq thisArg = do
+getAlarmRemainingStreamReq :: KRPCHS.KerbalAlarmClock.Alarm -> KRPCStreamReq (Double)
+getAlarmRemainingStreamReq thisArg =
     let req = makeRequest "KerbalAlarmClock" "Alarm_get_Remaining" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getAlarmRemainingStream :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStream (Double))
-getAlarmRemainingStream thisArg = requestStream =<< getAlarmRemainingStreamReq thisArg 
+getAlarmRemainingStream thisArg = requestStream $ getAlarmRemainingStreamReq thisArg 
 
 {-
  - Whether the alarm will be repeated after it has fired.
@@ -276,13 +276,13 @@ getAlarmRepeat thisArg = do
     res <- sendRequest r
     processResponse res
 
-getAlarmRepeatStreamReq :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStreamReq (Bool))
-getAlarmRepeatStreamReq thisArg = do
+getAlarmRepeatStreamReq :: KRPCHS.KerbalAlarmClock.Alarm -> KRPCStreamReq (Bool)
+getAlarmRepeatStreamReq thisArg =
     let req = makeRequest "KerbalAlarmClock" "Alarm_get_Repeat" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getAlarmRepeatStream :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStream (Bool))
-getAlarmRepeatStream thisArg = requestStream =<< getAlarmRepeatStreamReq thisArg 
+getAlarmRepeatStream thisArg = requestStream $ getAlarmRepeatStreamReq thisArg 
 
 {-
  - The time delay to automatically create an alarm after it has fired.
@@ -293,13 +293,13 @@ getAlarmRepeatPeriod thisArg = do
     res <- sendRequest r
     processResponse res
 
-getAlarmRepeatPeriodStreamReq :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStreamReq (Double))
-getAlarmRepeatPeriodStreamReq thisArg = do
+getAlarmRepeatPeriodStreamReq :: KRPCHS.KerbalAlarmClock.Alarm -> KRPCStreamReq (Double)
+getAlarmRepeatPeriodStreamReq thisArg =
     let req = makeRequest "KerbalAlarmClock" "Alarm_get_RepeatPeriod" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getAlarmRepeatPeriodStream :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStream (Double))
-getAlarmRepeatPeriodStream thisArg = requestStream =<< getAlarmRepeatPeriodStreamReq thisArg 
+getAlarmRepeatPeriodStream thisArg = requestStream $ getAlarmRepeatPeriodStreamReq thisArg 
 
 {-
  - The time at which the alarm will fire.
@@ -310,13 +310,13 @@ getAlarmTime thisArg = do
     res <- sendRequest r
     processResponse res
 
-getAlarmTimeStreamReq :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStreamReq (Double))
-getAlarmTimeStreamReq thisArg = do
+getAlarmTimeStreamReq :: KRPCHS.KerbalAlarmClock.Alarm -> KRPCStreamReq (Double)
+getAlarmTimeStreamReq thisArg =
     let req = makeRequest "KerbalAlarmClock" "Alarm_get_Time" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getAlarmTimeStream :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStream (Double))
-getAlarmTimeStream thisArg = requestStream =<< getAlarmTimeStreamReq thisArg 
+getAlarmTimeStream thisArg = requestStream $ getAlarmTimeStreamReq thisArg 
 
 {-
  - The type of the alarm.
@@ -327,13 +327,13 @@ getAlarmType thisArg = do
     res <- sendRequest r
     processResponse res
 
-getAlarmTypeStreamReq :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStreamReq (KRPCHS.KerbalAlarmClock.AlarmType))
-getAlarmTypeStreamReq thisArg = do
+getAlarmTypeStreamReq :: KRPCHS.KerbalAlarmClock.Alarm -> KRPCStreamReq (KRPCHS.KerbalAlarmClock.AlarmType)
+getAlarmTypeStreamReq thisArg =
     let req = makeRequest "KerbalAlarmClock" "Alarm_get_Type" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getAlarmTypeStream :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStream (KRPCHS.KerbalAlarmClock.AlarmType))
-getAlarmTypeStream thisArg = requestStream =<< getAlarmTypeStreamReq thisArg 
+getAlarmTypeStream thisArg = requestStream $ getAlarmTypeStreamReq thisArg 
 
 {-
  - The vessel that the alarm is attached to.
@@ -344,13 +344,13 @@ getAlarmVessel thisArg = do
     res <- sendRequest r
     processResponse res
 
-getAlarmVesselStreamReq :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStreamReq (KRPCHS.SpaceCenter.Vessel))
-getAlarmVesselStreamReq thisArg = do
+getAlarmVesselStreamReq :: KRPCHS.KerbalAlarmClock.Alarm -> KRPCStreamReq (KRPCHS.SpaceCenter.Vessel)
+getAlarmVesselStreamReq thisArg =
     let req = makeRequest "KerbalAlarmClock" "Alarm_get_Vessel" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getAlarmVesselStream :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Vessel))
-getAlarmVesselStream thisArg = requestStream =<< getAlarmVesselStreamReq thisArg 
+getAlarmVesselStream thisArg = requestStream $ getAlarmVesselStreamReq thisArg 
 
 {-
  - The celestial body the vessel is departing from.
@@ -361,13 +361,13 @@ getAlarmXferOriginBody thisArg = do
     res <- sendRequest r
     processResponse res
 
-getAlarmXferOriginBodyStreamReq :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStreamReq (KRPCHS.SpaceCenter.CelestialBody))
-getAlarmXferOriginBodyStreamReq thisArg = do
+getAlarmXferOriginBodyStreamReq :: KRPCHS.KerbalAlarmClock.Alarm -> KRPCStreamReq (KRPCHS.SpaceCenter.CelestialBody)
+getAlarmXferOriginBodyStreamReq thisArg =
     let req = makeRequest "KerbalAlarmClock" "Alarm_get_XferOriginBody" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getAlarmXferOriginBodyStream :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.CelestialBody))
-getAlarmXferOriginBodyStream thisArg = requestStream =<< getAlarmXferOriginBodyStreamReq thisArg 
+getAlarmXferOriginBodyStream thisArg = requestStream $ getAlarmXferOriginBodyStreamReq thisArg 
 
 {-
  - The celestial body the vessel is arriving at.
@@ -378,13 +378,13 @@ getAlarmXferTargetBody thisArg = do
     res <- sendRequest r
     processResponse res
 
-getAlarmXferTargetBodyStreamReq :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStreamReq (KRPCHS.SpaceCenter.CelestialBody))
-getAlarmXferTargetBodyStreamReq thisArg = do
+getAlarmXferTargetBodyStreamReq :: KRPCHS.KerbalAlarmClock.Alarm -> KRPCStreamReq (KRPCHS.SpaceCenter.CelestialBody)
+getAlarmXferTargetBodyStreamReq thisArg =
     let req = makeRequest "KerbalAlarmClock" "Alarm_get_XferTargetBody" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getAlarmXferTargetBodyStream :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.CelestialBody))
-getAlarmXferTargetBodyStream thisArg = requestStream =<< getAlarmXferTargetBodyStreamReq thisArg 
+getAlarmXferTargetBodyStream thisArg = requestStream $ getAlarmXferTargetBodyStreamReq thisArg 
 
 {-
  - The action that the alarm triggers.
@@ -485,13 +485,13 @@ alarmsWithType typeArg = do
     res <- sendRequest r
     processResponse res
 
-alarmsWithTypeStreamReq :: KRPCHS.KerbalAlarmClock.AlarmType -> RPCContext (KRPCStreamReq ([KRPCHS.KerbalAlarmClock.Alarm]))
-alarmsWithTypeStreamReq typeArg = do
+alarmsWithTypeStreamReq :: KRPCHS.KerbalAlarmClock.AlarmType -> KRPCStreamReq ([KRPCHS.KerbalAlarmClock.Alarm])
+alarmsWithTypeStreamReq typeArg =
     let req = makeRequest "KerbalAlarmClock" "AlarmsWithType" [makeArgument 0 typeArg]
-    return (makeStream req)
+    in  makeStream req
 
 alarmsWithTypeStream :: KRPCHS.KerbalAlarmClock.AlarmType -> RPCContext (KRPCStream ([KRPCHS.KerbalAlarmClock.Alarm]))
-alarmsWithTypeStream typeArg = requestStream =<< alarmsWithTypeStreamReq typeArg 
+alarmsWithTypeStream typeArg = requestStream $ alarmsWithTypeStreamReq typeArg 
 
 {-
  - Create a new alarm and return it.<param name="type">Type of the new alarm.<param name="name">Name of the new alarm.<param name="ut">Time at which the new alarm should trigger.
@@ -502,13 +502,13 @@ createAlarm typeArg nameArg utArg = do
     res <- sendRequest r
     processResponse res
 
-createAlarmStreamReq :: KRPCHS.KerbalAlarmClock.AlarmType -> Data.Text.Text -> Double -> RPCContext (KRPCStreamReq (KRPCHS.KerbalAlarmClock.Alarm))
-createAlarmStreamReq typeArg nameArg utArg = do
+createAlarmStreamReq :: KRPCHS.KerbalAlarmClock.AlarmType -> Data.Text.Text -> Double -> KRPCStreamReq (KRPCHS.KerbalAlarmClock.Alarm)
+createAlarmStreamReq typeArg nameArg utArg =
     let req = makeRequest "KerbalAlarmClock" "CreateAlarm" [makeArgument 0 typeArg, makeArgument 1 nameArg, makeArgument 2 utArg]
-    return (makeStream req)
+    in  makeStream req
 
 createAlarmStream :: KRPCHS.KerbalAlarmClock.AlarmType -> Data.Text.Text -> Double -> RPCContext (KRPCStream (KRPCHS.KerbalAlarmClock.Alarm))
-createAlarmStream typeArg nameArg utArg = requestStream =<< createAlarmStreamReq typeArg nameArg utArg 
+createAlarmStream typeArg nameArg utArg = requestStream $ createAlarmStreamReq typeArg nameArg utArg 
 
 {-
  - A list of all the alarms.
@@ -519,11 +519,11 @@ getAlarms  = do
     res <- sendRequest r
     processResponse res
 
-getAlarmsStreamReq :: RPCContext (KRPCStreamReq ([KRPCHS.KerbalAlarmClock.Alarm]))
-getAlarmsStreamReq  = do
+getAlarmsStreamReq :: KRPCStreamReq ([KRPCHS.KerbalAlarmClock.Alarm])
+getAlarmsStreamReq  =
     let req = makeRequest "KerbalAlarmClock" "get_Alarms" []
-    return (makeStream req)
+    in  makeStream req
 
 getAlarmsStream :: RPCContext (KRPCStream ([KRPCHS.KerbalAlarmClock.Alarm]))
-getAlarmsStream  = requestStream =<< getAlarmsStreamReq  
+getAlarmsStream  = requestStream $ getAlarmsStreamReq  
 

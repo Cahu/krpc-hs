@@ -187,13 +187,13 @@ addDirection directionArg referenceFrameArg lengthArg visibleArg = do
     res <- sendRequest r
     processResponse res
 
-addDirectionStreamReq :: (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> Float -> Bool -> RPCContext (KRPCStreamReq (KRPCHS.Drawing.Line))
-addDirectionStreamReq directionArg referenceFrameArg lengthArg visibleArg = do
+addDirectionStreamReq :: (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> Float -> Bool -> KRPCStreamReq (KRPCHS.Drawing.Line)
+addDirectionStreamReq directionArg referenceFrameArg lengthArg visibleArg =
     let req = makeRequest "Drawing" "AddDirection" [makeArgument 0 directionArg, makeArgument 1 referenceFrameArg, makeArgument 2 lengthArg, makeArgument 3 visibleArg]
-    return (makeStream req)
+    in  makeStream req
 
 addDirectionStream :: (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> Float -> Bool -> RPCContext (KRPCStream (KRPCHS.Drawing.Line))
-addDirectionStream directionArg referenceFrameArg lengthArg visibleArg = requestStream =<< addDirectionStreamReq directionArg referenceFrameArg lengthArg visibleArg 
+addDirectionStream directionArg referenceFrameArg lengthArg visibleArg = requestStream $ addDirectionStreamReq directionArg referenceFrameArg lengthArg visibleArg 
 
 {-
  - Draw a line in the scene.<param name="start">Position of the start of the line.<param name="end">Position of the end of the line.<param name="referenceFrame">Reference frame that the positions are in.<param name="visible">Whether the line is visible.
@@ -204,13 +204,13 @@ addLine startArg endArg referenceFrameArg visibleArg = do
     res <- sendRequest r
     processResponse res
 
-addLineStreamReq :: (Double, Double, Double) -> (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> Bool -> RPCContext (KRPCStreamReq (KRPCHS.Drawing.Line))
-addLineStreamReq startArg endArg referenceFrameArg visibleArg = do
+addLineStreamReq :: (Double, Double, Double) -> (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> Bool -> KRPCStreamReq (KRPCHS.Drawing.Line)
+addLineStreamReq startArg endArg referenceFrameArg visibleArg =
     let req = makeRequest "Drawing" "AddLine" [makeArgument 0 startArg, makeArgument 1 endArg, makeArgument 2 referenceFrameArg, makeArgument 3 visibleArg]
-    return (makeStream req)
+    in  makeStream req
 
 addLineStream :: (Double, Double, Double) -> (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> Bool -> RPCContext (KRPCStream (KRPCHS.Drawing.Line))
-addLineStream startArg endArg referenceFrameArg visibleArg = requestStream =<< addLineStreamReq startArg endArg referenceFrameArg visibleArg 
+addLineStream startArg endArg referenceFrameArg visibleArg = requestStream $ addLineStreamReq startArg endArg referenceFrameArg visibleArg 
 
 {-
  - Draw a polygon in the scene, defined by a list of vertices.<param name="vertices">Vertices of the polygon.<param name="referenceFrame">Reference frame that the vertices are in.<param name="visible">Whether the polygon is visible.
@@ -221,13 +221,13 @@ addPolygon verticesArg referenceFrameArg visibleArg = do
     res <- sendRequest r
     processResponse res
 
-addPolygonStreamReq :: [(Double, Double, Double)] -> KRPCHS.SpaceCenter.ReferenceFrame -> Bool -> RPCContext (KRPCStreamReq (KRPCHS.Drawing.Polygon))
-addPolygonStreamReq verticesArg referenceFrameArg visibleArg = do
+addPolygonStreamReq :: [(Double, Double, Double)] -> KRPCHS.SpaceCenter.ReferenceFrame -> Bool -> KRPCStreamReq (KRPCHS.Drawing.Polygon)
+addPolygonStreamReq verticesArg referenceFrameArg visibleArg =
     let req = makeRequest "Drawing" "AddPolygon" [makeArgument 0 verticesArg, makeArgument 1 referenceFrameArg, makeArgument 2 visibleArg]
-    return (makeStream req)
+    in  makeStream req
 
 addPolygonStream :: [(Double, Double, Double)] -> KRPCHS.SpaceCenter.ReferenceFrame -> Bool -> RPCContext (KRPCStream (KRPCHS.Drawing.Polygon))
-addPolygonStream verticesArg referenceFrameArg visibleArg = requestStream =<< addPolygonStreamReq verticesArg referenceFrameArg visibleArg 
+addPolygonStream verticesArg referenceFrameArg visibleArg = requestStream $ addPolygonStreamReq verticesArg referenceFrameArg visibleArg 
 
 {-
  - Draw text in the scene.<param name="text">The string to draw.<param name="referenceFrame">Reference frame that the text position is in.<param name="position">Position of the text.<param name="rotation">Rotation of the text, as a quaternion.<param name="visible">Whether the text is visible.
@@ -238,13 +238,13 @@ addText textArg referenceFrameArg positionArg rotationArg visibleArg = do
     res <- sendRequest r
     processResponse res
 
-addTextStreamReq :: Data.Text.Text -> KRPCHS.SpaceCenter.ReferenceFrame -> (Double, Double, Double) -> (Double, Double, Double, Double) -> Bool -> RPCContext (KRPCStreamReq (KRPCHS.Drawing.Text))
-addTextStreamReq textArg referenceFrameArg positionArg rotationArg visibleArg = do
+addTextStreamReq :: Data.Text.Text -> KRPCHS.SpaceCenter.ReferenceFrame -> (Double, Double, Double) -> (Double, Double, Double, Double) -> Bool -> KRPCStreamReq (KRPCHS.Drawing.Text)
+addTextStreamReq textArg referenceFrameArg positionArg rotationArg visibleArg =
     let req = makeRequest "Drawing" "AddText" [makeArgument 0 textArg, makeArgument 1 referenceFrameArg, makeArgument 2 positionArg, makeArgument 3 rotationArg, makeArgument 4 visibleArg]
-    return (makeStream req)
+    in  makeStream req
 
 addTextStream :: Data.Text.Text -> KRPCHS.SpaceCenter.ReferenceFrame -> (Double, Double, Double) -> (Double, Double, Double, Double) -> Bool -> RPCContext (KRPCStream (KRPCHS.Drawing.Text))
-addTextStream textArg referenceFrameArg positionArg rotationArg visibleArg = requestStream =<< addTextStreamReq textArg referenceFrameArg positionArg rotationArg visibleArg 
+addTextStream textArg referenceFrameArg positionArg rotationArg visibleArg = requestStream $ addTextStreamReq textArg referenceFrameArg positionArg rotationArg visibleArg 
 
 {-
  - Remove all objects being drawn.<param name="clientOnly">If true, only remove objects created by the calling client.
@@ -273,13 +273,13 @@ getLineColor thisArg = do
     res <- sendRequest r
     processResponse res
 
-getLineColorStreamReq :: KRPCHS.Drawing.Line -> RPCContext (KRPCStreamReq ((Double, Double, Double)))
-getLineColorStreamReq thisArg = do
+getLineColorStreamReq :: KRPCHS.Drawing.Line -> KRPCStreamReq ((Double, Double, Double))
+getLineColorStreamReq thisArg =
     let req = makeRequest "Drawing" "Line_get_Color" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getLineColorStream :: KRPCHS.Drawing.Line -> RPCContext (KRPCStream ((Double, Double, Double)))
-getLineColorStream thisArg = requestStream =<< getLineColorStreamReq thisArg 
+getLineColorStream thisArg = requestStream $ getLineColorStreamReq thisArg 
 
 {-
  - End position of the line.
@@ -290,13 +290,13 @@ getLineEnd thisArg = do
     res <- sendRequest r
     processResponse res
 
-getLineEndStreamReq :: KRPCHS.Drawing.Line -> RPCContext (KRPCStreamReq ((Double, Double, Double)))
-getLineEndStreamReq thisArg = do
+getLineEndStreamReq :: KRPCHS.Drawing.Line -> KRPCStreamReq ((Double, Double, Double))
+getLineEndStreamReq thisArg =
     let req = makeRequest "Drawing" "Line_get_End" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getLineEndStream :: KRPCHS.Drawing.Line -> RPCContext (KRPCStream ((Double, Double, Double)))
-getLineEndStream thisArg = requestStream =<< getLineEndStreamReq thisArg 
+getLineEndStream thisArg = requestStream $ getLineEndStreamReq thisArg 
 
 {-
  - Material used to render the object.
@@ -308,13 +308,13 @@ getLineMaterial thisArg = do
     res <- sendRequest r
     processResponse res
 
-getLineMaterialStreamReq :: KRPCHS.Drawing.Line -> RPCContext (KRPCStreamReq (Data.Text.Text))
-getLineMaterialStreamReq thisArg = do
+getLineMaterialStreamReq :: KRPCHS.Drawing.Line -> KRPCStreamReq (Data.Text.Text)
+getLineMaterialStreamReq thisArg =
     let req = makeRequest "Drawing" "Line_get_Material" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getLineMaterialStream :: KRPCHS.Drawing.Line -> RPCContext (KRPCStream (Data.Text.Text))
-getLineMaterialStream thisArg = requestStream =<< getLineMaterialStreamReq thisArg 
+getLineMaterialStream thisArg = requestStream $ getLineMaterialStreamReq thisArg 
 
 {-
  - Reference frame for the positions of the object.
@@ -325,13 +325,13 @@ getLineReferenceFrame thisArg = do
     res <- sendRequest r
     processResponse res
 
-getLineReferenceFrameStreamReq :: KRPCHS.Drawing.Line -> RPCContext (KRPCStreamReq (KRPCHS.SpaceCenter.ReferenceFrame))
-getLineReferenceFrameStreamReq thisArg = do
+getLineReferenceFrameStreamReq :: KRPCHS.Drawing.Line -> KRPCStreamReq (KRPCHS.SpaceCenter.ReferenceFrame)
+getLineReferenceFrameStreamReq thisArg =
     let req = makeRequest "Drawing" "Line_get_ReferenceFrame" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getLineReferenceFrameStream :: KRPCHS.Drawing.Line -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
-getLineReferenceFrameStream thisArg = requestStream =<< getLineReferenceFrameStreamReq thisArg 
+getLineReferenceFrameStream thisArg = requestStream $ getLineReferenceFrameStreamReq thisArg 
 
 {-
  - Start position of the line.
@@ -342,13 +342,13 @@ getLineStart thisArg = do
     res <- sendRequest r
     processResponse res
 
-getLineStartStreamReq :: KRPCHS.Drawing.Line -> RPCContext (KRPCStreamReq ((Double, Double, Double)))
-getLineStartStreamReq thisArg = do
+getLineStartStreamReq :: KRPCHS.Drawing.Line -> KRPCStreamReq ((Double, Double, Double))
+getLineStartStreamReq thisArg =
     let req = makeRequest "Drawing" "Line_get_Start" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getLineStartStream :: KRPCHS.Drawing.Line -> RPCContext (KRPCStream ((Double, Double, Double)))
-getLineStartStream thisArg = requestStream =<< getLineStartStreamReq thisArg 
+getLineStartStream thisArg = requestStream $ getLineStartStreamReq thisArg 
 
 {-
  - Set the thickness
@@ -359,13 +359,13 @@ getLineThickness thisArg = do
     res <- sendRequest r
     processResponse res
 
-getLineThicknessStreamReq :: KRPCHS.Drawing.Line -> RPCContext (KRPCStreamReq (Float))
-getLineThicknessStreamReq thisArg = do
+getLineThicknessStreamReq :: KRPCHS.Drawing.Line -> KRPCStreamReq (Float)
+getLineThicknessStreamReq thisArg =
     let req = makeRequest "Drawing" "Line_get_Thickness" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getLineThicknessStream :: KRPCHS.Drawing.Line -> RPCContext (KRPCStream (Float))
-getLineThicknessStream thisArg = requestStream =<< getLineThicknessStreamReq thisArg 
+getLineThicknessStream thisArg = requestStream $ getLineThicknessStreamReq thisArg 
 
 {-
  - Whether the object is visible.
@@ -376,13 +376,13 @@ getLineVisible thisArg = do
     res <- sendRequest r
     processResponse res
 
-getLineVisibleStreamReq :: KRPCHS.Drawing.Line -> RPCContext (KRPCStreamReq (Bool))
-getLineVisibleStreamReq thisArg = do
+getLineVisibleStreamReq :: KRPCHS.Drawing.Line -> KRPCStreamReq (Bool)
+getLineVisibleStreamReq thisArg =
     let req = makeRequest "Drawing" "Line_get_Visible" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getLineVisibleStream :: KRPCHS.Drawing.Line -> RPCContext (KRPCStream (Bool))
-getLineVisibleStream thisArg = requestStream =<< getLineVisibleStreamReq thisArg 
+getLineVisibleStream thisArg = requestStream $ getLineVisibleStreamReq thisArg 
 
 {-
  - Set the color
@@ -466,13 +466,13 @@ getPolygonColor thisArg = do
     res <- sendRequest r
     processResponse res
 
-getPolygonColorStreamReq :: KRPCHS.Drawing.Polygon -> RPCContext (KRPCStreamReq ((Double, Double, Double)))
-getPolygonColorStreamReq thisArg = do
+getPolygonColorStreamReq :: KRPCHS.Drawing.Polygon -> KRPCStreamReq ((Double, Double, Double))
+getPolygonColorStreamReq thisArg =
     let req = makeRequest "Drawing" "Polygon_get_Color" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getPolygonColorStream :: KRPCHS.Drawing.Polygon -> RPCContext (KRPCStream ((Double, Double, Double)))
-getPolygonColorStream thisArg = requestStream =<< getPolygonColorStreamReq thisArg 
+getPolygonColorStream thisArg = requestStream $ getPolygonColorStreamReq thisArg 
 
 {-
  - Material used to render the object.
@@ -484,13 +484,13 @@ getPolygonMaterial thisArg = do
     res <- sendRequest r
     processResponse res
 
-getPolygonMaterialStreamReq :: KRPCHS.Drawing.Polygon -> RPCContext (KRPCStreamReq (Data.Text.Text))
-getPolygonMaterialStreamReq thisArg = do
+getPolygonMaterialStreamReq :: KRPCHS.Drawing.Polygon -> KRPCStreamReq (Data.Text.Text)
+getPolygonMaterialStreamReq thisArg =
     let req = makeRequest "Drawing" "Polygon_get_Material" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getPolygonMaterialStream :: KRPCHS.Drawing.Polygon -> RPCContext (KRPCStream (Data.Text.Text))
-getPolygonMaterialStream thisArg = requestStream =<< getPolygonMaterialStreamReq thisArg 
+getPolygonMaterialStream thisArg = requestStream $ getPolygonMaterialStreamReq thisArg 
 
 {-
  - Reference frame for the positions of the object.
@@ -501,13 +501,13 @@ getPolygonReferenceFrame thisArg = do
     res <- sendRequest r
     processResponse res
 
-getPolygonReferenceFrameStreamReq :: KRPCHS.Drawing.Polygon -> RPCContext (KRPCStreamReq (KRPCHS.SpaceCenter.ReferenceFrame))
-getPolygonReferenceFrameStreamReq thisArg = do
+getPolygonReferenceFrameStreamReq :: KRPCHS.Drawing.Polygon -> KRPCStreamReq (KRPCHS.SpaceCenter.ReferenceFrame)
+getPolygonReferenceFrameStreamReq thisArg =
     let req = makeRequest "Drawing" "Polygon_get_ReferenceFrame" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getPolygonReferenceFrameStream :: KRPCHS.Drawing.Polygon -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
-getPolygonReferenceFrameStream thisArg = requestStream =<< getPolygonReferenceFrameStreamReq thisArg 
+getPolygonReferenceFrameStream thisArg = requestStream $ getPolygonReferenceFrameStreamReq thisArg 
 
 {-
  - Set the thickness
@@ -518,13 +518,13 @@ getPolygonThickness thisArg = do
     res <- sendRequest r
     processResponse res
 
-getPolygonThicknessStreamReq :: KRPCHS.Drawing.Polygon -> RPCContext (KRPCStreamReq (Float))
-getPolygonThicknessStreamReq thisArg = do
+getPolygonThicknessStreamReq :: KRPCHS.Drawing.Polygon -> KRPCStreamReq (Float)
+getPolygonThicknessStreamReq thisArg =
     let req = makeRequest "Drawing" "Polygon_get_Thickness" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getPolygonThicknessStream :: KRPCHS.Drawing.Polygon -> RPCContext (KRPCStream (Float))
-getPolygonThicknessStream thisArg = requestStream =<< getPolygonThicknessStreamReq thisArg 
+getPolygonThicknessStream thisArg = requestStream $ getPolygonThicknessStreamReq thisArg 
 
 {-
  - Vertices for the polygon.
@@ -535,13 +535,13 @@ getPolygonVertices thisArg = do
     res <- sendRequest r
     processResponse res
 
-getPolygonVerticesStreamReq :: KRPCHS.Drawing.Polygon -> RPCContext (KRPCStreamReq ([(Double, Double, Double)]))
-getPolygonVerticesStreamReq thisArg = do
+getPolygonVerticesStreamReq :: KRPCHS.Drawing.Polygon -> KRPCStreamReq ([(Double, Double, Double)])
+getPolygonVerticesStreamReq thisArg =
     let req = makeRequest "Drawing" "Polygon_get_Vertices" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getPolygonVerticesStream :: KRPCHS.Drawing.Polygon -> RPCContext (KRPCStream ([(Double, Double, Double)]))
-getPolygonVerticesStream thisArg = requestStream =<< getPolygonVerticesStreamReq thisArg 
+getPolygonVerticesStream thisArg = requestStream $ getPolygonVerticesStreamReq thisArg 
 
 {-
  - Whether the object is visible.
@@ -552,13 +552,13 @@ getPolygonVisible thisArg = do
     res <- sendRequest r
     processResponse res
 
-getPolygonVisibleStreamReq :: KRPCHS.Drawing.Polygon -> RPCContext (KRPCStreamReq (Bool))
-getPolygonVisibleStreamReq thisArg = do
+getPolygonVisibleStreamReq :: KRPCHS.Drawing.Polygon -> KRPCStreamReq (Bool)
+getPolygonVisibleStreamReq thisArg =
     let req = makeRequest "Drawing" "Polygon_get_Visible" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getPolygonVisibleStream :: KRPCHS.Drawing.Polygon -> RPCContext (KRPCStream (Bool))
-getPolygonVisibleStream thisArg = requestStream =<< getPolygonVisibleStreamReq thisArg 
+getPolygonVisibleStream thisArg = requestStream $ getPolygonVisibleStreamReq thisArg 
 
 {-
  - Set the color
@@ -633,13 +633,13 @@ getTextAlignment thisArg = do
     res <- sendRequest r
     processResponse res
 
-getTextAlignmentStreamReq :: KRPCHS.Drawing.Text -> RPCContext (KRPCStreamReq (KRPCHS.UI.TextAlignment))
-getTextAlignmentStreamReq thisArg = do
+getTextAlignmentStreamReq :: KRPCHS.Drawing.Text -> KRPCStreamReq (KRPCHS.UI.TextAlignment)
+getTextAlignmentStreamReq thisArg =
     let req = makeRequest "Drawing" "Text_get_Alignment" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getTextAlignmentStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream (KRPCHS.UI.TextAlignment))
-getTextAlignmentStream thisArg = requestStream =<< getTextAlignmentStreamReq thisArg 
+getTextAlignmentStream thisArg = requestStream $ getTextAlignmentStreamReq thisArg 
 
 {-
  - Anchor.
@@ -650,13 +650,13 @@ getTextAnchor thisArg = do
     res <- sendRequest r
     processResponse res
 
-getTextAnchorStreamReq :: KRPCHS.Drawing.Text -> RPCContext (KRPCStreamReq (KRPCHS.UI.TextAnchor))
-getTextAnchorStreamReq thisArg = do
+getTextAnchorStreamReq :: KRPCHS.Drawing.Text -> KRPCStreamReq (KRPCHS.UI.TextAnchor)
+getTextAnchorStreamReq thisArg =
     let req = makeRequest "Drawing" "Text_get_Anchor" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getTextAnchorStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream (KRPCHS.UI.TextAnchor))
-getTextAnchorStream thisArg = requestStream =<< getTextAnchorStreamReq thisArg 
+getTextAnchorStream thisArg = requestStream $ getTextAnchorStreamReq thisArg 
 
 {-
  - A list of all available fonts.
@@ -667,13 +667,13 @@ getTextAvailableFonts thisArg = do
     res <- sendRequest r
     processResponse res
 
-getTextAvailableFontsStreamReq :: KRPCHS.Drawing.Text -> RPCContext (KRPCStreamReq ([Data.Text.Text]))
-getTextAvailableFontsStreamReq thisArg = do
+getTextAvailableFontsStreamReq :: KRPCHS.Drawing.Text -> KRPCStreamReq ([Data.Text.Text])
+getTextAvailableFontsStreamReq thisArg =
     let req = makeRequest "Drawing" "Text_get_AvailableFonts" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getTextAvailableFontsStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream ([Data.Text.Text]))
-getTextAvailableFontsStream thisArg = requestStream =<< getTextAvailableFontsStreamReq thisArg 
+getTextAvailableFontsStream thisArg = requestStream $ getTextAvailableFontsStreamReq thisArg 
 
 {-
  - Character size.
@@ -684,13 +684,13 @@ getTextCharacterSize thisArg = do
     res <- sendRequest r
     processResponse res
 
-getTextCharacterSizeStreamReq :: KRPCHS.Drawing.Text -> RPCContext (KRPCStreamReq (Float))
-getTextCharacterSizeStreamReq thisArg = do
+getTextCharacterSizeStreamReq :: KRPCHS.Drawing.Text -> KRPCStreamReq (Float)
+getTextCharacterSizeStreamReq thisArg =
     let req = makeRequest "Drawing" "Text_get_CharacterSize" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getTextCharacterSizeStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream (Float))
-getTextCharacterSizeStream thisArg = requestStream =<< getTextCharacterSizeStreamReq thisArg 
+getTextCharacterSizeStream thisArg = requestStream $ getTextCharacterSizeStreamReq thisArg 
 
 {-
  - Set the color
@@ -701,13 +701,13 @@ getTextColor thisArg = do
     res <- sendRequest r
     processResponse res
 
-getTextColorStreamReq :: KRPCHS.Drawing.Text -> RPCContext (KRPCStreamReq ((Double, Double, Double)))
-getTextColorStreamReq thisArg = do
+getTextColorStreamReq :: KRPCHS.Drawing.Text -> KRPCStreamReq ((Double, Double, Double))
+getTextColorStreamReq thisArg =
     let req = makeRequest "Drawing" "Text_get_Color" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getTextColorStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream ((Double, Double, Double)))
-getTextColorStream thisArg = requestStream =<< getTextColorStreamReq thisArg 
+getTextColorStream thisArg = requestStream $ getTextColorStreamReq thisArg 
 
 {-
  - The text string
@@ -718,13 +718,13 @@ getTextContent thisArg = do
     res <- sendRequest r
     processResponse res
 
-getTextContentStreamReq :: KRPCHS.Drawing.Text -> RPCContext (KRPCStreamReq (Data.Text.Text))
-getTextContentStreamReq thisArg = do
+getTextContentStreamReq :: KRPCHS.Drawing.Text -> KRPCStreamReq (Data.Text.Text)
+getTextContentStreamReq thisArg =
     let req = makeRequest "Drawing" "Text_get_Content" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getTextContentStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream (Data.Text.Text))
-getTextContentStream thisArg = requestStream =<< getTextContentStreamReq thisArg 
+getTextContentStream thisArg = requestStream $ getTextContentStreamReq thisArg 
 
 {-
  - Name of the font
@@ -735,13 +735,13 @@ getTextFont thisArg = do
     res <- sendRequest r
     processResponse res
 
-getTextFontStreamReq :: KRPCHS.Drawing.Text -> RPCContext (KRPCStreamReq (Data.Text.Text))
-getTextFontStreamReq thisArg = do
+getTextFontStreamReq :: KRPCHS.Drawing.Text -> KRPCStreamReq (Data.Text.Text)
+getTextFontStreamReq thisArg =
     let req = makeRequest "Drawing" "Text_get_Font" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getTextFontStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream (Data.Text.Text))
-getTextFontStream thisArg = requestStream =<< getTextFontStreamReq thisArg 
+getTextFontStream thisArg = requestStream $ getTextFontStreamReq thisArg 
 
 {-
  - Line spacing.
@@ -752,13 +752,13 @@ getTextLineSpacing thisArg = do
     res <- sendRequest r
     processResponse res
 
-getTextLineSpacingStreamReq :: KRPCHS.Drawing.Text -> RPCContext (KRPCStreamReq (Float))
-getTextLineSpacingStreamReq thisArg = do
+getTextLineSpacingStreamReq :: KRPCHS.Drawing.Text -> KRPCStreamReq (Float)
+getTextLineSpacingStreamReq thisArg =
     let req = makeRequest "Drawing" "Text_get_LineSpacing" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getTextLineSpacingStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream (Float))
-getTextLineSpacingStream thisArg = requestStream =<< getTextLineSpacingStreamReq thisArg 
+getTextLineSpacingStream thisArg = requestStream $ getTextLineSpacingStreamReq thisArg 
 
 {-
  - Material used to render the object.
@@ -770,13 +770,13 @@ getTextMaterial thisArg = do
     res <- sendRequest r
     processResponse res
 
-getTextMaterialStreamReq :: KRPCHS.Drawing.Text -> RPCContext (KRPCStreamReq (Data.Text.Text))
-getTextMaterialStreamReq thisArg = do
+getTextMaterialStreamReq :: KRPCHS.Drawing.Text -> KRPCStreamReq (Data.Text.Text)
+getTextMaterialStreamReq thisArg =
     let req = makeRequest "Drawing" "Text_get_Material" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getTextMaterialStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream (Data.Text.Text))
-getTextMaterialStream thisArg = requestStream =<< getTextMaterialStreamReq thisArg 
+getTextMaterialStream thisArg = requestStream $ getTextMaterialStreamReq thisArg 
 
 {-
  - Position of the text.
@@ -787,13 +787,13 @@ getTextPosition thisArg = do
     res <- sendRequest r
     processResponse res
 
-getTextPositionStreamReq :: KRPCHS.Drawing.Text -> RPCContext (KRPCStreamReq ((Double, Double, Double)))
-getTextPositionStreamReq thisArg = do
+getTextPositionStreamReq :: KRPCHS.Drawing.Text -> KRPCStreamReq ((Double, Double, Double))
+getTextPositionStreamReq thisArg =
     let req = makeRequest "Drawing" "Text_get_Position" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getTextPositionStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream ((Double, Double, Double)))
-getTextPositionStream thisArg = requestStream =<< getTextPositionStreamReq thisArg 
+getTextPositionStream thisArg = requestStream $ getTextPositionStreamReq thisArg 
 
 {-
  - Reference frame for the positions of the object.
@@ -804,13 +804,13 @@ getTextReferenceFrame thisArg = do
     res <- sendRequest r
     processResponse res
 
-getTextReferenceFrameStreamReq :: KRPCHS.Drawing.Text -> RPCContext (KRPCStreamReq (KRPCHS.SpaceCenter.ReferenceFrame))
-getTextReferenceFrameStreamReq thisArg = do
+getTextReferenceFrameStreamReq :: KRPCHS.Drawing.Text -> KRPCStreamReq (KRPCHS.SpaceCenter.ReferenceFrame)
+getTextReferenceFrameStreamReq thisArg =
     let req = makeRequest "Drawing" "Text_get_ReferenceFrame" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getTextReferenceFrameStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
-getTextReferenceFrameStream thisArg = requestStream =<< getTextReferenceFrameStreamReq thisArg 
+getTextReferenceFrameStream thisArg = requestStream $ getTextReferenceFrameStreamReq thisArg 
 
 {-
  - Rotation of the text as a quaternion.
@@ -821,13 +821,13 @@ getTextRotation thisArg = do
     res <- sendRequest r
     processResponse res
 
-getTextRotationStreamReq :: KRPCHS.Drawing.Text -> RPCContext (KRPCStreamReq ((Double, Double, Double, Double)))
-getTextRotationStreamReq thisArg = do
+getTextRotationStreamReq :: KRPCHS.Drawing.Text -> KRPCStreamReq ((Double, Double, Double, Double))
+getTextRotationStreamReq thisArg =
     let req = makeRequest "Drawing" "Text_get_Rotation" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getTextRotationStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream ((Double, Double, Double, Double)))
-getTextRotationStream thisArg = requestStream =<< getTextRotationStreamReq thisArg 
+getTextRotationStream thisArg = requestStream $ getTextRotationStreamReq thisArg 
 
 {-
  - Font size.
@@ -838,13 +838,13 @@ getTextSize thisArg = do
     res <- sendRequest r
     processResponse res
 
-getTextSizeStreamReq :: KRPCHS.Drawing.Text -> RPCContext (KRPCStreamReq (Data.Int.Int32))
-getTextSizeStreamReq thisArg = do
+getTextSizeStreamReq :: KRPCHS.Drawing.Text -> KRPCStreamReq (Data.Int.Int32)
+getTextSizeStreamReq thisArg =
     let req = makeRequest "Drawing" "Text_get_Size" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getTextSizeStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream (Data.Int.Int32))
-getTextSizeStream thisArg = requestStream =<< getTextSizeStreamReq thisArg 
+getTextSizeStream thisArg = requestStream $ getTextSizeStreamReq thisArg 
 
 {-
  - Font style.
@@ -855,13 +855,13 @@ getTextStyle thisArg = do
     res <- sendRequest r
     processResponse res
 
-getTextStyleStreamReq :: KRPCHS.Drawing.Text -> RPCContext (KRPCStreamReq (KRPCHS.UI.FontStyle))
-getTextStyleStreamReq thisArg = do
+getTextStyleStreamReq :: KRPCHS.Drawing.Text -> KRPCStreamReq (KRPCHS.UI.FontStyle)
+getTextStyleStreamReq thisArg =
     let req = makeRequest "Drawing" "Text_get_Style" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getTextStyleStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream (KRPCHS.UI.FontStyle))
-getTextStyleStream thisArg = requestStream =<< getTextStyleStreamReq thisArg 
+getTextStyleStream thisArg = requestStream $ getTextStyleStreamReq thisArg 
 
 {-
  - Whether the object is visible.
@@ -872,13 +872,13 @@ getTextVisible thisArg = do
     res <- sendRequest r
     processResponse res
 
-getTextVisibleStreamReq :: KRPCHS.Drawing.Text -> RPCContext (KRPCStreamReq (Bool))
-getTextVisibleStreamReq thisArg = do
+getTextVisibleStreamReq :: KRPCHS.Drawing.Text -> KRPCStreamReq (Bool)
+getTextVisibleStreamReq thisArg =
     let req = makeRequest "Drawing" "Text_get_Visible" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getTextVisibleStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream (Bool))
-getTextVisibleStream thisArg = requestStream =<< getTextVisibleStreamReq thisArg 
+getTextVisibleStream thisArg = requestStream $ getTextVisibleStreamReq thisArg 
 
 {-
  - Alignment.

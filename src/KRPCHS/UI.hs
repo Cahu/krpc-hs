@@ -332,13 +332,13 @@ addCanvas  = do
     res <- sendRequest r
     processResponse res
 
-addCanvasStreamReq :: RPCContext (KRPCStreamReq (KRPCHS.UI.Canvas))
-addCanvasStreamReq  = do
+addCanvasStreamReq :: KRPCStreamReq (KRPCHS.UI.Canvas)
+addCanvasStreamReq  =
     let req = makeRequest "UI" "AddCanvas" []
-    return (makeStream req)
+    in  makeStream req
 
 addCanvasStream :: RPCContext (KRPCStream (KRPCHS.UI.Canvas))
-addCanvasStream  = requestStream =<< addCanvasStreamReq  
+addCanvasStream  = requestStream $ addCanvasStreamReq  
 
 {-
  - Remove the UI object.
@@ -359,13 +359,13 @@ getButtonClicked thisArg = do
     res <- sendRequest r
     processResponse res
 
-getButtonClickedStreamReq :: KRPCHS.UI.Button -> RPCContext (KRPCStreamReq (Bool))
-getButtonClickedStreamReq thisArg = do
+getButtonClickedStreamReq :: KRPCHS.UI.Button -> KRPCStreamReq (Bool)
+getButtonClickedStreamReq thisArg =
     let req = makeRequest "UI" "Button_get_Clicked" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getButtonClickedStream :: KRPCHS.UI.Button -> RPCContext (KRPCStream (Bool))
-getButtonClickedStream thisArg = requestStream =<< getButtonClickedStreamReq thisArg 
+getButtonClickedStream thisArg = requestStream $ getButtonClickedStreamReq thisArg 
 
 {-
  - The rect transform for the text.
@@ -376,13 +376,13 @@ getButtonRectTransform thisArg = do
     res <- sendRequest r
     processResponse res
 
-getButtonRectTransformStreamReq :: KRPCHS.UI.Button -> RPCContext (KRPCStreamReq (KRPCHS.UI.RectTransform))
-getButtonRectTransformStreamReq thisArg = do
+getButtonRectTransformStreamReq :: KRPCHS.UI.Button -> KRPCStreamReq (KRPCHS.UI.RectTransform)
+getButtonRectTransformStreamReq thisArg =
     let req = makeRequest "UI" "Button_get_RectTransform" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getButtonRectTransformStream :: KRPCHS.UI.Button -> RPCContext (KRPCStream (KRPCHS.UI.RectTransform))
-getButtonRectTransformStream thisArg = requestStream =<< getButtonRectTransformStreamReq thisArg 
+getButtonRectTransformStream thisArg = requestStream $ getButtonRectTransformStreamReq thisArg 
 
 {-
  - The text for the button.
@@ -393,13 +393,13 @@ getButtonText thisArg = do
     res <- sendRequest r
     processResponse res
 
-getButtonTextStreamReq :: KRPCHS.UI.Button -> RPCContext (KRPCStreamReq (KRPCHS.UI.Text))
-getButtonTextStreamReq thisArg = do
+getButtonTextStreamReq :: KRPCHS.UI.Button -> KRPCStreamReq (KRPCHS.UI.Text)
+getButtonTextStreamReq thisArg =
     let req = makeRequest "UI" "Button_get_Text" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getButtonTextStream :: KRPCHS.UI.Button -> RPCContext (KRPCStream (KRPCHS.UI.Text))
-getButtonTextStream thisArg = requestStream =<< getButtonTextStreamReq thisArg 
+getButtonTextStream thisArg = requestStream $ getButtonTextStreamReq thisArg 
 
 {-
  - Whether the UI object is visible.
@@ -410,13 +410,13 @@ getButtonVisible thisArg = do
     res <- sendRequest r
     processResponse res
 
-getButtonVisibleStreamReq :: KRPCHS.UI.Button -> RPCContext (KRPCStreamReq (Bool))
-getButtonVisibleStreamReq thisArg = do
+getButtonVisibleStreamReq :: KRPCHS.UI.Button -> KRPCStreamReq (Bool)
+getButtonVisibleStreamReq thisArg =
     let req = makeRequest "UI" "Button_get_Visible" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getButtonVisibleStream :: KRPCHS.UI.Button -> RPCContext (KRPCStream (Bool))
-getButtonVisibleStream thisArg = requestStream =<< getButtonVisibleStreamReq thisArg 
+getButtonVisibleStream thisArg = requestStream $ getButtonVisibleStreamReq thisArg 
 
 {-
  - Whether the button has been clicked.This property is set to true when the user clicks the button.
@@ -446,13 +446,13 @@ canvasAddButton thisArg contentArg visibleArg = do
     res <- sendRequest r
     processResponse res
 
-canvasAddButtonStreamReq :: KRPCHS.UI.Canvas -> Data.Text.Text -> Bool -> RPCContext (KRPCStreamReq (KRPCHS.UI.Button))
-canvasAddButtonStreamReq thisArg contentArg visibleArg = do
+canvasAddButtonStreamReq :: KRPCHS.UI.Canvas -> Data.Text.Text -> Bool -> KRPCStreamReq (KRPCHS.UI.Button)
+canvasAddButtonStreamReq thisArg contentArg visibleArg =
     let req = makeRequest "UI" "Canvas_AddButton" [makeArgument 0 thisArg, makeArgument 1 contentArg, makeArgument 2 visibleArg]
-    return (makeStream req)
+    in  makeStream req
 
 canvasAddButtonStream :: KRPCHS.UI.Canvas -> Data.Text.Text -> Bool -> RPCContext (KRPCStream (KRPCHS.UI.Button))
-canvasAddButtonStream thisArg contentArg visibleArg = requestStream =<< canvasAddButtonStreamReq thisArg contentArg visibleArg 
+canvasAddButtonStream thisArg contentArg visibleArg = requestStream $ canvasAddButtonStreamReq thisArg contentArg visibleArg 
 
 {-
  - Add an input field to the canvas.<param name="visible">Whether the input field is visible.
@@ -463,13 +463,13 @@ canvasAddInputField thisArg visibleArg = do
     res <- sendRequest r
     processResponse res
 
-canvasAddInputFieldStreamReq :: KRPCHS.UI.Canvas -> Bool -> RPCContext (KRPCStreamReq (KRPCHS.UI.InputField))
-canvasAddInputFieldStreamReq thisArg visibleArg = do
+canvasAddInputFieldStreamReq :: KRPCHS.UI.Canvas -> Bool -> KRPCStreamReq (KRPCHS.UI.InputField)
+canvasAddInputFieldStreamReq thisArg visibleArg =
     let req = makeRequest "UI" "Canvas_AddInputField" [makeArgument 0 thisArg, makeArgument 1 visibleArg]
-    return (makeStream req)
+    in  makeStream req
 
 canvasAddInputFieldStream :: KRPCHS.UI.Canvas -> Bool -> RPCContext (KRPCStream (KRPCHS.UI.InputField))
-canvasAddInputFieldStream thisArg visibleArg = requestStream =<< canvasAddInputFieldStreamReq thisArg visibleArg 
+canvasAddInputFieldStream thisArg visibleArg = requestStream $ canvasAddInputFieldStreamReq thisArg visibleArg 
 
 {-
  - Create a new container for user interface elements.<param name="visible">Whether the panel is visible.
@@ -480,13 +480,13 @@ canvasAddPanel thisArg visibleArg = do
     res <- sendRequest r
     processResponse res
 
-canvasAddPanelStreamReq :: KRPCHS.UI.Canvas -> Bool -> RPCContext (KRPCStreamReq (KRPCHS.UI.Panel))
-canvasAddPanelStreamReq thisArg visibleArg = do
+canvasAddPanelStreamReq :: KRPCHS.UI.Canvas -> Bool -> KRPCStreamReq (KRPCHS.UI.Panel)
+canvasAddPanelStreamReq thisArg visibleArg =
     let req = makeRequest "UI" "Canvas_AddPanel" [makeArgument 0 thisArg, makeArgument 1 visibleArg]
-    return (makeStream req)
+    in  makeStream req
 
 canvasAddPanelStream :: KRPCHS.UI.Canvas -> Bool -> RPCContext (KRPCStream (KRPCHS.UI.Panel))
-canvasAddPanelStream thisArg visibleArg = requestStream =<< canvasAddPanelStreamReq thisArg visibleArg 
+canvasAddPanelStream thisArg visibleArg = requestStream $ canvasAddPanelStreamReq thisArg visibleArg 
 
 {-
  - Add text to the canvas.<param name="content">The text.<param name="visible">Whether the text is visible.
@@ -497,13 +497,13 @@ canvasAddText thisArg contentArg visibleArg = do
     res <- sendRequest r
     processResponse res
 
-canvasAddTextStreamReq :: KRPCHS.UI.Canvas -> Data.Text.Text -> Bool -> RPCContext (KRPCStreamReq (KRPCHS.UI.Text))
-canvasAddTextStreamReq thisArg contentArg visibleArg = do
+canvasAddTextStreamReq :: KRPCHS.UI.Canvas -> Data.Text.Text -> Bool -> KRPCStreamReq (KRPCHS.UI.Text)
+canvasAddTextStreamReq thisArg contentArg visibleArg =
     let req = makeRequest "UI" "Canvas_AddText" [makeArgument 0 thisArg, makeArgument 1 contentArg, makeArgument 2 visibleArg]
-    return (makeStream req)
+    in  makeStream req
 
 canvasAddTextStream :: KRPCHS.UI.Canvas -> Data.Text.Text -> Bool -> RPCContext (KRPCStream (KRPCHS.UI.Text))
-canvasAddTextStream thisArg contentArg visibleArg = requestStream =<< canvasAddTextStreamReq thisArg contentArg visibleArg 
+canvasAddTextStream thisArg contentArg visibleArg = requestStream $ canvasAddTextStreamReq thisArg contentArg visibleArg 
 
 {-
  - Remove the UI object.
@@ -523,13 +523,13 @@ getCanvasRectTransform thisArg = do
     res <- sendRequest r
     processResponse res
 
-getCanvasRectTransformStreamReq :: KRPCHS.UI.Canvas -> RPCContext (KRPCStreamReq (KRPCHS.UI.RectTransform))
-getCanvasRectTransformStreamReq thisArg = do
+getCanvasRectTransformStreamReq :: KRPCHS.UI.Canvas -> KRPCStreamReq (KRPCHS.UI.RectTransform)
+getCanvasRectTransformStreamReq thisArg =
     let req = makeRequest "UI" "Canvas_get_RectTransform" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getCanvasRectTransformStream :: KRPCHS.UI.Canvas -> RPCContext (KRPCStream (KRPCHS.UI.RectTransform))
-getCanvasRectTransformStream thisArg = requestStream =<< getCanvasRectTransformStreamReq thisArg 
+getCanvasRectTransformStream thisArg = requestStream $ getCanvasRectTransformStreamReq thisArg 
 
 {-
  - Whether the UI object is visible.
@@ -540,13 +540,13 @@ getCanvasVisible thisArg = do
     res <- sendRequest r
     processResponse res
 
-getCanvasVisibleStreamReq :: KRPCHS.UI.Canvas -> RPCContext (KRPCStreamReq (Bool))
-getCanvasVisibleStreamReq thisArg = do
+getCanvasVisibleStreamReq :: KRPCHS.UI.Canvas -> KRPCStreamReq (Bool)
+getCanvasVisibleStreamReq thisArg =
     let req = makeRequest "UI" "Canvas_get_Visible" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getCanvasVisibleStream :: KRPCHS.UI.Canvas -> RPCContext (KRPCStream (Bool))
-getCanvasVisibleStream thisArg = requestStream =<< getCanvasVisibleStreamReq thisArg 
+getCanvasVisibleStream thisArg = requestStream $ getCanvasVisibleStreamReq thisArg 
 
 {-
  - Whether the UI object is visible.
@@ -585,13 +585,13 @@ getInputFieldChanged thisArg = do
     res <- sendRequest r
     processResponse res
 
-getInputFieldChangedStreamReq :: KRPCHS.UI.InputField -> RPCContext (KRPCStreamReq (Bool))
-getInputFieldChangedStreamReq thisArg = do
+getInputFieldChangedStreamReq :: KRPCHS.UI.InputField -> KRPCStreamReq (Bool)
+getInputFieldChangedStreamReq thisArg =
     let req = makeRequest "UI" "InputField_get_Changed" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getInputFieldChangedStream :: KRPCHS.UI.InputField -> RPCContext (KRPCStream (Bool))
-getInputFieldChangedStream thisArg = requestStream =<< getInputFieldChangedStreamReq thisArg 
+getInputFieldChangedStream thisArg = requestStream $ getInputFieldChangedStreamReq thisArg 
 
 {-
  - The rect transform for the input field.
@@ -602,13 +602,13 @@ getInputFieldRectTransform thisArg = do
     res <- sendRequest r
     processResponse res
 
-getInputFieldRectTransformStreamReq :: KRPCHS.UI.InputField -> RPCContext (KRPCStreamReq (KRPCHS.UI.RectTransform))
-getInputFieldRectTransformStreamReq thisArg = do
+getInputFieldRectTransformStreamReq :: KRPCHS.UI.InputField -> KRPCStreamReq (KRPCHS.UI.RectTransform)
+getInputFieldRectTransformStreamReq thisArg =
     let req = makeRequest "UI" "InputField_get_RectTransform" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getInputFieldRectTransformStream :: KRPCHS.UI.InputField -> RPCContext (KRPCStream (KRPCHS.UI.RectTransform))
-getInputFieldRectTransformStream thisArg = requestStream =<< getInputFieldRectTransformStreamReq thisArg 
+getInputFieldRectTransformStream thisArg = requestStream $ getInputFieldRectTransformStreamReq thisArg 
 
 {-
  - The text component of the input field.Use <see cref="M:UI.InputField.Value" /> to get and set the value in the field.
@@ -620,13 +620,13 @@ getInputFieldText thisArg = do
     res <- sendRequest r
     processResponse res
 
-getInputFieldTextStreamReq :: KRPCHS.UI.InputField -> RPCContext (KRPCStreamReq (KRPCHS.UI.Text))
-getInputFieldTextStreamReq thisArg = do
+getInputFieldTextStreamReq :: KRPCHS.UI.InputField -> KRPCStreamReq (KRPCHS.UI.Text)
+getInputFieldTextStreamReq thisArg =
     let req = makeRequest "UI" "InputField_get_Text" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getInputFieldTextStream :: KRPCHS.UI.InputField -> RPCContext (KRPCStream (KRPCHS.UI.Text))
-getInputFieldTextStream thisArg = requestStream =<< getInputFieldTextStreamReq thisArg 
+getInputFieldTextStream thisArg = requestStream $ getInputFieldTextStreamReq thisArg 
 
 {-
  - The value of the input field.
@@ -637,13 +637,13 @@ getInputFieldValue thisArg = do
     res <- sendRequest r
     processResponse res
 
-getInputFieldValueStreamReq :: KRPCHS.UI.InputField -> RPCContext (KRPCStreamReq (Data.Text.Text))
-getInputFieldValueStreamReq thisArg = do
+getInputFieldValueStreamReq :: KRPCHS.UI.InputField -> KRPCStreamReq (Data.Text.Text)
+getInputFieldValueStreamReq thisArg =
     let req = makeRequest "UI" "InputField_get_Value" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getInputFieldValueStream :: KRPCHS.UI.InputField -> RPCContext (KRPCStream (Data.Text.Text))
-getInputFieldValueStream thisArg = requestStream =<< getInputFieldValueStreamReq thisArg 
+getInputFieldValueStream thisArg = requestStream $ getInputFieldValueStreamReq thisArg 
 
 {-
  - Whether the UI object is visible.
@@ -654,13 +654,13 @@ getInputFieldVisible thisArg = do
     res <- sendRequest r
     processResponse res
 
-getInputFieldVisibleStreamReq :: KRPCHS.UI.InputField -> RPCContext (KRPCStreamReq (Bool))
-getInputFieldVisibleStreamReq thisArg = do
+getInputFieldVisibleStreamReq :: KRPCHS.UI.InputField -> KRPCStreamReq (Bool)
+getInputFieldVisibleStreamReq thisArg =
     let req = makeRequest "UI" "InputField_get_Visible" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getInputFieldVisibleStream :: KRPCHS.UI.InputField -> RPCContext (KRPCStream (Bool))
-getInputFieldVisibleStream thisArg = requestStream =<< getInputFieldVisibleStreamReq thisArg 
+getInputFieldVisibleStream thisArg = requestStream $ getInputFieldVisibleStreamReq thisArg 
 
 {-
  - Whether the input field has been changed.This property is set to true when the user modifies the value of the input field.
@@ -708,13 +708,13 @@ panelAddButton thisArg contentArg visibleArg = do
     res <- sendRequest r
     processResponse res
 
-panelAddButtonStreamReq :: KRPCHS.UI.Panel -> Data.Text.Text -> Bool -> RPCContext (KRPCStreamReq (KRPCHS.UI.Button))
-panelAddButtonStreamReq thisArg contentArg visibleArg = do
+panelAddButtonStreamReq :: KRPCHS.UI.Panel -> Data.Text.Text -> Bool -> KRPCStreamReq (KRPCHS.UI.Button)
+panelAddButtonStreamReq thisArg contentArg visibleArg =
     let req = makeRequest "UI" "Panel_AddButton" [makeArgument 0 thisArg, makeArgument 1 contentArg, makeArgument 2 visibleArg]
-    return (makeStream req)
+    in  makeStream req
 
 panelAddButtonStream :: KRPCHS.UI.Panel -> Data.Text.Text -> Bool -> RPCContext (KRPCStream (KRPCHS.UI.Button))
-panelAddButtonStream thisArg contentArg visibleArg = requestStream =<< panelAddButtonStreamReq thisArg contentArg visibleArg 
+panelAddButtonStream thisArg contentArg visibleArg = requestStream $ panelAddButtonStreamReq thisArg contentArg visibleArg 
 
 {-
  - Add an input field to the panel.<param name="visible">Whether the input field is visible.
@@ -725,13 +725,13 @@ panelAddInputField thisArg visibleArg = do
     res <- sendRequest r
     processResponse res
 
-panelAddInputFieldStreamReq :: KRPCHS.UI.Panel -> Bool -> RPCContext (KRPCStreamReq (KRPCHS.UI.InputField))
-panelAddInputFieldStreamReq thisArg visibleArg = do
+panelAddInputFieldStreamReq :: KRPCHS.UI.Panel -> Bool -> KRPCStreamReq (KRPCHS.UI.InputField)
+panelAddInputFieldStreamReq thisArg visibleArg =
     let req = makeRequest "UI" "Panel_AddInputField" [makeArgument 0 thisArg, makeArgument 1 visibleArg]
-    return (makeStream req)
+    in  makeStream req
 
 panelAddInputFieldStream :: KRPCHS.UI.Panel -> Bool -> RPCContext (KRPCStream (KRPCHS.UI.InputField))
-panelAddInputFieldStream thisArg visibleArg = requestStream =<< panelAddInputFieldStreamReq thisArg visibleArg 
+panelAddInputFieldStream thisArg visibleArg = requestStream $ panelAddInputFieldStreamReq thisArg visibleArg 
 
 {-
  - Create a panel within this panel.<param name="visible">Whether the new panel is visible.
@@ -742,13 +742,13 @@ panelAddPanel thisArg visibleArg = do
     res <- sendRequest r
     processResponse res
 
-panelAddPanelStreamReq :: KRPCHS.UI.Panel -> Bool -> RPCContext (KRPCStreamReq (KRPCHS.UI.Panel))
-panelAddPanelStreamReq thisArg visibleArg = do
+panelAddPanelStreamReq :: KRPCHS.UI.Panel -> Bool -> KRPCStreamReq (KRPCHS.UI.Panel)
+panelAddPanelStreamReq thisArg visibleArg =
     let req = makeRequest "UI" "Panel_AddPanel" [makeArgument 0 thisArg, makeArgument 1 visibleArg]
-    return (makeStream req)
+    in  makeStream req
 
 panelAddPanelStream :: KRPCHS.UI.Panel -> Bool -> RPCContext (KRPCStream (KRPCHS.UI.Panel))
-panelAddPanelStream thisArg visibleArg = requestStream =<< panelAddPanelStreamReq thisArg visibleArg 
+panelAddPanelStream thisArg visibleArg = requestStream $ panelAddPanelStreamReq thisArg visibleArg 
 
 {-
  - Add text to the panel.<param name="content">The text.<param name="visible">Whether the text is visible.
@@ -759,13 +759,13 @@ panelAddText thisArg contentArg visibleArg = do
     res <- sendRequest r
     processResponse res
 
-panelAddTextStreamReq :: KRPCHS.UI.Panel -> Data.Text.Text -> Bool -> RPCContext (KRPCStreamReq (KRPCHS.UI.Text))
-panelAddTextStreamReq thisArg contentArg visibleArg = do
+panelAddTextStreamReq :: KRPCHS.UI.Panel -> Data.Text.Text -> Bool -> KRPCStreamReq (KRPCHS.UI.Text)
+panelAddTextStreamReq thisArg contentArg visibleArg =
     let req = makeRequest "UI" "Panel_AddText" [makeArgument 0 thisArg, makeArgument 1 contentArg, makeArgument 2 visibleArg]
-    return (makeStream req)
+    in  makeStream req
 
 panelAddTextStream :: KRPCHS.UI.Panel -> Data.Text.Text -> Bool -> RPCContext (KRPCStream (KRPCHS.UI.Text))
-panelAddTextStream thisArg contentArg visibleArg = requestStream =<< panelAddTextStreamReq thisArg contentArg visibleArg 
+panelAddTextStream thisArg contentArg visibleArg = requestStream $ panelAddTextStreamReq thisArg contentArg visibleArg 
 
 {-
  - Remove the UI object.
@@ -785,13 +785,13 @@ getPanelRectTransform thisArg = do
     res <- sendRequest r
     processResponse res
 
-getPanelRectTransformStreamReq :: KRPCHS.UI.Panel -> RPCContext (KRPCStreamReq (KRPCHS.UI.RectTransform))
-getPanelRectTransformStreamReq thisArg = do
+getPanelRectTransformStreamReq :: KRPCHS.UI.Panel -> KRPCStreamReq (KRPCHS.UI.RectTransform)
+getPanelRectTransformStreamReq thisArg =
     let req = makeRequest "UI" "Panel_get_RectTransform" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getPanelRectTransformStream :: KRPCHS.UI.Panel -> RPCContext (KRPCStream (KRPCHS.UI.RectTransform))
-getPanelRectTransformStream thisArg = requestStream =<< getPanelRectTransformStreamReq thisArg 
+getPanelRectTransformStream thisArg = requestStream $ getPanelRectTransformStreamReq thisArg 
 
 {-
  - Whether the UI object is visible.
@@ -802,13 +802,13 @@ getPanelVisible thisArg = do
     res <- sendRequest r
     processResponse res
 
-getPanelVisibleStreamReq :: KRPCHS.UI.Panel -> RPCContext (KRPCStreamReq (Bool))
-getPanelVisibleStreamReq thisArg = do
+getPanelVisibleStreamReq :: KRPCHS.UI.Panel -> KRPCStreamReq (Bool)
+getPanelVisibleStreamReq thisArg =
     let req = makeRequest "UI" "Panel_get_Visible" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getPanelVisibleStream :: KRPCHS.UI.Panel -> RPCContext (KRPCStream (Bool))
-getPanelVisibleStream thisArg = requestStream =<< getPanelVisibleStreamReq thisArg 
+getPanelVisibleStream thisArg = requestStream $ getPanelVisibleStreamReq thisArg 
 
 {-
  - Whether the UI object is visible.
@@ -828,13 +828,13 @@ getRectTransformAnchorMax thisArg = do
     res <- sendRequest r
     processResponse res
 
-getRectTransformAnchorMaxStreamReq :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStreamReq ((Double, Double)))
-getRectTransformAnchorMaxStreamReq thisArg = do
+getRectTransformAnchorMaxStreamReq :: KRPCHS.UI.RectTransform -> KRPCStreamReq ((Double, Double))
+getRectTransformAnchorMaxStreamReq thisArg =
     let req = makeRequest "UI" "RectTransform_get_AnchorMax" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getRectTransformAnchorMaxStream :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStream ((Double, Double)))
-getRectTransformAnchorMaxStream thisArg = requestStream =<< getRectTransformAnchorMaxStreamReq thisArg 
+getRectTransformAnchorMaxStream thisArg = requestStream $ getRectTransformAnchorMaxStreamReq thisArg 
 
 {-
  - The anchor point for the upper right corner of the rectangle defined as a fraction of the size of the parent rectangle.
@@ -845,13 +845,13 @@ getRectTransformAnchorMin thisArg = do
     res <- sendRequest r
     processResponse res
 
-getRectTransformAnchorMinStreamReq :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStreamReq ((Double, Double)))
-getRectTransformAnchorMinStreamReq thisArg = do
+getRectTransformAnchorMinStreamReq :: KRPCHS.UI.RectTransform -> KRPCStreamReq ((Double, Double))
+getRectTransformAnchorMinStreamReq thisArg =
     let req = makeRequest "UI" "RectTransform_get_AnchorMin" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getRectTransformAnchorMinStream :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStream ((Double, Double)))
-getRectTransformAnchorMinStream thisArg = requestStream =<< getRectTransformAnchorMinStreamReq thisArg 
+getRectTransformAnchorMinStream thisArg = requestStream $ getRectTransformAnchorMinStreamReq thisArg 
 
 {-
  - Position of the rectangles pivot point relative to the anchors.
@@ -862,13 +862,13 @@ getRectTransformLocalPosition thisArg = do
     res <- sendRequest r
     processResponse res
 
-getRectTransformLocalPositionStreamReq :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStreamReq ((Double, Double, Double)))
-getRectTransformLocalPositionStreamReq thisArg = do
+getRectTransformLocalPositionStreamReq :: KRPCHS.UI.RectTransform -> KRPCStreamReq ((Double, Double, Double))
+getRectTransformLocalPositionStreamReq thisArg =
     let req = makeRequest "UI" "RectTransform_get_LocalPosition" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getRectTransformLocalPositionStream :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStream ((Double, Double, Double)))
-getRectTransformLocalPositionStream thisArg = requestStream =<< getRectTransformLocalPositionStreamReq thisArg 
+getRectTransformLocalPositionStream thisArg = requestStream $ getRectTransformLocalPositionStreamReq thisArg 
 
 {-
  - Position of the rectangles lower left corner relative to the anchors.
@@ -879,13 +879,13 @@ getRectTransformLowerLeft thisArg = do
     res <- sendRequest r
     processResponse res
 
-getRectTransformLowerLeftStreamReq :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStreamReq ((Double, Double)))
-getRectTransformLowerLeftStreamReq thisArg = do
+getRectTransformLowerLeftStreamReq :: KRPCHS.UI.RectTransform -> KRPCStreamReq ((Double, Double))
+getRectTransformLowerLeftStreamReq thisArg =
     let req = makeRequest "UI" "RectTransform_get_LowerLeft" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getRectTransformLowerLeftStream :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStream ((Double, Double)))
-getRectTransformLowerLeftStream thisArg = requestStream =<< getRectTransformLowerLeftStreamReq thisArg 
+getRectTransformLowerLeftStream thisArg = requestStream $ getRectTransformLowerLeftStreamReq thisArg 
 
 {-
  - Location of the pivot point around which the rectangle rotates, defined as a fraction of the size of the rectangle itself.
@@ -896,13 +896,13 @@ getRectTransformPivot thisArg = do
     res <- sendRequest r
     processResponse res
 
-getRectTransformPivotStreamReq :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStreamReq ((Double, Double)))
-getRectTransformPivotStreamReq thisArg = do
+getRectTransformPivotStreamReq :: KRPCHS.UI.RectTransform -> KRPCStreamReq ((Double, Double))
+getRectTransformPivotStreamReq thisArg =
     let req = makeRequest "UI" "RectTransform_get_Pivot" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getRectTransformPivotStream :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStream ((Double, Double)))
-getRectTransformPivotStream thisArg = requestStream =<< getRectTransformPivotStreamReq thisArg 
+getRectTransformPivotStream thisArg = requestStream $ getRectTransformPivotStreamReq thisArg 
 
 {-
  - Position of the rectangles pivot point relative to the anchors.
@@ -913,13 +913,13 @@ getRectTransformPosition thisArg = do
     res <- sendRequest r
     processResponse res
 
-getRectTransformPositionStreamReq :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStreamReq ((Double, Double)))
-getRectTransformPositionStreamReq thisArg = do
+getRectTransformPositionStreamReq :: KRPCHS.UI.RectTransform -> KRPCStreamReq ((Double, Double))
+getRectTransformPositionStreamReq thisArg =
     let req = makeRequest "UI" "RectTransform_get_Position" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getRectTransformPositionStream :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStream ((Double, Double)))
-getRectTransformPositionStream thisArg = requestStream =<< getRectTransformPositionStreamReq thisArg 
+getRectTransformPositionStream thisArg = requestStream $ getRectTransformPositionStreamReq thisArg 
 
 {-
  - Rotation, as a quaternion, of the object around its pivot point.
@@ -930,13 +930,13 @@ getRectTransformRotation thisArg = do
     res <- sendRequest r
     processResponse res
 
-getRectTransformRotationStreamReq :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStreamReq ((Double, Double, Double, Double)))
-getRectTransformRotationStreamReq thisArg = do
+getRectTransformRotationStreamReq :: KRPCHS.UI.RectTransform -> KRPCStreamReq ((Double, Double, Double, Double))
+getRectTransformRotationStreamReq thisArg =
     let req = makeRequest "UI" "RectTransform_get_Rotation" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getRectTransformRotationStream :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStream ((Double, Double, Double, Double)))
-getRectTransformRotationStream thisArg = requestStream =<< getRectTransformRotationStreamReq thisArg 
+getRectTransformRotationStream thisArg = requestStream $ getRectTransformRotationStreamReq thisArg 
 
 {-
  - Scale factor applied to the object in the x, y and z dimensions.
@@ -947,13 +947,13 @@ getRectTransformScale thisArg = do
     res <- sendRequest r
     processResponse res
 
-getRectTransformScaleStreamReq :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStreamReq ((Double, Double, Double)))
-getRectTransformScaleStreamReq thisArg = do
+getRectTransformScaleStreamReq :: KRPCHS.UI.RectTransform -> KRPCStreamReq ((Double, Double, Double))
+getRectTransformScaleStreamReq thisArg =
     let req = makeRequest "UI" "RectTransform_get_Scale" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getRectTransformScaleStream :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStream ((Double, Double, Double)))
-getRectTransformScaleStream thisArg = requestStream =<< getRectTransformScaleStreamReq thisArg 
+getRectTransformScaleStream thisArg = requestStream $ getRectTransformScaleStreamReq thisArg 
 
 {-
  - Width and height of the rectangle.
@@ -964,13 +964,13 @@ getRectTransformSize thisArg = do
     res <- sendRequest r
     processResponse res
 
-getRectTransformSizeStreamReq :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStreamReq ((Double, Double)))
-getRectTransformSizeStreamReq thisArg = do
+getRectTransformSizeStreamReq :: KRPCHS.UI.RectTransform -> KRPCStreamReq ((Double, Double))
+getRectTransformSizeStreamReq thisArg =
     let req = makeRequest "UI" "RectTransform_get_Size" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getRectTransformSizeStream :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStream ((Double, Double)))
-getRectTransformSizeStream thisArg = requestStream =<< getRectTransformSizeStreamReq thisArg 
+getRectTransformSizeStream thisArg = requestStream $ getRectTransformSizeStreamReq thisArg 
 
 {-
  - Position of the rectangles upper right corner relative to the anchors.
@@ -981,13 +981,13 @@ getRectTransformUpperRight thisArg = do
     res <- sendRequest r
     processResponse res
 
-getRectTransformUpperRightStreamReq :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStreamReq ((Double, Double)))
-getRectTransformUpperRightStreamReq thisArg = do
+getRectTransformUpperRightStreamReq :: KRPCHS.UI.RectTransform -> KRPCStreamReq ((Double, Double))
+getRectTransformUpperRightStreamReq thisArg =
     let req = makeRequest "UI" "RectTransform_get_UpperRight" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getRectTransformUpperRightStream :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStream ((Double, Double)))
-getRectTransformUpperRightStream thisArg = requestStream =<< getRectTransformUpperRightStreamReq thisArg 
+getRectTransformUpperRightStream thisArg = requestStream $ getRectTransformUpperRightStreamReq thisArg 
 
 {-
  - Set the minimum and maximum anchor points as a fraction of the size of the parent rectangle.
@@ -1106,13 +1106,13 @@ getTextAlignment thisArg = do
     res <- sendRequest r
     processResponse res
 
-getTextAlignmentStreamReq :: KRPCHS.UI.Text -> RPCContext (KRPCStreamReq (KRPCHS.UI.TextAnchor))
-getTextAlignmentStreamReq thisArg = do
+getTextAlignmentStreamReq :: KRPCHS.UI.Text -> KRPCStreamReq (KRPCHS.UI.TextAnchor)
+getTextAlignmentStreamReq thisArg =
     let req = makeRequest "UI" "Text_get_Alignment" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getTextAlignmentStream :: KRPCHS.UI.Text -> RPCContext (KRPCStream (KRPCHS.UI.TextAnchor))
-getTextAlignmentStream thisArg = requestStream =<< getTextAlignmentStreamReq thisArg 
+getTextAlignmentStream thisArg = requestStream $ getTextAlignmentStreamReq thisArg 
 
 {-
  - A list of all available fonts.
@@ -1123,13 +1123,13 @@ getTextAvailableFonts thisArg = do
     res <- sendRequest r
     processResponse res
 
-getTextAvailableFontsStreamReq :: KRPCHS.UI.Text -> RPCContext (KRPCStreamReq ([Data.Text.Text]))
-getTextAvailableFontsStreamReq thisArg = do
+getTextAvailableFontsStreamReq :: KRPCHS.UI.Text -> KRPCStreamReq ([Data.Text.Text])
+getTextAvailableFontsStreamReq thisArg =
     let req = makeRequest "UI" "Text_get_AvailableFonts" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getTextAvailableFontsStream :: KRPCHS.UI.Text -> RPCContext (KRPCStream ([Data.Text.Text]))
-getTextAvailableFontsStream thisArg = requestStream =<< getTextAvailableFontsStreamReq thisArg 
+getTextAvailableFontsStream thisArg = requestStream $ getTextAvailableFontsStreamReq thisArg 
 
 {-
  - Set the color
@@ -1140,13 +1140,13 @@ getTextColor thisArg = do
     res <- sendRequest r
     processResponse res
 
-getTextColorStreamReq :: KRPCHS.UI.Text -> RPCContext (KRPCStreamReq ((Double, Double, Double)))
-getTextColorStreamReq thisArg = do
+getTextColorStreamReq :: KRPCHS.UI.Text -> KRPCStreamReq ((Double, Double, Double))
+getTextColorStreamReq thisArg =
     let req = makeRequest "UI" "Text_get_Color" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getTextColorStream :: KRPCHS.UI.Text -> RPCContext (KRPCStream ((Double, Double, Double)))
-getTextColorStream thisArg = requestStream =<< getTextColorStreamReq thisArg 
+getTextColorStream thisArg = requestStream $ getTextColorStreamReq thisArg 
 
 {-
  - The text string
@@ -1157,13 +1157,13 @@ getTextContent thisArg = do
     res <- sendRequest r
     processResponse res
 
-getTextContentStreamReq :: KRPCHS.UI.Text -> RPCContext (KRPCStreamReq (Data.Text.Text))
-getTextContentStreamReq thisArg = do
+getTextContentStreamReq :: KRPCHS.UI.Text -> KRPCStreamReq (Data.Text.Text)
+getTextContentStreamReq thisArg =
     let req = makeRequest "UI" "Text_get_Content" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getTextContentStream :: KRPCHS.UI.Text -> RPCContext (KRPCStream (Data.Text.Text))
-getTextContentStream thisArg = requestStream =<< getTextContentStreamReq thisArg 
+getTextContentStream thisArg = requestStream $ getTextContentStreamReq thisArg 
 
 {-
  - Name of the font
@@ -1174,13 +1174,13 @@ getTextFont thisArg = do
     res <- sendRequest r
     processResponse res
 
-getTextFontStreamReq :: KRPCHS.UI.Text -> RPCContext (KRPCStreamReq (Data.Text.Text))
-getTextFontStreamReq thisArg = do
+getTextFontStreamReq :: KRPCHS.UI.Text -> KRPCStreamReq (Data.Text.Text)
+getTextFontStreamReq thisArg =
     let req = makeRequest "UI" "Text_get_Font" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getTextFontStream :: KRPCHS.UI.Text -> RPCContext (KRPCStream (Data.Text.Text))
-getTextFontStream thisArg = requestStream =<< getTextFontStreamReq thisArg 
+getTextFontStream thisArg = requestStream $ getTextFontStreamReq thisArg 
 
 {-
  - Line spacing.
@@ -1191,13 +1191,13 @@ getTextLineSpacing thisArg = do
     res <- sendRequest r
     processResponse res
 
-getTextLineSpacingStreamReq :: KRPCHS.UI.Text -> RPCContext (KRPCStreamReq (Float))
-getTextLineSpacingStreamReq thisArg = do
+getTextLineSpacingStreamReq :: KRPCHS.UI.Text -> KRPCStreamReq (Float)
+getTextLineSpacingStreamReq thisArg =
     let req = makeRequest "UI" "Text_get_LineSpacing" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getTextLineSpacingStream :: KRPCHS.UI.Text -> RPCContext (KRPCStream (Float))
-getTextLineSpacingStream thisArg = requestStream =<< getTextLineSpacingStreamReq thisArg 
+getTextLineSpacingStream thisArg = requestStream $ getTextLineSpacingStreamReq thisArg 
 
 {-
  - The rect transform for the text.
@@ -1208,13 +1208,13 @@ getTextRectTransform thisArg = do
     res <- sendRequest r
     processResponse res
 
-getTextRectTransformStreamReq :: KRPCHS.UI.Text -> RPCContext (KRPCStreamReq (KRPCHS.UI.RectTransform))
-getTextRectTransformStreamReq thisArg = do
+getTextRectTransformStreamReq :: KRPCHS.UI.Text -> KRPCStreamReq (KRPCHS.UI.RectTransform)
+getTextRectTransformStreamReq thisArg =
     let req = makeRequest "UI" "Text_get_RectTransform" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getTextRectTransformStream :: KRPCHS.UI.Text -> RPCContext (KRPCStream (KRPCHS.UI.RectTransform))
-getTextRectTransformStream thisArg = requestStream =<< getTextRectTransformStreamReq thisArg 
+getTextRectTransformStream thisArg = requestStream $ getTextRectTransformStreamReq thisArg 
 
 {-
  - Font size.
@@ -1225,13 +1225,13 @@ getTextSize thisArg = do
     res <- sendRequest r
     processResponse res
 
-getTextSizeStreamReq :: KRPCHS.UI.Text -> RPCContext (KRPCStreamReq (Data.Int.Int32))
-getTextSizeStreamReq thisArg = do
+getTextSizeStreamReq :: KRPCHS.UI.Text -> KRPCStreamReq (Data.Int.Int32)
+getTextSizeStreamReq thisArg =
     let req = makeRequest "UI" "Text_get_Size" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getTextSizeStream :: KRPCHS.UI.Text -> RPCContext (KRPCStream (Data.Int.Int32))
-getTextSizeStream thisArg = requestStream =<< getTextSizeStreamReq thisArg 
+getTextSizeStream thisArg = requestStream $ getTextSizeStreamReq thisArg 
 
 {-
  - Font style.
@@ -1242,13 +1242,13 @@ getTextStyle thisArg = do
     res <- sendRequest r
     processResponse res
 
-getTextStyleStreamReq :: KRPCHS.UI.Text -> RPCContext (KRPCStreamReq (KRPCHS.UI.FontStyle))
-getTextStyleStreamReq thisArg = do
+getTextStyleStreamReq :: KRPCHS.UI.Text -> KRPCStreamReq (KRPCHS.UI.FontStyle)
+getTextStyleStreamReq thisArg =
     let req = makeRequest "UI" "Text_get_Style" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getTextStyleStream :: KRPCHS.UI.Text -> RPCContext (KRPCStream (KRPCHS.UI.FontStyle))
-getTextStyleStream thisArg = requestStream =<< getTextStyleStreamReq thisArg 
+getTextStyleStream thisArg = requestStream $ getTextStyleStreamReq thisArg 
 
 {-
  - Whether the UI object is visible.
@@ -1259,13 +1259,13 @@ getTextVisible thisArg = do
     res <- sendRequest r
     processResponse res
 
-getTextVisibleStreamReq :: KRPCHS.UI.Text -> RPCContext (KRPCStreamReq (Bool))
-getTextVisibleStreamReq thisArg = do
+getTextVisibleStreamReq :: KRPCHS.UI.Text -> KRPCStreamReq (Bool)
+getTextVisibleStreamReq thisArg =
     let req = makeRequest "UI" "Text_get_Visible" [makeArgument 0 thisArg]
-    return (makeStream req)
+    in  makeStream req
 
 getTextVisibleStream :: KRPCHS.UI.Text -> RPCContext (KRPCStream (Bool))
-getTextVisibleStream thisArg = requestStream =<< getTextVisibleStreamReq thisArg 
+getTextVisibleStream thisArg = requestStream $ getTextVisibleStreamReq thisArg 
 
 {-
  - Alignment.
@@ -1348,11 +1348,11 @@ getStockCanvas  = do
     res <- sendRequest r
     processResponse res
 
-getStockCanvasStreamReq :: RPCContext (KRPCStreamReq (KRPCHS.UI.Canvas))
-getStockCanvasStreamReq  = do
+getStockCanvasStreamReq :: KRPCStreamReq (KRPCHS.UI.Canvas)
+getStockCanvasStreamReq  =
     let req = makeRequest "UI" "get_StockCanvas" []
-    return (makeStream req)
+    in  makeStream req
 
 getStockCanvasStream :: RPCContext (KRPCStream (KRPCHS.UI.Canvas))
-getStockCanvasStream  = requestStream =<< getStockCanvasStreamReq  
+getStockCanvasStream  = requestStream $ getStockCanvasStreamReq  
 
