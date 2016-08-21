@@ -147,6 +147,6 @@ removeStream KRPCStream{..} = do
 
 
 withStream :: KRPCResponseExtractable a => KRPCStreamReq a -> (KRPCStream a -> RPCContext b) -> RPCContext b
-withStream r f = do
+withStream r f = mask $ \restore -> do
     s <- addStream r
-    (f s) `finally` (removeStream s)
+    (restore $ f s) `finally` (removeStream s)
