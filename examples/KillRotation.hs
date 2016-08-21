@@ -73,21 +73,21 @@ main =
 
 
 attitudeProg :: StreamClient -> RPCContext ()
-attitudeProg streamClient = do
+attitudeProg streamClient =
     -- vessel and reference frames
-    vessel      <- getActiveVessel
-    control     <- getVesselControl               vessel
-    vesselRef   <- getVesselReferenceFrame        vessel
-    orbitalRef  <- getVesselOrbitalReferenceFrame vessel
+    getActiveVessel                       >>= \vessel     ->
+    getVesselControl        vessel        >>= \control    ->
+    getVesselReferenceFrame vessel        >>= \vesselRef  ->
+    getVesselOrbitalReferenceFrame vessel >>= \orbitalRef ->
 
     -- install streams
-    tranformedXStream     <- transformDirectionStream (1, 0, 0) vesselRef orbitalRef
-    tranformedYStream     <- transformDirectionStream (0, 1, 0) vesselRef orbitalRef
-    tranformedZStream     <- transformDirectionStream (0, 0, 1) vesselRef orbitalRef
-    velocityStream        <- vesselAngularVelocityStream vessel orbitalRef
-    availableTorqueStream <- getVesselAvailableReactionWheelTorqueStream vessel
-    momentOfInertiaStream <- getVesselMomentOfInertiaStream vessel
-
+    withStream (transformDirectionStreamReq                    (1, 0, 0) vesselRef orbitalRef) $ \tranformedXStream     ->
+    withStream (transformDirectionStreamReq                    (0, 1, 0) vesselRef orbitalRef) $ \tranformedYStream     ->
+    withStream (transformDirectionStreamReq                    (0, 0, 1) vesselRef orbitalRef) $ \tranformedZStream     ->
+    withStream (vesselAngularVelocityStreamReq                 vessel    orbitalRef          ) $ \velocityStream        ->
+    withStream (getVesselAvailableReactionWheelTorqueStreamReq vessel                        ) $ \availableTorqueStream ->
+    withStream (getVesselMomentOfInertiaStreamReq              vessel                        ) $ \momentOfInertiaStream ->
+    
     let
         -- Helper function to extract A VesselRotation from a stream message
         extractVesselRotation msg = do
@@ -99,7 +99,6 @@ attitudeProg streamClient = do
             momentOfInertia <- getStreamResult momentOfInertiaStream msg
             return VesselRotation{..}
 
-    let
         {- Find out how much of the rotation can be killed in a particular 'direction' (yaw, roll, pitch).
          - To do that, we need to project the angular velocity vector on the
          - given direction and compute the appropriate amount of control (ie.
@@ -124,15 +123,16 @@ attitudeProg streamClient = do
         killRoll  = killRotation (setControlRoll  control)
         killYaw   = killRotation (setControlYaw   control)
 
-    forever $ do
-        msg <- getStreamMessage streamClient
-        ok  <- try (extractVesselRotation msg)
-        case ok of
-            Left  NoSuchStream       -> return ()  -- this can happen during the first few loops
-            Left  err                -> throwM err
-            Right VesselRotation{..} -> do
-                let (momentPitch, momentRoll, momentYaw) = momentOfInertia
-                    (torquePitch, torqueRoll, torqueYaw) = availableTorque
-                killPitch momentPitch torquePitch angularVelocity transformedX
-                killRoll  momentRoll  torqueRoll  angularVelocity transformedY
-                killYaw   momentYaw   torqueYaw   angularVelocity transformedZ
+    in
+        forever $ do
+            msg <- getStreamMessage streamClient
+            ok  <- try (extractVesselRotation msg)
+            case ok of
+                Left  NoSuchStream       -> return ()  -- this can happen during the first few loops
+                Left  err                -> throwM err
+                Right VesselRotation{..} -> do
+                    let (momentPitch, momentRoll, momentYaw) = momentOfInertia
+                        (torquePitch, torqueRoll, torqueYaw) = availableTorque
+                    killPitch momentPitch torquePitch angularVelocity transformedX
+                    killRoll  momentRoll  torqueRoll  angularVelocity transformedY
+                    killYaw   momentYaw   torqueYaw   angularVelocity transformedZ
