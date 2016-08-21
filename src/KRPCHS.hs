@@ -14,6 +14,7 @@ module KRPCHS
 , messageHasResultFor
 , addStream
 , removeStream
+, withStream
 , getStreamResult
 
 , withRPCClient
@@ -143,3 +144,9 @@ removeStream :: KRPCStream a -> RPCContext ()
 removeStream KRPCStream{..} = do
     resp <- sendRequest (makeRequest "KRPC" "RemoveStream" [ makeArgument 0 streamId ])
     processResponse resp
+
+
+withStream :: KRPCResponseExtractable a => KRPCStreamReq a -> (KRPCStream a -> RPCContext b) -> RPCContext b
+withStream r f = do
+    s <- addStream r
+    (f s) `finally` (removeStream s)
