@@ -67,8 +67,8 @@ vect3Normalized v@(x, y, z) = let n = vect3Magnitude v in (x/n, y/n, z/n)
 
 main :: IO ()
 main =
-    withRPCClient    "Kill Rotation" "127.0.0.1" "50000" $ \client       -> do
-    withStreamClient client          "127.0.0.1" "50001" $ \streamClient -> do
+    withRPCClient    "Kill Rotation" "127.0.0.1" "50000" $ \client       ->
+    withStreamClient client          "127.0.0.1" "50001" $ \streamClient ->
         runRPCProg client (attitudeProg streamClient)
 
 
@@ -111,7 +111,7 @@ attitudeProg streamClient =
                 prod = vect3DotProduct proj dir       -- find the direction of the rotation
                 maxAccel   = torque / moment
                 decelTime  = mag2 / maxAccel
-                accel      = if decelTime > 0.2 then maxAccel else (mag2/0.2)
+                accel      = if decelTime > 0.2 then maxAccel else  mag2/0.2
                 accelRatio = realToFrac $ max 0.01 (accel / maxAccel)
             in
                 if | mag2 > rotationTolerance && prod >= 0 -> axisControlFunc accelRatio

@@ -27,8 +27,8 @@ data TelemetryData = TelemetryData
 
 main :: IO ()
 main =
-    withRPCClient    "Flight recorder" "127.0.0.1" "50000" $ \client       -> do
-    withStreamClient client            "127.0.0.1" "50001" $ \streamClient -> do
+    withRPCClient    "Flight recorder" "127.0.0.1" "50000" $ \client       ->
+    withStreamClient client            "127.0.0.1" "50001" $ \streamClient ->
         runRPCProg client (telemetryProg streamClient)
 
 
@@ -58,7 +58,7 @@ telemetryProg streamClient = do
             longitude <- getStreamResult longitudeStream msg
             mass      <- getStreamResult massStream      msg
             thrust    <- getStreamResult thrustStream    msg
-            return $ TelemetryData{..})
+            return TelemetryData{..})
 
         case ok of
             Right telemetry    -> liftIO $ printTelemetryCSV telemetry

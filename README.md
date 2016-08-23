@@ -92,8 +92,8 @@ import KRPCHS.SpaceCenter
 
 main :: IO ()
 main =
-    withRPCClient    "Demo" "127.0.0.1" "50000" $ \client -> do
-    withStreamClient client "127.0.0.1" "50001" $ \streamClient -> do
+    withRPCClient    "Demo" "127.0.0.1" "50000" $ \client ->
+    withStreamClient client "127.0.0.1" "50001" $ \streamClient ->
         runRPCProg client (exampleProg streamClient)
 
 exampleProg :: StreamClient -> RPCContext ()
