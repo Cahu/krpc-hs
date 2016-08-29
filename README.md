@@ -47,6 +47,8 @@ list of available RPC calls.
 
 ## Examples
 
+Complete working examples can be found in the `examples` folder.
+
 ### Simple RPC
 
 ```haskell
