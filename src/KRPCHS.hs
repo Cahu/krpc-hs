@@ -42,7 +42,6 @@ import qualified PB.KRPC.Services as KRPC
 
 import Network.Socket
 import Control.Monad.Catch
-import Control.Monad.Trans
 import Control.Monad.Reader
 
 import qualified Data.Map as M
