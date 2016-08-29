@@ -1,9 +1,11 @@
 # KRPC Hors-Service
 
-KRPC Hors Service is a client for [kRPC] -- a mod for Kerbal Space Program --
-written in Haskell.
+KRPC Hors-Service is a client for [kRPC] -- a mod for Kerbal Space Program --
+written in Haskell. Please refer to the [kRPC documentation] for a detailled
+list of available RPC calls.
 
 [kRPC]: https://github.com/krpc/krpc
+[kRPC documentation]: http://krpc.github.io/krpc/index.html
 
 ## How to use
 
