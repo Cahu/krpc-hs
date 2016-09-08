@@ -8,6 +8,7 @@ module KRPCHS
 , KRPCStream
 , KRPCStreamReq
 , KRPCStreamMsg
+, KRPCResponseExtractable
 , emptyKRPCStreamMsg
 , getStreamMessage
 , messageResultsCount
