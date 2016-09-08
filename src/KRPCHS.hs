@@ -62,8 +62,7 @@ rpcHandshake :: Socket -> String -> IO BS.ByteString
 rpcHandshake sock name = do
     sendAll sock helloMsg
     sendAll sock (connNameMsg name)
-    clientId <- recvId sock
-    return clientId
+    recvId sock
 
 
 streamHandshake :: Socket -> BS.ByteString -> IO ()
@@ -148,4 +147,4 @@ removeStream KRPCStream{..} = do
 withStream :: KRPCResponseExtractable a => KRPCStreamReq a -> (KRPCStream a -> RPCContext b) -> RPCContext b
 withStream r f = mask $ \restore -> do
     s <- addStream r
-    (restore $ f s) `finally` (removeStream s)
+    restore (f s) `finally` (removeStream s)
