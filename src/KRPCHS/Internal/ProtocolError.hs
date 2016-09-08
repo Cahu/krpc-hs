@@ -11,7 +11,7 @@ data ProtocolError
     | NoSuchStream
     | KRPCError String
     | DecodeFailure String
-    deriving (Typeable)
+    deriving (Typeable, Eq)
 
 
 instance Show ProtocolError where
