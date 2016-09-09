@@ -27,6 +27,7 @@ module KRPCHS.SpaceCenter
 , Experiment
 , Fairing
 , Flight
+, Force
 , Intake
 , LandingGear
 , LandingLeg
@@ -49,10 +50,13 @@ module KRPCHS.SpaceCenter
 , ResourceTransfer
 , Resources
 , ScienceData
+, ScienceSubject
 , Sensor
 , SolarPanel
 , Thruster
 , Vessel
+, Waypoint
+, WaypointManager
 , autoPilotDisengage
 , autoPilotEngage
 , autoPilotTargetPitchAndHeading
@@ -202,6 +206,9 @@ module KRPCHS.SpaceCenter
 , celestialBodyBedrockPosition
 , celestialBodyBedrockPositionStream
 , celestialBodyBedrockPositionStreamReq
+, celestialBodyBiomeAt
+, celestialBodyBiomeAtStream
+, celestialBodyBiomeAtStreamReq
 , celestialBodyDirection
 , celestialBodyDirectionStream
 , celestialBodyDirectionStreamReq
@@ -226,9 +233,15 @@ module KRPCHS.SpaceCenter
 , getCelestialBodyAtmosphereDepth
 , getCelestialBodyAtmosphereDepthStream
 , getCelestialBodyAtmosphereDepthStreamReq
+, getCelestialBodyBiomes
+, getCelestialBodyBiomesStream
+, getCelestialBodyBiomesStreamReq
 , getCelestialBodyEquatorialRadius
 , getCelestialBodyEquatorialRadiusStream
 , getCelestialBodyEquatorialRadiusStreamReq
+, getCelestialBodyFlyingHighAltitudeThreshold
+, getCelestialBodyFlyingHighAltitudeThresholdStream
+, getCelestialBodyFlyingHighAltitudeThresholdStreamReq
 , getCelestialBodyGravitationalParameter
 , getCelestialBodyGravitationalParameterStream
 , getCelestialBodyGravitationalParameterStreamReq
@@ -265,6 +278,9 @@ module KRPCHS.SpaceCenter
 , getCelestialBodySatellites
 , getCelestialBodySatellitesStream
 , getCelestialBodySatellitesStreamReq
+, getCelestialBodySpaceHighAltitudeThreshold
+, getCelestialBodySpaceHighAltitudeThresholdStream
+, getCelestialBodySpaceHighAltitudeThresholdStreamReq
 , getCelestialBodySphereOfInfluence
 , getCelestialBodySphereOfInfluenceStream
 , getCelestialBodySphereOfInfluenceStreamReq
@@ -399,6 +415,9 @@ module KRPCHS.SpaceCenter
 , getDecouplerPart
 , getDecouplerPartStream
 , getDecouplerPartStreamReq
+, getDecouplerStaged
+, getDecouplerStagedStream
+, getDecouplerStagedStreamReq
 , dockingPortDirection
 , dockingPortDirectionStream
 , dockingPortDirectionStreamReq
@@ -417,9 +436,6 @@ module KRPCHS.SpaceCenter
 , getDockingPortHasShield
 , getDockingPortHasShieldStream
 , getDockingPortHasShieldStreamReq
-, getDockingPortName
-, getDockingPortNameStream
-, getDockingPortNameStreamReq
 , getDockingPortPart
 , getDockingPortPartStream
 , getDockingPortPartStreamReq
@@ -435,7 +451,6 @@ module KRPCHS.SpaceCenter
 , getDockingPortState
 , getDockingPortStateStream
 , getDockingPortStateStreamReq
-, setDockingPortName
 , setDockingPortShielded
 , engineToggleMode
 , getEngineActive
@@ -532,6 +547,12 @@ module KRPCHS.SpaceCenter
 , experimentReset
 , experimentRun
 , experimentTransmit
+, getExperimentAvailable
+, getExperimentAvailableStream
+, getExperimentAvailableStreamReq
+, getExperimentBiome
+, getExperimentBiomeStream
+, getExperimentBiomeStreamReq
 , getExperimentData
 , getExperimentDataStream
 , getExperimentDataStreamReq
@@ -550,6 +571,9 @@ module KRPCHS.SpaceCenter
 , getExperimentRerunnable
 , getExperimentRerunnableStream
 , getExperimentRerunnableStreamReq
+, getExperimentScienceSubject
+, getExperimentScienceSubjectStream
+, getExperimentScienceSubjectStreamReq
 , fairingJettison
 , getFairingJettisoned
 , getFairingJettisonedStream
@@ -641,6 +665,9 @@ module KRPCHS.SpaceCenter
 , getFlightRetrograde
 , getFlightRetrogradeStream
 , getFlightRetrogradeStreamReq
+, getFlightReynoldsNumber
+, getFlightReynoldsNumberStream
+, getFlightReynoldsNumberStreamReq
 , getFlightRoll
 , getFlightRollStream
 , getFlightRollStreamReq
@@ -665,6 +692,9 @@ module KRPCHS.SpaceCenter
 , getFlightStaticPressure
 , getFlightStaticPressureStream
 , getFlightStaticPressureStreamReq
+, getFlightStaticPressureAtMSL
+, getFlightStaticPressureAtMSLStream
+, getFlightStaticPressureAtMSLStreamReq
 , getFlightSurfaceAltitude
 , getFlightSurfaceAltitudeStream
 , getFlightSurfaceAltitudeStreamReq
@@ -677,12 +707,31 @@ module KRPCHS.SpaceCenter
 , getFlightTotalAirTemperature
 , getFlightTotalAirTemperatureStream
 , getFlightTotalAirTemperatureStreamReq
+, getFlightTrueAirSpeed
+, getFlightTrueAirSpeedStream
+, getFlightTrueAirSpeedStreamReq
 , getFlightVelocity
 , getFlightVelocityStream
 , getFlightVelocityStreamReq
 , getFlightVerticalSpeed
 , getFlightVerticalSpeedStream
 , getFlightVerticalSpeedStreamReq
+, forceRemove
+, getForceForceVector
+, getForceForceVectorStream
+, getForceForceVectorStreamReq
+, getForcePart
+, getForcePartStream
+, getForcePartStreamReq
+, getForcePosition
+, getForcePositionStream
+, getForcePositionStreamReq
+, getForceReferenceFrame
+, getForceReferenceFrameStream
+, getForceReferenceFrameStreamReq
+, setForceForceVector
+, setForcePosition
+, setForceReferenceFrame
 , getIntakeArea
 , getIntakeAreaStream
 , getIntakeAreaStreamReq
@@ -828,12 +877,30 @@ module KRPCHS.SpaceCenter
 , setNodePrograde
 , setNodeRadial
 , setNodeUT
+, orbitEccentricAnomalyAtUT
+, orbitEccentricAnomalyAtUTStream
+, orbitEccentricAnomalyAtUTStreamReq
+, orbitOrbitalSpeedAt
+, orbitOrbitalSpeedAtStream
+, orbitOrbitalSpeedAtStreamReq
+, orbitRadiusAtTrueAnomaly
+, orbitRadiusAtTrueAnomalyStream
+, orbitRadiusAtTrueAnomalyStreamReq
 , orbitReferencePlaneDirection
 , orbitReferencePlaneDirectionStream
 , orbitReferencePlaneDirectionStreamReq
 , orbitReferencePlaneNormal
 , orbitReferencePlaneNormalStream
 , orbitReferencePlaneNormalStreamReq
+, orbitTrueAnomalyAtRadius
+, orbitTrueAnomalyAtRadiusStream
+, orbitTrueAnomalyAtRadiusStreamReq
+, orbitTrueAnomalyAtUT
+, orbitTrueAnomalyAtUTStream
+, orbitTrueAnomalyAtUTStreamReq
+, orbitUTAtTrueAnomaly
+, orbitUTAtTrueAnomalyStream
+, orbitUTAtTrueAnomalyStreamReq
 , getOrbitApoapsis
 , getOrbitApoapsisStream
 , getOrbitApoapsisStreamReq
@@ -870,6 +937,9 @@ module KRPCHS.SpaceCenter
 , getOrbitNextOrbit
 , getOrbitNextOrbitStream
 , getOrbitNextOrbitStreamReq
+, getOrbitOrbitalSpeed
+, getOrbitOrbitalSpeedStream
+, getOrbitOrbitalSpeedStreamReq
 , getOrbitPeriapsis
 , getOrbitPeriapsisStream
 , getOrbitPeriapsisStreamReq
@@ -900,6 +970,9 @@ module KRPCHS.SpaceCenter
 , getOrbitTimeToSOIChange
 , getOrbitTimeToSOIChangeStream
 , getOrbitTimeToSOIChangeStreamReq
+, getOrbitTrueAnomaly
+, getOrbitTrueAnomalyStream
+, getOrbitTrueAnomalyStreamReq
 , parachuteDeploy
 , getParachuteDeployAltitude
 , getParachuteDeployAltitudeStream
@@ -918,12 +991,16 @@ module KRPCHS.SpaceCenter
 , getParachuteStateStreamReq
 , setParachuteDeployAltitude
 , setParachuteDeployMinPressure
+, partAddForce
+, partAddForceStream
+, partAddForceStreamReq
 , partCenterOfMass
 , partCenterOfMassStream
 , partCenterOfMassStreamReq
 , partDirection
 , partDirectionStream
 , partDirectionStreamReq
+, partInstantaneousForce
 , partPosition
 , partPositionStream
 , partPositionStreamReq
@@ -1074,6 +1151,9 @@ module KRPCHS.SpaceCenter
 , getPartStage
 , getPartStageStream
 , getPartStageStreamReq
+, getPartTag
+, getPartTagStream
+, getPartTagStreamReq
 , getPartTemperature
 , getPartTemperatureStream
 , getPartTemperatureStreamReq
@@ -1107,9 +1187,7 @@ module KRPCHS.SpaceCenter
 , getPartVessel
 , getPartVesselStream
 , getPartVesselStreamReq
-, partsDockingPortWithName
-, partsDockingPortWithNameStream
-, partsDockingPortWithNameStreamReq
+, setPartTag
 , partsInDecoupleStage
 , partsInDecoupleStageStream
 , partsInDecoupleStageStreamReq
@@ -1125,6 +1203,9 @@ module KRPCHS.SpaceCenter
 , partsWithName
 , partsWithNameStream
 , partsWithNameStreamReq
+, partsWithTag
+, partsWithTagStream
+, partsWithTagStreamReq
 , partsWithTitle
 , partsWithTitleStream
 , partsWithTitleStreamReq
@@ -1447,6 +1528,27 @@ module KRPCHS.SpaceCenter
 , getScienceDataTransmitValue
 , getScienceDataTransmitValueStream
 , getScienceDataTransmitValueStreamReq
+, getScienceSubjectDataScale
+, getScienceSubjectDataScaleStream
+, getScienceSubjectDataScaleStreamReq
+, getScienceSubjectIsComplete
+, getScienceSubjectIsCompleteStream
+, getScienceSubjectIsCompleteStreamReq
+, getScienceSubjectScience
+, getScienceSubjectScienceStream
+, getScienceSubjectScienceStreamReq
+, getScienceSubjectScienceCap
+, getScienceSubjectScienceCapStream
+, getScienceSubjectScienceCapStreamReq
+, getScienceSubjectScientificValue
+, getScienceSubjectScientificValueStream
+, getScienceSubjectScientificValueStreamReq
+, getScienceSubjectSubjectValue
+, getScienceSubjectSubjectValueStream
+, getScienceSubjectSubjectValueStreamReq
+, getScienceSubjectTitle
+, getScienceSubjectTitleStream
+, getScienceSubjectTitleStreamReq
 , getSensorActive
 , getSensorActiveStream
 , getSensorActiveStreamReq
@@ -1558,6 +1660,9 @@ module KRPCHS.SpaceCenter
 , getVesselAvailableTorque
 , getVesselAvailableTorqueStream
 , getVesselAvailableTorqueStreamReq
+, getVesselBiome
+, getVesselBiomeStream
+, getVesselBiomeStreamReq
 , getVesselControl
 , getVesselControlStream
 , getVesselControlStreamReq
@@ -1630,6 +1735,73 @@ module KRPCHS.SpaceCenter
 , setVesselName
 , setVesselType
 , warpTo
+, waypointManagerAddWaypoint
+, waypointManagerAddWaypointStream
+, waypointManagerAddWaypointStreamReq
+, getWaypointManagerColors
+, getWaypointManagerColorsStream
+, getWaypointManagerColorsStreamReq
+, getWaypointManagerIcons
+, getWaypointManagerIconsStream
+, getWaypointManagerIconsStreamReq
+, getWaypointManagerWaypoints
+, getWaypointManagerWaypointsStream
+, getWaypointManagerWaypointsStreamReq
+, waypointRemove
+, getWaypointBedrockAltitude
+, getWaypointBedrockAltitudeStream
+, getWaypointBedrockAltitudeStreamReq
+, getWaypointBody
+, getWaypointBodyStream
+, getWaypointBodyStreamReq
+, getWaypointClustered
+, getWaypointClusteredStream
+, getWaypointClusteredStreamReq
+, getWaypointColor
+, getWaypointColorStream
+, getWaypointColorStreamReq
+, getWaypointContractId
+, getWaypointContractIdStream
+, getWaypointContractIdStreamReq
+, getWaypointGrounded
+, getWaypointGroundedStream
+, getWaypointGroundedStreamReq
+, getWaypointHasContract
+, getWaypointHasContractStream
+, getWaypointHasContractStreamReq
+, getWaypointIcon
+, getWaypointIconStream
+, getWaypointIconStreamReq
+, getWaypointIndex
+, getWaypointIndexStream
+, getWaypointIndexStreamReq
+, getWaypointLatitude
+, getWaypointLatitudeStream
+, getWaypointLatitudeStreamReq
+, getWaypointLongitude
+, getWaypointLongitudeStream
+, getWaypointLongitudeStreamReq
+, getWaypointMeanAltitude
+, getWaypointMeanAltitudeStream
+, getWaypointMeanAltitudeStreamReq
+, getWaypointName
+, getWaypointNameStream
+, getWaypointNameStreamReq
+, getWaypointNearSurface
+, getWaypointNearSurfaceStream
+, getWaypointNearSurfaceStreamReq
+, getWaypointSurfaceAltitude
+, getWaypointSurfaceAltitudeStream
+, getWaypointSurfaceAltitudeStreamReq
+, setWaypointBedrockAltitude
+, setWaypointBody
+, setWaypointColor
+, setWaypointIcon
+, setWaypointLatitude
+, setWaypointLongitude
+, setWaypointMeanAltitude
+, setWaypointName
+, setWaypointSurfaceAltitude
 , getActiveVessel
 , getActiveVesselStream
 , getActiveVesselStreamReq
@@ -1678,6 +1850,9 @@ module KRPCHS.SpaceCenter
 , getWarpRate
 , getWarpRateStream
 , getWarpRateStreamReq
+, getWaypointManager
+, getWaypointManagerStream
+, getWaypointManagerStreamReq
 , setActiveVessel
 , setPhysicsWarpFactor
 , setRailsWarpFactor
@@ -1853,6 +2028,18 @@ instance PbSerializable Flight where
 instance KRPCResponseExtractable Flight
 
 {-
+ - Obtained by calling <see cref="M:SpaceCenter.Part.AddForce" />.
+ -}
+newtype Force = Force { forceId :: Int }
+    deriving (Show, Eq, Ord)
+
+instance PbSerializable Force where
+    encodePb   = encodePb . forceId
+    decodePb b = Force <$> decodePb b
+
+instance KRPCResponseExtractable Force
+
+{-
  - An air intake. Obtained by calling <see cref="M:SpaceCenter.Part.Intake" />.
  -}
 newtype Intake = Intake { intakeId :: Int }
@@ -1915,6 +2102,7 @@ instance KRPCResponseExtractable Light
 {-
  - This can be used to interact with a specific part module. This includes part modules in stock KSP,
  - and those added by mods.
+ - 
  - In KSP, each part has zero or more
  - <a href="http://wiki.kerbalspaceprogram.com/wiki/CFG_File_Documentation#MODULES">PartModulesassociated with it. Each one contains some of the functionality of the part.
  - For example, an engine has a "ModuleEngines" part module that contains all the
@@ -2133,6 +2321,18 @@ instance PbSerializable ScienceData where
 instance KRPCResponseExtractable ScienceData
 
 {-
+ - Obtained by calling <see cref="M:SpaceCenter.Experiment.ScienceSubject" />.
+ -}
+newtype ScienceSubject = ScienceSubject { scienceSubjectId :: Int }
+    deriving (Show, Eq, Ord)
+
+instance PbSerializable ScienceSubject where
+    encodePb   = encodePb . scienceSubjectId
+    decodePb b = ScienceSubject <$> decodePb b
+
+instance KRPCResponseExtractable ScienceSubject
+
+{-
  - A sensor, such as a thermometer. Obtained by calling <see cref="M:SpaceCenter.Part.Sensor" />.
  -}
 newtype Sensor = Sensor { sensorId :: Int }
@@ -2183,6 +2383,32 @@ instance PbSerializable Vessel where
     decodePb b = Vessel <$> decodePb b
 
 instance KRPCResponseExtractable Vessel
+
+{-
+ - Represents a waypoint. Can be created using <see cref="M:SpaceCenter.WaypointManager.AddWaypoint" />.
+ -}
+newtype Waypoint = Waypoint { waypointId :: Int }
+    deriving (Show, Eq, Ord)
+
+instance PbSerializable Waypoint where
+    encodePb   = encodePb . waypointId
+    decodePb b = Waypoint <$> decodePb b
+
+instance KRPCResponseExtractable Waypoint
+
+{-
+ - Waypoints are the location markers you can see on the map view showing you where contracts are targeted for. 
+ - With this structure, you can obtain coordinate data for the locations of these waypoints.
+ - Obtained by calling <see cref="M:SpaceCenter.WaypointManager" />.
+ -}
+newtype WaypointManager = WaypointManager { waypointManagerId :: Int }
+    deriving (Show, Eq, Ord)
+
+instance PbSerializable WaypointManager where
+    encodePb   = encodePb . waypointManagerId
+    decodePb b = WaypointManager <$> decodePb b
+
+instance KRPCResponseExtractable WaypointManager
 
 
 {-
@@ -2657,7 +2883,8 @@ getAutoPilotPitchPIDGainsStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (K
 getAutoPilotPitchPIDGainsStream thisArg = requestStream $ getAutoPilotPitchPIDGainsStreamReq thisArg 
 
 {-
- - The reference frame for the target direction (<see cref="M:SpaceCenter.AutoPilot.TargetDirection" />).
+ - The reference frame for the target direction (<see cref="M:SpaceCenter.AutoPilot.TargetDirection" />).An error will be thrown if this property is set to a reference frame that rotates with the vessel being controlled,
+ - as it is impossible to rotate the vessel in such a reference frame.
  -}
 getAutoPilotReferenceFrame :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
 getAutoPilotReferenceFrame thisArg = do
@@ -2941,7 +3168,8 @@ setAutoPilotPitchPIDGains thisArg valueArg = do
     processResponse res 
 
 {-
- - The reference frame for the target direction (<see cref="M:SpaceCenter.AutoPilot.TargetDirection" />).
+ - The reference frame for the target direction (<see cref="M:SpaceCenter.AutoPilot.TargetDirection" />).An error will be thrown if this property is set to a reference frame that rotates with the vessel being controlled,
+ - as it is impossible to rotate the vessel in such a reference frame.
  -}
 setAutoPilotReferenceFrame :: KRPCHS.SpaceCenter.AutoPilot -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ()
 setAutoPilotReferenceFrame thisArg valueArg = do
@@ -3056,7 +3284,7 @@ setAutoPilotYawPIDGains thisArg valueArg = do
     processResponse res 
 
 {-
- - Default distance from the camera to the subject.
+ - Default distance from the camera to the subject, in meters.
  -}
 getCameraDefaultDistance :: KRPCHS.SpaceCenter.Camera -> RPCContext (Float)
 getCameraDefaultDistance thisArg = do
@@ -3073,7 +3301,7 @@ getCameraDefaultDistanceStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCS
 getCameraDefaultDistanceStream thisArg = requestStream $ getCameraDefaultDistanceStreamReq thisArg 
 
 {-
- - The distance from the camera to the subject.
+ - The distance from the camera to the subject, in meters.
  - A value between <see cref="M:SpaceCenter.Camera.MinDistance" /> and <see cref="M:SpaceCenter.Camera.MaxDistance" />.
  -}
 getCameraDistance :: KRPCHS.SpaceCenter.Camera -> RPCContext (Float)
@@ -3165,7 +3393,7 @@ getCameraHeadingStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (F
 getCameraHeadingStream thisArg = requestStream $ getCameraHeadingStreamReq thisArg 
 
 {-
- - Maximum distance from the camera to the subject.
+ - Maximum distance from the camera to the subject, in meters.
  -}
 getCameraMaxDistance :: KRPCHS.SpaceCenter.Camera -> RPCContext (Float)
 getCameraMaxDistance thisArg = do
@@ -3199,7 +3427,7 @@ getCameraMaxPitchStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (
 getCameraMaxPitchStream thisArg = requestStream $ getCameraMaxPitchStreamReq thisArg 
 
 {-
- - Minimum distance from the camera to the subject.
+ - Minimum distance from the camera to the subject, in meters.
  -}
 getCameraMinDistance :: KRPCHS.SpaceCenter.Camera -> RPCContext (Float)
 getCameraMinDistance thisArg = do
@@ -3268,7 +3496,7 @@ getCameraPitchStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (Flo
 getCameraPitchStream thisArg = requestStream $ getCameraPitchStreamReq thisArg 
 
 {-
- - The distance from the camera to the subject.
+ - The distance from the camera to the subject, in meters.
  - A value between <see cref="M:SpaceCenter.Camera.MinDistance" /> and <see cref="M:SpaceCenter.Camera.MaxDistance" />.
  -}
 setCameraDistance :: KRPCHS.SpaceCenter.Camera -> Float -> RPCContext ()
@@ -3476,6 +3704,23 @@ celestialBodyBedrockPositionStream :: KRPCHS.SpaceCenter.CelestialBody -> Double
 celestialBodyBedrockPositionStream thisArg latitudeArg longitudeArg referenceFrameArg = requestStream $ celestialBodyBedrockPositionStreamReq thisArg latitudeArg longitudeArg referenceFrameArg 
 
 {-
+ - The biomes at the given latitude and longitude, in degrees.
+ -}
+celestialBodyBiomeAt :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> RPCContext (Data.Text.Text)
+celestialBodyBiomeAt thisArg latitudeArg longitudeArg = do
+    let r = makeRequest "SpaceCenter" "CelestialBody_BiomeAt" [makeArgument 0 thisArg, makeArgument 1 latitudeArg, makeArgument 2 longitudeArg]
+    res <- sendRequest r
+    processResponse res
+
+celestialBodyBiomeAtStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> KRPCStreamReq (Data.Text.Text)
+celestialBodyBiomeAtStreamReq thisArg latitudeArg longitudeArg =
+    let req = makeRequest "SpaceCenter" "CelestialBody_BiomeAt" [makeArgument 0 thisArg, makeArgument 1 latitudeArg, makeArgument 2 longitudeArg]
+    in  makeStream req
+
+celestialBodyBiomeAtStream :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> RPCContext (KRPCStream (Data.Text.Text))
+celestialBodyBiomeAtStream thisArg latitudeArg longitudeArg = requestStream $ celestialBodyBiomeAtStreamReq thisArg latitudeArg longitudeArg 
+
+{-
  - Returns the direction in which the north pole of the celestial body is
  - pointing, as a unit vector, in the specified reference frame.<param name="referenceFrame">
  -}
@@ -3615,6 +3860,23 @@ getCelestialBodyAtmosphereDepthStream :: KRPCHS.SpaceCenter.CelestialBody -> RPC
 getCelestialBodyAtmosphereDepthStream thisArg = requestStream $ getCelestialBodyAtmosphereDepthStreamReq thisArg 
 
 {-
+ - The biomes present on this body.
+ -}
+getCelestialBodyBiomes :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext ([Data.Text.Text])
+getCelestialBodyBiomes thisArg = do
+    let r = makeRequest "SpaceCenter" "CelestialBody_get_Biomes" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getCelestialBodyBiomesStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> KRPCStreamReq ([Data.Text.Text])
+getCelestialBodyBiomesStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "CelestialBody_get_Biomes" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getCelestialBodyBiomesStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream ([Data.Text.Text]))
+getCelestialBodyBiomesStream thisArg = requestStream $ getCelestialBodyBiomesStreamReq thisArg 
+
+{-
  - The equatorial radius of the body, in meters.
  -}
 getCelestialBodyEquatorialRadius :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Float)
@@ -3630,6 +3892,23 @@ getCelestialBodyEquatorialRadiusStreamReq thisArg =
 
 getCelestialBodyEquatorialRadiusStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Float))
 getCelestialBodyEquatorialRadiusStream thisArg = requestStream $ getCelestialBodyEquatorialRadiusStreamReq thisArg 
+
+{-
+ - The altitude, in meters, above which a vessel is considered to be flying "high" when doing science.
+ -}
+getCelestialBodyFlyingHighAltitudeThreshold :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Float)
+getCelestialBodyFlyingHighAltitudeThreshold thisArg = do
+    let r = makeRequest "SpaceCenter" "CelestialBody_get_FlyingHighAltitudeThreshold" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getCelestialBodyFlyingHighAltitudeThresholdStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> KRPCStreamReq (Float)
+getCelestialBodyFlyingHighAltitudeThresholdStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "CelestialBody_get_FlyingHighAltitudeThreshold" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getCelestialBodyFlyingHighAltitudeThresholdStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Float))
+getCelestialBodyFlyingHighAltitudeThresholdStream thisArg = requestStream $ getCelestialBodyFlyingHighAltitudeThresholdStreamReq thisArg 
 
 {-
  - The <a href="https://en.wikipedia.org/wiki/Standard_gravitational_parameter">standard
@@ -3848,6 +4127,23 @@ getCelestialBodySatellitesStreamReq thisArg =
 
 getCelestialBodySatellitesStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.CelestialBody]))
 getCelestialBodySatellitesStream thisArg = requestStream $ getCelestialBodySatellitesStreamReq thisArg 
+
+{-
+ - The altitude, in meters, above which a vessel is considered to be in "high" space when doing science.
+ -}
+getCelestialBodySpaceHighAltitudeThreshold :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Float)
+getCelestialBodySpaceHighAltitudeThreshold thisArg = do
+    let r = makeRequest "SpaceCenter" "CelestialBody_get_SpaceHighAltitudeThreshold" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getCelestialBodySpaceHighAltitudeThresholdStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> KRPCStreamReq (Float)
+getCelestialBodySpaceHighAltitudeThresholdStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "CelestialBody_get_SpaceHighAltitudeThreshold" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getCelestialBodySpaceHighAltitudeThresholdStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Float))
+getCelestialBodySpaceHighAltitudeThresholdStream thisArg = requestStream $ getCelestialBodySpaceHighAltitudeThresholdStreamReq thisArg 
 
 {-
  - The radius of the sphere of influence of the body, in meters.
@@ -4743,6 +5039,23 @@ getDecouplerPartStream :: KRPCHS.SpaceCenter.Decoupler -> RPCContext (KRPCStream
 getDecouplerPartStream thisArg = requestStream $ getDecouplerPartStreamReq thisArg 
 
 {-
+ - Whether the decoupler is enabled in the staging sequence.
+ -}
+getDecouplerStaged :: KRPCHS.SpaceCenter.Decoupler -> RPCContext (Bool)
+getDecouplerStaged thisArg = do
+    let r = makeRequest "SpaceCenter" "Decoupler_get_Staged" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getDecouplerStagedStreamReq :: KRPCHS.SpaceCenter.Decoupler -> KRPCStreamReq (Bool)
+getDecouplerStagedStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Decoupler_get_Staged" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getDecouplerStagedStream :: KRPCHS.SpaceCenter.Decoupler -> RPCContext (KRPCStream (Bool))
+getDecouplerStagedStream thisArg = requestStream $ getDecouplerStagedStreamReq thisArg 
+
+{-
  - The direction that docking port points in, in the given reference frame.
  -}
 dockingPortDirection :: KRPCHS.SpaceCenter.DockingPort -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
@@ -4848,26 +5161,6 @@ getDockingPortHasShieldStream :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (K
 getDockingPortHasShieldStream thisArg = requestStream $ getDockingPortHasShieldStreamReq thisArg 
 
 {-
- - The port name of the docking port. This is the name of the port that can be set
- - in the right click menu, when the
- - <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/40423-11-docking-port-alignment-indicator-version-621-beta-updated-04122016/">Docking Port Alignment Indicatormod is installed. If this mod is not installed, returns the title of the part
- - (<see cref="M:SpaceCenter.Part.Title" />).
- -}
-getDockingPortName :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (Data.Text.Text)
-getDockingPortName thisArg = do
-    let r = makeRequest "SpaceCenter" "DockingPort_get_Name" [makeArgument 0 thisArg]
-    res <- sendRequest r
-    processResponse res
-
-getDockingPortNameStreamReq :: KRPCHS.SpaceCenter.DockingPort -> KRPCStreamReq (Data.Text.Text)
-getDockingPortNameStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "DockingPort_get_Name" [makeArgument 0 thisArg]
-    in  makeStream req
-
-getDockingPortNameStream :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCStream (Data.Text.Text))
-getDockingPortNameStream thisArg = requestStream $ getDockingPortNameStreamReq thisArg 
-
-{-
  - The part object for this docking port.
  -}
 getDockingPortPart :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCHS.SpaceCenter.Part)
@@ -4924,6 +5217,7 @@ getDockingPortReferenceFrameStream thisArg = requestStream $ getDockingPortRefer
 
 {-
  - The state of the docking ports shield, if it has one.
+ - 
  - Returnstrueif the docking port has a shield, and the shield is
  - closed. Otherwise returnsfalse. When set totrue, the shield is
  - closed, and when set tofalsethe shield is opened. If the docking
@@ -4961,19 +5255,8 @@ getDockingPortStateStream :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCS
 getDockingPortStateStream thisArg = requestStream $ getDockingPortStateStreamReq thisArg 
 
 {-
- - The port name of the docking port. This is the name of the port that can be set
- - in the right click menu, when the
- - <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/40423-11-docking-port-alignment-indicator-version-621-beta-updated-04122016/">Docking Port Alignment Indicatormod is installed. If this mod is not installed, returns the title of the part
- - (<see cref="M:SpaceCenter.Part.Title" />).
- -}
-setDockingPortName :: KRPCHS.SpaceCenter.DockingPort -> Data.Text.Text -> RPCContext ()
-setDockingPortName thisArg valueArg = do
-    let r = makeRequest "SpaceCenter" "DockingPort_set_Name" [makeArgument 0 thisArg, makeArgument 1 valueArg]
-    res <- sendRequest r
-    processResponse res 
-
-{-
  - The state of the docking ports shield, if it has one.
+ - 
  - Returnstrueif the docking port has a shield, and the shield is
  - closed. Otherwise returnsfalse. When set totrue, the shield is
  - closed, and when set tofalsethe shield is opened. If the docking
@@ -5595,6 +5878,40 @@ experimentTransmit thisArg = do
     processResponse res 
 
 {-
+ - Determines if the experiment is available given the current conditions.
+ -}
+getExperimentAvailable :: KRPCHS.SpaceCenter.Experiment -> RPCContext (Bool)
+getExperimentAvailable thisArg = do
+    let r = makeRequest "SpaceCenter" "Experiment_get_Available" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getExperimentAvailableStreamReq :: KRPCHS.SpaceCenter.Experiment -> KRPCStreamReq (Bool)
+getExperimentAvailableStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Experiment_get_Available" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getExperimentAvailableStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream (Bool))
+getExperimentAvailableStream thisArg = requestStream $ getExperimentAvailableStreamReq thisArg 
+
+{-
+ - The name of the biome the experiment is currently in.
+ -}
+getExperimentBiome :: KRPCHS.SpaceCenter.Experiment -> RPCContext (Data.Text.Text)
+getExperimentBiome thisArg = do
+    let r = makeRequest "SpaceCenter" "Experiment_get_Biome" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getExperimentBiomeStreamReq :: KRPCHS.SpaceCenter.Experiment -> KRPCStreamReq (Data.Text.Text)
+getExperimentBiomeStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Experiment_get_Biome" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getExperimentBiomeStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream (Data.Text.Text))
+getExperimentBiomeStream thisArg = requestStream $ getExperimentBiomeStreamReq thisArg 
+
+{-
  - The data contained in this experiment.
  -}
 getExperimentData :: KRPCHS.SpaceCenter.Experiment -> RPCContext ([KRPCHS.SpaceCenter.ScienceData])
@@ -5697,6 +6014,24 @@ getExperimentRerunnableStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KR
 getExperimentRerunnableStream thisArg = requestStream $ getExperimentRerunnableStreamReq thisArg 
 
 {-
+ - Containing information on the corresponding specific science result for the current conditions.
+ - Returns null if experiment is unavailable.
+ -}
+getExperimentScienceSubject :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCHS.SpaceCenter.ScienceSubject)
+getExperimentScienceSubject thisArg = do
+    let r = makeRequest "SpaceCenter" "Experiment_get_ScienceSubject" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getExperimentScienceSubjectStreamReq :: KRPCHS.SpaceCenter.Experiment -> KRPCStreamReq (KRPCHS.SpaceCenter.ScienceSubject)
+getExperimentScienceSubjectStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Experiment_get_ScienceSubject" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getExperimentScienceSubjectStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ScienceSubject))
+getExperimentScienceSubjectStream thisArg = requestStream $ getExperimentScienceSubjectStreamReq thisArg 
+
+{-
  - Jettison the fairing. Has no effect if it has already been jettisoned.
  -}
 fairingJettison :: KRPCHS.SpaceCenter.Fairing -> RPCContext ()
@@ -5741,8 +6076,7 @@ getFairingPartStream thisArg = requestStream $ getFairingPartStreamReq thisArg
 
 {-
  - The total aerodynamic forces acting on the vessel, as a vector pointing in the direction of the force, with its
- - magnitude equal to the strength of the force in Newtons.Calculated using <a href="http://wiki.kerbalspaceprogram.com/wiki/Atmosphere">KSPs stock aerodynamic model.
- - Not available when <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Researchis installed.
+ - magnitude equal to the strength of the force in Newtons.
  -}
 getFlightAerodynamicForce :: KRPCHS.SpaceCenter.Flight -> RPCContext ((Double, Double, Double))
 getFlightAerodynamicForce thisArg = do
@@ -5897,8 +6231,7 @@ getFlightDirectionStream thisArg = requestStream $ getFlightDirectionStreamReq t
 
 {-
  - The <a href="https://en.wikipedia.org/wiki/Aerodynamic_force">aerodynamic dragcurrently acting on the vessel,
- - as a vector pointing in the direction of the force, with its magnitude equal to the strength of the force in Newtons.Calculated using <a href="http://wiki.kerbalspaceprogram.com/wiki/Atmosphere">KSPs stock aerodynamic model.
- - Not available when <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Researchis installed.
+ - as a vector pointing in the direction of the force, with its magnitude equal to the strength of the force in Newtons.
  -}
 getFlightDrag :: KRPCHS.SpaceCenter.Flight -> RPCContext ((Double, Double, Double))
 getFlightDrag thisArg = do
@@ -5935,8 +6268,7 @@ getFlightDragCoefficientStream thisArg = requestStream $ getFlightDragCoefficien
 {-
  - The dynamic pressure acting on the vessel, in Pascals. This is a measure of the strength of the
  - aerodynamic forces. It is equal to\frac{1}{2} . \mbox{air density} .  \mbox{velocity}^2.
- - It is commonly denoted asQ.Calculated using <a href="http://wiki.kerbalspaceprogram.com/wiki/Atmosphere">KSPs stock aerodynamic model, or
- - <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Researchif it is installed.
+ - It is commonly denotedQ.
  -}
 getFlightDynamicPressure :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
 getFlightDynamicPressure thisArg = do
@@ -5971,7 +6303,7 @@ getFlightElevationStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream 
 getFlightElevationStream thisArg = requestStream $ getFlightElevationStreamReq thisArg 
 
 {-
- - The <a href="https://en.wikipedia.org/wiki/Equivalent_airspeed">equivalent air speedof the vessel, inm/s.Not available when <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Researchis installed.
+ - The <a href="https://en.wikipedia.org/wiki/Equivalent_airspeed">equivalent air speedof the vessel, inm/s.
  -}
 getFlightEquivalentAirSpeed :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
 getFlightEquivalentAirSpeed thisArg = do
@@ -6057,8 +6389,7 @@ getFlightLatitudeStream thisArg = requestStream $ getFlightLatitudeStreamReq thi
 
 {-
  - The <a href="https://en.wikipedia.org/wiki/Aerodynamic_force">aerodynamic liftcurrently acting on the vessel,
- - as a vector pointing in the direction of the force, with its magnitude equal to the strength of the force in Newtons.Calculated using <a href="http://wiki.kerbalspaceprogram.com/wiki/Atmosphere">KSPs stock aerodynamic model.
- - Not available when <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Researchis installed.
+ - as a vector pointing in the direction of the force, with its magnitude equal to the strength of the force in Newtons.
  -}
 getFlightLift :: KRPCHS.SpaceCenter.Flight -> RPCContext ((Double, Double, Double))
 getFlightLift thisArg = do
@@ -6109,7 +6440,7 @@ getFlightLongitudeStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream 
 getFlightLongitudeStream thisArg = requestStream $ getFlightLongitudeStreamReq thisArg 
 
 {-
- - The speed of the vessel, in multiples of the speed of sound.Not available when <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Researchis installed.
+ - The speed of the vessel, in multiples of the speed of sound.
  -}
 getFlightMach :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
 getFlightMach thisArg = do
@@ -6229,6 +6560,23 @@ getFlightRetrogradeStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream
 getFlightRetrogradeStream thisArg = requestStream $ getFlightRetrogradeStreamReq thisArg 
 
 {-
+ - The vessels Reynolds number.Requires <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Research.
+ -}
+getFlightReynoldsNumber :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
+getFlightReynoldsNumber thisArg = do
+    let r = makeRequest "SpaceCenter" "Flight_get_ReynoldsNumber" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getFlightReynoldsNumberStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Float)
+getFlightReynoldsNumberStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Flight_get_ReynoldsNumber" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getFlightReynoldsNumberStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
+getFlightReynoldsNumberStream thisArg = requestStream $ getFlightReynoldsNumberStreamReq thisArg 
+
+{-
  - The roll angle of the vessel relative to the horizon, in degrees. A value between -180° and +180°.
  -}
 getFlightRoll :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
@@ -6297,7 +6645,7 @@ getFlightSpeedStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Dou
 getFlightSpeedStream thisArg = requestStream $ getFlightSpeedStreamReq thisArg 
 
 {-
- - The speed of sound, in the atmosphere around the vessel, inm/s.Not available when <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Researchis installed.
+ - The speed of sound, in the atmosphere around the vessel, inm/s.
  -}
 getFlightSpeedOfSound :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
 getFlightSpeedOfSound thisArg = do
@@ -6350,8 +6698,7 @@ getFlightStaticAirTemperatureStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (
 getFlightStaticAirTemperatureStream thisArg = requestStream $ getFlightStaticAirTemperatureStreamReq thisArg 
 
 {-
- - The static atmospheric pressure acting on the vessel, in Pascals.Calculated using <a href="http://wiki.kerbalspaceprogram.com/wiki/Atmosphere">KSPs stock aerodynamic model.
- - Not available when <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Researchis installed.
+ - The static atmospheric pressure acting on the vessel, in Pascals.
  -}
 getFlightStaticPressure :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
 getFlightStaticPressure thisArg = do
@@ -6366,6 +6713,23 @@ getFlightStaticPressureStreamReq thisArg =
 
 getFlightStaticPressureStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
 getFlightStaticPressureStream thisArg = requestStream $ getFlightStaticPressureStreamReq thisArg 
+
+{-
+ - The static atmospheric pressure at mean sea level, in Pascals.
+ -}
+getFlightStaticPressureAtMSL :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
+getFlightStaticPressureAtMSL thisArg = do
+    let r = makeRequest "SpaceCenter" "Flight_get_StaticPressureAtMSL" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getFlightStaticPressureAtMSLStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Float)
+getFlightStaticPressureAtMSLStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Flight_get_StaticPressureAtMSL" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getFlightStaticPressureAtMSLStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
+getFlightStaticPressureAtMSLStream thisArg = requestStream $ getFlightStaticPressureAtMSLStreamReq thisArg 
 
 {-
  - The altitude above the surface of the body or sea level, whichever is closer, in meters.
@@ -6387,8 +6751,7 @@ getFlightSurfaceAltitudeStream thisArg = requestStream $ getFlightSurfaceAltitud
 
 {-
  - An estimate of the current terminal velocity of the vessel, inm/s.
- - This is the speed at which the drag forces cancel out the force of gravity.Calculated using <a href="http://wiki.kerbalspaceprogram.com/wiki/Atmosphere">KSPs stock aerodynamic model, or
- - <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Researchif it is installed.
+ - This is the speed at which the drag forces cancel out the force of gravity.
  -}
 getFlightTerminalVelocity :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
 getFlightTerminalVelocity thisArg = do
@@ -6407,7 +6770,7 @@ getFlightTerminalVelocityStream thisArg = requestStream $ getFlightTerminalVeloc
 {-
  - Gets the thrust specific fuel consumption for the jet engines on the vessel. This is a measure of the
  - efficiency of the engines, with a lower value indicating a more efficient vessel. This value is the
- - number of Newtons of fuel that are burned, per hour, to product one newton of thrust.Requires <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Research.
+ - number of Newtons of fuel that are burned, per hour, to produce one newton of thrust.Requires <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Research.
  -}
 getFlightThrustSpecificFuelConsumption :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
 getFlightThrustSpecificFuelConsumption thisArg = do
@@ -6440,6 +6803,23 @@ getFlightTotalAirTemperatureStreamReq thisArg =
 
 getFlightTotalAirTemperatureStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
 getFlightTotalAirTemperatureStream thisArg = requestStream $ getFlightTotalAirTemperatureStreamReq thisArg 
+
+{-
+ - The <a href="https://en.wikipedia.org/wiki/True_airspeed">true air speedof the vessel, inm/s.
+ -}
+getFlightTrueAirSpeed :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
+getFlightTrueAirSpeed thisArg = do
+    let r = makeRequest "SpaceCenter" "Flight_get_TrueAirSpeed" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getFlightTrueAirSpeedStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Float)
+getFlightTrueAirSpeedStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Flight_get_TrueAirSpeed" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getFlightTrueAirSpeedStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
+getFlightTrueAirSpeedStream thisArg = requestStream $ getFlightTrueAirSpeedStreamReq thisArg 
 
 {-
  - The velocity vector of the vessel. The magnitude of the vector is the speed of the vessel in meters per second.
@@ -6475,6 +6855,110 @@ getFlightVerticalSpeedStreamReq thisArg =
 
 getFlightVerticalSpeedStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Double))
 getFlightVerticalSpeedStream thisArg = requestStream $ getFlightVerticalSpeedStreamReq thisArg 
+
+{-
+ - Remove the force.
+ -}
+forceRemove :: KRPCHS.SpaceCenter.Force -> RPCContext ()
+forceRemove thisArg = do
+    let r = makeRequest "SpaceCenter" "Force_Remove" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - The force vector. The magnitude of the vector is the strength of the force in Newtons.
+ -}
+getForceForceVector :: KRPCHS.SpaceCenter.Force -> RPCContext ((Double, Double, Double))
+getForceForceVector thisArg = do
+    let r = makeRequest "SpaceCenter" "Force_get_ForceVector" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getForceForceVectorStreamReq :: KRPCHS.SpaceCenter.Force -> KRPCStreamReq ((Double, Double, Double))
+getForceForceVectorStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Force_get_ForceVector" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getForceForceVectorStream :: KRPCHS.SpaceCenter.Force -> RPCContext (KRPCStream ((Double, Double, Double)))
+getForceForceVectorStream thisArg = requestStream $ getForceForceVectorStreamReq thisArg 
+
+{-
+ - The part that this force is applied to.
+ -}
+getForcePart :: KRPCHS.SpaceCenter.Force -> RPCContext (KRPCHS.SpaceCenter.Part)
+getForcePart thisArg = do
+    let r = makeRequest "SpaceCenter" "Force_get_Part" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getForcePartStreamReq :: KRPCHS.SpaceCenter.Force -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
+getForcePartStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Force_get_Part" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getForcePartStream :: KRPCHS.SpaceCenter.Force -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getForcePartStream thisArg = requestStream $ getForcePartStreamReq thisArg 
+
+{-
+ - The position at which the force acts.
+ -}
+getForcePosition :: KRPCHS.SpaceCenter.Force -> RPCContext ((Double, Double, Double))
+getForcePosition thisArg = do
+    let r = makeRequest "SpaceCenter" "Force_get_Position" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getForcePositionStreamReq :: KRPCHS.SpaceCenter.Force -> KRPCStreamReq ((Double, Double, Double))
+getForcePositionStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Force_get_Position" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getForcePositionStream :: KRPCHS.SpaceCenter.Force -> RPCContext (KRPCStream ((Double, Double, Double)))
+getForcePositionStream thisArg = requestStream $ getForcePositionStreamReq thisArg 
+
+{-
+ - The reference frame of the force vector and position.
+ -}
+getForceReferenceFrame :: KRPCHS.SpaceCenter.Force -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
+getForceReferenceFrame thisArg = do
+    let r = makeRequest "SpaceCenter" "Force_get_ReferenceFrame" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getForceReferenceFrameStreamReq :: KRPCHS.SpaceCenter.Force -> KRPCStreamReq (KRPCHS.SpaceCenter.ReferenceFrame)
+getForceReferenceFrameStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Force_get_ReferenceFrame" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getForceReferenceFrameStream :: KRPCHS.SpaceCenter.Force -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
+getForceReferenceFrameStream thisArg = requestStream $ getForceReferenceFrameStreamReq thisArg 
+
+{-
+ - The force vector. The magnitude of the vector is the strength of the force in Newtons.
+ -}
+setForceForceVector :: KRPCHS.SpaceCenter.Force -> (Double, Double, Double) -> RPCContext ()
+setForceForceVector thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Force_set_ForceVector" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - The position at which the force acts.
+ -}
+setForcePosition :: KRPCHS.SpaceCenter.Force -> (Double, Double, Double) -> RPCContext ()
+setForcePosition thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Force_set_Position" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - The reference frame of the force vector and position.
+ -}
+setForceReferenceFrame :: KRPCHS.SpaceCenter.Force -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ()
+setForceReferenceFrame thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Force_set_ReferenceFrame" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
 
 {-
  - The area of the intake's opening, in square meters.
@@ -7390,6 +7874,57 @@ setNodeUT thisArg valueArg = do
     processResponse res 
 
 {-
+ - The eccentric anomaly at the given universal time.<param name="ut">The universal time, in seconds.
+ -}
+orbitEccentricAnomalyAtUT :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (Double)
+orbitEccentricAnomalyAtUT thisArg utArg = do
+    let r = makeRequest "SpaceCenter" "Orbit_EccentricAnomalyAtUT" [makeArgument 0 thisArg, makeArgument 1 utArg]
+    res <- sendRequest r
+    processResponse res
+
+orbitEccentricAnomalyAtUTStreamReq :: KRPCHS.SpaceCenter.Orbit -> Double -> KRPCStreamReq (Double)
+orbitEccentricAnomalyAtUTStreamReq thisArg utArg =
+    let req = makeRequest "SpaceCenter" "Orbit_EccentricAnomalyAtUT" [makeArgument 0 thisArg, makeArgument 1 utArg]
+    in  makeStream req
+
+orbitEccentricAnomalyAtUTStream :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (KRPCStream (Double))
+orbitEccentricAnomalyAtUTStream thisArg utArg = requestStream $ orbitEccentricAnomalyAtUTStreamReq thisArg utArg 
+
+{-
+ - The orbital speed at the given time, in meters per second.<param name="time">Time from now, in seconds.
+ -}
+orbitOrbitalSpeedAt :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (Double)
+orbitOrbitalSpeedAt thisArg timeArg = do
+    let r = makeRequest "SpaceCenter" "Orbit_OrbitalSpeedAt" [makeArgument 0 thisArg, makeArgument 1 timeArg]
+    res <- sendRequest r
+    processResponse res
+
+orbitOrbitalSpeedAtStreamReq :: KRPCHS.SpaceCenter.Orbit -> Double -> KRPCStreamReq (Double)
+orbitOrbitalSpeedAtStreamReq thisArg timeArg =
+    let req = makeRequest "SpaceCenter" "Orbit_OrbitalSpeedAt" [makeArgument 0 thisArg, makeArgument 1 timeArg]
+    in  makeStream req
+
+orbitOrbitalSpeedAtStream :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (KRPCStream (Double))
+orbitOrbitalSpeedAtStream thisArg timeArg = requestStream $ orbitOrbitalSpeedAtStreamReq thisArg timeArg 
+
+{-
+ - The orbital radius at the point in the orbit given by the true anomaly.<param name="trueAnomaly">The true anomaly.
+ -}
+orbitRadiusAtTrueAnomaly :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (Double)
+orbitRadiusAtTrueAnomaly thisArg trueAnomalyArg = do
+    let r = makeRequest "SpaceCenter" "Orbit_RadiusAtTrueAnomaly" [makeArgument 0 thisArg, makeArgument 1 trueAnomalyArg]
+    res <- sendRequest r
+    processResponse res
+
+orbitRadiusAtTrueAnomalyStreamReq :: KRPCHS.SpaceCenter.Orbit -> Double -> KRPCStreamReq (Double)
+orbitRadiusAtTrueAnomalyStreamReq thisArg trueAnomalyArg =
+    let req = makeRequest "SpaceCenter" "Orbit_RadiusAtTrueAnomaly" [makeArgument 0 thisArg, makeArgument 1 trueAnomalyArg]
+    in  makeStream req
+
+orbitRadiusAtTrueAnomalyStream :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (KRPCStream (Double))
+orbitRadiusAtTrueAnomalyStream thisArg trueAnomalyArg = requestStream $ orbitRadiusAtTrueAnomalyStreamReq thisArg trueAnomalyArg 
+
+{-
  - The unit direction vector from which the orbits longitude of ascending node is measured,
  - in the given reference frame.<param name="referenceFrame">
  -}
@@ -7424,6 +7959,57 @@ orbitReferencePlaneNormalStreamReq referenceFrameArg =
 
 orbitReferencePlaneNormalStream :: KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
 orbitReferencePlaneNormalStream referenceFrameArg = requestStream $ orbitReferencePlaneNormalStreamReq referenceFrameArg 
+
+{-
+ - The true anomaly at the given orbital radius.<param name="radius">The orbital radius in meters.
+ -}
+orbitTrueAnomalyAtRadius :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (Double)
+orbitTrueAnomalyAtRadius thisArg radiusArg = do
+    let r = makeRequest "SpaceCenter" "Orbit_TrueAnomalyAtRadius" [makeArgument 0 thisArg, makeArgument 1 radiusArg]
+    res <- sendRequest r
+    processResponse res
+
+orbitTrueAnomalyAtRadiusStreamReq :: KRPCHS.SpaceCenter.Orbit -> Double -> KRPCStreamReq (Double)
+orbitTrueAnomalyAtRadiusStreamReq thisArg radiusArg =
+    let req = makeRequest "SpaceCenter" "Orbit_TrueAnomalyAtRadius" [makeArgument 0 thisArg, makeArgument 1 radiusArg]
+    in  makeStream req
+
+orbitTrueAnomalyAtRadiusStream :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (KRPCStream (Double))
+orbitTrueAnomalyAtRadiusStream thisArg radiusArg = requestStream $ orbitTrueAnomalyAtRadiusStreamReq thisArg radiusArg 
+
+{-
+ - The true anomaly at the given time.<param name="ut">The universal time in seconds.
+ -}
+orbitTrueAnomalyAtUT :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (Double)
+orbitTrueAnomalyAtUT thisArg utArg = do
+    let r = makeRequest "SpaceCenter" "Orbit_TrueAnomalyAtUT" [makeArgument 0 thisArg, makeArgument 1 utArg]
+    res <- sendRequest r
+    processResponse res
+
+orbitTrueAnomalyAtUTStreamReq :: KRPCHS.SpaceCenter.Orbit -> Double -> KRPCStreamReq (Double)
+orbitTrueAnomalyAtUTStreamReq thisArg utArg =
+    let req = makeRequest "SpaceCenter" "Orbit_TrueAnomalyAtUT" [makeArgument 0 thisArg, makeArgument 1 utArg]
+    in  makeStream req
+
+orbitTrueAnomalyAtUTStream :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (KRPCStream (Double))
+orbitTrueAnomalyAtUTStream thisArg utArg = requestStream $ orbitTrueAnomalyAtUTStreamReq thisArg utArg 
+
+{-
+ - The universal time, in seconds, corresponding to the given true anomaly.<param name="trueAnomaly">True anomaly.
+ -}
+orbitUTAtTrueAnomaly :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (Double)
+orbitUTAtTrueAnomaly thisArg trueAnomalyArg = do
+    let r = makeRequest "SpaceCenter" "Orbit_UTAtTrueAnomaly" [makeArgument 0 thisArg, makeArgument 1 trueAnomalyArg]
+    res <- sendRequest r
+    processResponse res
+
+orbitUTAtTrueAnomalyStreamReq :: KRPCHS.SpaceCenter.Orbit -> Double -> KRPCStreamReq (Double)
+orbitUTAtTrueAnomalyStreamReq thisArg trueAnomalyArg =
+    let req = makeRequest "SpaceCenter" "Orbit_UTAtTrueAnomaly" [makeArgument 0 thisArg, makeArgument 1 trueAnomalyArg]
+    in  makeStream req
+
+orbitUTAtTrueAnomalyStream :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (KRPCStream (Double))
+orbitUTAtTrueAnomalyStream thisArg trueAnomalyArg = requestStream $ orbitUTAtTrueAnomalyStreamReq thisArg trueAnomalyArg 
 
 {-
  - Gets the apoapsis of the orbit, in meters, from the center of mass of the body being orbited.For the apoapsis altitude reported on the in-game map view, use <see cref="M:SpaceCenter.Orbit.ApoapsisAltitude" />.
@@ -7634,6 +8220,23 @@ getOrbitNextOrbitStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (K
 getOrbitNextOrbitStream thisArg = requestStream $ getOrbitNextOrbitStreamReq thisArg 
 
 {-
+ - The current orbital speed in meters per second.
+ -}
+getOrbitOrbitalSpeed :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
+getOrbitOrbitalSpeed thisArg = do
+    let r = makeRequest "SpaceCenter" "Orbit_get_OrbitalSpeed" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getOrbitOrbitalSpeedStreamReq :: KRPCHS.SpaceCenter.Orbit -> KRPCStreamReq (Double)
+getOrbitOrbitalSpeedStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Orbit_get_OrbitalSpeed" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getOrbitOrbitalSpeedStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
+getOrbitOrbitalSpeedStream thisArg = requestStream $ getOrbitOrbitalSpeedStreamReq thisArg 
+
+{-
  - The periapsis of the orbit, in meters, from the center of mass of the body being orbited.For the periapsis altitude reported on the in-game map view, use <see cref="M:SpaceCenter.Orbit.PeriapsisAltitude" />.
  -}
 getOrbitPeriapsis :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
@@ -7806,6 +8409,23 @@ getOrbitTimeToSOIChangeStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStr
 getOrbitTimeToSOIChangeStream thisArg = requestStream $ getOrbitTimeToSOIChangeStreamReq thisArg 
 
 {-
+ - The <a href="https://en.wikipedia.org/wiki/True_anomaly">true anomaly.
+ -}
+getOrbitTrueAnomaly :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
+getOrbitTrueAnomaly thisArg = do
+    let r = makeRequest "SpaceCenter" "Orbit_get_TrueAnomaly" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getOrbitTrueAnomalyStreamReq :: KRPCHS.SpaceCenter.Orbit -> KRPCStreamReq (Double)
+getOrbitTrueAnomalyStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Orbit_get_TrueAnomaly" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getOrbitTrueAnomalyStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
+getOrbitTrueAnomalyStream thisArg = requestStream $ getOrbitTrueAnomalyStreamReq thisArg 
+
+{-
  - Deploys the parachute. This has no effect if the parachute has already
  - been deployed.
  -}
@@ -7919,6 +8539,24 @@ setParachuteDeployMinPressure thisArg valueArg = do
     processResponse res 
 
 {-
+ - Exert a constant force on the part, acting at the given position.
+ - Returns an object that can be used to remove or modify the force.
+ -}
+partAddForce :: KRPCHS.SpaceCenter.Part -> (Double, Double, Double) -> (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCHS.SpaceCenter.Force)
+partAddForce thisArg forceArg positionArg referenceFrameArg = do
+    let r = makeRequest "SpaceCenter" "Part_AddForce" [makeArgument 0 thisArg, makeArgument 1 forceArg, makeArgument 2 positionArg, makeArgument 3 referenceFrameArg]
+    res <- sendRequest r
+    processResponse res
+
+partAddForceStreamReq :: KRPCHS.SpaceCenter.Part -> (Double, Double, Double) -> (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq (KRPCHS.SpaceCenter.Force)
+partAddForceStreamReq thisArg forceArg positionArg referenceFrameArg =
+    let req = makeRequest "SpaceCenter" "Part_AddForce" [makeArgument 0 thisArg, makeArgument 1 forceArg, makeArgument 2 positionArg, makeArgument 3 referenceFrameArg]
+    in  makeStream req
+
+partAddForceStream :: KRPCHS.SpaceCenter.Part -> (Double, Double, Double) -> (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Force))
+partAddForceStream thisArg forceArg positionArg referenceFrameArg = requestStream $ partAddForceStreamReq thisArg forceArg positionArg referenceFrameArg 
+
+{-
  - The position of the parts center of mass in the given reference frame.
  - If the part is physicsless, this is equivalent to <see cref="M:SpaceCenter.Part.Position" />.<param name="referenceFrame">
  -}
@@ -7952,6 +8590,15 @@ partDirectionStreamReq thisArg referenceFrameArg =
 
 partDirectionStream :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
 partDirectionStream thisArg referenceFrameArg = requestStream $ partDirectionStreamReq thisArg referenceFrameArg 
+
+{-
+ - Exert an instantaneous force on the part, acting at the given position.The force is applied instantaneously in a single physics update.
+ -}
+partInstantaneousForce :: KRPCHS.SpaceCenter.Part -> (Double, Double, Double) -> (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ()
+partInstantaneousForce thisArg forceArg positionArg referenceFrameArg = do
+    let r = makeRequest "SpaceCenter" "Part_InstantaneousForce" [makeArgument 0 thisArg, makeArgument 1 forceArg, makeArgument 2 positionArg, makeArgument 3 referenceFrameArg]
+    res <- sendRequest r
+    processResponse res 
 
 {-
  - The position of the part in the given reference frame.This is a fixed position in the part, defined by the parts model.
@@ -8821,6 +9468,24 @@ getPartStageStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Data.In
 getPartStageStream thisArg = requestStream $ getPartStageStreamReq thisArg 
 
 {-
+ - The name tag for the part. Can be set to a custom string using the in-game user interface.This requires either the <a href="http://github.com/krpc/NameTag/releases/latest">NameTagor
+ - <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/61827-/">kOSmods to be installed.
+ -}
+getPartTag :: KRPCHS.SpaceCenter.Part -> RPCContext (Data.Text.Text)
+getPartTag thisArg = do
+    let r = makeRequest "SpaceCenter" "Part_get_Tag" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getPartTagStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (Data.Text.Text)
+getPartTagStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Part_get_Tag" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getPartTagStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Data.Text.Text))
+getPartTagStream thisArg = requestStream $ getPartTagStreamReq thisArg 
+
+{-
  - Temperature of the part, in Kelvin.
  -}
 getPartTemperature :: KRPCHS.SpaceCenter.Part -> RPCContext (Double)
@@ -9020,22 +9685,14 @@ getPartVesselStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS
 getPartVesselStream thisArg = requestStream $ getPartVesselStreamReq thisArg 
 
 {-
- - The first docking port in the vessel with the given port name, as returned by <see cref="M:SpaceCenter.DockingPort.Name" />.
- - Returnsnullif there are no such docking ports.<param name="name">
+ - The name tag for the part. Can be set to a custom string using the in-game user interface.This requires either the <a href="http://github.com/krpc/NameTag/releases/latest">NameTagor
+ - <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/61827-/">kOSmods to be installed.
  -}
-partsDockingPortWithName :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> RPCContext (KRPCHS.SpaceCenter.DockingPort)
-partsDockingPortWithName thisArg nameArg = do
-    let r = makeRequest "SpaceCenter" "Parts_DockingPortWithName" [makeArgument 0 thisArg, makeArgument 1 nameArg]
+setPartTag :: KRPCHS.SpaceCenter.Part -> Data.Text.Text -> RPCContext ()
+setPartTag thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Part_set_Tag" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
-    processResponse res
-
-partsDockingPortWithNameStreamReq :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> KRPCStreamReq (KRPCHS.SpaceCenter.DockingPort)
-partsDockingPortWithNameStreamReq thisArg nameArg =
-    let req = makeRequest "SpaceCenter" "Parts_DockingPortWithName" [makeArgument 0 thisArg, makeArgument 1 nameArg]
-    in  makeStream req
-
-partsDockingPortWithNameStream :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.DockingPort))
-partsDockingPortWithNameStream thisArg nameArg = requestStream $ partsDockingPortWithNameStreamReq thisArg nameArg 
+    processResponse res 
 
 {-
  - A list of all parts that are decoupled in the given <paramref name="stage" />.<param name="stage">
@@ -9123,6 +9780,23 @@ partsWithNameStreamReq thisArg nameArg =
 
 partsWithNameStream :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
 partsWithNameStream thisArg nameArg = requestStream $ partsWithNameStreamReq thisArg nameArg 
+
+{-
+ - A list of all parts whose <see cref="M:SpaceCenter.Part.Tag" /> is <paramref name="tag" />.<param name="tag">
+ -}
+partsWithTag :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> RPCContext ([KRPCHS.SpaceCenter.Part])
+partsWithTag thisArg tagArg = do
+    let r = makeRequest "SpaceCenter" "Parts_WithTag" [makeArgument 0 thisArg, makeArgument 1 tagArg]
+    res <- sendRequest r
+    processResponse res
+
+partsWithTagStreamReq :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> KRPCStreamReq ([KRPCHS.SpaceCenter.Part])
+partsWithTagStreamReq thisArg tagArg =
+    let req = makeRequest "SpaceCenter" "Parts_WithTag" [makeArgument 0 thisArg, makeArgument 1 tagArg]
+    in  makeStream req
+
+partsWithTagStream :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
+partsWithTagStream thisArg tagArg = requestStream $ partsWithTagStreamReq thisArg tagArg 
 
 {-
  - A list of all parts whose <see cref="M:SpaceCenter.Part.Title" /> is <paramref name="title" />.<param name="title">
@@ -11033,6 +11707,125 @@ getScienceDataTransmitValueStream :: KRPCHS.SpaceCenter.ScienceData -> RPCContex
 getScienceDataTransmitValueStream thisArg = requestStream $ getScienceDataTransmitValueStreamReq thisArg 
 
 {-
+ - Multiply science value by this to determine data amount in mits.
+ -}
+getScienceSubjectDataScale :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (Float)
+getScienceSubjectDataScale thisArg = do
+    let r = makeRequest "SpaceCenter" "ScienceSubject_get_DataScale" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getScienceSubjectDataScaleStreamReq :: KRPCHS.SpaceCenter.ScienceSubject -> KRPCStreamReq (Float)
+getScienceSubjectDataScaleStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "ScienceSubject_get_DataScale" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getScienceSubjectDataScaleStream :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (KRPCStream (Float))
+getScienceSubjectDataScaleStream thisArg = requestStream $ getScienceSubjectDataScaleStreamReq thisArg 
+
+{-
+ - Whether the experiment has been completed.
+ -}
+getScienceSubjectIsComplete :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (Bool)
+getScienceSubjectIsComplete thisArg = do
+    let r = makeRequest "SpaceCenter" "ScienceSubject_get_IsComplete" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getScienceSubjectIsCompleteStreamReq :: KRPCHS.SpaceCenter.ScienceSubject -> KRPCStreamReq (Bool)
+getScienceSubjectIsCompleteStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "ScienceSubject_get_IsComplete" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getScienceSubjectIsCompleteStream :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (KRPCStream (Bool))
+getScienceSubjectIsCompleteStream thisArg = requestStream $ getScienceSubjectIsCompleteStreamReq thisArg 
+
+{-
+ - Amount of science already earned from this subject, not updated until after transmission/recovery.
+ -}
+getScienceSubjectScience :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (Float)
+getScienceSubjectScience thisArg = do
+    let r = makeRequest "SpaceCenter" "ScienceSubject_get_Science" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getScienceSubjectScienceStreamReq :: KRPCHS.SpaceCenter.ScienceSubject -> KRPCStreamReq (Float)
+getScienceSubjectScienceStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "ScienceSubject_get_Science" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getScienceSubjectScienceStream :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (KRPCStream (Float))
+getScienceSubjectScienceStream thisArg = requestStream $ getScienceSubjectScienceStreamReq thisArg 
+
+{-
+ - Total science allowable for this subject.
+ -}
+getScienceSubjectScienceCap :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (Float)
+getScienceSubjectScienceCap thisArg = do
+    let r = makeRequest "SpaceCenter" "ScienceSubject_get_ScienceCap" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getScienceSubjectScienceCapStreamReq :: KRPCHS.SpaceCenter.ScienceSubject -> KRPCStreamReq (Float)
+getScienceSubjectScienceCapStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "ScienceSubject_get_ScienceCap" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getScienceSubjectScienceCapStream :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (KRPCStream (Float))
+getScienceSubjectScienceCapStream thisArg = requestStream $ getScienceSubjectScienceCapStreamReq thisArg 
+
+{-
+ - Diminishing value multiplier for decreasing the science value returned from repeated experiments.
+ -}
+getScienceSubjectScientificValue :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (Float)
+getScienceSubjectScientificValue thisArg = do
+    let r = makeRequest "SpaceCenter" "ScienceSubject_get_ScientificValue" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getScienceSubjectScientificValueStreamReq :: KRPCHS.SpaceCenter.ScienceSubject -> KRPCStreamReq (Float)
+getScienceSubjectScientificValueStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "ScienceSubject_get_ScientificValue" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getScienceSubjectScientificValueStream :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (KRPCStream (Float))
+getScienceSubjectScientificValueStream thisArg = requestStream $ getScienceSubjectScientificValueStreamReq thisArg 
+
+{-
+ - Multiplier for specific Celestial Body/Experiment Situation combination.
+ -}
+getScienceSubjectSubjectValue :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (Float)
+getScienceSubjectSubjectValue thisArg = do
+    let r = makeRequest "SpaceCenter" "ScienceSubject_get_SubjectValue" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getScienceSubjectSubjectValueStreamReq :: KRPCHS.SpaceCenter.ScienceSubject -> KRPCStreamReq (Float)
+getScienceSubjectSubjectValueStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "ScienceSubject_get_SubjectValue" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getScienceSubjectSubjectValueStream :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (KRPCStream (Float))
+getScienceSubjectSubjectValueStream thisArg = requestStream $ getScienceSubjectSubjectValueStreamReq thisArg 
+
+{-
+ - Title of science subject, displayed in science archives
+ -}
+getScienceSubjectTitle :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (Data.Text.Text)
+getScienceSubjectTitle thisArg = do
+    let r = makeRequest "SpaceCenter" "ScienceSubject_get_Title" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getScienceSubjectTitleStreamReq :: KRPCHS.SpaceCenter.ScienceSubject -> KRPCStreamReq (Data.Text.Text)
+getScienceSubjectTitleStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "ScienceSubject_get_Title" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getScienceSubjectTitleStream :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (KRPCStream (Data.Text.Text))
+getScienceSubjectTitleStream thisArg = requestStream $ getScienceSubjectTitleStreamReq thisArg 
+
+{-
  - Whether the sensor is active.
  -}
 getSensorActive :: KRPCHS.SpaceCenter.Sensor -> RPCContext (Bool)
@@ -11713,6 +12506,23 @@ getVesselAvailableTorqueStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCS
 getVesselAvailableTorqueStream thisArg = requestStream $ getVesselAvailableTorqueStreamReq thisArg 
 
 {-
+ - The name of the biome the vessel is currently in.
+ -}
+getVesselBiome :: KRPCHS.SpaceCenter.Vessel -> RPCContext (Data.Text.Text)
+getVesselBiome thisArg = do
+    let r = makeRequest "SpaceCenter" "Vessel_get_Biome" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getVesselBiomeStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (Data.Text.Text)
+getVesselBiomeStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Vessel_get_Biome" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getVesselBiomeStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Data.Text.Text))
+getVesselBiomeStream thisArg = requestStream $ getVesselBiomeStreamReq thisArg 
+
+{-
  - Returns a <see cref="T:SpaceCenter.Control" /> object that can be used to manipulate
  - the vessel's control inputs. For example, its pitch/yaw/roll controls,
  - RCS and thrust.
@@ -12167,6 +12977,426 @@ warpTo utArg maxRailsRateArg maxPhysicsRateArg = do
     processResponse res 
 
 {-
+ - Creates a waypoint at the given position at ground level, and returns a
+ - <see cref="T:SpaceCenter.Waypoint" /> object that can be used to modify it.<param name="latitude">Latitude of the waypoint.<param name="longitude">Longitude of the waypoint.<param name="body">Celestial body the waypoint is attached to.<param name="name">Name of the waypoint.
+ -}
+waypointManagerAddWaypoint :: KRPCHS.SpaceCenter.WaypointManager -> Double -> Double -> KRPCHS.SpaceCenter.CelestialBody -> Data.Text.Text -> RPCContext (KRPCHS.SpaceCenter.Waypoint)
+waypointManagerAddWaypoint thisArg latitudeArg longitudeArg bodyArg nameArg = do
+    let r = makeRequest "SpaceCenter" "WaypointManager_AddWaypoint" [makeArgument 0 thisArg, makeArgument 1 latitudeArg, makeArgument 2 longitudeArg, makeArgument 3 bodyArg, makeArgument 4 nameArg]
+    res <- sendRequest r
+    processResponse res
+
+waypointManagerAddWaypointStreamReq :: KRPCHS.SpaceCenter.WaypointManager -> Double -> Double -> KRPCHS.SpaceCenter.CelestialBody -> Data.Text.Text -> KRPCStreamReq (KRPCHS.SpaceCenter.Waypoint)
+waypointManagerAddWaypointStreamReq thisArg latitudeArg longitudeArg bodyArg nameArg =
+    let req = makeRequest "SpaceCenter" "WaypointManager_AddWaypoint" [makeArgument 0 thisArg, makeArgument 1 latitudeArg, makeArgument 2 longitudeArg, makeArgument 3 bodyArg, makeArgument 4 nameArg]
+    in  makeStream req
+
+waypointManagerAddWaypointStream :: KRPCHS.SpaceCenter.WaypointManager -> Double -> Double -> KRPCHS.SpaceCenter.CelestialBody -> Data.Text.Text -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Waypoint))
+waypointManagerAddWaypointStream thisArg latitudeArg longitudeArg bodyArg nameArg = requestStream $ waypointManagerAddWaypointStreamReq thisArg latitudeArg longitudeArg bodyArg nameArg 
+
+{-
+ - An example map of known color - seed pairs. 
+ - Any other integers may be used as seed.
+ -}
+getWaypointManagerColors :: KRPCHS.SpaceCenter.WaypointManager -> RPCContext (Data.Map.Map (Data.Text.Text) (Data.Int.Int32))
+getWaypointManagerColors thisArg = do
+    let r = makeRequest "SpaceCenter" "WaypointManager_get_Colors" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWaypointManagerColorsStreamReq :: KRPCHS.SpaceCenter.WaypointManager -> KRPCStreamReq (Data.Map.Map (Data.Text.Text) (Data.Int.Int32))
+getWaypointManagerColorsStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "WaypointManager_get_Colors" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWaypointManagerColorsStream :: KRPCHS.SpaceCenter.WaypointManager -> RPCContext (KRPCStream (Data.Map.Map (Data.Text.Text) (Data.Int.Int32)))
+getWaypointManagerColorsStream thisArg = requestStream $ getWaypointManagerColorsStreamReq thisArg 
+
+{-
+ - Returns all available icons (from "GameData/Squad/Contracts/Icons/").
+ -}
+getWaypointManagerIcons :: KRPCHS.SpaceCenter.WaypointManager -> RPCContext ([Data.Text.Text])
+getWaypointManagerIcons thisArg = do
+    let r = makeRequest "SpaceCenter" "WaypointManager_get_Icons" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWaypointManagerIconsStreamReq :: KRPCHS.SpaceCenter.WaypointManager -> KRPCStreamReq ([Data.Text.Text])
+getWaypointManagerIconsStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "WaypointManager_get_Icons" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWaypointManagerIconsStream :: KRPCHS.SpaceCenter.WaypointManager -> RPCContext (KRPCStream ([Data.Text.Text]))
+getWaypointManagerIconsStream thisArg = requestStream $ getWaypointManagerIconsStreamReq thisArg 
+
+{-
+ - A list of all existing waypoints.
+ -}
+getWaypointManagerWaypoints :: KRPCHS.SpaceCenter.WaypointManager -> RPCContext ([KRPCHS.SpaceCenter.Waypoint])
+getWaypointManagerWaypoints thisArg = do
+    let r = makeRequest "SpaceCenter" "WaypointManager_get_Waypoints" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWaypointManagerWaypointsStreamReq :: KRPCHS.SpaceCenter.WaypointManager -> KRPCStreamReq ([KRPCHS.SpaceCenter.Waypoint])
+getWaypointManagerWaypointsStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "WaypointManager_get_Waypoints" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWaypointManagerWaypointsStream :: KRPCHS.SpaceCenter.WaypointManager -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Waypoint]))
+getWaypointManagerWaypointsStream thisArg = requestStream $ getWaypointManagerWaypointsStreamReq thisArg 
+
+{-
+ - Removes the waypoint.
+ -}
+waypointRemove :: KRPCHS.SpaceCenter.Waypoint -> RPCContext ()
+waypointRemove thisArg = do
+    let r = makeRequest "SpaceCenter" "Waypoint_Remove" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - The altitude of the waypoint above the surface of the body, in meters. When over water, this is the altitude above the sea floor.
+ -}
+getWaypointBedrockAltitude :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Double)
+getWaypointBedrockAltitude thisArg = do
+    let r = makeRequest "SpaceCenter" "Waypoint_get_BedrockAltitude" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWaypointBedrockAltitudeStreamReq :: KRPCHS.SpaceCenter.Waypoint -> KRPCStreamReq (Double)
+getWaypointBedrockAltitudeStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Waypoint_get_BedrockAltitude" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWaypointBedrockAltitudeStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Double))
+getWaypointBedrockAltitudeStream thisArg = requestStream $ getWaypointBedrockAltitudeStreamReq thisArg 
+
+{-
+ - Celestial body the waypoint is attached to.
+ -}
+getWaypointBody :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCHS.SpaceCenter.CelestialBody)
+getWaypointBody thisArg = do
+    let r = makeRequest "SpaceCenter" "Waypoint_get_Body" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWaypointBodyStreamReq :: KRPCHS.SpaceCenter.Waypoint -> KRPCStreamReq (KRPCHS.SpaceCenter.CelestialBody)
+getWaypointBodyStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Waypoint_get_Body" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWaypointBodyStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.CelestialBody))
+getWaypointBodyStream thisArg = requestStream $ getWaypointBodyStreamReq thisArg 
+
+{-
+ - True if this waypoint is part of a set of clustered waypoints with greek letter names appended (Alpha, Beta, Gamma, etc). 
+ - If true, there is a one-to-one correspondence with the greek letter name and the <see cref="M:SpaceCenter.Waypoint.Index" />.
+ -}
+getWaypointClustered :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Bool)
+getWaypointClustered thisArg = do
+    let r = makeRequest "SpaceCenter" "Waypoint_get_Clustered" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWaypointClusteredStreamReq :: KRPCHS.SpaceCenter.Waypoint -> KRPCStreamReq (Bool)
+getWaypointClusteredStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Waypoint_get_Clustered" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWaypointClusteredStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Bool))
+getWaypointClusteredStream thisArg = requestStream $ getWaypointClusteredStreamReq thisArg 
+
+{-
+ - The seed of the icon color. See <see cref="M:SpaceCenter.WaypointManager.Colors" /> for example colors.
+ -}
+getWaypointColor :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Data.Int.Int32)
+getWaypointColor thisArg = do
+    let r = makeRequest "SpaceCenter" "Waypoint_get_Color" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWaypointColorStreamReq :: KRPCHS.SpaceCenter.Waypoint -> KRPCStreamReq (Data.Int.Int32)
+getWaypointColorStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Waypoint_get_Color" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWaypointColorStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Data.Int.Int32))
+getWaypointColorStream thisArg = requestStream $ getWaypointColorStreamReq thisArg 
+
+{-
+ - The id of the associated contract.
+ - Returns 0 if the waypoint does not belong to a contract.
+ -}
+getWaypointContractId :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Data.Int.Int64)
+getWaypointContractId thisArg = do
+    let r = makeRequest "SpaceCenter" "Waypoint_get_ContractId" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWaypointContractIdStreamReq :: KRPCHS.SpaceCenter.Waypoint -> KRPCStreamReq (Data.Int.Int64)
+getWaypointContractIdStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Waypoint_get_ContractId" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWaypointContractIdStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Data.Int.Int64))
+getWaypointContractIdStream thisArg = requestStream $ getWaypointContractIdStreamReq thisArg 
+
+{-
+ - True if waypoint is actually glued to the ground.
+ -}
+getWaypointGrounded :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Bool)
+getWaypointGrounded thisArg = do
+    let r = makeRequest "SpaceCenter" "Waypoint_get_Grounded" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWaypointGroundedStreamReq :: KRPCHS.SpaceCenter.Waypoint -> KRPCStreamReq (Bool)
+getWaypointGroundedStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Waypoint_get_Grounded" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWaypointGroundedStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Bool))
+getWaypointGroundedStream thisArg = requestStream $ getWaypointGroundedStreamReq thisArg 
+
+{-
+ - Whether the waypoint belongs to a contract.
+ -}
+getWaypointHasContract :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Bool)
+getWaypointHasContract thisArg = do
+    let r = makeRequest "SpaceCenter" "Waypoint_get_HasContract" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWaypointHasContractStreamReq :: KRPCHS.SpaceCenter.Waypoint -> KRPCStreamReq (Bool)
+getWaypointHasContractStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Waypoint_get_HasContract" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWaypointHasContractStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Bool))
+getWaypointHasContractStream thisArg = requestStream $ getWaypointHasContractStreamReq thisArg 
+
+{-
+ - The icon of the waypoint.
+ -}
+getWaypointIcon :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Data.Text.Text)
+getWaypointIcon thisArg = do
+    let r = makeRequest "SpaceCenter" "Waypoint_get_Icon" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWaypointIconStreamReq :: KRPCHS.SpaceCenter.Waypoint -> KRPCStreamReq (Data.Text.Text)
+getWaypointIconStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Waypoint_get_Icon" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWaypointIconStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Data.Text.Text))
+getWaypointIconStream thisArg = requestStream $ getWaypointIconStreamReq thisArg 
+
+{-
+ - The integer index of this waypoint amongst its cluster of sibling waypoints. 
+ - In other words, when you have a cluster of waypoints called "Somewhere Alpha", "Somewhere Beta", and "Somewhere Gamma", 
+ - then the alpha site has index 0, the beta site has index 1 and the gamma site has index 2. 
+ - When <see cref="M:SpaceCenter.Waypoint.Clustered" /> is false, this value is zero but meaningless.
+ -}
+getWaypointIndex :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Data.Int.Int32)
+getWaypointIndex thisArg = do
+    let r = makeRequest "SpaceCenter" "Waypoint_get_Index" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWaypointIndexStreamReq :: KRPCHS.SpaceCenter.Waypoint -> KRPCStreamReq (Data.Int.Int32)
+getWaypointIndexStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Waypoint_get_Index" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWaypointIndexStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Data.Int.Int32))
+getWaypointIndexStream thisArg = requestStream $ getWaypointIndexStreamReq thisArg 
+
+{-
+ - The latitude of the waypoint.
+ -}
+getWaypointLatitude :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Double)
+getWaypointLatitude thisArg = do
+    let r = makeRequest "SpaceCenter" "Waypoint_get_Latitude" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWaypointLatitudeStreamReq :: KRPCHS.SpaceCenter.Waypoint -> KRPCStreamReq (Double)
+getWaypointLatitudeStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Waypoint_get_Latitude" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWaypointLatitudeStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Double))
+getWaypointLatitudeStream thisArg = requestStream $ getWaypointLatitudeStreamReq thisArg 
+
+{-
+ - The longitude of the waypoint.
+ -}
+getWaypointLongitude :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Double)
+getWaypointLongitude thisArg = do
+    let r = makeRequest "SpaceCenter" "Waypoint_get_Longitude" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWaypointLongitudeStreamReq :: KRPCHS.SpaceCenter.Waypoint -> KRPCStreamReq (Double)
+getWaypointLongitudeStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Waypoint_get_Longitude" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWaypointLongitudeStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Double))
+getWaypointLongitudeStream thisArg = requestStream $ getWaypointLongitudeStreamReq thisArg 
+
+{-
+ - The altitude of the waypoint above sea level, in meters.
+ -}
+getWaypointMeanAltitude :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Double)
+getWaypointMeanAltitude thisArg = do
+    let r = makeRequest "SpaceCenter" "Waypoint_get_MeanAltitude" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWaypointMeanAltitudeStreamReq :: KRPCHS.SpaceCenter.Waypoint -> KRPCStreamReq (Double)
+getWaypointMeanAltitudeStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Waypoint_get_MeanAltitude" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWaypointMeanAltitudeStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Double))
+getWaypointMeanAltitudeStream thisArg = requestStream $ getWaypointMeanAltitudeStreamReq thisArg 
+
+{-
+ - Name of the waypoint as it appears on the map and the contract.
+ -}
+getWaypointName :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Data.Text.Text)
+getWaypointName thisArg = do
+    let r = makeRequest "SpaceCenter" "Waypoint_get_Name" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWaypointNameStreamReq :: KRPCHS.SpaceCenter.Waypoint -> KRPCStreamReq (Data.Text.Text)
+getWaypointNameStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Waypoint_get_Name" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWaypointNameStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Data.Text.Text))
+getWaypointNameStream thisArg = requestStream $ getWaypointNameStreamReq thisArg 
+
+{-
+ - True if waypoint is a point near or on the body rather than high in orbit.
+ -}
+getWaypointNearSurface :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Bool)
+getWaypointNearSurface thisArg = do
+    let r = makeRequest "SpaceCenter" "Waypoint_get_NearSurface" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWaypointNearSurfaceStreamReq :: KRPCHS.SpaceCenter.Waypoint -> KRPCStreamReq (Bool)
+getWaypointNearSurfaceStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Waypoint_get_NearSurface" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWaypointNearSurfaceStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Bool))
+getWaypointNearSurfaceStream thisArg = requestStream $ getWaypointNearSurfaceStreamReq thisArg 
+
+{-
+ - The altitude of the waypoint above the surface of the body or sea level, whichever is closer, in meters.
+ -}
+getWaypointSurfaceAltitude :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Double)
+getWaypointSurfaceAltitude thisArg = do
+    let r = makeRequest "SpaceCenter" "Waypoint_get_SurfaceAltitude" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWaypointSurfaceAltitudeStreamReq :: KRPCHS.SpaceCenter.Waypoint -> KRPCStreamReq (Double)
+getWaypointSurfaceAltitudeStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Waypoint_get_SurfaceAltitude" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWaypointSurfaceAltitudeStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Double))
+getWaypointSurfaceAltitudeStream thisArg = requestStream $ getWaypointSurfaceAltitudeStreamReq thisArg 
+
+{-
+ - The altitude of the waypoint above the surface of the body, in meters. When over water, this is the altitude above the sea floor.
+ -}
+setWaypointBedrockAltitude :: KRPCHS.SpaceCenter.Waypoint -> Double -> RPCContext ()
+setWaypointBedrockAltitude thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Waypoint_set_BedrockAltitude" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - Celestial body the waypoint is attached to.
+ -}
+setWaypointBody :: KRPCHS.SpaceCenter.Waypoint -> KRPCHS.SpaceCenter.CelestialBody -> RPCContext ()
+setWaypointBody thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Waypoint_set_Body" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - The seed of the icon color. See <see cref="M:SpaceCenter.WaypointManager.Colors" /> for example colors.
+ -}
+setWaypointColor :: KRPCHS.SpaceCenter.Waypoint -> Data.Int.Int32 -> RPCContext ()
+setWaypointColor thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Waypoint_set_Color" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - The icon of the waypoint.
+ -}
+setWaypointIcon :: KRPCHS.SpaceCenter.Waypoint -> Data.Text.Text -> RPCContext ()
+setWaypointIcon thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Waypoint_set_Icon" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - The latitude of the waypoint.
+ -}
+setWaypointLatitude :: KRPCHS.SpaceCenter.Waypoint -> Double -> RPCContext ()
+setWaypointLatitude thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Waypoint_set_Latitude" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - The longitude of the waypoint.
+ -}
+setWaypointLongitude :: KRPCHS.SpaceCenter.Waypoint -> Double -> RPCContext ()
+setWaypointLongitude thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Waypoint_set_Longitude" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - The altitude of the waypoint above sea level, in meters.
+ -}
+setWaypointMeanAltitude :: KRPCHS.SpaceCenter.Waypoint -> Double -> RPCContext ()
+setWaypointMeanAltitude thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Waypoint_set_MeanAltitude" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - Name of the waypoint as it appears on the map and the contract.
+ -}
+setWaypointName :: KRPCHS.SpaceCenter.Waypoint -> Data.Text.Text -> RPCContext ()
+setWaypointName thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Waypoint_set_Name" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - The altitude of the waypoint above the surface of the body or sea level, whichever is closer, in meters.
+ -}
+setWaypointSurfaceAltitude :: KRPCHS.SpaceCenter.Waypoint -> Double -> RPCContext ()
+setWaypointSurfaceAltitude thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Waypoint_set_SurfaceAltitude" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
  - The currently active vessel.
  -}
 getActiveVessel :: RPCContext (KRPCHS.SpaceCenter.Vessel)
@@ -12293,6 +13523,7 @@ getPhysicsWarpFactorStream  = requestStream $ getPhysicsWarpFactorStreamReq
  - The time warp rate, using regular "on-rails" time warp. A value between
  - 0 and 7 inclusive. 0 means no time warp. Returns 0 if physical time warp
  - is active.
+ - 
  - If requested time warp factor cannot be set, it will be set to the next
  - lowest possible value. For example, if the vessel is too close to a
  - planet. See <a href="http://wiki.kerbalspaceprogram.com/wiki/Time_warp">
@@ -12458,6 +13689,23 @@ getWarpRateStream :: RPCContext (KRPCStream (Float))
 getWarpRateStream  = requestStream $ getWarpRateStreamReq  
 
 {-
+ - The waypoint manager.
+ -}
+getWaypointManager :: RPCContext (KRPCHS.SpaceCenter.WaypointManager)
+getWaypointManager  = do
+    let r = makeRequest "SpaceCenter" "get_WaypointManager" []
+    res <- sendRequest r
+    processResponse res
+
+getWaypointManagerStreamReq :: KRPCStreamReq (KRPCHS.SpaceCenter.WaypointManager)
+getWaypointManagerStreamReq  =
+    let req = makeRequest "SpaceCenter" "get_WaypointManager" []
+    in  makeStream req
+
+getWaypointManagerStream :: RPCContext (KRPCStream (KRPCHS.SpaceCenter.WaypointManager))
+getWaypointManagerStream  = requestStream $ getWaypointManagerStreamReq  
+
+{-
  - The currently active vessel.
  -}
 setActiveVessel :: KRPCHS.SpaceCenter.Vessel -> RPCContext ()
@@ -12480,6 +13728,7 @@ setPhysicsWarpFactor valueArg = do
  - The time warp rate, using regular "on-rails" time warp. A value between
  - 0 and 7 inclusive. 0 means no time warp. Returns 0 if physical time warp
  - is active.
+ - 
  - If requested time warp factor cannot be set, it will be set to the next
  - lowest possible value. For example, if the vessel is too close to a
  - planet. See <a href="http://wiki.kerbalspaceprogram.com/wiki/Time_warp">
