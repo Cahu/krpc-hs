@@ -1,5 +1,5 @@
 name:                krpc-hs
-version:             1.0.1
+version:             1.1.0
 description:         A client for KRPC
 license:             GPL-3
 license-file:        LICENSE
