@@ -6,6 +6,11 @@ module KRPCHS.Internal.SerializeUtils
 , encodePb
 , messagePut
 , messageGet
+
+, B.Utf8
+, packUtf8String
+, unpackUtf8String
+
 ) where
 
 
@@ -71,6 +76,14 @@ messagePut :: (P.Wire a, P.ReflectDescriptor a) => a -> B.ByteString
 messagePut = P.messagePut
 
 
+packUtf8String :: String -> B.Utf8
+packUtf8String = P.fromString
+
+
+unpackUtf8String :: B.Utf8 -> String
+unpackUtf8String = P.toString
+
+
 decodePb_ :: (W.Wire a) => B.FieldType -> B.ByteString -> Either ProtocolError a
 decodePb_ pbType bytes =
     case W.runGet (W.wireGet pbType) bytes of
@@ -130,8 +143,8 @@ instance PbSerializable Bool where
 
 
 instance PbSerializable T.Text where
-    decodePb bytes = (T.pack . P.toString) <$> (decodePb_ 9 bytes :: Either ProtocolError B.Utf8)
-    encodePb t     = W.runPut (W.wirePut 9 (P.fromString $ T.unpack t))
+    decodePb bytes = (T.pack . unpackUtf8String) <$> (decodePb_ 9 bytes :: Either ProtocolError B.Utf8)
+    encodePb t     = W.runPut (W.wirePut 9 (packUtf8String $ T.unpack t))
 
 
 instance (PbSerializable a) => PbSerializable [a] where

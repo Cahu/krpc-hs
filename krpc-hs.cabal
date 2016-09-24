@@ -26,6 +26,9 @@ library
                      , PB.KRPC
                      , PB.KRPC.Argument
                      , PB.KRPC.Class
+                     , PB.KRPC.ConnectionRequest
+                     , PB.KRPC.ConnectionResponse
+                     , PB.KRPC.ConnectionResponse.Status
                      , PB.KRPC.Dictionary
                      , PB.KRPC.DictionaryEntry
                      , PB.KRPC.Enumeration
@@ -33,15 +36,20 @@ library
                      , PB.KRPC.List
                      , PB.KRPC.Parameter
                      , PB.KRPC.Procedure
+                     , PB.KRPC.ProcedureCall
+                     , PB.KRPC.ProcedureResult
                      , PB.KRPC.Request
                      , PB.KRPC.Response
                      , PB.KRPC.Service
                      , PB.KRPC.Services
                      , PB.KRPC.Set
                      , PB.KRPC.Status
-                     , PB.KRPC.StreamMessage
-                     , PB.KRPC.StreamResponse
+                     , PB.KRPC.Stream
+                     , PB.KRPC.StreamResult
+                     , PB.KRPC.StreamUpdate
                      , PB.KRPC.Tuple
+                     , PB.KRPC.Type
+                     , PB.KRPC.Type.TypeCode
   build-depends:       base >= 4.7 && < 5
                      , exceptions
                      , mtl

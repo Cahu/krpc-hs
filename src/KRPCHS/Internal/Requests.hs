@@ -15,10 +15,10 @@ module KRPCHS.Internal.Requests
 , extract
 
 , makeArgument
+, processResult
 , processResponse
 , makeRequest
 , sendRequest
-, recvResponse
 , makeStream
 , requestStream
 , extractStreamMessage
@@ -37,8 +37,10 @@ import KRPCHS.Internal.SerializeUtils
 import qualified PB.KRPC.Argument        as KArg
 import qualified PB.KRPC.Request         as KReq
 import qualified PB.KRPC.Response        as KRes
-import qualified PB.KRPC.StreamMessage   as KStreamMsg
-import qualified PB.KRPC.StreamResponse  as KStreamRes
+import qualified PB.KRPC.ProcedureCall   as KPReq
+import qualified PB.KRPC.ProcedureResult as KPRes
+import qualified PB.KRPC.StreamUpdate    as KStreamMsg
+import qualified PB.KRPC.StreamResult    as KStreamRes
 
 import Data.Int
 import Data.Word
@@ -47,9 +49,9 @@ import qualified Data.Text as T
 import qualified Data.Map  as M
 import qualified Data.Foldable
 import qualified Data.Sequence as Seq
+import           Data.Sequence (ViewL((:<)))
 
-import qualified Data.ByteString       as BS
-import qualified Data.ByteString.Lazy  as BL
+import qualified Data.ByteString.Lazy  as BS
 import qualified Text.ProtocolBuffers  as P
 
 
@@ -66,7 +68,7 @@ newtype KRPCStream a = KRPCStream { streamId :: Int }
 newtype KRPCStreamReq a = KRPCStreamReq { streamReq :: KReq.Request }
     deriving (Show)
 
-newtype KRPCStreamMsg = KRPCStreamMsg { streamMsg :: M.Map Int KRes.Response }
+newtype KRPCStreamMsg = KRPCStreamMsg { streamMsg :: M.Map Int KPRes.ProcedureResult }
     deriving (Show)
 
 emptyKRPCStreamMsg :: KRPCStreamMsg
@@ -74,10 +76,10 @@ emptyKRPCStreamMsg = KRPCStreamMsg M.empty
 
 
 class (PbSerializable a) => KRPCResponseExtractable a where
-    extract :: (PbSerializable a) => KRes.Response -> Either ProtocolError a
+    extract :: (PbSerializable a) => KPRes.ProcedureResult -> Either ProtocolError a
     extract r = do
         checkError r
-        maybe (Left ResponseEmpty) (decodePb) (KRes.return_value r)
+        maybe (Left ResponseEmpty) (decodePb) (KPRes.value r)
 
 instance KRPCResponseExtractable Bool
 instance KRPCResponseExtractable Float
@@ -100,51 +102,56 @@ instance KRPCResponseExtractable () where
 instance (PbSerializable a) => KRPCResponseExtractable [a] where
     extract r = do
         checkError r
-        case (KRes.return_value r) of
+        case (KPRes.value r) of
             Nothing    -> Right []
             Just bytes -> decodePb bytes
 
 instance (Ord k, PbSerializable k, PbSerializable v) => KRPCResponseExtractable (M.Map k v) where
     extract r = do
         checkError r
-        case (KRes.return_value r) of
+        case (KPRes.value r) of
             Nothing    -> Right M.empty
             Just bytes -> decodePb bytes
 
 
-checkError :: KRes.Response -> Either ProtocolError ()
-checkError r = case (KRes.has_error r) of
-    Just True -> Left (maybe (DecodeFailure "unknown reason") (KRPCError . P.toString) (KRes.error r))
-    _         -> return ()
+checkError :: KPRes.ProcedureResult -> Either ProtocolError ()
+checkError r = case (KPRes.error r) of
+    Just err -> Left $ KRPCError (P.toString err)
+    Nothing  -> return ()
+
+
+processResult :: (KRPCResponseExtractable a) => KPRes.ProcedureResult -> RPCContext a
+processResult res = either (throwM) (return) (extract res)
 
 
 processResponse :: (KRPCResponseExtractable a) => KRes.Response -> RPCContext a
-processResponse res = either (throwM) (return) (extract res)
+processResponse r = case (KRes.error r) of
+    Just err -> throwM $ KRPCError (P.toString err)
+    Nothing  -> let (result :< _) = Seq.viewl (KRes.results r) in  processResult result
 
 
 sendRequest :: KReq.Request -> RPCContext KRes.Response
 sendRequest r = do
     sock <- asks rpcSocket
     liftIO $ sendMsg sock r
-    liftIO $ recvResponse sock
-
-
-recvResponse :: (P.Wire a, P.ReflectDescriptor a) => Socket -> IO a
-recvResponse sock = do
-    msg <- recvMsg sock
-    either (throwM) (return) (messageGet (BL.fromStrict msg))
+    msg  <- liftIO $ recvMsg sock
+    either (throwM) (return) msg
 
 
 makeArgument :: (PbSerializable a) => P.Word32 -> a -> KArg.Argument
 makeArgument position arg = KArg.Argument (Just position) (Just $ encodePb arg)
 
 
-makeRequest :: String -> String -> [KArg.Argument] -> KReq.Request
-makeRequest serviceName procName params =
-    KReq.Request
+makeCallRequest :: String -> String -> [KArg.Argument] -> KPReq.ProcedureCall
+makeCallRequest serviceName procName params =
+    KPReq.ProcedureCall
     { service   = Just $ P.fromString serviceName
     , procedure = Just $ P.fromString procName
     , arguments = Seq.fromList params }
+
+
+makeRequest :: String -> String -> [KArg.Argument] -> KReq.Request
+makeRequest serviceName procName params = KReq.Request . Seq.singleton $ makeCallRequest serviceName procName params
 
 
 makeStream :: KReq.Request -> KRPCStreamReq a
@@ -159,13 +166,14 @@ requestStream KRPCStreamReq{..} = do
     return (KRPCStream sid)
 
 
-extractStreamResponse :: KStreamRes.StreamResponse -> Maybe (Int, KRes.Response)
+extractStreamResponse :: KStreamRes.StreamResult -> Maybe (Int, KPRes.ProcedureResult)
 extractStreamResponse streamRes = do
-    sid <- KStreamRes.id       streamRes
-    res <- KStreamRes.response streamRes
+    sid <- KStreamRes.id     streamRes
+    res <- KStreamRes.result streamRes
     return (fromIntegral sid, res)
 
 
-extractStreamMessage :: KStreamMsg.StreamMessage -> [(Int, KRes.Response)]
+extractStreamMessage :: KStreamMsg.StreamUpdate -> [(Int, KPRes.ProcedureResult)]
 extractStreamMessage msg = mapMaybe extractStreamResponse responseList
-    where responseList = Data.Foldable.toList (KStreamMsg.responses msg)
+    where responseList = Data.Foldable.toList (KStreamMsg.results msg)
+

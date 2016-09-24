@@ -6,27 +6,26 @@ import qualified Prelude as Prelude'
 import qualified Data.Typeable as Prelude'
 import qualified Data.Data as Prelude'
 import qualified Text.ProtocolBuffers.Header as P'
-import qualified PB.KRPC.Argument as KRPC (Argument)
+import qualified PB.KRPC.ProcedureCall as KRPC (ProcedureCall)
 
-data Request = Request{service :: !(P'.Maybe P'.Utf8), procedure :: !(P'.Maybe P'.Utf8), arguments :: !(P'.Seq KRPC.Argument)}
+data Request = Request{calls :: !(P'.Seq KRPC.ProcedureCall)}
              deriving (Prelude'.Show, Prelude'.Eq, Prelude'.Ord, Prelude'.Typeable, Prelude'.Data)
 
 instance P'.Mergeable Request where
-  mergeAppend (Request x'1 x'2 x'3) (Request y'1 y'2 y'3)
-   = Request (P'.mergeAppend x'1 y'1) (P'.mergeAppend x'2 y'2) (P'.mergeAppend x'3 y'3)
+  mergeAppend (Request x'1) (Request y'1) = Request (P'.mergeAppend x'1 y'1)
 
 instance P'.Default Request where
-  defaultValue = Request P'.defaultValue P'.defaultValue P'.defaultValue
+  defaultValue = Request P'.defaultValue
 
 instance P'.Wire Request where
-  wireSize ft' self'@(Request x'1 x'2 x'3)
+  wireSize ft' self'@(Request x'1)
    = case ft' of
        10 -> calc'Size
        11 -> P'.prependMessageSize calc'Size
        _ -> P'.wireSizeErr ft' self'
     where
-        calc'Size = (P'.wireSizeOpt 1 9 x'1 + P'.wireSizeOpt 1 9 x'2 + P'.wireSizeRep 1 11 x'3)
-  wirePut ft' self'@(Request x'1 x'2 x'3)
+        calc'Size = (P'.wireSizeRep 1 11 x'1)
+  wirePut ft' self'@(Request x'1)
    = case ft' of
        10 -> put'Fields
        11 -> do
@@ -36,9 +35,7 @@ instance P'.Wire Request where
     where
         put'Fields
          = do
-             P'.wirePutOpt 10 9 x'1
-             P'.wirePutOpt 18 9 x'2
-             P'.wirePutRep 26 11 x'3
+             P'.wirePutRep 10 11 x'1
   wireGet ft'
    = case ft' of
        10 -> P'.getBareMessageWith update'Self
@@ -47,9 +44,7 @@ instance P'.Wire Request where
     where
         update'Self wire'Tag old'Self
          = case wire'Tag of
-             10 -> Prelude'.fmap (\ !new'Field -> old'Self{service = Prelude'.Just new'Field}) (P'.wireGet 9)
-             18 -> Prelude'.fmap (\ !new'Field -> old'Self{procedure = Prelude'.Just new'Field}) (P'.wireGet 9)
-             26 -> Prelude'.fmap (\ !new'Field -> old'Self{arguments = P'.append (arguments old'Self) new'Field}) (P'.wireGet 11)
+             10 -> Prelude'.fmap (\ !new'Field -> old'Self{calls = P'.append (calls old'Self) new'Field}) (P'.wireGet 11)
              _ -> let (field'Number, wire'Type) = P'.splitWireTag wire'Tag in P'.unknown field'Number wire'Type old'Self
 
 instance P'.MessageAPI msg' (msg' -> Request) Request where
@@ -58,10 +53,10 @@ instance P'.MessageAPI msg' (msg' -> Request) Request where
 instance P'.GPB Request
 
 instance P'.ReflectDescriptor Request where
-  getMessageInfo _ = P'.GetMessageInfo (P'.fromDistinctAscList []) (P'.fromDistinctAscList [10, 18, 26])
+  getMessageInfo _ = P'.GetMessageInfo (P'.fromDistinctAscList []) (P'.fromDistinctAscList [10])
   reflectDescriptorInfo _
    = Prelude'.read
-      "DescriptorInfo {descName = ProtoName {protobufName = FIName \".krpc.schema.Request\", haskellPrefix = [MName \"PB\"], parentModule = [MName \"KRPC\"], baseName = MName \"Request\"}, descFilePath = [\"PB\",\"KRPC\",\"Request.hs\"], isGroup = False, fields = fromList [FieldInfo {fieldName = ProtoFName {protobufName' = FIName \".krpc.schema.Request.service\", haskellPrefix' = [MName \"PB\"], parentModule' = [MName \"KRPC\",MName \"Request\"], baseName' = FName \"service\", baseNamePrefix' = \"\"}, fieldNumber = FieldId {getFieldId = 1}, wireTag = WireTag {getWireTag = 10}, packedTag = Nothing, wireTagLength = 1, isPacked = False, isRequired = False, canRepeat = False, mightPack = False, typeCode = FieldType {getFieldType = 9}, typeName = Nothing, hsRawDefault = Nothing, hsDefault = Nothing},FieldInfo {fieldName = ProtoFName {protobufName' = FIName \".krpc.schema.Request.procedure\", haskellPrefix' = [MName \"PB\"], parentModule' = [MName \"KRPC\",MName \"Request\"], baseName' = FName \"procedure\", baseNamePrefix' = \"\"}, fieldNumber = FieldId {getFieldId = 2}, wireTag = WireTag {getWireTag = 18}, packedTag = Nothing, wireTagLength = 1, isPacked = False, isRequired = False, canRepeat = False, mightPack = False, typeCode = FieldType {getFieldType = 9}, typeName = Nothing, hsRawDefault = Nothing, hsDefault = Nothing},FieldInfo {fieldName = ProtoFName {protobufName' = FIName \".krpc.schema.Request.arguments\", haskellPrefix' = [MName \"PB\"], parentModule' = [MName \"KRPC\",MName \"Request\"], baseName' = FName \"arguments\", baseNamePrefix' = \"\"}, fieldNumber = FieldId {getFieldId = 3}, wireTag = WireTag {getWireTag = 26}, packedTag = Nothing, wireTagLength = 1, isPacked = False, isRequired = False, canRepeat = True, mightPack = False, typeCode = FieldType {getFieldType = 11}, typeName = Just (ProtoName {protobufName = FIName \".krpc.schema.Argument\", haskellPrefix = [MName \"PB\"], parentModule = [MName \"KRPC\"], baseName = MName \"Argument\"}), hsRawDefault = Nothing, hsDefault = Nothing}], descOneofs = fromList [], keys = fromList [], extRanges = [], knownKeys = fromList [], storeUnknown = False, lazyFields = False, makeLenses = False}"
+      "DescriptorInfo {descName = ProtoName {protobufName = FIName \".KRPC.Request\", haskellPrefix = [MName \"PB\"], parentModule = [MName \"KRPC\"], baseName = MName \"Request\"}, descFilePath = [\"PB\",\"KRPC\",\"Request.hs\"], isGroup = False, fields = fromList [FieldInfo {fieldName = ProtoFName {protobufName' = FIName \".KRPC.Request.calls\", haskellPrefix' = [MName \"PB\"], parentModule' = [MName \"KRPC\",MName \"Request\"], baseName' = FName \"calls\", baseNamePrefix' = \"\"}, fieldNumber = FieldId {getFieldId = 1}, wireTag = WireTag {getWireTag = 10}, packedTag = Nothing, wireTagLength = 1, isPacked = False, isRequired = False, canRepeat = True, mightPack = False, typeCode = FieldType {getFieldType = 11}, typeName = Just (ProtoName {protobufName = FIName \".KRPC.ProcedureCall\", haskellPrefix = [MName \"PB\"], parentModule = [MName \"KRPC\"], baseName = MName \"ProcedureCall\"}), hsRawDefault = Nothing, hsDefault = Nothing}], descOneofs = fromList [], keys = fromList [], extRanges = [], knownKeys = fromList [], storeUnknown = False, lazyFields = False, makeLenses = False}"
 
 instance P'.TextType Request where
   tellT = P'.tellSubMessage
@@ -70,26 +65,14 @@ instance P'.TextType Request where
 instance P'.TextMsg Request where
   textPut msg
    = do
-       P'.tellT "service" (service msg)
-       P'.tellT "procedure" (procedure msg)
-       P'.tellT "arguments" (arguments msg)
+       P'.tellT "calls" (calls msg)
   textGet
    = do
-       mods <- P'.sepEndBy (P'.choice [parse'service, parse'procedure, parse'arguments]) P'.spaces
+       mods <- P'.sepEndBy (P'.choice [parse'calls]) P'.spaces
        Prelude'.return (Prelude'.foldl (\ v f -> f v) P'.defaultValue mods)
     where
-        parse'service
+        parse'calls
          = P'.try
             (do
-               v <- P'.getT "service"
-               Prelude'.return (\ o -> o{service = v}))
-        parse'procedure
-         = P'.try
-            (do
-               v <- P'.getT "procedure"
-               Prelude'.return (\ o -> o{procedure = v}))
-        parse'arguments
-         = P'.try
-            (do
-               v <- P'.getT "arguments"
-               Prelude'.return (\ o -> o{arguments = P'.append (arguments o) v}))
+               v <- P'.getT "calls"
+               Prelude'.return (\ o -> o{calls = P'.append (calls o) v}))

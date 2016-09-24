@@ -1,14 +1,17 @@
+{-# LANGUAGE ScopedTypeVariables #-}
+
 module KRPCHS.Internal.NetworkUtils
 ( helloMsg
 , helloStreamMsg
-, connNameMsg
-, recvN
-, recvId
+, connectRpcMsg
+, connectStreamMsg
+, recvMsgRaw
 , recvMsg
 , sendMsg
 ) where
 
 
+import KRPCHS.Internal.ProtocolError
 import KRPCHS.Internal.SerializeUtils
 
 import Control.Monad
@@ -20,21 +23,32 @@ import qualified Data.ByteString        as BS
 import qualified Data.ByteString.Lazy   as BL
 import qualified Data.ByteString.Char8  as BC
 
+import qualified Text.ProtocolBuffers       as P
+import qualified PB.KRPC.ConnectionRequest  as KRPC
+--import qualified PB.KRPC.ConnectionResponse as KRPC
+
 import Data.Bits
 import Data.Word
-import Text.ProtocolBuffers
 
 
 helloMsg :: BC.ByteString
-helloMsg = BC.pack "HELLO-RPC\x0\x0\x0"
+helloMsg = BC.pack "KRPC-RPC"
+--helloMsg = BC.pack "HELLO-RPC\x0\x0\x0"
 
 helloStreamMsg :: BC.ByteString
 helloStreamMsg = BC.pack "HELLO-STREAM"
 
 
-connNameMsg :: String -> BC.ByteString
-connNameMsg name = BC.pack $ take 32 $ name ++ padding
-    where padding = repeat '\x0'
+connectRpcMsg :: String -> KRPC.ConnectionRequest
+connectRpcMsg name = KRPC.ConnectionRequest
+    { KRPC.client_name       = Just (packUtf8String name)
+    , KRPC.client_identifier = Nothing }
+
+
+connectStreamMsg :: BL.ByteString -> KRPC.ConnectionRequest
+connectStreamMsg clientid = KRPC.ConnectionRequest
+    { KRPC.client_name       = Nothing
+    , KRPC.client_identifier = Just clientid }
 
 
 recvN :: Socket -> Int -> IO BS.ByteString
@@ -51,25 +65,28 @@ recvN sock n =
         recvN' 0 []
 
 
-recvId :: Socket -> IO BS.ByteString
-recvId sock = recvN sock 16
+recvStopBitEntity :: Socket -> IO BS.ByteString
+recvStopBitEntity sock = aux BS.empty
+  where
+    aux entity = do
+        b <- recv sock 1
+        let entity' = (BS.append entity b)
+        if (testBit (BS.head b) 7) then aux entity' else return entity'
 
 
-recvMsg :: Socket -> IO BS.ByteString
-recvMsg sock = do
-    sz <- recvSize BS.empty
+recvMsgRaw :: Socket -> IO BS.ByteString
+recvMsgRaw sock = do
+    (sz :: Word64) <- recvSize
     recvN sock (fromIntegral sz)
-    where
-        recvSize :: BS.ByteString -> IO Word64
-        recvSize sz
-            | BC.length sz > 10 = fail "Malformed message"
-            | otherwise = do
-                b <- recv sock 1
-                let sz'  = BS.append sz b
-                    more = testBit (BS.head b) 7
-                if more then recvSize sz'
-                        else either (fail "Malformed message") (return) (decodePb $ BL.fromStrict sz')
+  where
+    recvSize = do
+        entity <- recvStopBitEntity sock
+        either (fail "Malformed message") (return) (decodePb $ BL.fromStrict entity)
 
 
-sendMsg :: (ReflectDescriptor msg, Wire msg) => Socket -> msg -> IO ()
-sendMsg sock msg = sendAll sock (BL.toStrict $ messageWithLengthPut msg)
+recvMsg :: (P.ReflectDescriptor msg, P.Wire msg) => Socket -> IO (Either ProtocolError msg)
+recvMsg sock = messageGet . BL.fromStrict <$> recvMsgRaw sock
+
+
+sendMsg :: (P.ReflectDescriptor msg, P.Wire msg) => Socket -> msg -> IO ()
+sendMsg sock msg = sendAll sock (BL.toStrict $ P.messageWithLengthPut msg)

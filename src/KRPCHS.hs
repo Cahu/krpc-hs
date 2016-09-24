@@ -36,17 +36,22 @@ module KRPCHS
 import KRPCHS.Internal.Requests
 import KRPCHS.Internal.ProtocolError
 import KRPCHS.Internal.NetworkUtils
+import KRPCHS.Internal.SerializeUtils
 
-import qualified PB.KRPC.Status   as KRPC
-import qualified PB.KRPC.Service  as KRPC
-import qualified PB.KRPC.Services as KRPC
+import qualified PB.KRPC.Status                    as KRPC
+import qualified PB.KRPC.Service                   as KRPC
+import qualified PB.KRPC.Services                  as KRPC
+import qualified PB.KRPC.ConnectionResponse        as KRPC
+import qualified PB.KRPC.ConnectionResponse.Status as KRPC.Status
 
 import Network.Socket
 import Control.Monad.Catch
 import Control.Monad.Reader
 
+import Data.Maybe
+
 import qualified Data.Map as M
-import qualified Data.ByteString.Char8 as BS
+import qualified Data.ByteString.Lazy.Char8 as BS
 import Network.Socket.ByteString
 
 
@@ -62,18 +67,28 @@ getSocket host service = do
 rpcHandshake :: Socket -> String -> IO BS.ByteString
 rpcHandshake sock name = do
     sendAll sock helloMsg
-    sendAll sock (connNameMsg name)
-    recvId sock
+    sendMsg sock (connectRpcMsg name)
+    resp <- recvMsg sock
+    either (fail . show) (extractId) resp
+  where
+    extractId resp@KRPC.ConnectionResponse{..} = do
+        print resp
+        case status of
+            Just KRPC.Status.OK -> return $ fromJust client_identifier
+            Just err            -> fail   $ show err ++ " - details: '" ++ show (unpackUtf8String <$> message) ++ "'"
+            Nothing             -> fail   $ "Could not make sense of the server's response"
 
 
 streamHandshake :: Socket -> BS.ByteString -> IO ()
 streamHandshake sock clientId = do
     sendAll sock helloStreamMsg
-    sendAll sock clientId
-    res <- recvN sock 2
-    case BS.unpack res of
-        "OK" -> return ()
-        _    -> fail "Could not handshake with stream server"
+    sendMsg sock (connectStreamMsg clientId)
+    resp <- recvMsg sock
+    either (fail . show) (checkResponse) resp
+  where
+    checkResponse KRPC.ConnectionResponse{..} = case status of
+        Just KRPC.Status.OK -> return ()
+        err                 -> fail (show err)
 
 
 withRPCClient :: String -> HostName -> ServiceName -> (RPCClient -> IO a) -> IO a
@@ -115,8 +130,10 @@ getServices = do
 
 getStreamMessage :: StreamClient -> RPCContext KRPCStreamMsg
 getStreamMessage StreamClient{..} = do
-    res <- liftIO $ recvResponse streamSocket
-    return $ KRPCStreamMsg $ M.fromList (extractStreamMessage res)
+    res <- liftIO $ recvMsg streamSocket
+    either (throwM) (return . unpackStreamMsg) res
+  where
+    unpackStreamMsg res = KRPCStreamMsg $ M.fromList (extractStreamMessage res)
 
 
 messageResultsCount :: KRPCStreamMsg -> Int
@@ -131,7 +148,7 @@ messageHasResultFor KRPCStream{..} KRPCStreamMsg{..} =
 getStreamResult :: (KRPCResponseExtractable a) => KRPCStream a -> KRPCStreamMsg -> RPCContext a
 getStreamResult KRPCStream{..} KRPCStreamMsg{..} =
     maybe (throwM NoSuchStream)
-          (processResponse)
+          (processResult)
           (M.lookup streamId streamMsg)
 
 
