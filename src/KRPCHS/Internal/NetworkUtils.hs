@@ -1,9 +1,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 
 module KRPCHS.Internal.NetworkUtils
-( helloMsg
-, helloStreamMsg
-, connectRpcMsg
+( connectRpcMsg
 , connectStreamMsg
 , recvMsgRaw
 , recvMsg
@@ -21,33 +19,27 @@ import Network.Socket.ByteString
 
 import qualified Data.ByteString        as BS
 import qualified Data.ByteString.Lazy   as BL
-import qualified Data.ByteString.Char8  as BC
 
-import qualified Text.ProtocolBuffers       as P
-import qualified PB.KRPC.ConnectionRequest  as KRPC
+import qualified Text.ProtocolBuffers            as P
+import qualified PB.KRPC.ConnectionRequest       as KRPC
+import qualified PB.KRPC.ConnectionRequest.Type  as KRPC
 --import qualified PB.KRPC.ConnectionResponse as KRPC
 
 import Data.Bits
 import Data.Word
 
 
-helloMsg :: BC.ByteString
-helloMsg = BC.pack "KRPC-RPC"
---helloMsg = BC.pack "HELLO-RPC\x0\x0\x0"
-
-helloStreamMsg :: BC.ByteString
-helloStreamMsg = BC.pack "HELLO-STREAM"
-
-
 connectRpcMsg :: String -> KRPC.ConnectionRequest
 connectRpcMsg name = KRPC.ConnectionRequest
-    { KRPC.client_name       = Just (packUtf8String name)
+    { KRPC.type'             = Just KRPC.RPC
+    , KRPC.client_name       = Just (packUtf8String name)
     , KRPC.client_identifier = Nothing }
 
 
 connectStreamMsg :: BL.ByteString -> KRPC.ConnectionRequest
 connectStreamMsg clientid = KRPC.ConnectionRequest
-    { KRPC.client_name       = Nothing
+    { KRPC.type'             = Just KRPC.STREAM
+    , KRPC.client_name       = Nothing
     , KRPC.client_identifier = Just clientid }
 
 

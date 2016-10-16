@@ -14,7 +14,7 @@ instance P'.Mergeable Stream where
   mergeAppend (Stream x'1) (Stream y'1) = Stream (P'.mergeAppend x'1 y'1)
 
 instance P'.Default Stream where
-  defaultValue = Stream P'.defaultValue
+  defaultValue = Stream (Prelude'.Just 0)
 
 instance P'.Wire Stream where
   wireSize ft' self'@(Stream x'1)
@@ -55,7 +55,7 @@ instance P'.ReflectDescriptor Stream where
   getMessageInfo _ = P'.GetMessageInfo (P'.fromDistinctAscList []) (P'.fromDistinctAscList [8])
   reflectDescriptorInfo _
    = Prelude'.read
-      "DescriptorInfo {descName = ProtoName {protobufName = FIName \".KRPC.Stream\", haskellPrefix = [MName \"PB\"], parentModule = [MName \"KRPC\"], baseName = MName \"Stream\"}, descFilePath = [\"PB\",\"KRPC\",\"Stream.hs\"], isGroup = False, fields = fromList [FieldInfo {fieldName = ProtoFName {protobufName' = FIName \".KRPC.Stream.id\", haskellPrefix' = [MName \"PB\"], parentModule' = [MName \"KRPC\",MName \"Stream\"], baseName' = FName \"id\", baseNamePrefix' = \"\"}, fieldNumber = FieldId {getFieldId = 1}, wireTag = WireTag {getWireTag = 8}, packedTag = Nothing, wireTagLength = 1, isPacked = False, isRequired = False, canRepeat = False, mightPack = False, typeCode = FieldType {getFieldType = 4}, typeName = Nothing, hsRawDefault = Nothing, hsDefault = Nothing}], descOneofs = fromList [], keys = fromList [], extRanges = [], knownKeys = fromList [], storeUnknown = False, lazyFields = False, makeLenses = False}"
+      "DescriptorInfo {descName = ProtoName {protobufName = FIName \".krpc.schema.Stream\", haskellPrefix = [MName \"PB\"], parentModule = [MName \"KRPC\"], baseName = MName \"Stream\"}, descFilePath = [\"PB\",\"KRPC\",\"Stream.hs\"], isGroup = False, fields = fromList [FieldInfo {fieldName = ProtoFName {protobufName' = FIName \".krpc.schema.Stream.id\", haskellPrefix' = [MName \"PB\"], parentModule' = [MName \"KRPC\",MName \"Stream\"], baseName' = FName \"id\", baseNamePrefix' = \"\"}, fieldNumber = FieldId {getFieldId = 1}, wireTag = WireTag {getWireTag = 8}, packedTag = Nothing, wireTagLength = 1, isPacked = False, isRequired = False, canRepeat = False, mightPack = False, typeCode = FieldType {getFieldType = 4}, typeName = Nothing, hsRawDefault = Just \"0\", hsDefault = Just (HsDef'Integer 0)}], descOneofs = fromList [], keys = fromList [], extRanges = [], knownKeys = fromList [], storeUnknown = False, lazyFields = False, makeLenses = False}"
 
 instance P'.TextType Stream where
   tellT = P'.tellSubMessage

@@ -23,10 +23,6 @@ module KRPCHS
 , runRPCProg
 
 , KRPC.Status(..)
-, KRPC.Service(..)
-, KRPC.Services(..)
---, getStatus
---, getServices
 
 , ProtocolError(..)
 ) where
@@ -39,8 +35,6 @@ import KRPCHS.Internal.NetworkUtils
 import KRPCHS.Internal.SerializeUtils
 
 import qualified PB.KRPC.Status                    as KRPC
-import qualified PB.KRPC.Service                   as KRPC
-import qualified PB.KRPC.Services                  as KRPC
 import qualified PB.KRPC.ConnectionResponse        as KRPC
 import qualified PB.KRPC.ConnectionResponse.Status as KRPC.Status
 
@@ -52,7 +46,6 @@ import Data.Maybe
 
 import qualified Data.Map as M
 import qualified Data.ByteString.Lazy.Char8 as BS
-import Network.Socket.ByteString
 
 
 getSocket :: HostName -> ServiceName -> IO Socket
@@ -66,7 +59,6 @@ getSocket host service = do
 
 rpcHandshake :: Socket -> String -> IO BS.ByteString
 rpcHandshake sock name = do
-    sendAll sock helloMsg
     sendMsg sock (connectRpcMsg name)
     resp <- recvMsg sock
     either (fail . show) (extractId) resp
@@ -81,7 +73,6 @@ rpcHandshake sock name = do
 
 streamHandshake :: Socket -> BS.ByteString -> IO ()
 streamHandshake sock clientId = do
-    sendAll sock helloStreamMsg
     sendMsg sock (connectStreamMsg clientId)
     resp <- recvMsg sock
     either (fail . show) (checkResponse) resp
@@ -112,20 +103,6 @@ withStreamClient RPCClient{..} host port func = do
 
 runRPCProg :: RPCClient -> RPCContext a -> IO a
 runRPCProg client ctx = runReaderT (runRPCContext ctx) client
-
-
-{-
-getStatus :: RPCContext KRPC.Status
-getStatus = do
-    resp <- sendRequest (makeRequest "KRPC" "GetStatus" [])
-    processResponse resp
-
-
-getServices :: RPCContext KRPC.Services
-getServices = do
-    resp <- sendRequest (makeRequest "KRPC" "GetServices" [])
-    processResponse resp
--}
 
 
 getStreamMessage :: StreamClient -> RPCContext KRPCStreamMsg
