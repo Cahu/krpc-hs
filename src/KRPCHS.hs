@@ -11,6 +11,7 @@ module KRPCHS
 , KRPCResponseExtractable
 , emptyKRPCStreamMsg
 , getStreamMessage
+, getStreamMessageIO
 , messageResultsCount
 , messageHasResultFor
 , addStream
@@ -106,9 +107,11 @@ runRPCProg client ctx = runReaderT (runRPCContext ctx) client
 
 
 getStreamMessage :: StreamClient -> RPCContext KRPCStreamMsg
-getStreamMessage StreamClient{..} = do
-    res <- liftIO $ recvMsg streamSocket
-    either (throwM) (return . unpackStreamMsg) res
+getStreamMessage client = getStreamMessageIO client >>= either throwM return
+
+
+getStreamMessageIO :: MonadIO m => StreamClient -> m (Either ProtocolError KRPCStreamMsg)
+getStreamMessageIO StreamClient{..} = (fmap unpackStreamMsg) <$> liftIO (recvMsg streamSocket)
   where
     unpackStreamMsg res = KRPCStreamMsg $ M.fromList (extractStreamMessage res)
 
