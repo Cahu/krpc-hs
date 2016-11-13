@@ -84,7 +84,7 @@ withRPCClient name host port func = do
         (do clientId <- rpcHandshake sock name
             func (RPCClient sock clientId)
         )
-        (sClose sock)
+        (close sock)
 
 
 withStreamClient :: RPCClient -> HostName -> ServiceName -> (StreamClient -> IO a) -> IO a
@@ -93,7 +93,7 @@ withStreamClient RPCClient{..} host port func = do
     finally
         (do streamHandshake sock clientId
             func (StreamClient sock))
-        (sClose sock)
+        (close sock)
 
 
 runRPCProg :: RPCClient -> RPCContext a -> IO a
