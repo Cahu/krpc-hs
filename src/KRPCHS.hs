@@ -11,6 +11,7 @@ module KRPCHS
 , KRPCResponseExtractable
 , emptyKRPCStreamMsg
 , getStreamMessage
+, getStreamMessageIO
 , messageResultsCount
 , messageHasResultFor
 , addStream
@@ -114,9 +115,13 @@ getServices = do
 
 
 getStreamMessage :: StreamClient -> RPCContext KRPCStreamMsg
-getStreamMessage StreamClient{..} = do
-    res <- liftIO $ recvResponse streamSocket
-    return $ KRPCStreamMsg $ M.fromList (extractStreamMessage res)
+getStreamMessage = getStreamMessageIO
+
+
+getStreamMessageIO :: MonadIO m => StreamClient -> m KRPCStreamMsg
+getStreamMessageIO StreamClient{..} = unpackStreamMsg <$> liftIO (recvResponse streamSocket)
+  where
+    unpackStreamMsg res = KRPCStreamMsg $ M.fromList (extractStreamMessage res)
 
 
 messageResultsCount :: KRPCStreamMsg -> Int
