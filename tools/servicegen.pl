@@ -6,6 +6,7 @@ use warnings;
 use Carp;
 use JSON;
 use Template;
+use Data::Dumper;
 
 
 my $usage = <<EOU;
@@ -45,8 +46,6 @@ while (my ($serviceName, $def) = each %$json)
 	my @proxys;
 	my @exports;
 	my %dependencies;
-
-	use Data::Dumper;
 
 	foreach my $enumName (sort keys %{ $def->{enumerations} })
 	{
@@ -137,7 +136,7 @@ sub process_procedure
 		, doc     => $doc
 		, params  => $params
 		}, 
-		[ keys %deps ]
+		[ sort keys %deps ]
 	);
 }
 
@@ -145,36 +144,7 @@ sub process_procedure
 sub process_return_type
 {
 	my ($proc) = @_;
-
-	my $attributes = $proc->{attributes};
-
-	my $ret;
-	my %dependencies;
-
-	foreach my $a (@$attributes)
-	{
-		if ($a =~ /ReturnType\.(.+)/)
-		{
-			($ret, my $deps) = haskell_type($1);
-
-			foreach my $dep (@$deps)
-			{
-				$dependencies{$dep} = 1;
-			}
-		}
-	}
-
-	if (not $ret and $proc->{return_type})
-	{
-		($ret, my $deps) = haskell_type($proc->{return_type});
-
-		foreach my $dep (@$deps)
-		{
-			$dependencies{$dep} = 1;
-		}
-	}
-
-	return ($ret, [keys %dependencies])
+	return haskell_type($proc->{return_type});
 }
 
 
@@ -182,54 +152,17 @@ sub process_parameters
 {
 	my ($proc) = @_;
 
-	my $parameters = $proc->{parameters};
-	my $attributes = $proc->{attributes};
-
 	my @params;
-	my %dependencies;
+	my @dependencies;
 
-	foreach my $a (@$attributes)
+	foreach my $p (@{$proc->{parameters}})
 	{
-		if ($a =~ /ParameterType\((\d+)\)\.(.+)/)
-		{
-			my $num  = $1;
-			my $type = $2;
-
-			my ($t, $deps) = haskell_type($type);
-
-			$params[$num]{type} = $t;
-
-			foreach my $dep (@$deps)
-			{
-				$dependencies{$dep} = 1;
-			}
-		}
+		my ($t, $d) = haskell_type($p->{type});
+		push @params, { name => lcfirst $p->{name} . "Arg", type => $t };
+		push @dependencies, @$d;
 	}
 
-	for my $i (0 .. @$parameters - 1)
-	{
-		$params[$i]{name} = $parameters->[$i]{name} . "Arg";
-
-		if (not $params[$i]{type})
-		{
-			my ($t, $deps) = haskell_type($parameters->[$i]{type});
-
-			$params[$i]{type} = $t;
-
-			foreach my $dep (@$deps)
-			{
-				$dependencies{$dep} = 1;
-			}
-		}
-	}
-
-	# validate the result
-	for my $i (0 .. $#params)
-	{
-		confess "Could not translate parameters" unless ($params[$i]{name} and $params[$i]{type});
-	}
-
-	return (\@params, [keys %dependencies]);
+	return (\@params, \@dependencies);
 }
 
 
@@ -237,61 +170,84 @@ sub haskell_type
 {
 	my ($type) = @_;
 
-	if ($type =~ /^int(32|64)/)
+	if (!$type)
 	{
-		return ("Data.Int.Int$1", ["Data.Int"]);
+		return ("", []);
 	}
-	elsif ($type =~ /^uint(32|64)/)
+
+	elsif (!$type->{code})
 	{
-		return ("Data.Word.Word$1", ["Data.Word"]);
+		confess "Can't find this type's code" . Dumper $type;
 	}
-	elsif (lc $type eq 'double')
+
+	elsif ($type->{code} eq 'CLASS' or $type->{code} eq 'ENUMERATION')
 	{
-		return ("Double", []);
+		my $dep = "KRPCHS.$type->{service}";
+		my $obj = "KRPCHS.$type->{service}.$type->{name}";
+		return ($obj, [$dep]);
 	}
-	elsif (lc $type eq 'float')
+
+	elsif ($type->{code} eq 'LIST')
 	{
-		return ("Float", []);
+		my ($content, $deps) = haskell_type($type->{types}[0]);
+		return ("[$content]", $deps);
 	}
-	elsif (lc $type eq 'bool')
+
+	elsif ($type->{code} eq 'TUPLE')
 	{
-		return ("Bool", []);
+		my @deps;
+		my @elems;
+
+		foreach my $e (@{$type->{types}})
+		{
+			my ($t, $d) = haskell_type($e);
+			push @deps, @$d;
+			push @elems, $t;
+		}
+
+		return ("(" . join(", ", @elems) . ")", \@deps);
 	}
-	elsif (lc $type eq 'string')
+
+	elsif ($type->{code} eq 'DICTIONARY')
+	{
+		my ($key_type, $key_deps) = haskell_type($type->{types}[0]);
+		my ($val_type, $val_deps) = haskell_type($type->{types}[1]);
+		return
+			( "Data.Map.Map ($key_type) ($val_type)"
+			, ["Data.Map", @$key_deps, @$val_deps]
+		    )
+	}
+
+	elsif ($type->{code} eq 'STRING')
 	{
 		return ("Data.Text.Text", ["Data.Text"]);
 	}
-	elsif ($type =~ /^(Class|Enum)\((.+)\)$/)
-	{
-		my ($obj, $dep) = reverse split(/\./, $2, 2);
-		return ("KRPCHS.$dep.$obj", ["KRPCHS.$dep"]);
-	}
-	elsif ($type =~ /^List\((.+)\)$/)
-	{
-		my ($obj, $dep) = haskell_type($1);
-		return ("[$obj]", $dep);
-	}
-	elsif ($type =~ /^Tuple\((.+)\)$/)
-	{
-		my @objs;
-		my @deps;
-		
-		foreach my $e (split /,/, $1)
-		{
-			my ($obj, $dep) = haskell_type($e);
-			push @objs, $obj;
-			push @deps, @$dep;
-		}
 
-		return ("(" . join(", ", @objs) . ")", \@deps);
-	}
-	elsif ($type =~ /^Dictionary\((.+),(.+)\)/)
+	elsif ($type->{code} eq 'BOOL')
 	{
-		my ($keyType, $keyDeps) = haskell_type($1);
-		my ($valType, $valDeps) = haskell_type($2);
-		my %deps = map { $_ => 1 } ("Data.Map", @$keyDeps, @$valDeps);
-		return ("Data.Map.Map ($keyType) ($valType)", [ keys %deps ]);
+		return ("Bool", []);
 	}
+
+	elsif ($type->{code} eq 'DOUBLE')
+	{
+		return ("Double", []);
+	}
+
+	elsif ($type->{code} eq 'FLOAT')
+	{
+		return ("Float", []);
+	}
+
+	elsif ($type->{code} =~ /SINT(32|64)/)
+	{
+		return ("Data.Int.Int$1", ["Data.Int"]);
+	}
+
+	elsif ($type->{code} =~ /UINT(32|64)/)
+	{
+		return ("Data.Word.Word$1", ["Data.Word"]);
+	}
+
 	else
 	{
 		confess "Unknown type '$type'"
@@ -302,8 +258,8 @@ sub haskell_type
 sub cleanup_doc
 {
 	my ($doc) = @_;
-	utf8::encode($doc);
-	$doc =~ s@(\s+)?</?\w+/?>(\s+)?@@gr
+	utf8::encode($doc);                 # some bad chars
+	$doc =~ s@(\s+)?</?\w+/?>(\s+)?@@gr # remove most xml bits
 }
 
 
