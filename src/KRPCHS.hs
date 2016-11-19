@@ -64,8 +64,7 @@ rpcHandshake sock name = do
     resp <- recvMsg sock
     either (fail . show) (extractId) resp
   where
-    extractId resp@KRPC.ConnectionResponse{..} = do
-        print resp
+    extractId KRPC.ConnectionResponse{..} = do
         case status of
             Just KRPC.Status.OK -> return $ fromJust client_identifier
             Just err            -> fail   $ show err ++ " - details: '" ++ show (unpackUtf8String <$> message) ++ "'"

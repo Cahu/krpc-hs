@@ -189,7 +189,7 @@ addDirection directionArg referenceFrameArg lengthArg visibleArg = do
 
 addDirectionStreamReq :: (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> Float -> Bool -> KRPCStreamReq (KRPCHS.Drawing.Line)
 addDirectionStreamReq directionArg referenceFrameArg lengthArg visibleArg =
-    let req = makeRequest "Drawing" "AddDirection" [makeArgument 0 directionArg, makeArgument 1 referenceFrameArg, makeArgument 2 lengthArg, makeArgument 3 visibleArg]
+    let req = makeCallRequest "Drawing" "AddDirection" [makeArgument 0 directionArg, makeArgument 1 referenceFrameArg, makeArgument 2 lengthArg, makeArgument 3 visibleArg]
     in  makeStream req
 
 addDirectionStream :: (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> Float -> Bool -> RPCContext (KRPCStream (KRPCHS.Drawing.Line))
@@ -206,7 +206,7 @@ addLine startArg endArg referenceFrameArg visibleArg = do
 
 addLineStreamReq :: (Double, Double, Double) -> (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> Bool -> KRPCStreamReq (KRPCHS.Drawing.Line)
 addLineStreamReq startArg endArg referenceFrameArg visibleArg =
-    let req = makeRequest "Drawing" "AddLine" [makeArgument 0 startArg, makeArgument 1 endArg, makeArgument 2 referenceFrameArg, makeArgument 3 visibleArg]
+    let req = makeCallRequest "Drawing" "AddLine" [makeArgument 0 startArg, makeArgument 1 endArg, makeArgument 2 referenceFrameArg, makeArgument 3 visibleArg]
     in  makeStream req
 
 addLineStream :: (Double, Double, Double) -> (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> Bool -> RPCContext (KRPCStream (KRPCHS.Drawing.Line))
@@ -223,7 +223,7 @@ addPolygon verticesArg referenceFrameArg visibleArg = do
 
 addPolygonStreamReq :: [(Double, Double, Double)] -> KRPCHS.SpaceCenter.ReferenceFrame -> Bool -> KRPCStreamReq (KRPCHS.Drawing.Polygon)
 addPolygonStreamReq verticesArg referenceFrameArg visibleArg =
-    let req = makeRequest "Drawing" "AddPolygon" [makeArgument 0 verticesArg, makeArgument 1 referenceFrameArg, makeArgument 2 visibleArg]
+    let req = makeCallRequest "Drawing" "AddPolygon" [makeArgument 0 verticesArg, makeArgument 1 referenceFrameArg, makeArgument 2 visibleArg]
     in  makeStream req
 
 addPolygonStream :: [(Double, Double, Double)] -> KRPCHS.SpaceCenter.ReferenceFrame -> Bool -> RPCContext (KRPCStream (KRPCHS.Drawing.Polygon))
@@ -240,7 +240,7 @@ addText textArg referenceFrameArg positionArg rotationArg visibleArg = do
 
 addTextStreamReq :: Data.Text.Text -> KRPCHS.SpaceCenter.ReferenceFrame -> (Double, Double, Double) -> (Double, Double, Double, Double) -> Bool -> KRPCStreamReq (KRPCHS.Drawing.Text)
 addTextStreamReq textArg referenceFrameArg positionArg rotationArg visibleArg =
-    let req = makeRequest "Drawing" "AddText" [makeArgument 0 textArg, makeArgument 1 referenceFrameArg, makeArgument 2 positionArg, makeArgument 3 rotationArg, makeArgument 4 visibleArg]
+    let req = makeCallRequest "Drawing" "AddText" [makeArgument 0 textArg, makeArgument 1 referenceFrameArg, makeArgument 2 positionArg, makeArgument 3 rotationArg, makeArgument 4 visibleArg]
     in  makeStream req
 
 addTextStream :: Data.Text.Text -> KRPCHS.SpaceCenter.ReferenceFrame -> (Double, Double, Double) -> (Double, Double, Double, Double) -> Bool -> RPCContext (KRPCStream (KRPCHS.Drawing.Text))
@@ -275,7 +275,7 @@ getLineColor thisArg = do
 
 getLineColorStreamReq :: KRPCHS.Drawing.Line -> KRPCStreamReq ((Double, Double, Double))
 getLineColorStreamReq thisArg =
-    let req = makeRequest "Drawing" "Line_get_Color" [makeArgument 0 thisArg]
+    let req = makeCallRequest "Drawing" "Line_get_Color" [makeArgument 0 thisArg]
     in  makeStream req
 
 getLineColorStream :: KRPCHS.Drawing.Line -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -292,7 +292,7 @@ getLineEnd thisArg = do
 
 getLineEndStreamReq :: KRPCHS.Drawing.Line -> KRPCStreamReq ((Double, Double, Double))
 getLineEndStreamReq thisArg =
-    let req = makeRequest "Drawing" "Line_get_End" [makeArgument 0 thisArg]
+    let req = makeCallRequest "Drawing" "Line_get_End" [makeArgument 0 thisArg]
     in  makeStream req
 
 getLineEndStream :: KRPCHS.Drawing.Line -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -310,7 +310,7 @@ getLineMaterial thisArg = do
 
 getLineMaterialStreamReq :: KRPCHS.Drawing.Line -> KRPCStreamReq (Data.Text.Text)
 getLineMaterialStreamReq thisArg =
-    let req = makeRequest "Drawing" "Line_get_Material" [makeArgument 0 thisArg]
+    let req = makeCallRequest "Drawing" "Line_get_Material" [makeArgument 0 thisArg]
     in  makeStream req
 
 getLineMaterialStream :: KRPCHS.Drawing.Line -> RPCContext (KRPCStream (Data.Text.Text))
@@ -327,7 +327,7 @@ getLineReferenceFrame thisArg = do
 
 getLineReferenceFrameStreamReq :: KRPCHS.Drawing.Line -> KRPCStreamReq (KRPCHS.SpaceCenter.ReferenceFrame)
 getLineReferenceFrameStreamReq thisArg =
-    let req = makeRequest "Drawing" "Line_get_ReferenceFrame" [makeArgument 0 thisArg]
+    let req = makeCallRequest "Drawing" "Line_get_ReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
 getLineReferenceFrameStream :: KRPCHS.Drawing.Line -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
@@ -344,7 +344,7 @@ getLineStart thisArg = do
 
 getLineStartStreamReq :: KRPCHS.Drawing.Line -> KRPCStreamReq ((Double, Double, Double))
 getLineStartStreamReq thisArg =
-    let req = makeRequest "Drawing" "Line_get_Start" [makeArgument 0 thisArg]
+    let req = makeCallRequest "Drawing" "Line_get_Start" [makeArgument 0 thisArg]
     in  makeStream req
 
 getLineStartStream :: KRPCHS.Drawing.Line -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -361,7 +361,7 @@ getLineThickness thisArg = do
 
 getLineThicknessStreamReq :: KRPCHS.Drawing.Line -> KRPCStreamReq (Float)
 getLineThicknessStreamReq thisArg =
-    let req = makeRequest "Drawing" "Line_get_Thickness" [makeArgument 0 thisArg]
+    let req = makeCallRequest "Drawing" "Line_get_Thickness" [makeArgument 0 thisArg]
     in  makeStream req
 
 getLineThicknessStream :: KRPCHS.Drawing.Line -> RPCContext (KRPCStream (Float))
@@ -378,7 +378,7 @@ getLineVisible thisArg = do
 
 getLineVisibleStreamReq :: KRPCHS.Drawing.Line -> KRPCStreamReq (Bool)
 getLineVisibleStreamReq thisArg =
-    let req = makeRequest "Drawing" "Line_get_Visible" [makeArgument 0 thisArg]
+    let req = makeCallRequest "Drawing" "Line_get_Visible" [makeArgument 0 thisArg]
     in  makeStream req
 
 getLineVisibleStream :: KRPCHS.Drawing.Line -> RPCContext (KRPCStream (Bool))
@@ -468,7 +468,7 @@ getPolygonColor thisArg = do
 
 getPolygonColorStreamReq :: KRPCHS.Drawing.Polygon -> KRPCStreamReq ((Double, Double, Double))
 getPolygonColorStreamReq thisArg =
-    let req = makeRequest "Drawing" "Polygon_get_Color" [makeArgument 0 thisArg]
+    let req = makeCallRequest "Drawing" "Polygon_get_Color" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPolygonColorStream :: KRPCHS.Drawing.Polygon -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -486,7 +486,7 @@ getPolygonMaterial thisArg = do
 
 getPolygonMaterialStreamReq :: KRPCHS.Drawing.Polygon -> KRPCStreamReq (Data.Text.Text)
 getPolygonMaterialStreamReq thisArg =
-    let req = makeRequest "Drawing" "Polygon_get_Material" [makeArgument 0 thisArg]
+    let req = makeCallRequest "Drawing" "Polygon_get_Material" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPolygonMaterialStream :: KRPCHS.Drawing.Polygon -> RPCContext (KRPCStream (Data.Text.Text))
@@ -503,7 +503,7 @@ getPolygonReferenceFrame thisArg = do
 
 getPolygonReferenceFrameStreamReq :: KRPCHS.Drawing.Polygon -> KRPCStreamReq (KRPCHS.SpaceCenter.ReferenceFrame)
 getPolygonReferenceFrameStreamReq thisArg =
-    let req = makeRequest "Drawing" "Polygon_get_ReferenceFrame" [makeArgument 0 thisArg]
+    let req = makeCallRequest "Drawing" "Polygon_get_ReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPolygonReferenceFrameStream :: KRPCHS.Drawing.Polygon -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
@@ -520,7 +520,7 @@ getPolygonThickness thisArg = do
 
 getPolygonThicknessStreamReq :: KRPCHS.Drawing.Polygon -> KRPCStreamReq (Float)
 getPolygonThicknessStreamReq thisArg =
-    let req = makeRequest "Drawing" "Polygon_get_Thickness" [makeArgument 0 thisArg]
+    let req = makeCallRequest "Drawing" "Polygon_get_Thickness" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPolygonThicknessStream :: KRPCHS.Drawing.Polygon -> RPCContext (KRPCStream (Float))
@@ -537,7 +537,7 @@ getPolygonVertices thisArg = do
 
 getPolygonVerticesStreamReq :: KRPCHS.Drawing.Polygon -> KRPCStreamReq ([(Double, Double, Double)])
 getPolygonVerticesStreamReq thisArg =
-    let req = makeRequest "Drawing" "Polygon_get_Vertices" [makeArgument 0 thisArg]
+    let req = makeCallRequest "Drawing" "Polygon_get_Vertices" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPolygonVerticesStream :: KRPCHS.Drawing.Polygon -> RPCContext (KRPCStream ([(Double, Double, Double)]))
@@ -554,7 +554,7 @@ getPolygonVisible thisArg = do
 
 getPolygonVisibleStreamReq :: KRPCHS.Drawing.Polygon -> KRPCStreamReq (Bool)
 getPolygonVisibleStreamReq thisArg =
-    let req = makeRequest "Drawing" "Polygon_get_Visible" [makeArgument 0 thisArg]
+    let req = makeCallRequest "Drawing" "Polygon_get_Visible" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPolygonVisibleStream :: KRPCHS.Drawing.Polygon -> RPCContext (KRPCStream (Bool))
@@ -635,7 +635,7 @@ getTextAlignment thisArg = do
 
 getTextAlignmentStreamReq :: KRPCHS.Drawing.Text -> KRPCStreamReq (KRPCHS.UI.TextAlignment)
 getTextAlignmentStreamReq thisArg =
-    let req = makeRequest "Drawing" "Text_get_Alignment" [makeArgument 0 thisArg]
+    let req = makeCallRequest "Drawing" "Text_get_Alignment" [makeArgument 0 thisArg]
     in  makeStream req
 
 getTextAlignmentStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream (KRPCHS.UI.TextAlignment))
@@ -652,7 +652,7 @@ getTextAnchor thisArg = do
 
 getTextAnchorStreamReq :: KRPCHS.Drawing.Text -> KRPCStreamReq (KRPCHS.UI.TextAnchor)
 getTextAnchorStreamReq thisArg =
-    let req = makeRequest "Drawing" "Text_get_Anchor" [makeArgument 0 thisArg]
+    let req = makeCallRequest "Drawing" "Text_get_Anchor" [makeArgument 0 thisArg]
     in  makeStream req
 
 getTextAnchorStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream (KRPCHS.UI.TextAnchor))
@@ -669,7 +669,7 @@ getTextAvailableFonts thisArg = do
 
 getTextAvailableFontsStreamReq :: KRPCHS.Drawing.Text -> KRPCStreamReq ([Data.Text.Text])
 getTextAvailableFontsStreamReq thisArg =
-    let req = makeRequest "Drawing" "Text_get_AvailableFonts" [makeArgument 0 thisArg]
+    let req = makeCallRequest "Drawing" "Text_get_AvailableFonts" [makeArgument 0 thisArg]
     in  makeStream req
 
 getTextAvailableFontsStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream ([Data.Text.Text]))
@@ -686,7 +686,7 @@ getTextCharacterSize thisArg = do
 
 getTextCharacterSizeStreamReq :: KRPCHS.Drawing.Text -> KRPCStreamReq (Float)
 getTextCharacterSizeStreamReq thisArg =
-    let req = makeRequest "Drawing" "Text_get_CharacterSize" [makeArgument 0 thisArg]
+    let req = makeCallRequest "Drawing" "Text_get_CharacterSize" [makeArgument 0 thisArg]
     in  makeStream req
 
 getTextCharacterSizeStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream (Float))
@@ -703,7 +703,7 @@ getTextColor thisArg = do
 
 getTextColorStreamReq :: KRPCHS.Drawing.Text -> KRPCStreamReq ((Double, Double, Double))
 getTextColorStreamReq thisArg =
-    let req = makeRequest "Drawing" "Text_get_Color" [makeArgument 0 thisArg]
+    let req = makeCallRequest "Drawing" "Text_get_Color" [makeArgument 0 thisArg]
     in  makeStream req
 
 getTextColorStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -720,7 +720,7 @@ getTextContent thisArg = do
 
 getTextContentStreamReq :: KRPCHS.Drawing.Text -> KRPCStreamReq (Data.Text.Text)
 getTextContentStreamReq thisArg =
-    let req = makeRequest "Drawing" "Text_get_Content" [makeArgument 0 thisArg]
+    let req = makeCallRequest "Drawing" "Text_get_Content" [makeArgument 0 thisArg]
     in  makeStream req
 
 getTextContentStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream (Data.Text.Text))
@@ -737,7 +737,7 @@ getTextFont thisArg = do
 
 getTextFontStreamReq :: KRPCHS.Drawing.Text -> KRPCStreamReq (Data.Text.Text)
 getTextFontStreamReq thisArg =
-    let req = makeRequest "Drawing" "Text_get_Font" [makeArgument 0 thisArg]
+    let req = makeCallRequest "Drawing" "Text_get_Font" [makeArgument 0 thisArg]
     in  makeStream req
 
 getTextFontStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream (Data.Text.Text))
@@ -754,7 +754,7 @@ getTextLineSpacing thisArg = do
 
 getTextLineSpacingStreamReq :: KRPCHS.Drawing.Text -> KRPCStreamReq (Float)
 getTextLineSpacingStreamReq thisArg =
-    let req = makeRequest "Drawing" "Text_get_LineSpacing" [makeArgument 0 thisArg]
+    let req = makeCallRequest "Drawing" "Text_get_LineSpacing" [makeArgument 0 thisArg]
     in  makeStream req
 
 getTextLineSpacingStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream (Float))
@@ -772,7 +772,7 @@ getTextMaterial thisArg = do
 
 getTextMaterialStreamReq :: KRPCHS.Drawing.Text -> KRPCStreamReq (Data.Text.Text)
 getTextMaterialStreamReq thisArg =
-    let req = makeRequest "Drawing" "Text_get_Material" [makeArgument 0 thisArg]
+    let req = makeCallRequest "Drawing" "Text_get_Material" [makeArgument 0 thisArg]
     in  makeStream req
 
 getTextMaterialStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream (Data.Text.Text))
@@ -789,7 +789,7 @@ getTextPosition thisArg = do
 
 getTextPositionStreamReq :: KRPCHS.Drawing.Text -> KRPCStreamReq ((Double, Double, Double))
 getTextPositionStreamReq thisArg =
-    let req = makeRequest "Drawing" "Text_get_Position" [makeArgument 0 thisArg]
+    let req = makeCallRequest "Drawing" "Text_get_Position" [makeArgument 0 thisArg]
     in  makeStream req
 
 getTextPositionStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -806,7 +806,7 @@ getTextReferenceFrame thisArg = do
 
 getTextReferenceFrameStreamReq :: KRPCHS.Drawing.Text -> KRPCStreamReq (KRPCHS.SpaceCenter.ReferenceFrame)
 getTextReferenceFrameStreamReq thisArg =
-    let req = makeRequest "Drawing" "Text_get_ReferenceFrame" [makeArgument 0 thisArg]
+    let req = makeCallRequest "Drawing" "Text_get_ReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
 getTextReferenceFrameStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
@@ -823,7 +823,7 @@ getTextRotation thisArg = do
 
 getTextRotationStreamReq :: KRPCHS.Drawing.Text -> KRPCStreamReq ((Double, Double, Double, Double))
 getTextRotationStreamReq thisArg =
-    let req = makeRequest "Drawing" "Text_get_Rotation" [makeArgument 0 thisArg]
+    let req = makeCallRequest "Drawing" "Text_get_Rotation" [makeArgument 0 thisArg]
     in  makeStream req
 
 getTextRotationStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream ((Double, Double, Double, Double)))
@@ -840,7 +840,7 @@ getTextSize thisArg = do
 
 getTextSizeStreamReq :: KRPCHS.Drawing.Text -> KRPCStreamReq (Data.Int.Int32)
 getTextSizeStreamReq thisArg =
-    let req = makeRequest "Drawing" "Text_get_Size" [makeArgument 0 thisArg]
+    let req = makeCallRequest "Drawing" "Text_get_Size" [makeArgument 0 thisArg]
     in  makeStream req
 
 getTextSizeStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream (Data.Int.Int32))
@@ -857,7 +857,7 @@ getTextStyle thisArg = do
 
 getTextStyleStreamReq :: KRPCHS.Drawing.Text -> KRPCStreamReq (KRPCHS.UI.FontStyle)
 getTextStyleStreamReq thisArg =
-    let req = makeRequest "Drawing" "Text_get_Style" [makeArgument 0 thisArg]
+    let req = makeCallRequest "Drawing" "Text_get_Style" [makeArgument 0 thisArg]
     in  makeStream req
 
 getTextStyleStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream (KRPCHS.UI.FontStyle))
@@ -874,7 +874,7 @@ getTextVisible thisArg = do
 
 getTextVisibleStreamReq :: KRPCHS.Drawing.Text -> KRPCStreamReq (Bool)
 getTextVisibleStreamReq thisArg =
-    let req = makeRequest "Drawing" "Text_get_Visible" [makeArgument 0 thisArg]
+    let req = makeCallRequest "Drawing" "Text_get_Visible" [makeArgument 0 thisArg]
     in  makeStream req
 
 getTextVisibleStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream (Bool))

@@ -2746,7 +2746,7 @@ getAutoPilotAttenuationAngle thisArg = do
 
 getAutoPilotAttenuationAngleStreamReq :: KRPCHS.SpaceCenter.AutoPilot -> KRPCStreamReq ((Double, Double, Double))
 getAutoPilotAttenuationAngleStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "AutoPilot_get_AttenuationAngle" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "AutoPilot_get_AttenuationAngle" [makeArgument 0 thisArg]
     in  makeStream req
 
 getAutoPilotAttenuationAngleStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -2765,7 +2765,7 @@ getAutoPilotAutoTune thisArg = do
 
 getAutoPilotAutoTuneStreamReq :: KRPCHS.SpaceCenter.AutoPilot -> KRPCStreamReq (Bool)
 getAutoPilotAutoTuneStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "AutoPilot_get_AutoTune" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "AutoPilot_get_AutoTune" [makeArgument 0 thisArg]
     in  makeStream req
 
 getAutoPilotAutoTuneStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Bool))
@@ -2785,7 +2785,7 @@ getAutoPilotDecelerationTime thisArg = do
 
 getAutoPilotDecelerationTimeStreamReq :: KRPCHS.SpaceCenter.AutoPilot -> KRPCStreamReq ((Double, Double, Double))
 getAutoPilotDecelerationTimeStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "AutoPilot_get_DecelerationTime" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "AutoPilot_get_DecelerationTime" [makeArgument 0 thisArg]
     in  makeStream req
 
 getAutoPilotDecelerationTimeStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -2804,7 +2804,7 @@ getAutoPilotError thisArg = do
 
 getAutoPilotErrorStreamReq :: KRPCHS.SpaceCenter.AutoPilot -> KRPCStreamReq (Float)
 getAutoPilotErrorStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "AutoPilot_get_Error" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "AutoPilot_get_Error" [makeArgument 0 thisArg]
     in  makeStream req
 
 getAutoPilotErrorStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Float))
@@ -2822,7 +2822,7 @@ getAutoPilotHeadingError thisArg = do
 
 getAutoPilotHeadingErrorStreamReq :: KRPCHS.SpaceCenter.AutoPilot -> KRPCStreamReq (Float)
 getAutoPilotHeadingErrorStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "AutoPilot_get_HeadingError" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "AutoPilot_get_HeadingError" [makeArgument 0 thisArg]
     in  makeStream req
 
 getAutoPilotHeadingErrorStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Float))
@@ -2841,7 +2841,7 @@ getAutoPilotOvershoot thisArg = do
 
 getAutoPilotOvershootStreamReq :: KRPCHS.SpaceCenter.AutoPilot -> KRPCStreamReq ((Double, Double, Double))
 getAutoPilotOvershootStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "AutoPilot_get_Overshoot" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "AutoPilot_get_Overshoot" [makeArgument 0 thisArg]
     in  makeStream req
 
 getAutoPilotOvershootStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -2859,7 +2859,7 @@ getAutoPilotPitchError thisArg = do
 
 getAutoPilotPitchErrorStreamReq :: KRPCHS.SpaceCenter.AutoPilot -> KRPCStreamReq (Float)
 getAutoPilotPitchErrorStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "AutoPilot_get_PitchError" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "AutoPilot_get_PitchError" [makeArgument 0 thisArg]
     in  makeStream req
 
 getAutoPilotPitchErrorStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Float))
@@ -2876,7 +2876,7 @@ getAutoPilotPitchPIDGains thisArg = do
 
 getAutoPilotPitchPIDGainsStreamReq :: KRPCHS.SpaceCenter.AutoPilot -> KRPCStreamReq ((Double, Double, Double))
 getAutoPilotPitchPIDGainsStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "AutoPilot_get_PitchPIDGains" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "AutoPilot_get_PitchPIDGains" [makeArgument 0 thisArg]
     in  makeStream req
 
 getAutoPilotPitchPIDGainsStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -2894,7 +2894,7 @@ getAutoPilotReferenceFrame thisArg = do
 
 getAutoPilotReferenceFrameStreamReq :: KRPCHS.SpaceCenter.AutoPilot -> KRPCStreamReq (KRPCHS.SpaceCenter.ReferenceFrame)
 getAutoPilotReferenceFrameStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "AutoPilot_get_ReferenceFrame" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "AutoPilot_get_ReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
 getAutoPilotReferenceFrameStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
@@ -2912,7 +2912,7 @@ getAutoPilotRollError thisArg = do
 
 getAutoPilotRollErrorStreamReq :: KRPCHS.SpaceCenter.AutoPilot -> KRPCStreamReq (Float)
 getAutoPilotRollErrorStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "AutoPilot_get_RollError" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "AutoPilot_get_RollError" [makeArgument 0 thisArg]
     in  makeStream req
 
 getAutoPilotRollErrorStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Float))
@@ -2929,7 +2929,7 @@ getAutoPilotRollPIDGains thisArg = do
 
 getAutoPilotRollPIDGainsStreamReq :: KRPCHS.SpaceCenter.AutoPilot -> KRPCStreamReq ((Double, Double, Double))
 getAutoPilotRollPIDGainsStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "AutoPilot_get_RollPIDGains" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "AutoPilot_get_RollPIDGains" [makeArgument 0 thisArg]
     in  makeStream req
 
 getAutoPilotRollPIDGainsStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -2947,7 +2947,7 @@ getAutoPilotRollThreshold thisArg = do
 
 getAutoPilotRollThresholdStreamReq :: KRPCHS.SpaceCenter.AutoPilot -> KRPCStreamReq (Double)
 getAutoPilotRollThresholdStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "AutoPilot_get_RollThreshold" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "AutoPilot_get_RollThreshold" [makeArgument 0 thisArg]
     in  makeStream req
 
 getAutoPilotRollThresholdStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Double))
@@ -2964,7 +2964,7 @@ getAutoPilotSAS thisArg = do
 
 getAutoPilotSASStreamReq :: KRPCHS.SpaceCenter.AutoPilot -> KRPCStreamReq (Bool)
 getAutoPilotSASStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "AutoPilot_get_SAS" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "AutoPilot_get_SAS" [makeArgument 0 thisArg]
     in  makeStream req
 
 getAutoPilotSASStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Bool))
@@ -2982,7 +2982,7 @@ getAutoPilotSASMode thisArg = do
 
 getAutoPilotSASModeStreamReq :: KRPCHS.SpaceCenter.AutoPilot -> KRPCStreamReq (KRPCHS.SpaceCenter.SASMode)
 getAutoPilotSASModeStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "AutoPilot_get_SASMode" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "AutoPilot_get_SASMode" [makeArgument 0 thisArg]
     in  makeStream req
 
 getAutoPilotSASModeStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.SASMode))
@@ -3002,7 +3002,7 @@ getAutoPilotStoppingTime thisArg = do
 
 getAutoPilotStoppingTimeStreamReq :: KRPCHS.SpaceCenter.AutoPilot -> KRPCStreamReq ((Double, Double, Double))
 getAutoPilotStoppingTimeStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "AutoPilot_get_StoppingTime" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "AutoPilot_get_StoppingTime" [makeArgument 0 thisArg]
     in  makeStream req
 
 getAutoPilotStoppingTimeStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -3019,7 +3019,7 @@ getAutoPilotTargetDirection thisArg = do
 
 getAutoPilotTargetDirectionStreamReq :: KRPCHS.SpaceCenter.AutoPilot -> KRPCStreamReq ((Double, Double, Double))
 getAutoPilotTargetDirectionStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "AutoPilot_get_TargetDirection" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "AutoPilot_get_TargetDirection" [makeArgument 0 thisArg]
     in  makeStream req
 
 getAutoPilotTargetDirectionStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -3036,7 +3036,7 @@ getAutoPilotTargetHeading thisArg = do
 
 getAutoPilotTargetHeadingStreamReq :: KRPCHS.SpaceCenter.AutoPilot -> KRPCStreamReq (Float)
 getAutoPilotTargetHeadingStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "AutoPilot_get_TargetHeading" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "AutoPilot_get_TargetHeading" [makeArgument 0 thisArg]
     in  makeStream req
 
 getAutoPilotTargetHeadingStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Float))
@@ -3053,7 +3053,7 @@ getAutoPilotTargetPitch thisArg = do
 
 getAutoPilotTargetPitchStreamReq :: KRPCHS.SpaceCenter.AutoPilot -> KRPCStreamReq (Float)
 getAutoPilotTargetPitchStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "AutoPilot_get_TargetPitch" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "AutoPilot_get_TargetPitch" [makeArgument 0 thisArg]
     in  makeStream req
 
 getAutoPilotTargetPitchStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Float))
@@ -3070,7 +3070,7 @@ getAutoPilotTargetRoll thisArg = do
 
 getAutoPilotTargetRollStreamReq :: KRPCHS.SpaceCenter.AutoPilot -> KRPCStreamReq (Float)
 getAutoPilotTargetRollStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "AutoPilot_get_TargetRoll" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "AutoPilot_get_TargetRoll" [makeArgument 0 thisArg]
     in  makeStream req
 
 getAutoPilotTargetRollStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Float))
@@ -3089,7 +3089,7 @@ getAutoPilotTimeToPeak thisArg = do
 
 getAutoPilotTimeToPeakStreamReq :: KRPCHS.SpaceCenter.AutoPilot -> KRPCStreamReq ((Double, Double, Double))
 getAutoPilotTimeToPeakStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "AutoPilot_get_TimeToPeak" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "AutoPilot_get_TimeToPeak" [makeArgument 0 thisArg]
     in  makeStream req
 
 getAutoPilotTimeToPeakStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -3106,7 +3106,7 @@ getAutoPilotYawPIDGains thisArg = do
 
 getAutoPilotYawPIDGainsStreamReq :: KRPCHS.SpaceCenter.AutoPilot -> KRPCStreamReq ((Double, Double, Double))
 getAutoPilotYawPIDGainsStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "AutoPilot_get_YawPIDGains" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "AutoPilot_get_YawPIDGains" [makeArgument 0 thisArg]
     in  makeStream req
 
 getAutoPilotYawPIDGainsStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -3294,7 +3294,7 @@ getCameraDefaultDistance thisArg = do
 
 getCameraDefaultDistanceStreamReq :: KRPCHS.SpaceCenter.Camera -> KRPCStreamReq (Float)
 getCameraDefaultDistanceStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Camera_get_DefaultDistance" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Camera_get_DefaultDistance" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCameraDefaultDistanceStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (Float))
@@ -3312,7 +3312,7 @@ getCameraDistance thisArg = do
 
 getCameraDistanceStreamReq :: KRPCHS.SpaceCenter.Camera -> KRPCStreamReq (Float)
 getCameraDistanceStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Camera_get_Distance" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Camera_get_Distance" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCameraDistanceStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (Float))
@@ -3331,7 +3331,7 @@ getCameraFocussedBody thisArg = do
 
 getCameraFocussedBodyStreamReq :: KRPCHS.SpaceCenter.Camera -> KRPCStreamReq (KRPCHS.SpaceCenter.CelestialBody)
 getCameraFocussedBodyStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Camera_get_FocussedBody" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Camera_get_FocussedBody" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCameraFocussedBodyStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.CelestialBody))
@@ -3350,7 +3350,7 @@ getCameraFocussedNode thisArg = do
 
 getCameraFocussedNodeStreamReq :: KRPCHS.SpaceCenter.Camera -> KRPCStreamReq (KRPCHS.SpaceCenter.Node)
 getCameraFocussedNodeStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Camera_get_FocussedNode" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Camera_get_FocussedNode" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCameraFocussedNodeStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Node))
@@ -3369,7 +3369,7 @@ getCameraFocussedVessel thisArg = do
 
 getCameraFocussedVesselStreamReq :: KRPCHS.SpaceCenter.Camera -> KRPCStreamReq (KRPCHS.SpaceCenter.Vessel)
 getCameraFocussedVesselStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Camera_get_FocussedVessel" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Camera_get_FocussedVessel" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCameraFocussedVesselStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Vessel))
@@ -3386,7 +3386,7 @@ getCameraHeading thisArg = do
 
 getCameraHeadingStreamReq :: KRPCHS.SpaceCenter.Camera -> KRPCStreamReq (Float)
 getCameraHeadingStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Camera_get_Heading" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Camera_get_Heading" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCameraHeadingStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (Float))
@@ -3403,7 +3403,7 @@ getCameraMaxDistance thisArg = do
 
 getCameraMaxDistanceStreamReq :: KRPCHS.SpaceCenter.Camera -> KRPCStreamReq (Float)
 getCameraMaxDistanceStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Camera_get_MaxDistance" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Camera_get_MaxDistance" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCameraMaxDistanceStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (Float))
@@ -3420,7 +3420,7 @@ getCameraMaxPitch thisArg = do
 
 getCameraMaxPitchStreamReq :: KRPCHS.SpaceCenter.Camera -> KRPCStreamReq (Float)
 getCameraMaxPitchStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Camera_get_MaxPitch" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Camera_get_MaxPitch" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCameraMaxPitchStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (Float))
@@ -3437,7 +3437,7 @@ getCameraMinDistance thisArg = do
 
 getCameraMinDistanceStreamReq :: KRPCHS.SpaceCenter.Camera -> KRPCStreamReq (Float)
 getCameraMinDistanceStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Camera_get_MinDistance" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Camera_get_MinDistance" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCameraMinDistanceStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (Float))
@@ -3454,7 +3454,7 @@ getCameraMinPitch thisArg = do
 
 getCameraMinPitchStreamReq :: KRPCHS.SpaceCenter.Camera -> KRPCStreamReq (Float)
 getCameraMinPitchStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Camera_get_MinPitch" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Camera_get_MinPitch" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCameraMinPitchStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (Float))
@@ -3471,7 +3471,7 @@ getCameraMode thisArg = do
 
 getCameraModeStreamReq :: KRPCHS.SpaceCenter.Camera -> KRPCStreamReq (KRPCHS.SpaceCenter.CameraMode)
 getCameraModeStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Camera_get_Mode" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Camera_get_Mode" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCameraModeStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.CameraMode))
@@ -3489,7 +3489,7 @@ getCameraPitch thisArg = do
 
 getCameraPitchStreamReq :: KRPCHS.SpaceCenter.Camera -> KRPCStreamReq (Float)
 getCameraPitchStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Camera_get_Pitch" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Camera_get_Pitch" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCameraPitchStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (Float))
@@ -3580,7 +3580,7 @@ canRailsWarpAt factorArg = do
 
 canRailsWarpAtStreamReq :: Data.Int.Int32 -> KRPCStreamReq (Bool)
 canRailsWarpAtStreamReq factorArg =
-    let req = makeRequest "SpaceCenter" "CanRailsWarpAt" [makeArgument 0 factorArg]
+    let req = makeCallRequest "SpaceCenter" "CanRailsWarpAt" [makeArgument 0 factorArg]
     in  makeStream req
 
 canRailsWarpAtStream :: Data.Int.Int32 -> RPCContext (KRPCStream (Bool))
@@ -3597,7 +3597,7 @@ getCargoBayOpen thisArg = do
 
 getCargoBayOpenStreamReq :: KRPCHS.SpaceCenter.CargoBay -> KRPCStreamReq (Bool)
 getCargoBayOpenStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "CargoBay_get_Open" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "CargoBay_get_Open" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCargoBayOpenStream :: KRPCHS.SpaceCenter.CargoBay -> RPCContext (KRPCStream (Bool))
@@ -3614,7 +3614,7 @@ getCargoBayPart thisArg = do
 
 getCargoBayPartStreamReq :: KRPCHS.SpaceCenter.CargoBay -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
 getCargoBayPartStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "CargoBay_get_Part" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "CargoBay_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCargoBayPartStream :: KRPCHS.SpaceCenter.CargoBay -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
@@ -3631,7 +3631,7 @@ getCargoBayState thisArg = do
 
 getCargoBayStateStreamReq :: KRPCHS.SpaceCenter.CargoBay -> KRPCStreamReq (KRPCHS.SpaceCenter.CargoBayState)
 getCargoBayStateStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "CargoBay_get_State" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "CargoBay_get_State" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCargoBayStateStream :: KRPCHS.SpaceCenter.CargoBay -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.CargoBayState))
@@ -3660,7 +3660,7 @@ celestialBodyAngularVelocity thisArg referenceFrameArg = do
 
 celestialBodyAngularVelocityStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
 celestialBodyAngularVelocityStreamReq thisArg referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "CelestialBody_AngularVelocity" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "CelestialBody_AngularVelocity" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
 celestialBodyAngularVelocityStream :: KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -3679,7 +3679,7 @@ celestialBodyBedrockHeight thisArg latitudeArg longitudeArg = do
 
 celestialBodyBedrockHeightStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> KRPCStreamReq (Double)
 celestialBodyBedrockHeightStreamReq thisArg latitudeArg longitudeArg =
-    let req = makeRequest "SpaceCenter" "CelestialBody_BedrockHeight" [makeArgument 0 thisArg, makeArgument 1 latitudeArg, makeArgument 2 longitudeArg]
+    let req = makeCallRequest "SpaceCenter" "CelestialBody_BedrockHeight" [makeArgument 0 thisArg, makeArgument 1 latitudeArg, makeArgument 2 longitudeArg]
     in  makeStream req
 
 celestialBodyBedrockHeightStream :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> RPCContext (KRPCStream (Double))
@@ -3697,7 +3697,7 @@ celestialBodyBedrockPosition thisArg latitudeArg longitudeArg referenceFrameArg 
 
 celestialBodyBedrockPositionStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
 celestialBodyBedrockPositionStreamReq thisArg latitudeArg longitudeArg referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "CelestialBody_BedrockPosition" [makeArgument 0 thisArg, makeArgument 1 latitudeArg, makeArgument 2 longitudeArg, makeArgument 3 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "CelestialBody_BedrockPosition" [makeArgument 0 thisArg, makeArgument 1 latitudeArg, makeArgument 2 longitudeArg, makeArgument 3 referenceFrameArg]
     in  makeStream req
 
 celestialBodyBedrockPositionStream :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -3714,7 +3714,7 @@ celestialBodyBiomeAt thisArg latitudeArg longitudeArg = do
 
 celestialBodyBiomeAtStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> KRPCStreamReq (Data.Text.Text)
 celestialBodyBiomeAtStreamReq thisArg latitudeArg longitudeArg =
-    let req = makeRequest "SpaceCenter" "CelestialBody_BiomeAt" [makeArgument 0 thisArg, makeArgument 1 latitudeArg, makeArgument 2 longitudeArg]
+    let req = makeCallRequest "SpaceCenter" "CelestialBody_BiomeAt" [makeArgument 0 thisArg, makeArgument 1 latitudeArg, makeArgument 2 longitudeArg]
     in  makeStream req
 
 celestialBodyBiomeAtStream :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> RPCContext (KRPCStream (Data.Text.Text))
@@ -3732,7 +3732,7 @@ celestialBodyDirection thisArg referenceFrameArg = do
 
 celestialBodyDirectionStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
 celestialBodyDirectionStreamReq thisArg referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "CelestialBody_Direction" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "CelestialBody_Direction" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
 celestialBodyDirectionStream :: KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -3749,7 +3749,7 @@ celestialBodyMSLPosition thisArg latitudeArg longitudeArg referenceFrameArg = do
 
 celestialBodyMSLPositionStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
 celestialBodyMSLPositionStreamReq thisArg latitudeArg longitudeArg referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "CelestialBody_MSLPosition" [makeArgument 0 thisArg, makeArgument 1 latitudeArg, makeArgument 2 longitudeArg, makeArgument 3 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "CelestialBody_MSLPosition" [makeArgument 0 thisArg, makeArgument 1 latitudeArg, makeArgument 2 longitudeArg, makeArgument 3 referenceFrameArg]
     in  makeStream req
 
 celestialBodyMSLPositionStream :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -3766,7 +3766,7 @@ celestialBodyPosition thisArg referenceFrameArg = do
 
 celestialBodyPositionStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
 celestialBodyPositionStreamReq thisArg referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "CelestialBody_Position" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "CelestialBody_Position" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
 celestialBodyPositionStream :: KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -3783,7 +3783,7 @@ celestialBodyRotation thisArg referenceFrameArg = do
 
 celestialBodyRotationStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double, Double))
 celestialBodyRotationStreamReq thisArg referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "CelestialBody_Rotation" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "CelestialBody_Rotation" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
 celestialBodyRotationStream :: KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double, Double)))
@@ -3801,7 +3801,7 @@ celestialBodySurfaceHeight thisArg latitudeArg longitudeArg = do
 
 celestialBodySurfaceHeightStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> KRPCStreamReq (Double)
 celestialBodySurfaceHeightStreamReq thisArg latitudeArg longitudeArg =
-    let req = makeRequest "SpaceCenter" "CelestialBody_SurfaceHeight" [makeArgument 0 thisArg, makeArgument 1 latitudeArg, makeArgument 2 longitudeArg]
+    let req = makeCallRequest "SpaceCenter" "CelestialBody_SurfaceHeight" [makeArgument 0 thisArg, makeArgument 1 latitudeArg, makeArgument 2 longitudeArg]
     in  makeStream req
 
 celestialBodySurfaceHeightStream :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> RPCContext (KRPCStream (Double))
@@ -3819,7 +3819,7 @@ celestialBodySurfacePosition thisArg latitudeArg longitudeArg referenceFrameArg 
 
 celestialBodySurfacePositionStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
 celestialBodySurfacePositionStreamReq thisArg latitudeArg longitudeArg referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "CelestialBody_SurfacePosition" [makeArgument 0 thisArg, makeArgument 1 latitudeArg, makeArgument 2 longitudeArg, makeArgument 3 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "CelestialBody_SurfacePosition" [makeArgument 0 thisArg, makeArgument 1 latitudeArg, makeArgument 2 longitudeArg, makeArgument 3 referenceFrameArg]
     in  makeStream req
 
 celestialBodySurfacePositionStream :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -3836,7 +3836,7 @@ celestialBodyVelocity thisArg referenceFrameArg = do
 
 celestialBodyVelocityStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
 celestialBodyVelocityStreamReq thisArg referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "CelestialBody_Velocity" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "CelestialBody_Velocity" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
 celestialBodyVelocityStream :: KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -3853,7 +3853,7 @@ getCelestialBodyAtmosphereDepth thisArg = do
 
 getCelestialBodyAtmosphereDepthStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> KRPCStreamReq (Float)
 getCelestialBodyAtmosphereDepthStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "CelestialBody_get_AtmosphereDepth" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "CelestialBody_get_AtmosphereDepth" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCelestialBodyAtmosphereDepthStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Float))
@@ -3870,7 +3870,7 @@ getCelestialBodyBiomes thisArg = do
 
 getCelestialBodyBiomesStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> KRPCStreamReq ([Data.Text.Text])
 getCelestialBodyBiomesStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "CelestialBody_get_Biomes" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "CelestialBody_get_Biomes" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCelestialBodyBiomesStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream ([Data.Text.Text]))
@@ -3887,7 +3887,7 @@ getCelestialBodyEquatorialRadius thisArg = do
 
 getCelestialBodyEquatorialRadiusStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> KRPCStreamReq (Float)
 getCelestialBodyEquatorialRadiusStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "CelestialBody_get_EquatorialRadius" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "CelestialBody_get_EquatorialRadius" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCelestialBodyEquatorialRadiusStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Float))
@@ -3904,7 +3904,7 @@ getCelestialBodyFlyingHighAltitudeThreshold thisArg = do
 
 getCelestialBodyFlyingHighAltitudeThresholdStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> KRPCStreamReq (Float)
 getCelestialBodyFlyingHighAltitudeThresholdStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "CelestialBody_get_FlyingHighAltitudeThreshold" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "CelestialBody_get_FlyingHighAltitudeThreshold" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCelestialBodyFlyingHighAltitudeThresholdStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Float))
@@ -3922,7 +3922,7 @@ getCelestialBodyGravitationalParameter thisArg = do
 
 getCelestialBodyGravitationalParameterStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> KRPCStreamReq (Float)
 getCelestialBodyGravitationalParameterStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "CelestialBody_get_GravitationalParameter" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "CelestialBody_get_GravitationalParameter" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCelestialBodyGravitationalParameterStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Float))
@@ -3939,7 +3939,7 @@ getCelestialBodyHasAtmosphere thisArg = do
 
 getCelestialBodyHasAtmosphereStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> KRPCStreamReq (Bool)
 getCelestialBodyHasAtmosphereStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "CelestialBody_get_HasAtmosphere" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "CelestialBody_get_HasAtmosphere" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCelestialBodyHasAtmosphereStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Bool))
@@ -3956,7 +3956,7 @@ getCelestialBodyHasAtmosphericOxygen thisArg = do
 
 getCelestialBodyHasAtmosphericOxygenStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> KRPCStreamReq (Bool)
 getCelestialBodyHasAtmosphericOxygenStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "CelestialBody_get_HasAtmosphericOxygen" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "CelestialBody_get_HasAtmosphericOxygen" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCelestialBodyHasAtmosphericOxygenStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Bool))
@@ -3973,7 +3973,7 @@ getCelestialBodyMass thisArg = do
 
 getCelestialBodyMassStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> KRPCStreamReq (Float)
 getCelestialBodyMassStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "CelestialBody_get_Mass" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "CelestialBody_get_Mass" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCelestialBodyMassStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Float))
@@ -3990,7 +3990,7 @@ getCelestialBodyName thisArg = do
 
 getCelestialBodyNameStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> KRPCStreamReq (Data.Text.Text)
 getCelestialBodyNameStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "CelestialBody_get_Name" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "CelestialBody_get_Name" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCelestialBodyNameStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Data.Text.Text))
@@ -4012,7 +4012,7 @@ getCelestialBodyNonRotatingReferenceFrame thisArg = do
 
 getCelestialBodyNonRotatingReferenceFrameStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> KRPCStreamReq (KRPCHS.SpaceCenter.ReferenceFrame)
 getCelestialBodyNonRotatingReferenceFrameStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "CelestialBody_get_NonRotatingReferenceFrame" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "CelestialBody_get_NonRotatingReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCelestialBodyNonRotatingReferenceFrameStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
@@ -4029,7 +4029,7 @@ getCelestialBodyOrbit thisArg = do
 
 getCelestialBodyOrbitStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> KRPCStreamReq (KRPCHS.SpaceCenter.Orbit)
 getCelestialBodyOrbitStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "CelestialBody_get_Orbit" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "CelestialBody_get_Orbit" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCelestialBodyOrbitStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Orbit))
@@ -4049,7 +4049,7 @@ getCelestialBodyOrbitalReferenceFrame thisArg = do
 
 getCelestialBodyOrbitalReferenceFrameStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> KRPCStreamReq (KRPCHS.SpaceCenter.ReferenceFrame)
 getCelestialBodyOrbitalReferenceFrameStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "CelestialBody_get_OrbitalReferenceFrame" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "CelestialBody_get_OrbitalReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCelestialBodyOrbitalReferenceFrameStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
@@ -4071,7 +4071,7 @@ getCelestialBodyReferenceFrame thisArg = do
 
 getCelestialBodyReferenceFrameStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> KRPCStreamReq (KRPCHS.SpaceCenter.ReferenceFrame)
 getCelestialBodyReferenceFrameStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "CelestialBody_get_ReferenceFrame" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "CelestialBody_get_ReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCelestialBodyReferenceFrameStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
@@ -4088,7 +4088,7 @@ getCelestialBodyRotationalPeriod thisArg = do
 
 getCelestialBodyRotationalPeriodStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> KRPCStreamReq (Float)
 getCelestialBodyRotationalPeriodStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "CelestialBody_get_RotationalPeriod" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "CelestialBody_get_RotationalPeriod" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCelestialBodyRotationalPeriodStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Float))
@@ -4105,7 +4105,7 @@ getCelestialBodyRotationalSpeed thisArg = do
 
 getCelestialBodyRotationalSpeedStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> KRPCStreamReq (Float)
 getCelestialBodyRotationalSpeedStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "CelestialBody_get_RotationalSpeed" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "CelestialBody_get_RotationalSpeed" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCelestialBodyRotationalSpeedStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Float))
@@ -4122,7 +4122,7 @@ getCelestialBodySatellites thisArg = do
 
 getCelestialBodySatellitesStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> KRPCStreamReq ([KRPCHS.SpaceCenter.CelestialBody])
 getCelestialBodySatellitesStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "CelestialBody_get_Satellites" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "CelestialBody_get_Satellites" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCelestialBodySatellitesStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.CelestialBody]))
@@ -4139,7 +4139,7 @@ getCelestialBodySpaceHighAltitudeThreshold thisArg = do
 
 getCelestialBodySpaceHighAltitudeThresholdStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> KRPCStreamReq (Float)
 getCelestialBodySpaceHighAltitudeThresholdStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "CelestialBody_get_SpaceHighAltitudeThreshold" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "CelestialBody_get_SpaceHighAltitudeThreshold" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCelestialBodySpaceHighAltitudeThresholdStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Float))
@@ -4156,7 +4156,7 @@ getCelestialBodySphereOfInfluence thisArg = do
 
 getCelestialBodySphereOfInfluenceStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> KRPCStreamReq (Float)
 getCelestialBodySphereOfInfluenceStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "CelestialBody_get_SphereOfInfluence" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "CelestialBody_get_SphereOfInfluence" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCelestialBodySphereOfInfluenceStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Float))
@@ -4173,7 +4173,7 @@ getCelestialBodySurfaceGravity thisArg = do
 
 getCelestialBodySurfaceGravityStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> KRPCStreamReq (Float)
 getCelestialBodySurfaceGravityStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "CelestialBody_get_SurfaceGravity" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "CelestialBody_get_SurfaceGravity" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCelestialBodySurfaceGravityStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Float))
@@ -4200,7 +4200,7 @@ getControlSurfaceAvailableTorque thisArg = do
 
 getControlSurfaceAvailableTorqueStreamReq :: KRPCHS.SpaceCenter.ControlSurface -> KRPCStreamReq ((Double, Double, Double))
 getControlSurfaceAvailableTorqueStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ControlSurface_get_AvailableTorque" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ControlSurface_get_AvailableTorque" [makeArgument 0 thisArg]
     in  makeStream req
 
 getControlSurfaceAvailableTorqueStream :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -4217,7 +4217,7 @@ getControlSurfaceDeployed thisArg = do
 
 getControlSurfaceDeployedStreamReq :: KRPCHS.SpaceCenter.ControlSurface -> KRPCStreamReq (Bool)
 getControlSurfaceDeployedStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ControlSurface_get_Deployed" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ControlSurface_get_Deployed" [makeArgument 0 thisArg]
     in  makeStream req
 
 getControlSurfaceDeployedStream :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (KRPCStream (Bool))
@@ -4234,7 +4234,7 @@ getControlSurfaceInverted thisArg = do
 
 getControlSurfaceInvertedStreamReq :: KRPCHS.SpaceCenter.ControlSurface -> KRPCStreamReq (Bool)
 getControlSurfaceInvertedStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ControlSurface_get_Inverted" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ControlSurface_get_Inverted" [makeArgument 0 thisArg]
     in  makeStream req
 
 getControlSurfaceInvertedStream :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (KRPCStream (Bool))
@@ -4251,7 +4251,7 @@ getControlSurfacePart thisArg = do
 
 getControlSurfacePartStreamReq :: KRPCHS.SpaceCenter.ControlSurface -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
 getControlSurfacePartStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ControlSurface_get_Part" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ControlSurface_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
 getControlSurfacePartStream :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
@@ -4268,7 +4268,7 @@ getControlSurfacePitchEnabled thisArg = do
 
 getControlSurfacePitchEnabledStreamReq :: KRPCHS.SpaceCenter.ControlSurface -> KRPCStreamReq (Bool)
 getControlSurfacePitchEnabledStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ControlSurface_get_PitchEnabled" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ControlSurface_get_PitchEnabled" [makeArgument 0 thisArg]
     in  makeStream req
 
 getControlSurfacePitchEnabledStream :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (KRPCStream (Bool))
@@ -4285,7 +4285,7 @@ getControlSurfaceRollEnabled thisArg = do
 
 getControlSurfaceRollEnabledStreamReq :: KRPCHS.SpaceCenter.ControlSurface -> KRPCStreamReq (Bool)
 getControlSurfaceRollEnabledStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ControlSurface_get_RollEnabled" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ControlSurface_get_RollEnabled" [makeArgument 0 thisArg]
     in  makeStream req
 
 getControlSurfaceRollEnabledStream :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (KRPCStream (Bool))
@@ -4302,7 +4302,7 @@ getControlSurfaceSurfaceArea thisArg = do
 
 getControlSurfaceSurfaceAreaStreamReq :: KRPCHS.SpaceCenter.ControlSurface -> KRPCStreamReq (Float)
 getControlSurfaceSurfaceAreaStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ControlSurface_get_SurfaceArea" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ControlSurface_get_SurfaceArea" [makeArgument 0 thisArg]
     in  makeStream req
 
 getControlSurfaceSurfaceAreaStream :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (KRPCStream (Float))
@@ -4319,7 +4319,7 @@ getControlSurfaceYawEnabled thisArg = do
 
 getControlSurfaceYawEnabledStreamReq :: KRPCHS.SpaceCenter.ControlSurface -> KRPCStreamReq (Bool)
 getControlSurfaceYawEnabledStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ControlSurface_get_YawEnabled" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ControlSurface_get_YawEnabled" [makeArgument 0 thisArg]
     in  makeStream req
 
 getControlSurfaceYawEnabledStream :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (KRPCStream (Bool))
@@ -4381,7 +4381,7 @@ controlActivateNextStage thisArg = do
 
 controlActivateNextStageStreamReq :: KRPCHS.SpaceCenter.Control -> KRPCStreamReq ([KRPCHS.SpaceCenter.Vessel])
 controlActivateNextStageStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Control_ActivateNextStage" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Control_ActivateNextStage" [makeArgument 0 thisArg]
     in  makeStream req
 
 controlActivateNextStageStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Vessel]))
@@ -4401,7 +4401,7 @@ controlAddNode thisArg utArg progradeArg normalArg radialArg = do
 
 controlAddNodeStreamReq :: KRPCHS.SpaceCenter.Control -> Double -> Float -> Float -> Float -> KRPCStreamReq (KRPCHS.SpaceCenter.Node)
 controlAddNodeStreamReq thisArg utArg progradeArg normalArg radialArg =
-    let req = makeRequest "SpaceCenter" "Control_AddNode" [makeArgument 0 thisArg, makeArgument 1 utArg, makeArgument 2 progradeArg, makeArgument 3 normalArg, makeArgument 4 radialArg]
+    let req = makeCallRequest "SpaceCenter" "Control_AddNode" [makeArgument 0 thisArg, makeArgument 1 utArg, makeArgument 2 progradeArg, makeArgument 3 normalArg, makeArgument 4 radialArg]
     in  makeStream req
 
 controlAddNodeStream :: KRPCHS.SpaceCenter.Control -> Double -> Float -> Float -> Float -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Node))
@@ -4418,7 +4418,7 @@ controlGetActionGroup thisArg groupArg = do
 
 controlGetActionGroupStreamReq :: KRPCHS.SpaceCenter.Control -> Data.Word.Word32 -> KRPCStreamReq (Bool)
 controlGetActionGroupStreamReq thisArg groupArg =
-    let req = makeRequest "SpaceCenter" "Control_GetActionGroup" [makeArgument 0 thisArg, makeArgument 1 groupArg]
+    let req = makeCallRequest "SpaceCenter" "Control_GetActionGroup" [makeArgument 0 thisArg, makeArgument 1 groupArg]
     in  makeStream req
 
 controlGetActionGroupStream :: KRPCHS.SpaceCenter.Control -> Data.Word.Word32 -> RPCContext (KRPCStream (Bool))
@@ -4463,7 +4463,7 @@ getControlAbort thisArg = do
 
 getControlAbortStreamReq :: KRPCHS.SpaceCenter.Control -> KRPCStreamReq (Bool)
 getControlAbortStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Control_get_Abort" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Control_get_Abort" [makeArgument 0 thisArg]
     in  makeStream req
 
 getControlAbortStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
@@ -4480,7 +4480,7 @@ getControlBrakes thisArg = do
 
 getControlBrakesStreamReq :: KRPCHS.SpaceCenter.Control -> KRPCStreamReq (Bool)
 getControlBrakesStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Control_get_Brakes" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Control_get_Brakes" [makeArgument 0 thisArg]
     in  makeStream req
 
 getControlBrakesStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
@@ -4498,7 +4498,7 @@ getControlCurrentStage thisArg = do
 
 getControlCurrentStageStreamReq :: KRPCHS.SpaceCenter.Control -> KRPCStreamReq (Data.Int.Int32)
 getControlCurrentStageStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Control_get_CurrentStage" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Control_get_CurrentStage" [makeArgument 0 thisArg]
     in  makeStream req
 
 getControlCurrentStageStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Data.Int.Int32))
@@ -4517,7 +4517,7 @@ getControlForward thisArg = do
 
 getControlForwardStreamReq :: KRPCHS.SpaceCenter.Control -> KRPCStreamReq (Float)
 getControlForwardStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Control_get_Forward" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Control_get_Forward" [makeArgument 0 thisArg]
     in  makeStream req
 
 getControlForwardStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Float))
@@ -4534,7 +4534,7 @@ getControlGear thisArg = do
 
 getControlGearStreamReq :: KRPCHS.SpaceCenter.Control -> KRPCStreamReq (Bool)
 getControlGearStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Control_get_Gear" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Control_get_Gear" [makeArgument 0 thisArg]
     in  makeStream req
 
 getControlGearStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
@@ -4551,7 +4551,7 @@ getControlLights thisArg = do
 
 getControlLightsStreamReq :: KRPCHS.SpaceCenter.Control -> KRPCStreamReq (Bool)
 getControlLightsStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Control_get_Lights" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Control_get_Lights" [makeArgument 0 thisArg]
     in  makeStream req
 
 getControlLightsStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
@@ -4568,7 +4568,7 @@ getControlNodes thisArg = do
 
 getControlNodesStreamReq :: KRPCHS.SpaceCenter.Control -> KRPCStreamReq ([KRPCHS.SpaceCenter.Node])
 getControlNodesStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Control_get_Nodes" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Control_get_Nodes" [makeArgument 0 thisArg]
     in  makeStream req
 
 getControlNodesStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Node]))
@@ -4587,7 +4587,7 @@ getControlPitch thisArg = do
 
 getControlPitchStreamReq :: KRPCHS.SpaceCenter.Control -> KRPCStreamReq (Float)
 getControlPitchStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Control_get_Pitch" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Control_get_Pitch" [makeArgument 0 thisArg]
     in  makeStream req
 
 getControlPitchStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Float))
@@ -4604,7 +4604,7 @@ getControlRCS thisArg = do
 
 getControlRCSStreamReq :: KRPCHS.SpaceCenter.Control -> KRPCStreamReq (Bool)
 getControlRCSStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Control_get_RCS" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Control_get_RCS" [makeArgument 0 thisArg]
     in  makeStream req
 
 getControlRCSStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
@@ -4623,7 +4623,7 @@ getControlRight thisArg = do
 
 getControlRightStreamReq :: KRPCHS.SpaceCenter.Control -> KRPCStreamReq (Float)
 getControlRightStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Control_get_Right" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Control_get_Right" [makeArgument 0 thisArg]
     in  makeStream req
 
 getControlRightStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Float))
@@ -4642,7 +4642,7 @@ getControlRoll thisArg = do
 
 getControlRollStreamReq :: KRPCHS.SpaceCenter.Control -> KRPCStreamReq (Float)
 getControlRollStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Control_get_Roll" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Control_get_Roll" [makeArgument 0 thisArg]
     in  makeStream req
 
 getControlRollStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Float))
@@ -4659,7 +4659,7 @@ getControlSAS thisArg = do
 
 getControlSASStreamReq :: KRPCHS.SpaceCenter.Control -> KRPCStreamReq (Bool)
 getControlSASStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Control_get_SAS" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Control_get_SAS" [makeArgument 0 thisArg]
     in  makeStream req
 
 getControlSASStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
@@ -4678,7 +4678,7 @@ getControlSASMode thisArg = do
 
 getControlSASModeStreamReq :: KRPCHS.SpaceCenter.Control -> KRPCStreamReq (KRPCHS.SpaceCenter.SASMode)
 getControlSASModeStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Control_get_SASMode" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Control_get_SASMode" [makeArgument 0 thisArg]
     in  makeStream req
 
 getControlSASModeStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.SASMode))
@@ -4696,7 +4696,7 @@ getControlSpeedMode thisArg = do
 
 getControlSpeedModeStreamReq :: KRPCHS.SpaceCenter.Control -> KRPCStreamReq (KRPCHS.SpaceCenter.SpeedMode)
 getControlSpeedModeStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Control_get_SpeedMode" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Control_get_SpeedMode" [makeArgument 0 thisArg]
     in  makeStream req
 
 getControlSpeedModeStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.SpeedMode))
@@ -4713,7 +4713,7 @@ getControlThrottle thisArg = do
 
 getControlThrottleStreamReq :: KRPCHS.SpaceCenter.Control -> KRPCStreamReq (Float)
 getControlThrottleStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Control_get_Throttle" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Control_get_Throttle" [makeArgument 0 thisArg]
     in  makeStream req
 
 getControlThrottleStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Float))
@@ -4732,7 +4732,7 @@ getControlUp thisArg = do
 
 getControlUpStreamReq :: KRPCHS.SpaceCenter.Control -> KRPCStreamReq (Float)
 getControlUpStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Control_get_Up" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Control_get_Up" [makeArgument 0 thisArg]
     in  makeStream req
 
 getControlUpStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Float))
@@ -4751,7 +4751,7 @@ getControlWheelSteering thisArg = do
 
 getControlWheelSteeringStreamReq :: KRPCHS.SpaceCenter.Control -> KRPCStreamReq (Float)
 getControlWheelSteeringStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Control_get_WheelSteering" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Control_get_WheelSteering" [makeArgument 0 thisArg]
     in  makeStream req
 
 getControlWheelSteeringStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Float))
@@ -4771,7 +4771,7 @@ getControlWheelThrottle thisArg = do
 
 getControlWheelThrottleStreamReq :: KRPCHS.SpaceCenter.Control -> KRPCStreamReq (Float)
 getControlWheelThrottleStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Control_get_WheelThrottle" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Control_get_WheelThrottle" [makeArgument 0 thisArg]
     in  makeStream req
 
 getControlWheelThrottleStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Float))
@@ -4790,7 +4790,7 @@ getControlYaw thisArg = do
 
 getControlYawStreamReq :: KRPCHS.SpaceCenter.Control -> KRPCStreamReq (Float)
 getControlYawStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Control_get_Yaw" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Control_get_Yaw" [makeArgument 0 thisArg]
     in  makeStream req
 
 getControlYawStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Float))
@@ -4981,7 +4981,7 @@ decouplerDecouple thisArg = do
 
 decouplerDecoupleStreamReq :: KRPCHS.SpaceCenter.Decoupler -> KRPCStreamReq (KRPCHS.SpaceCenter.Vessel)
 decouplerDecoupleStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Decoupler_Decouple" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Decoupler_Decouple" [makeArgument 0 thisArg]
     in  makeStream req
 
 decouplerDecoupleStream :: KRPCHS.SpaceCenter.Decoupler -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Vessel))
@@ -4998,7 +4998,7 @@ getDecouplerDecoupled thisArg = do
 
 getDecouplerDecoupledStreamReq :: KRPCHS.SpaceCenter.Decoupler -> KRPCStreamReq (Bool)
 getDecouplerDecoupledStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Decoupler_get_Decoupled" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Decoupler_get_Decoupled" [makeArgument 0 thisArg]
     in  makeStream req
 
 getDecouplerDecoupledStream :: KRPCHS.SpaceCenter.Decoupler -> RPCContext (KRPCStream (Bool))
@@ -5015,7 +5015,7 @@ getDecouplerImpulse thisArg = do
 
 getDecouplerImpulseStreamReq :: KRPCHS.SpaceCenter.Decoupler -> KRPCStreamReq (Float)
 getDecouplerImpulseStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Decoupler_get_Impulse" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Decoupler_get_Impulse" [makeArgument 0 thisArg]
     in  makeStream req
 
 getDecouplerImpulseStream :: KRPCHS.SpaceCenter.Decoupler -> RPCContext (KRPCStream (Float))
@@ -5032,7 +5032,7 @@ getDecouplerPart thisArg = do
 
 getDecouplerPartStreamReq :: KRPCHS.SpaceCenter.Decoupler -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
 getDecouplerPartStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Decoupler_get_Part" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Decoupler_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
 getDecouplerPartStream :: KRPCHS.SpaceCenter.Decoupler -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
@@ -5049,7 +5049,7 @@ getDecouplerStaged thisArg = do
 
 getDecouplerStagedStreamReq :: KRPCHS.SpaceCenter.Decoupler -> KRPCStreamReq (Bool)
 getDecouplerStagedStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Decoupler_get_Staged" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Decoupler_get_Staged" [makeArgument 0 thisArg]
     in  makeStream req
 
 getDecouplerStagedStream :: KRPCHS.SpaceCenter.Decoupler -> RPCContext (KRPCStream (Bool))
@@ -5066,7 +5066,7 @@ dockingPortDirection thisArg referenceFrameArg = do
 
 dockingPortDirectionStreamReq :: KRPCHS.SpaceCenter.DockingPort -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
 dockingPortDirectionStreamReq thisArg referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "DockingPort_Direction" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "DockingPort_Direction" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
 dockingPortDirectionStream :: KRPCHS.SpaceCenter.DockingPort -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -5083,7 +5083,7 @@ dockingPortPosition thisArg referenceFrameArg = do
 
 dockingPortPositionStreamReq :: KRPCHS.SpaceCenter.DockingPort -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
 dockingPortPositionStreamReq thisArg referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "DockingPort_Position" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "DockingPort_Position" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
 dockingPortPositionStream :: KRPCHS.SpaceCenter.DockingPort -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -5100,7 +5100,7 @@ dockingPortRotation thisArg referenceFrameArg = do
 
 dockingPortRotationStreamReq :: KRPCHS.SpaceCenter.DockingPort -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double, Double))
 dockingPortRotationStreamReq thisArg referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "DockingPort_Rotation" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "DockingPort_Rotation" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
 dockingPortRotationStream :: KRPCHS.SpaceCenter.DockingPort -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double, Double)))
@@ -5119,7 +5119,7 @@ dockingPortUndock thisArg = do
 
 dockingPortUndockStreamReq :: KRPCHS.SpaceCenter.DockingPort -> KRPCStreamReq (KRPCHS.SpaceCenter.Vessel)
 dockingPortUndockStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "DockingPort_Undock" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "DockingPort_Undock" [makeArgument 0 thisArg]
     in  makeStream req
 
 dockingPortUndockStream :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Vessel))
@@ -5137,7 +5137,7 @@ getDockingPortDockedPart thisArg = do
 
 getDockingPortDockedPartStreamReq :: KRPCHS.SpaceCenter.DockingPort -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
 getDockingPortDockedPartStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "DockingPort_get_DockedPart" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "DockingPort_get_DockedPart" [makeArgument 0 thisArg]
     in  makeStream req
 
 getDockingPortDockedPartStream :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
@@ -5154,7 +5154,7 @@ getDockingPortHasShield thisArg = do
 
 getDockingPortHasShieldStreamReq :: KRPCHS.SpaceCenter.DockingPort -> KRPCStreamReq (Bool)
 getDockingPortHasShieldStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "DockingPort_get_HasShield" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "DockingPort_get_HasShield" [makeArgument 0 thisArg]
     in  makeStream req
 
 getDockingPortHasShieldStream :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCStream (Bool))
@@ -5171,7 +5171,7 @@ getDockingPortPart thisArg = do
 
 getDockingPortPartStreamReq :: KRPCHS.SpaceCenter.DockingPort -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
 getDockingPortPartStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "DockingPort_get_Part" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "DockingPort_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
 getDockingPortPartStream :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
@@ -5189,7 +5189,7 @@ getDockingPortReengageDistance thisArg = do
 
 getDockingPortReengageDistanceStreamReq :: KRPCHS.SpaceCenter.DockingPort -> KRPCStreamReq (Float)
 getDockingPortReengageDistanceStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "DockingPort_get_ReengageDistance" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "DockingPort_get_ReengageDistance" [makeArgument 0 thisArg]
     in  makeStream req
 
 getDockingPortReengageDistanceStream :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCStream (Float))
@@ -5209,7 +5209,7 @@ getDockingPortReferenceFrame thisArg = do
 
 getDockingPortReferenceFrameStreamReq :: KRPCHS.SpaceCenter.DockingPort -> KRPCStreamReq (KRPCHS.SpaceCenter.ReferenceFrame)
 getDockingPortReferenceFrameStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "DockingPort_get_ReferenceFrame" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "DockingPort_get_ReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
 getDockingPortReferenceFrameStream :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
@@ -5231,7 +5231,7 @@ getDockingPortShielded thisArg = do
 
 getDockingPortShieldedStreamReq :: KRPCHS.SpaceCenter.DockingPort -> KRPCStreamReq (Bool)
 getDockingPortShieldedStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "DockingPort_get_Shielded" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "DockingPort_get_Shielded" [makeArgument 0 thisArg]
     in  makeStream req
 
 getDockingPortShieldedStream :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCStream (Bool))
@@ -5248,7 +5248,7 @@ getDockingPortState thisArg = do
 
 getDockingPortStateStreamReq :: KRPCHS.SpaceCenter.DockingPort -> KRPCStreamReq (KRPCHS.SpaceCenter.DockingPortState)
 getDockingPortStateStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "DockingPort_get_State" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "DockingPort_get_State" [makeArgument 0 thisArg]
     in  makeStream req
 
 getDockingPortStateStream :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.DockingPortState))
@@ -5289,7 +5289,7 @@ getEngineActive thisArg = do
 
 getEngineActiveStreamReq :: KRPCHS.SpaceCenter.Engine -> KRPCStreamReq (Bool)
 getEngineActiveStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Engine_get_Active" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Engine_get_Active" [makeArgument 0 thisArg]
     in  makeStream req
 
 getEngineActiveStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Bool))
@@ -5306,7 +5306,7 @@ getEngineAutoModeSwitch thisArg = do
 
 getEngineAutoModeSwitchStreamReq :: KRPCHS.SpaceCenter.Engine -> KRPCStreamReq (Bool)
 getEngineAutoModeSwitchStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Engine_get_AutoModeSwitch" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Engine_get_AutoModeSwitch" [makeArgument 0 thisArg]
     in  makeStream req
 
 getEngineAutoModeSwitchStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Bool))
@@ -5326,7 +5326,7 @@ getEngineAvailableThrust thisArg = do
 
 getEngineAvailableThrustStreamReq :: KRPCHS.SpaceCenter.Engine -> KRPCStreamReq (Float)
 getEngineAvailableThrustStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Engine_get_AvailableThrust" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Engine_get_AvailableThrust" [makeArgument 0 thisArg]
     in  makeStream req
 
 getEngineAvailableThrustStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Float))
@@ -5345,7 +5345,7 @@ getEngineAvailableTorque thisArg = do
 
 getEngineAvailableTorqueStreamReq :: KRPCHS.SpaceCenter.Engine -> KRPCStreamReq ((Double, Double, Double))
 getEngineAvailableTorqueStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Engine_get_AvailableTorque" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Engine_get_AvailableTorque" [makeArgument 0 thisArg]
     in  makeStream req
 
 getEngineAvailableTorqueStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -5364,7 +5364,7 @@ getEngineCanRestart thisArg = do
 
 getEngineCanRestartStreamReq :: KRPCHS.SpaceCenter.Engine -> KRPCStreamReq (Bool)
 getEngineCanRestartStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Engine_get_CanRestart" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Engine_get_CanRestart" [makeArgument 0 thisArg]
     in  makeStream req
 
 getEngineCanRestartStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Bool))
@@ -5381,7 +5381,7 @@ getEngineCanShutdown thisArg = do
 
 getEngineCanShutdownStreamReq :: KRPCHS.SpaceCenter.Engine -> KRPCStreamReq (Bool)
 getEngineCanShutdownStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Engine_get_CanShutdown" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Engine_get_CanShutdown" [makeArgument 0 thisArg]
     in  makeStream req
 
 getEngineCanShutdownStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Bool))
@@ -5399,7 +5399,7 @@ getEngineGimbalLimit thisArg = do
 
 getEngineGimbalLimitStreamReq :: KRPCHS.SpaceCenter.Engine -> KRPCStreamReq (Float)
 getEngineGimbalLimitStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Engine_get_GimbalLimit" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Engine_get_GimbalLimit" [makeArgument 0 thisArg]
     in  makeStream req
 
 getEngineGimbalLimitStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Float))
@@ -5417,7 +5417,7 @@ getEngineGimbalLocked thisArg = do
 
 getEngineGimbalLockedStreamReq :: KRPCHS.SpaceCenter.Engine -> KRPCStreamReq (Bool)
 getEngineGimbalLockedStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Engine_get_GimbalLocked" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Engine_get_GimbalLocked" [makeArgument 0 thisArg]
     in  makeStream req
 
 getEngineGimbalLockedStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Bool))
@@ -5435,7 +5435,7 @@ getEngineGimbalRange thisArg = do
 
 getEngineGimbalRangeStreamReq :: KRPCHS.SpaceCenter.Engine -> KRPCStreamReq (Float)
 getEngineGimbalRangeStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Engine_get_GimbalRange" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Engine_get_GimbalRange" [makeArgument 0 thisArg]
     in  makeStream req
 
 getEngineGimbalRangeStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Float))
@@ -5452,7 +5452,7 @@ getEngineGimballed thisArg = do
 
 getEngineGimballedStreamReq :: KRPCHS.SpaceCenter.Engine -> KRPCStreamReq (Bool)
 getEngineGimballedStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Engine_get_Gimballed" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Engine_get_Gimballed" [makeArgument 0 thisArg]
     in  makeStream req
 
 getEngineGimballedStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Bool))
@@ -5469,7 +5469,7 @@ getEngineHasFuel thisArg = do
 
 getEngineHasFuelStreamReq :: KRPCHS.SpaceCenter.Engine -> KRPCStreamReq (Bool)
 getEngineHasFuelStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Engine_get_HasFuel" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Engine_get_HasFuel" [makeArgument 0 thisArg]
     in  makeStream req
 
 getEngineHasFuelStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Bool))
@@ -5486,7 +5486,7 @@ getEngineHasModes thisArg = do
 
 getEngineHasModesStreamReq :: KRPCHS.SpaceCenter.Engine -> KRPCStreamReq (Bool)
 getEngineHasModesStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Engine_get_HasModes" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Engine_get_HasModes" [makeArgument 0 thisArg]
     in  makeStream req
 
 getEngineHasModesStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Bool))
@@ -5503,7 +5503,7 @@ getEngineKerbinSeaLevelSpecificImpulse thisArg = do
 
 getEngineKerbinSeaLevelSpecificImpulseStreamReq :: KRPCHS.SpaceCenter.Engine -> KRPCStreamReq (Float)
 getEngineKerbinSeaLevelSpecificImpulseStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Engine_get_KerbinSeaLevelSpecificImpulse" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Engine_get_KerbinSeaLevelSpecificImpulse" [makeArgument 0 thisArg]
     in  makeStream req
 
 getEngineKerbinSeaLevelSpecificImpulseStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Float))
@@ -5521,7 +5521,7 @@ getEngineMaxThrust thisArg = do
 
 getEngineMaxThrustStreamReq :: KRPCHS.SpaceCenter.Engine -> KRPCStreamReq (Float)
 getEngineMaxThrustStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Engine_get_MaxThrust" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Engine_get_MaxThrust" [makeArgument 0 thisArg]
     in  makeStream req
 
 getEngineMaxThrustStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Float))
@@ -5541,7 +5541,7 @@ getEngineMaxVacuumThrust thisArg = do
 
 getEngineMaxVacuumThrustStreamReq :: KRPCHS.SpaceCenter.Engine -> KRPCStreamReq (Float)
 getEngineMaxVacuumThrustStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Engine_get_MaxVacuumThrust" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Engine_get_MaxVacuumThrust" [makeArgument 0 thisArg]
     in  makeStream req
 
 getEngineMaxVacuumThrustStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Float))
@@ -5558,7 +5558,7 @@ getEngineMode thisArg = do
 
 getEngineModeStreamReq :: KRPCHS.SpaceCenter.Engine -> KRPCStreamReq (Data.Text.Text)
 getEngineModeStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Engine_get_Mode" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Engine_get_Mode" [makeArgument 0 thisArg]
     in  makeStream req
 
 getEngineModeStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Data.Text.Text))
@@ -5576,7 +5576,7 @@ getEngineModes thisArg = do
 
 getEngineModesStreamReq :: KRPCHS.SpaceCenter.Engine -> KRPCStreamReq (Data.Map.Map (Data.Text.Text) (KRPCHS.SpaceCenter.Engine))
 getEngineModesStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Engine_get_Modes" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Engine_get_Modes" [makeArgument 0 thisArg]
     in  makeStream req
 
 getEngineModesStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Data.Map.Map (Data.Text.Text) (KRPCHS.SpaceCenter.Engine)))
@@ -5593,7 +5593,7 @@ getEnginePart thisArg = do
 
 getEnginePartStreamReq :: KRPCHS.SpaceCenter.Engine -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
 getEnginePartStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Engine_get_Part" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Engine_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
 getEnginePartStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
@@ -5610,7 +5610,7 @@ getEnginePropellantNames thisArg = do
 
 getEnginePropellantNamesStreamReq :: KRPCHS.SpaceCenter.Engine -> KRPCStreamReq ([Data.Text.Text])
 getEnginePropellantNamesStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Engine_get_PropellantNames" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Engine_get_PropellantNames" [makeArgument 0 thisArg]
     in  makeStream req
 
 getEnginePropellantNamesStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream ([Data.Text.Text]))
@@ -5629,7 +5629,7 @@ getEnginePropellantRatios thisArg = do
 
 getEnginePropellantRatiosStreamReq :: KRPCHS.SpaceCenter.Engine -> KRPCStreamReq (Data.Map.Map (Data.Text.Text) (Float))
 getEnginePropellantRatiosStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Engine_get_PropellantRatios" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Engine_get_PropellantRatios" [makeArgument 0 thisArg]
     in  makeStream req
 
 getEnginePropellantRatiosStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Data.Map.Map (Data.Text.Text) (Float)))
@@ -5646,7 +5646,7 @@ getEnginePropellants thisArg = do
 
 getEnginePropellantsStreamReq :: KRPCHS.SpaceCenter.Engine -> KRPCStreamReq ([KRPCHS.SpaceCenter.Propellant])
 getEnginePropellantsStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Engine_get_Propellants" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Engine_get_Propellants" [makeArgument 0 thisArg]
     in  makeStream req
 
 getEnginePropellantsStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Propellant]))
@@ -5664,7 +5664,7 @@ getEngineSpecificImpulse thisArg = do
 
 getEngineSpecificImpulseStreamReq :: KRPCHS.SpaceCenter.Engine -> KRPCStreamReq (Float)
 getEngineSpecificImpulseStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Engine_get_SpecificImpulse" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Engine_get_SpecificImpulse" [makeArgument 0 thisArg]
     in  makeStream req
 
 getEngineSpecificImpulseStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Float))
@@ -5684,7 +5684,7 @@ getEngineThrottle thisArg = do
 
 getEngineThrottleStreamReq :: KRPCHS.SpaceCenter.Engine -> KRPCStreamReq (Float)
 getEngineThrottleStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Engine_get_Throttle" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Engine_get_Throttle" [makeArgument 0 thisArg]
     in  makeStream req
 
 getEngineThrottleStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Float))
@@ -5703,7 +5703,7 @@ getEngineThrottleLocked thisArg = do
 
 getEngineThrottleLockedStreamReq :: KRPCHS.SpaceCenter.Engine -> KRPCStreamReq (Bool)
 getEngineThrottleLockedStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Engine_get_ThrottleLocked" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Engine_get_ThrottleLocked" [makeArgument 0 thisArg]
     in  makeStream req
 
 getEngineThrottleLockedStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Bool))
@@ -5720,7 +5720,7 @@ getEngineThrust thisArg = do
 
 getEngineThrustStreamReq :: KRPCHS.SpaceCenter.Engine -> KRPCStreamReq (Float)
 getEngineThrustStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Engine_get_Thrust" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Engine_get_Thrust" [makeArgument 0 thisArg]
     in  makeStream req
 
 getEngineThrustStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Float))
@@ -5739,7 +5739,7 @@ getEngineThrustLimit thisArg = do
 
 getEngineThrustLimitStreamReq :: KRPCHS.SpaceCenter.Engine -> KRPCStreamReq (Float)
 getEngineThrustLimitStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Engine_get_ThrustLimit" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Engine_get_ThrustLimit" [makeArgument 0 thisArg]
     in  makeStream req
 
 getEngineThrustLimitStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Float))
@@ -5759,7 +5759,7 @@ getEngineThrusters thisArg = do
 
 getEngineThrustersStreamReq :: KRPCHS.SpaceCenter.Engine -> KRPCStreamReq ([KRPCHS.SpaceCenter.Thruster])
 getEngineThrustersStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Engine_get_Thrusters" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Engine_get_Thrusters" [makeArgument 0 thisArg]
     in  makeStream req
 
 getEngineThrustersStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Thruster]))
@@ -5776,7 +5776,7 @@ getEngineVacuumSpecificImpulse thisArg = do
 
 getEngineVacuumSpecificImpulseStreamReq :: KRPCHS.SpaceCenter.Engine -> KRPCStreamReq (Float)
 getEngineVacuumSpecificImpulseStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Engine_get_VacuumSpecificImpulse" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Engine_get_VacuumSpecificImpulse" [makeArgument 0 thisArg]
     in  makeStream req
 
 getEngineVacuumSpecificImpulseStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Float))
@@ -5888,7 +5888,7 @@ getExperimentAvailable thisArg = do
 
 getExperimentAvailableStreamReq :: KRPCHS.SpaceCenter.Experiment -> KRPCStreamReq (Bool)
 getExperimentAvailableStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Experiment_get_Available" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Experiment_get_Available" [makeArgument 0 thisArg]
     in  makeStream req
 
 getExperimentAvailableStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream (Bool))
@@ -5905,7 +5905,7 @@ getExperimentBiome thisArg = do
 
 getExperimentBiomeStreamReq :: KRPCHS.SpaceCenter.Experiment -> KRPCStreamReq (Data.Text.Text)
 getExperimentBiomeStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Experiment_get_Biome" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Experiment_get_Biome" [makeArgument 0 thisArg]
     in  makeStream req
 
 getExperimentBiomeStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream (Data.Text.Text))
@@ -5922,7 +5922,7 @@ getExperimentData thisArg = do
 
 getExperimentDataStreamReq :: KRPCHS.SpaceCenter.Experiment -> KRPCStreamReq ([KRPCHS.SpaceCenter.ScienceData])
 getExperimentDataStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Experiment_get_Data" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Experiment_get_Data" [makeArgument 0 thisArg]
     in  makeStream req
 
 getExperimentDataStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.ScienceData]))
@@ -5939,7 +5939,7 @@ getExperimentDeployed thisArg = do
 
 getExperimentDeployedStreamReq :: KRPCHS.SpaceCenter.Experiment -> KRPCStreamReq (Bool)
 getExperimentDeployedStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Experiment_get_Deployed" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Experiment_get_Deployed" [makeArgument 0 thisArg]
     in  makeStream req
 
 getExperimentDeployedStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream (Bool))
@@ -5956,7 +5956,7 @@ getExperimentHasData thisArg = do
 
 getExperimentHasDataStreamReq :: KRPCHS.SpaceCenter.Experiment -> KRPCStreamReq (Bool)
 getExperimentHasDataStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Experiment_get_HasData" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Experiment_get_HasData" [makeArgument 0 thisArg]
     in  makeStream req
 
 getExperimentHasDataStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream (Bool))
@@ -5973,7 +5973,7 @@ getExperimentInoperable thisArg = do
 
 getExperimentInoperableStreamReq :: KRPCHS.SpaceCenter.Experiment -> KRPCStreamReq (Bool)
 getExperimentInoperableStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Experiment_get_Inoperable" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Experiment_get_Inoperable" [makeArgument 0 thisArg]
     in  makeStream req
 
 getExperimentInoperableStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream (Bool))
@@ -5990,7 +5990,7 @@ getExperimentPart thisArg = do
 
 getExperimentPartStreamReq :: KRPCHS.SpaceCenter.Experiment -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
 getExperimentPartStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Experiment_get_Part" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Experiment_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
 getExperimentPartStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
@@ -6007,7 +6007,7 @@ getExperimentRerunnable thisArg = do
 
 getExperimentRerunnableStreamReq :: KRPCHS.SpaceCenter.Experiment -> KRPCStreamReq (Bool)
 getExperimentRerunnableStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Experiment_get_Rerunnable" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Experiment_get_Rerunnable" [makeArgument 0 thisArg]
     in  makeStream req
 
 getExperimentRerunnableStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream (Bool))
@@ -6025,7 +6025,7 @@ getExperimentScienceSubject thisArg = do
 
 getExperimentScienceSubjectStreamReq :: KRPCHS.SpaceCenter.Experiment -> KRPCStreamReq (KRPCHS.SpaceCenter.ScienceSubject)
 getExperimentScienceSubjectStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Experiment_get_ScienceSubject" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Experiment_get_ScienceSubject" [makeArgument 0 thisArg]
     in  makeStream req
 
 getExperimentScienceSubjectStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ScienceSubject))
@@ -6051,7 +6051,7 @@ getFairingJettisoned thisArg = do
 
 getFairingJettisonedStreamReq :: KRPCHS.SpaceCenter.Fairing -> KRPCStreamReq (Bool)
 getFairingJettisonedStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Fairing_get_Jettisoned" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Fairing_get_Jettisoned" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFairingJettisonedStream :: KRPCHS.SpaceCenter.Fairing -> RPCContext (KRPCStream (Bool))
@@ -6068,7 +6068,7 @@ getFairingPart thisArg = do
 
 getFairingPartStreamReq :: KRPCHS.SpaceCenter.Fairing -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
 getFairingPartStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Fairing_get_Part" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Fairing_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFairingPartStream :: KRPCHS.SpaceCenter.Fairing -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
@@ -6086,7 +6086,7 @@ getFlightAerodynamicForce thisArg = do
 
 getFlightAerodynamicForceStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq ((Double, Double, Double))
 getFlightAerodynamicForceStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_AerodynamicForce" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_AerodynamicForce" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightAerodynamicForceStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -6103,7 +6103,7 @@ getFlightAngleOfAttack thisArg = do
 
 getFlightAngleOfAttackStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Float)
 getFlightAngleOfAttackStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_AngleOfAttack" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_AngleOfAttack" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightAngleOfAttackStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
@@ -6120,7 +6120,7 @@ getFlightAntiNormal thisArg = do
 
 getFlightAntiNormalStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq ((Double, Double, Double))
 getFlightAntiNormalStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_AntiNormal" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_AntiNormal" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightAntiNormalStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -6137,7 +6137,7 @@ getFlightAntiRadial thisArg = do
 
 getFlightAntiRadialStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq ((Double, Double, Double))
 getFlightAntiRadialStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_AntiRadial" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_AntiRadial" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightAntiRadialStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -6154,7 +6154,7 @@ getFlightAtmosphereDensity thisArg = do
 
 getFlightAtmosphereDensityStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Float)
 getFlightAtmosphereDensityStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_AtmosphereDensity" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_AtmosphereDensity" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightAtmosphereDensityStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
@@ -6171,7 +6171,7 @@ getFlightBallisticCoefficient thisArg = do
 
 getFlightBallisticCoefficientStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Float)
 getFlightBallisticCoefficientStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_BallisticCoefficient" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_BallisticCoefficient" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightBallisticCoefficientStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
@@ -6189,7 +6189,7 @@ getFlightBedrockAltitude thisArg = do
 
 getFlightBedrockAltitudeStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Double)
 getFlightBedrockAltitudeStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_BedrockAltitude" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_BedrockAltitude" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightBedrockAltitudeStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Double))
@@ -6206,7 +6206,7 @@ getFlightCenterOfMass thisArg = do
 
 getFlightCenterOfMassStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq ((Double, Double, Double))
 getFlightCenterOfMassStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_CenterOfMass" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_CenterOfMass" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightCenterOfMassStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -6223,7 +6223,7 @@ getFlightDirection thisArg = do
 
 getFlightDirectionStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq ((Double, Double, Double))
 getFlightDirectionStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_Direction" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_Direction" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightDirectionStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -6241,7 +6241,7 @@ getFlightDrag thisArg = do
 
 getFlightDragStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq ((Double, Double, Double))
 getFlightDragStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_Drag" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_Drag" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightDragStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -6259,7 +6259,7 @@ getFlightDragCoefficient thisArg = do
 
 getFlightDragCoefficientStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Float)
 getFlightDragCoefficientStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_DragCoefficient" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_DragCoefficient" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightDragCoefficientStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
@@ -6278,7 +6278,7 @@ getFlightDynamicPressure thisArg = do
 
 getFlightDynamicPressureStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Float)
 getFlightDynamicPressureStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_DynamicPressure" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_DynamicPressure" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightDynamicPressureStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
@@ -6296,7 +6296,7 @@ getFlightElevation thisArg = do
 
 getFlightElevationStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Double)
 getFlightElevationStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_Elevation" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_Elevation" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightElevationStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Double))
@@ -6313,7 +6313,7 @@ getFlightEquivalentAirSpeed thisArg = do
 
 getFlightEquivalentAirSpeedStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Float)
 getFlightEquivalentAirSpeedStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_EquivalentAirSpeed" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_EquivalentAirSpeed" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightEquivalentAirSpeedStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
@@ -6330,7 +6330,7 @@ getFlightGForce thisArg = do
 
 getFlightGForceStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Float)
 getFlightGForceStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_GForce" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_GForce" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightGForceStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
@@ -6347,7 +6347,7 @@ getFlightHeading thisArg = do
 
 getFlightHeadingStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Float)
 getFlightHeadingStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_Heading" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_Heading" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightHeadingStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
@@ -6364,7 +6364,7 @@ getFlightHorizontalSpeed thisArg = do
 
 getFlightHorizontalSpeedStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Double)
 getFlightHorizontalSpeedStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_HorizontalSpeed" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_HorizontalSpeed" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightHorizontalSpeedStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Double))
@@ -6381,7 +6381,7 @@ getFlightLatitude thisArg = do
 
 getFlightLatitudeStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Double)
 getFlightLatitudeStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_Latitude" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_Latitude" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightLatitudeStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Double))
@@ -6399,7 +6399,7 @@ getFlightLift thisArg = do
 
 getFlightLiftStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq ((Double, Double, Double))
 getFlightLiftStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_Lift" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_Lift" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightLiftStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -6416,7 +6416,7 @@ getFlightLiftCoefficient thisArg = do
 
 getFlightLiftCoefficientStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Float)
 getFlightLiftCoefficientStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_LiftCoefficient" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_LiftCoefficient" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightLiftCoefficientStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
@@ -6433,7 +6433,7 @@ getFlightLongitude thisArg = do
 
 getFlightLongitudeStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Double)
 getFlightLongitudeStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_Longitude" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_Longitude" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightLongitudeStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Double))
@@ -6450,7 +6450,7 @@ getFlightMach thisArg = do
 
 getFlightMachStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Float)
 getFlightMachStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_Mach" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_Mach" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightMachStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
@@ -6468,7 +6468,7 @@ getFlightMeanAltitude thisArg = do
 
 getFlightMeanAltitudeStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Double)
 getFlightMeanAltitudeStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_MeanAltitude" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_MeanAltitude" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightMeanAltitudeStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Double))
@@ -6485,7 +6485,7 @@ getFlightNormal thisArg = do
 
 getFlightNormalStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq ((Double, Double, Double))
 getFlightNormalStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_Normal" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_Normal" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightNormalStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -6502,7 +6502,7 @@ getFlightPitch thisArg = do
 
 getFlightPitchStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Float)
 getFlightPitchStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_Pitch" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_Pitch" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightPitchStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
@@ -6519,7 +6519,7 @@ getFlightPrograde thisArg = do
 
 getFlightProgradeStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq ((Double, Double, Double))
 getFlightProgradeStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_Prograde" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_Prograde" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightProgradeStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -6536,7 +6536,7 @@ getFlightRadial thisArg = do
 
 getFlightRadialStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq ((Double, Double, Double))
 getFlightRadialStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_Radial" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_Radial" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightRadialStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -6553,7 +6553,7 @@ getFlightRetrograde thisArg = do
 
 getFlightRetrogradeStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq ((Double, Double, Double))
 getFlightRetrogradeStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_Retrograde" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_Retrograde" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightRetrogradeStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -6570,7 +6570,7 @@ getFlightReynoldsNumber thisArg = do
 
 getFlightReynoldsNumberStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Float)
 getFlightReynoldsNumberStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_ReynoldsNumber" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_ReynoldsNumber" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightReynoldsNumberStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
@@ -6587,7 +6587,7 @@ getFlightRoll thisArg = do
 
 getFlightRollStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Float)
 getFlightRollStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_Roll" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_Roll" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightRollStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
@@ -6604,7 +6604,7 @@ getFlightRotation thisArg = do
 
 getFlightRotationStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq ((Double, Double, Double, Double))
 getFlightRotationStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_Rotation" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_Rotation" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightRotationStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double, Double)))
@@ -6621,7 +6621,7 @@ getFlightSideslipAngle thisArg = do
 
 getFlightSideslipAngleStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Float)
 getFlightSideslipAngleStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_SideslipAngle" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_SideslipAngle" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightSideslipAngleStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
@@ -6638,7 +6638,7 @@ getFlightSpeed thisArg = do
 
 getFlightSpeedStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Double)
 getFlightSpeedStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_Speed" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_Speed" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightSpeedStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Double))
@@ -6655,7 +6655,7 @@ getFlightSpeedOfSound thisArg = do
 
 getFlightSpeedOfSoundStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Float)
 getFlightSpeedOfSoundStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_SpeedOfSound" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_SpeedOfSound" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightSpeedOfSoundStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
@@ -6673,7 +6673,7 @@ getFlightStallFraction thisArg = do
 
 getFlightStallFractionStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Float)
 getFlightStallFractionStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_StallFraction" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_StallFraction" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightStallFractionStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
@@ -6691,7 +6691,7 @@ getFlightStaticAirTemperature thisArg = do
 
 getFlightStaticAirTemperatureStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Float)
 getFlightStaticAirTemperatureStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_StaticAirTemperature" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_StaticAirTemperature" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightStaticAirTemperatureStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
@@ -6708,7 +6708,7 @@ getFlightStaticPressure thisArg = do
 
 getFlightStaticPressureStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Float)
 getFlightStaticPressureStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_StaticPressure" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_StaticPressure" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightStaticPressureStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
@@ -6725,7 +6725,7 @@ getFlightStaticPressureAtMSL thisArg = do
 
 getFlightStaticPressureAtMSLStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Float)
 getFlightStaticPressureAtMSLStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_StaticPressureAtMSL" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_StaticPressureAtMSL" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightStaticPressureAtMSLStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
@@ -6743,7 +6743,7 @@ getFlightSurfaceAltitude thisArg = do
 
 getFlightSurfaceAltitudeStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Double)
 getFlightSurfaceAltitudeStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_SurfaceAltitude" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_SurfaceAltitude" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightSurfaceAltitudeStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Double))
@@ -6761,7 +6761,7 @@ getFlightTerminalVelocity thisArg = do
 
 getFlightTerminalVelocityStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Float)
 getFlightTerminalVelocityStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_TerminalVelocity" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_TerminalVelocity" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightTerminalVelocityStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
@@ -6780,7 +6780,7 @@ getFlightThrustSpecificFuelConsumption thisArg = do
 
 getFlightThrustSpecificFuelConsumptionStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Float)
 getFlightThrustSpecificFuelConsumptionStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_ThrustSpecificFuelConsumption" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_ThrustSpecificFuelConsumption" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightThrustSpecificFuelConsumptionStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
@@ -6798,7 +6798,7 @@ getFlightTotalAirTemperature thisArg = do
 
 getFlightTotalAirTemperatureStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Float)
 getFlightTotalAirTemperatureStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_TotalAirTemperature" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_TotalAirTemperature" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightTotalAirTemperatureStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
@@ -6815,7 +6815,7 @@ getFlightTrueAirSpeed thisArg = do
 
 getFlightTrueAirSpeedStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Float)
 getFlightTrueAirSpeedStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_TrueAirSpeed" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_TrueAirSpeed" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightTrueAirSpeedStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
@@ -6833,7 +6833,7 @@ getFlightVelocity thisArg = do
 
 getFlightVelocityStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq ((Double, Double, Double))
 getFlightVelocityStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_Velocity" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_Velocity" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightVelocityStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -6850,7 +6850,7 @@ getFlightVerticalSpeed thisArg = do
 
 getFlightVerticalSpeedStreamReq :: KRPCHS.SpaceCenter.Flight -> KRPCStreamReq (Double)
 getFlightVerticalSpeedStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Flight_get_VerticalSpeed" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Flight_get_VerticalSpeed" [makeArgument 0 thisArg]
     in  makeStream req
 
 getFlightVerticalSpeedStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Double))
@@ -6876,7 +6876,7 @@ getForceForceVector thisArg = do
 
 getForceForceVectorStreamReq :: KRPCHS.SpaceCenter.Force -> KRPCStreamReq ((Double, Double, Double))
 getForceForceVectorStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Force_get_ForceVector" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Force_get_ForceVector" [makeArgument 0 thisArg]
     in  makeStream req
 
 getForceForceVectorStream :: KRPCHS.SpaceCenter.Force -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -6893,7 +6893,7 @@ getForcePart thisArg = do
 
 getForcePartStreamReq :: KRPCHS.SpaceCenter.Force -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
 getForcePartStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Force_get_Part" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Force_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
 getForcePartStream :: KRPCHS.SpaceCenter.Force -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
@@ -6910,7 +6910,7 @@ getForcePosition thisArg = do
 
 getForcePositionStreamReq :: KRPCHS.SpaceCenter.Force -> KRPCStreamReq ((Double, Double, Double))
 getForcePositionStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Force_get_Position" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Force_get_Position" [makeArgument 0 thisArg]
     in  makeStream req
 
 getForcePositionStream :: KRPCHS.SpaceCenter.Force -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -6927,7 +6927,7 @@ getForceReferenceFrame thisArg = do
 
 getForceReferenceFrameStreamReq :: KRPCHS.SpaceCenter.Force -> KRPCStreamReq (KRPCHS.SpaceCenter.ReferenceFrame)
 getForceReferenceFrameStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Force_get_ReferenceFrame" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Force_get_ReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
 getForceReferenceFrameStream :: KRPCHS.SpaceCenter.Force -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
@@ -6971,7 +6971,7 @@ getIntakeArea thisArg = do
 
 getIntakeAreaStreamReq :: KRPCHS.SpaceCenter.Intake -> KRPCStreamReq (Float)
 getIntakeAreaStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Intake_get_Area" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Intake_get_Area" [makeArgument 0 thisArg]
     in  makeStream req
 
 getIntakeAreaStream :: KRPCHS.SpaceCenter.Intake -> RPCContext (KRPCStream (Float))
@@ -6988,7 +6988,7 @@ getIntakeFlow thisArg = do
 
 getIntakeFlowStreamReq :: KRPCHS.SpaceCenter.Intake -> KRPCStreamReq (Float)
 getIntakeFlowStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Intake_get_Flow" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Intake_get_Flow" [makeArgument 0 thisArg]
     in  makeStream req
 
 getIntakeFlowStream :: KRPCHS.SpaceCenter.Intake -> RPCContext (KRPCStream (Float))
@@ -7005,7 +7005,7 @@ getIntakeOpen thisArg = do
 
 getIntakeOpenStreamReq :: KRPCHS.SpaceCenter.Intake -> KRPCStreamReq (Bool)
 getIntakeOpenStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Intake_get_Open" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Intake_get_Open" [makeArgument 0 thisArg]
     in  makeStream req
 
 getIntakeOpenStream :: KRPCHS.SpaceCenter.Intake -> RPCContext (KRPCStream (Bool))
@@ -7022,7 +7022,7 @@ getIntakePart thisArg = do
 
 getIntakePartStreamReq :: KRPCHS.SpaceCenter.Intake -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
 getIntakePartStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Intake_get_Part" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Intake_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
 getIntakePartStream :: KRPCHS.SpaceCenter.Intake -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
@@ -7039,7 +7039,7 @@ getIntakeSpeed thisArg = do
 
 getIntakeSpeedStreamReq :: KRPCHS.SpaceCenter.Intake -> KRPCStreamReq (Float)
 getIntakeSpeedStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Intake_get_Speed" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Intake_get_Speed" [makeArgument 0 thisArg]
     in  makeStream req
 
 getIntakeSpeedStream :: KRPCHS.SpaceCenter.Intake -> RPCContext (KRPCStream (Float))
@@ -7065,7 +7065,7 @@ getLandingGearDeployable thisArg = do
 
 getLandingGearDeployableStreamReq :: KRPCHS.SpaceCenter.LandingGear -> KRPCStreamReq (Bool)
 getLandingGearDeployableStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "LandingGear_get_Deployable" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "LandingGear_get_Deployable" [makeArgument 0 thisArg]
     in  makeStream req
 
 getLandingGearDeployableStream :: KRPCHS.SpaceCenter.LandingGear -> RPCContext (KRPCStream (Bool))
@@ -7083,7 +7083,7 @@ getLandingGearDeployed thisArg = do
 
 getLandingGearDeployedStreamReq :: KRPCHS.SpaceCenter.LandingGear -> KRPCStreamReq (Bool)
 getLandingGearDeployedStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "LandingGear_get_Deployed" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "LandingGear_get_Deployed" [makeArgument 0 thisArg]
     in  makeStream req
 
 getLandingGearDeployedStream :: KRPCHS.SpaceCenter.LandingGear -> RPCContext (KRPCStream (Bool))
@@ -7100,7 +7100,7 @@ getLandingGearPart thisArg = do
 
 getLandingGearPartStreamReq :: KRPCHS.SpaceCenter.LandingGear -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
 getLandingGearPartStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "LandingGear_get_Part" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "LandingGear_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
 getLandingGearPartStream :: KRPCHS.SpaceCenter.LandingGear -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
@@ -7117,7 +7117,7 @@ getLandingGearState thisArg = do
 
 getLandingGearStateStreamReq :: KRPCHS.SpaceCenter.LandingGear -> KRPCStreamReq (KRPCHS.SpaceCenter.LandingGearState)
 getLandingGearStateStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "LandingGear_get_State" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "LandingGear_get_State" [makeArgument 0 thisArg]
     in  makeStream req
 
 getLandingGearStateStream :: KRPCHS.SpaceCenter.LandingGear -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.LandingGearState))
@@ -7145,7 +7145,7 @@ getLandingLegDeployed thisArg = do
 
 getLandingLegDeployedStreamReq :: KRPCHS.SpaceCenter.LandingLeg -> KRPCStreamReq (Bool)
 getLandingLegDeployedStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "LandingLeg_get_Deployed" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "LandingLeg_get_Deployed" [makeArgument 0 thisArg]
     in  makeStream req
 
 getLandingLegDeployedStream :: KRPCHS.SpaceCenter.LandingLeg -> RPCContext (KRPCStream (Bool))
@@ -7162,7 +7162,7 @@ getLandingLegPart thisArg = do
 
 getLandingLegPartStreamReq :: KRPCHS.SpaceCenter.LandingLeg -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
 getLandingLegPartStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "LandingLeg_get_Part" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "LandingLeg_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
 getLandingLegPartStream :: KRPCHS.SpaceCenter.LandingLeg -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
@@ -7179,7 +7179,7 @@ getLandingLegState thisArg = do
 
 getLandingLegStateStreamReq :: KRPCHS.SpaceCenter.LandingLeg -> KRPCStreamReq (KRPCHS.SpaceCenter.LandingLegState)
 getLandingLegStateStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "LandingLeg_get_State" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "LandingLeg_get_State" [makeArgument 0 thisArg]
     in  makeStream req
 
 getLandingLegStateStream :: KRPCHS.SpaceCenter.LandingLeg -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.LandingLegState))
@@ -7215,7 +7215,7 @@ getLaunchClampPart thisArg = do
 
 getLaunchClampPartStreamReq :: KRPCHS.SpaceCenter.LaunchClamp -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
 getLaunchClampPartStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "LaunchClamp_get_Part" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "LaunchClamp_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
 getLaunchClampPartStream :: KRPCHS.SpaceCenter.LaunchClamp -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
@@ -7259,7 +7259,7 @@ launchableVessels craftDirectoryArg = do
 
 launchableVesselsStreamReq :: Data.Text.Text -> KRPCStreamReq ([Data.Text.Text])
 launchableVesselsStreamReq craftDirectoryArg =
-    let req = makeRequest "SpaceCenter" "LaunchableVessels" [makeArgument 0 craftDirectoryArg]
+    let req = makeCallRequest "SpaceCenter" "LaunchableVessels" [makeArgument 0 craftDirectoryArg]
     in  makeStream req
 
 launchableVesselsStream :: Data.Text.Text -> RPCContext (KRPCStream ([Data.Text.Text]))
@@ -7276,7 +7276,7 @@ getLightActive thisArg = do
 
 getLightActiveStreamReq :: KRPCHS.SpaceCenter.Light -> KRPCStreamReq (Bool)
 getLightActiveStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Light_get_Active" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Light_get_Active" [makeArgument 0 thisArg]
     in  makeStream req
 
 getLightActiveStream :: KRPCHS.SpaceCenter.Light -> RPCContext (KRPCStream (Bool))
@@ -7293,7 +7293,7 @@ getLightColor thisArg = do
 
 getLightColorStreamReq :: KRPCHS.SpaceCenter.Light -> KRPCStreamReq ((Float, Float, Float))
 getLightColorStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Light_get_Color" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Light_get_Color" [makeArgument 0 thisArg]
     in  makeStream req
 
 getLightColorStream :: KRPCHS.SpaceCenter.Light -> RPCContext (KRPCStream ((Float, Float, Float)))
@@ -7310,7 +7310,7 @@ getLightPart thisArg = do
 
 getLightPartStreamReq :: KRPCHS.SpaceCenter.Light -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
 getLightPartStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Light_get_Part" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Light_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
 getLightPartStream :: KRPCHS.SpaceCenter.Light -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
@@ -7327,7 +7327,7 @@ getLightPowerUsage thisArg = do
 
 getLightPowerUsageStreamReq :: KRPCHS.SpaceCenter.Light -> KRPCStreamReq (Float)
 getLightPowerUsageStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Light_get_PowerUsage" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Light_get_PowerUsage" [makeArgument 0 thisArg]
     in  makeStream req
 
 getLightPowerUsageStream :: KRPCHS.SpaceCenter.Light -> RPCContext (KRPCStream (Float))
@@ -7372,7 +7372,7 @@ moduleGetField thisArg nameArg = do
 
 moduleGetFieldStreamReq :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> KRPCStreamReq (Data.Text.Text)
 moduleGetFieldStreamReq thisArg nameArg =
-    let req = makeRequest "SpaceCenter" "Module_GetField" [makeArgument 0 thisArg, makeArgument 1 nameArg]
+    let req = makeCallRequest "SpaceCenter" "Module_GetField" [makeArgument 0 thisArg, makeArgument 1 nameArg]
     in  makeStream req
 
 moduleGetFieldStream :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> RPCContext (KRPCStream (Data.Text.Text))
@@ -7389,7 +7389,7 @@ moduleHasAction thisArg nameArg = do
 
 moduleHasActionStreamReq :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> KRPCStreamReq (Bool)
 moduleHasActionStreamReq thisArg nameArg =
-    let req = makeRequest "SpaceCenter" "Module_HasAction" [makeArgument 0 thisArg, makeArgument 1 nameArg]
+    let req = makeCallRequest "SpaceCenter" "Module_HasAction" [makeArgument 0 thisArg, makeArgument 1 nameArg]
     in  makeStream req
 
 moduleHasActionStream :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> RPCContext (KRPCStream (Bool))
@@ -7406,7 +7406,7 @@ moduleHasEvent thisArg nameArg = do
 
 moduleHasEventStreamReq :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> KRPCStreamReq (Bool)
 moduleHasEventStreamReq thisArg nameArg =
-    let req = makeRequest "SpaceCenter" "Module_HasEvent" [makeArgument 0 thisArg, makeArgument 1 nameArg]
+    let req = makeCallRequest "SpaceCenter" "Module_HasEvent" [makeArgument 0 thisArg, makeArgument 1 nameArg]
     in  makeStream req
 
 moduleHasEventStream :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> RPCContext (KRPCStream (Bool))
@@ -7423,7 +7423,7 @@ moduleHasField thisArg nameArg = do
 
 moduleHasFieldStreamReq :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> KRPCStreamReq (Bool)
 moduleHasFieldStreamReq thisArg nameArg =
-    let req = makeRequest "SpaceCenter" "Module_HasField" [makeArgument 0 thisArg, makeArgument 1 nameArg]
+    let req = makeCallRequest "SpaceCenter" "Module_HasField" [makeArgument 0 thisArg, makeArgument 1 nameArg]
     in  makeStream req
 
 moduleHasFieldStream :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> RPCContext (KRPCStream (Bool))
@@ -7495,7 +7495,7 @@ getModuleActions thisArg = do
 
 getModuleActionsStreamReq :: KRPCHS.SpaceCenter.Module -> KRPCStreamReq ([Data.Text.Text])
 getModuleActionsStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Module_get_Actions" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Module_get_Actions" [makeArgument 0 thisArg]
     in  makeStream req
 
 getModuleActionsStream :: KRPCHS.SpaceCenter.Module -> RPCContext (KRPCStream ([Data.Text.Text]))
@@ -7513,7 +7513,7 @@ getModuleEvents thisArg = do
 
 getModuleEventsStreamReq :: KRPCHS.SpaceCenter.Module -> KRPCStreamReq ([Data.Text.Text])
 getModuleEventsStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Module_get_Events" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Module_get_Events" [makeArgument 0 thisArg]
     in  makeStream req
 
 getModuleEventsStream :: KRPCHS.SpaceCenter.Module -> RPCContext (KRPCStream ([Data.Text.Text]))
@@ -7531,7 +7531,7 @@ getModuleFields thisArg = do
 
 getModuleFieldsStreamReq :: KRPCHS.SpaceCenter.Module -> KRPCStreamReq (Data.Map.Map (Data.Text.Text) (Data.Text.Text))
 getModuleFieldsStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Module_get_Fields" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Module_get_Fields" [makeArgument 0 thisArg]
     in  makeStream req
 
 getModuleFieldsStream :: KRPCHS.SpaceCenter.Module -> RPCContext (KRPCStream (Data.Map.Map (Data.Text.Text) (Data.Text.Text)))
@@ -7548,7 +7548,7 @@ getModuleName thisArg = do
 
 getModuleNameStreamReq :: KRPCHS.SpaceCenter.Module -> KRPCStreamReq (Data.Text.Text)
 getModuleNameStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Module_get_Name" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Module_get_Name" [makeArgument 0 thisArg]
     in  makeStream req
 
 getModuleNameStream :: KRPCHS.SpaceCenter.Module -> RPCContext (KRPCStream (Data.Text.Text))
@@ -7565,7 +7565,7 @@ getModulePart thisArg = do
 
 getModulePartStreamReq :: KRPCHS.SpaceCenter.Module -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
 getModulePartStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Module_get_Part" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Module_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
 getModulePartStream :: KRPCHS.SpaceCenter.Module -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
@@ -7583,7 +7583,7 @@ nodeBurnVector thisArg referenceFrameArg = do
 
 nodeBurnVectorStreamReq :: KRPCHS.SpaceCenter.Node -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
 nodeBurnVectorStreamReq thisArg referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "Node_BurnVector" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "Node_BurnVector" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
 nodeBurnVectorStream :: KRPCHS.SpaceCenter.Node -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -7600,7 +7600,7 @@ nodeDirection thisArg referenceFrameArg = do
 
 nodeDirectionStreamReq :: KRPCHS.SpaceCenter.Node -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
 nodeDirectionStreamReq thisArg referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "Node_Direction" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "Node_Direction" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
 nodeDirectionStream :: KRPCHS.SpaceCenter.Node -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -7617,7 +7617,7 @@ nodePosition thisArg referenceFrameArg = do
 
 nodePositionStreamReq :: KRPCHS.SpaceCenter.Node -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
 nodePositionStreamReq thisArg referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "Node_Position" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "Node_Position" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
 nodePositionStream :: KRPCHS.SpaceCenter.Node -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -7635,7 +7635,7 @@ nodeRemainingBurnVector thisArg referenceFrameArg = do
 
 nodeRemainingBurnVectorStreamReq :: KRPCHS.SpaceCenter.Node -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
 nodeRemainingBurnVectorStreamReq thisArg referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "Node_RemainingBurnVector" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "Node_RemainingBurnVector" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
 nodeRemainingBurnVectorStream :: KRPCHS.SpaceCenter.Node -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -7661,7 +7661,7 @@ getNodeDeltaV thisArg = do
 
 getNodeDeltaVStreamReq :: KRPCHS.SpaceCenter.Node -> KRPCStreamReq (Float)
 getNodeDeltaVStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Node_get_DeltaV" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Node_get_DeltaV" [makeArgument 0 thisArg]
     in  makeStream req
 
 getNodeDeltaVStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (Float))
@@ -7678,7 +7678,7 @@ getNodeNormal thisArg = do
 
 getNodeNormalStreamReq :: KRPCHS.SpaceCenter.Node -> KRPCStreamReq (Float)
 getNodeNormalStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Node_get_Normal" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Node_get_Normal" [makeArgument 0 thisArg]
     in  makeStream req
 
 getNodeNormalStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (Float))
@@ -7695,7 +7695,7 @@ getNodeOrbit thisArg = do
 
 getNodeOrbitStreamReq :: KRPCHS.SpaceCenter.Node -> KRPCStreamReq (KRPCHS.SpaceCenter.Orbit)
 getNodeOrbitStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Node_get_Orbit" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Node_get_Orbit" [makeArgument 0 thisArg]
     in  makeStream req
 
 getNodeOrbitStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Orbit))
@@ -7718,7 +7718,7 @@ getNodeOrbitalReferenceFrame thisArg = do
 
 getNodeOrbitalReferenceFrameStreamReq :: KRPCHS.SpaceCenter.Node -> KRPCStreamReq (KRPCHS.SpaceCenter.ReferenceFrame)
 getNodeOrbitalReferenceFrameStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Node_get_OrbitalReferenceFrame" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Node_get_OrbitalReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
 getNodeOrbitalReferenceFrameStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
@@ -7735,7 +7735,7 @@ getNodePrograde thisArg = do
 
 getNodeProgradeStreamReq :: KRPCHS.SpaceCenter.Node -> KRPCStreamReq (Float)
 getNodeProgradeStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Node_get_Prograde" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Node_get_Prograde" [makeArgument 0 thisArg]
     in  makeStream req
 
 getNodeProgradeStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (Float))
@@ -7752,7 +7752,7 @@ getNodeRadial thisArg = do
 
 getNodeRadialStreamReq :: KRPCHS.SpaceCenter.Node -> KRPCStreamReq (Float)
 getNodeRadialStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Node_get_Radial" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Node_get_Radial" [makeArgument 0 thisArg]
     in  makeStream req
 
 getNodeRadialStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (Float))
@@ -7770,7 +7770,7 @@ getNodeReferenceFrame thisArg = do
 
 getNodeReferenceFrameStreamReq :: KRPCHS.SpaceCenter.Node -> KRPCStreamReq (KRPCHS.SpaceCenter.ReferenceFrame)
 getNodeReferenceFrameStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Node_get_ReferenceFrame" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Node_get_ReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
 getNodeReferenceFrameStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
@@ -7788,7 +7788,7 @@ getNodeRemainingDeltaV thisArg = do
 
 getNodeRemainingDeltaVStreamReq :: KRPCHS.SpaceCenter.Node -> KRPCStreamReq (Float)
 getNodeRemainingDeltaVStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Node_get_RemainingDeltaV" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Node_get_RemainingDeltaV" [makeArgument 0 thisArg]
     in  makeStream req
 
 getNodeRemainingDeltaVStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (Float))
@@ -7805,7 +7805,7 @@ getNodeTimeTo thisArg = do
 
 getNodeTimeToStreamReq :: KRPCHS.SpaceCenter.Node -> KRPCStreamReq (Double)
 getNodeTimeToStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Node_get_TimeTo" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Node_get_TimeTo" [makeArgument 0 thisArg]
     in  makeStream req
 
 getNodeTimeToStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (Double))
@@ -7822,7 +7822,7 @@ getNodeUT thisArg = do
 
 getNodeUTStreamReq :: KRPCHS.SpaceCenter.Node -> KRPCStreamReq (Double)
 getNodeUTStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Node_get_UT" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Node_get_UT" [makeArgument 0 thisArg]
     in  makeStream req
 
 getNodeUTStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (Double))
@@ -7884,7 +7884,7 @@ orbitEccentricAnomalyAtUT thisArg utArg = do
 
 orbitEccentricAnomalyAtUTStreamReq :: KRPCHS.SpaceCenter.Orbit -> Double -> KRPCStreamReq (Double)
 orbitEccentricAnomalyAtUTStreamReq thisArg utArg =
-    let req = makeRequest "SpaceCenter" "Orbit_EccentricAnomalyAtUT" [makeArgument 0 thisArg, makeArgument 1 utArg]
+    let req = makeCallRequest "SpaceCenter" "Orbit_EccentricAnomalyAtUT" [makeArgument 0 thisArg, makeArgument 1 utArg]
     in  makeStream req
 
 orbitEccentricAnomalyAtUTStream :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (KRPCStream (Double))
@@ -7901,7 +7901,7 @@ orbitOrbitalSpeedAt thisArg timeArg = do
 
 orbitOrbitalSpeedAtStreamReq :: KRPCHS.SpaceCenter.Orbit -> Double -> KRPCStreamReq (Double)
 orbitOrbitalSpeedAtStreamReq thisArg timeArg =
-    let req = makeRequest "SpaceCenter" "Orbit_OrbitalSpeedAt" [makeArgument 0 thisArg, makeArgument 1 timeArg]
+    let req = makeCallRequest "SpaceCenter" "Orbit_OrbitalSpeedAt" [makeArgument 0 thisArg, makeArgument 1 timeArg]
     in  makeStream req
 
 orbitOrbitalSpeedAtStream :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (KRPCStream (Double))
@@ -7918,7 +7918,7 @@ orbitRadiusAtTrueAnomaly thisArg trueAnomalyArg = do
 
 orbitRadiusAtTrueAnomalyStreamReq :: KRPCHS.SpaceCenter.Orbit -> Double -> KRPCStreamReq (Double)
 orbitRadiusAtTrueAnomalyStreamReq thisArg trueAnomalyArg =
-    let req = makeRequest "SpaceCenter" "Orbit_RadiusAtTrueAnomaly" [makeArgument 0 thisArg, makeArgument 1 trueAnomalyArg]
+    let req = makeCallRequest "SpaceCenter" "Orbit_RadiusAtTrueAnomaly" [makeArgument 0 thisArg, makeArgument 1 trueAnomalyArg]
     in  makeStream req
 
 orbitRadiusAtTrueAnomalyStream :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (KRPCStream (Double))
@@ -7935,7 +7935,7 @@ orbitTrueAnomalyAtRadius thisArg radiusArg = do
 
 orbitTrueAnomalyAtRadiusStreamReq :: KRPCHS.SpaceCenter.Orbit -> Double -> KRPCStreamReq (Double)
 orbitTrueAnomalyAtRadiusStreamReq thisArg radiusArg =
-    let req = makeRequest "SpaceCenter" "Orbit_TrueAnomalyAtRadius" [makeArgument 0 thisArg, makeArgument 1 radiusArg]
+    let req = makeCallRequest "SpaceCenter" "Orbit_TrueAnomalyAtRadius" [makeArgument 0 thisArg, makeArgument 1 radiusArg]
     in  makeStream req
 
 orbitTrueAnomalyAtRadiusStream :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (KRPCStream (Double))
@@ -7952,7 +7952,7 @@ orbitTrueAnomalyAtUT thisArg utArg = do
 
 orbitTrueAnomalyAtUTStreamReq :: KRPCHS.SpaceCenter.Orbit -> Double -> KRPCStreamReq (Double)
 orbitTrueAnomalyAtUTStreamReq thisArg utArg =
-    let req = makeRequest "SpaceCenter" "Orbit_TrueAnomalyAtUT" [makeArgument 0 thisArg, makeArgument 1 utArg]
+    let req = makeCallRequest "SpaceCenter" "Orbit_TrueAnomalyAtUT" [makeArgument 0 thisArg, makeArgument 1 utArg]
     in  makeStream req
 
 orbitTrueAnomalyAtUTStream :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (KRPCStream (Double))
@@ -7969,7 +7969,7 @@ orbitUTAtTrueAnomaly thisArg trueAnomalyArg = do
 
 orbitUTAtTrueAnomalyStreamReq :: KRPCHS.SpaceCenter.Orbit -> Double -> KRPCStreamReq (Double)
 orbitUTAtTrueAnomalyStreamReq thisArg trueAnomalyArg =
-    let req = makeRequest "SpaceCenter" "Orbit_UTAtTrueAnomaly" [makeArgument 0 thisArg, makeArgument 1 trueAnomalyArg]
+    let req = makeCallRequest "SpaceCenter" "Orbit_UTAtTrueAnomaly" [makeArgument 0 thisArg, makeArgument 1 trueAnomalyArg]
     in  makeStream req
 
 orbitUTAtTrueAnomalyStream :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (KRPCStream (Double))
@@ -7986,7 +7986,7 @@ getOrbitApoapsis thisArg = do
 
 getOrbitApoapsisStreamReq :: KRPCHS.SpaceCenter.Orbit -> KRPCStreamReq (Double)
 getOrbitApoapsisStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Orbit_get_Apoapsis" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Orbit_get_Apoapsis" [makeArgument 0 thisArg]
     in  makeStream req
 
 getOrbitApoapsisStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
@@ -8003,7 +8003,7 @@ getOrbitApoapsisAltitude thisArg = do
 
 getOrbitApoapsisAltitudeStreamReq :: KRPCHS.SpaceCenter.Orbit -> KRPCStreamReq (Double)
 getOrbitApoapsisAltitudeStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Orbit_get_ApoapsisAltitude" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Orbit_get_ApoapsisAltitude" [makeArgument 0 thisArg]
     in  makeStream req
 
 getOrbitApoapsisAltitudeStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
@@ -8020,7 +8020,7 @@ getOrbitArgumentOfPeriapsis thisArg = do
 
 getOrbitArgumentOfPeriapsisStreamReq :: KRPCHS.SpaceCenter.Orbit -> KRPCStreamReq (Double)
 getOrbitArgumentOfPeriapsisStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Orbit_get_ArgumentOfPeriapsis" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Orbit_get_ArgumentOfPeriapsis" [makeArgument 0 thisArg]
     in  makeStream req
 
 getOrbitArgumentOfPeriapsisStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
@@ -8037,7 +8037,7 @@ getOrbitBody thisArg = do
 
 getOrbitBodyStreamReq :: KRPCHS.SpaceCenter.Orbit -> KRPCStreamReq (KRPCHS.SpaceCenter.CelestialBody)
 getOrbitBodyStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Orbit_get_Body" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Orbit_get_Body" [makeArgument 0 thisArg]
     in  makeStream req
 
 getOrbitBodyStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.CelestialBody))
@@ -8054,7 +8054,7 @@ getOrbitEccentricAnomaly thisArg = do
 
 getOrbitEccentricAnomalyStreamReq :: KRPCHS.SpaceCenter.Orbit -> KRPCStreamReq (Double)
 getOrbitEccentricAnomalyStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Orbit_get_EccentricAnomaly" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Orbit_get_EccentricAnomaly" [makeArgument 0 thisArg]
     in  makeStream req
 
 getOrbitEccentricAnomalyStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
@@ -8071,7 +8071,7 @@ getOrbitEccentricity thisArg = do
 
 getOrbitEccentricityStreamReq :: KRPCHS.SpaceCenter.Orbit -> KRPCStreamReq (Double)
 getOrbitEccentricityStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Orbit_get_Eccentricity" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Orbit_get_Eccentricity" [makeArgument 0 thisArg]
     in  makeStream req
 
 getOrbitEccentricityStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
@@ -8089,7 +8089,7 @@ getOrbitEpoch thisArg = do
 
 getOrbitEpochStreamReq :: KRPCHS.SpaceCenter.Orbit -> KRPCStreamReq (Double)
 getOrbitEpochStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Orbit_get_Epoch" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Orbit_get_Epoch" [makeArgument 0 thisArg]
     in  makeStream req
 
 getOrbitEpochStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
@@ -8107,7 +8107,7 @@ getOrbitInclination thisArg = do
 
 getOrbitInclinationStreamReq :: KRPCHS.SpaceCenter.Orbit -> KRPCStreamReq (Double)
 getOrbitInclinationStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Orbit_get_Inclination" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Orbit_get_Inclination" [makeArgument 0 thisArg]
     in  makeStream req
 
 getOrbitInclinationStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
@@ -8125,7 +8125,7 @@ getOrbitLongitudeOfAscendingNode thisArg = do
 
 getOrbitLongitudeOfAscendingNodeStreamReq :: KRPCHS.SpaceCenter.Orbit -> KRPCStreamReq (Double)
 getOrbitLongitudeOfAscendingNodeStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Orbit_get_LongitudeOfAscendingNode" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Orbit_get_LongitudeOfAscendingNode" [makeArgument 0 thisArg]
     in  makeStream req
 
 getOrbitLongitudeOfAscendingNodeStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
@@ -8142,7 +8142,7 @@ getOrbitMeanAnomaly thisArg = do
 
 getOrbitMeanAnomalyStreamReq :: KRPCHS.SpaceCenter.Orbit -> KRPCStreamReq (Double)
 getOrbitMeanAnomalyStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Orbit_get_MeanAnomaly" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Orbit_get_MeanAnomaly" [makeArgument 0 thisArg]
     in  makeStream req
 
 getOrbitMeanAnomalyStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
@@ -8159,7 +8159,7 @@ getOrbitMeanAnomalyAtEpoch thisArg = do
 
 getOrbitMeanAnomalyAtEpochStreamReq :: KRPCHS.SpaceCenter.Orbit -> KRPCStreamReq (Double)
 getOrbitMeanAnomalyAtEpochStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Orbit_get_MeanAnomalyAtEpoch" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Orbit_get_MeanAnomalyAtEpoch" [makeArgument 0 thisArg]
     in  makeStream req
 
 getOrbitMeanAnomalyAtEpochStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
@@ -8177,7 +8177,7 @@ getOrbitNextOrbit thisArg = do
 
 getOrbitNextOrbitStreamReq :: KRPCHS.SpaceCenter.Orbit -> KRPCStreamReq (KRPCHS.SpaceCenter.Orbit)
 getOrbitNextOrbitStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Orbit_get_NextOrbit" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Orbit_get_NextOrbit" [makeArgument 0 thisArg]
     in  makeStream req
 
 getOrbitNextOrbitStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Orbit))
@@ -8194,7 +8194,7 @@ getOrbitOrbitalSpeed thisArg = do
 
 getOrbitOrbitalSpeedStreamReq :: KRPCHS.SpaceCenter.Orbit -> KRPCStreamReq (Double)
 getOrbitOrbitalSpeedStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Orbit_get_OrbitalSpeed" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Orbit_get_OrbitalSpeed" [makeArgument 0 thisArg]
     in  makeStream req
 
 getOrbitOrbitalSpeedStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
@@ -8211,7 +8211,7 @@ getOrbitPeriapsis thisArg = do
 
 getOrbitPeriapsisStreamReq :: KRPCHS.SpaceCenter.Orbit -> KRPCStreamReq (Double)
 getOrbitPeriapsisStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Orbit_get_Periapsis" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Orbit_get_Periapsis" [makeArgument 0 thisArg]
     in  makeStream req
 
 getOrbitPeriapsisStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
@@ -8228,7 +8228,7 @@ getOrbitPeriapsisAltitude thisArg = do
 
 getOrbitPeriapsisAltitudeStreamReq :: KRPCHS.SpaceCenter.Orbit -> KRPCStreamReq (Double)
 getOrbitPeriapsisAltitudeStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Orbit_get_PeriapsisAltitude" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Orbit_get_PeriapsisAltitude" [makeArgument 0 thisArg]
     in  makeStream req
 
 getOrbitPeriapsisAltitudeStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
@@ -8245,7 +8245,7 @@ getOrbitPeriod thisArg = do
 
 getOrbitPeriodStreamReq :: KRPCHS.SpaceCenter.Orbit -> KRPCStreamReq (Double)
 getOrbitPeriodStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Orbit_get_Period" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Orbit_get_Period" [makeArgument 0 thisArg]
     in  makeStream req
 
 getOrbitPeriodStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
@@ -8263,7 +8263,7 @@ getOrbitRadius thisArg = do
 
 getOrbitRadiusStreamReq :: KRPCHS.SpaceCenter.Orbit -> KRPCStreamReq (Double)
 getOrbitRadiusStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Orbit_get_Radius" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Orbit_get_Radius" [makeArgument 0 thisArg]
     in  makeStream req
 
 getOrbitRadiusStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
@@ -8280,7 +8280,7 @@ getOrbitSemiMajorAxis thisArg = do
 
 getOrbitSemiMajorAxisStreamReq :: KRPCHS.SpaceCenter.Orbit -> KRPCStreamReq (Double)
 getOrbitSemiMajorAxisStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Orbit_get_SemiMajorAxis" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Orbit_get_SemiMajorAxis" [makeArgument 0 thisArg]
     in  makeStream req
 
 getOrbitSemiMajorAxisStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
@@ -8297,7 +8297,7 @@ getOrbitSemiMinorAxis thisArg = do
 
 getOrbitSemiMinorAxisStreamReq :: KRPCHS.SpaceCenter.Orbit -> KRPCStreamReq (Double)
 getOrbitSemiMinorAxisStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Orbit_get_SemiMinorAxis" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Orbit_get_SemiMinorAxis" [makeArgument 0 thisArg]
     in  makeStream req
 
 getOrbitSemiMinorAxisStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
@@ -8314,7 +8314,7 @@ getOrbitSpeed thisArg = do
 
 getOrbitSpeedStreamReq :: KRPCHS.SpaceCenter.Orbit -> KRPCStreamReq (Double)
 getOrbitSpeedStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Orbit_get_Speed" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Orbit_get_Speed" [makeArgument 0 thisArg]
     in  makeStream req
 
 getOrbitSpeedStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
@@ -8331,7 +8331,7 @@ getOrbitTimeToApoapsis thisArg = do
 
 getOrbitTimeToApoapsisStreamReq :: KRPCHS.SpaceCenter.Orbit -> KRPCStreamReq (Double)
 getOrbitTimeToApoapsisStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Orbit_get_TimeToApoapsis" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Orbit_get_TimeToApoapsis" [makeArgument 0 thisArg]
     in  makeStream req
 
 getOrbitTimeToApoapsisStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
@@ -8348,7 +8348,7 @@ getOrbitTimeToPeriapsis thisArg = do
 
 getOrbitTimeToPeriapsisStreamReq :: KRPCHS.SpaceCenter.Orbit -> KRPCStreamReq (Double)
 getOrbitTimeToPeriapsisStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Orbit_get_TimeToPeriapsis" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Orbit_get_TimeToPeriapsis" [makeArgument 0 thisArg]
     in  makeStream req
 
 getOrbitTimeToPeriapsisStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
@@ -8366,7 +8366,7 @@ getOrbitTimeToSOIChange thisArg = do
 
 getOrbitTimeToSOIChangeStreamReq :: KRPCHS.SpaceCenter.Orbit -> KRPCStreamReq (Double)
 getOrbitTimeToSOIChangeStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Orbit_get_TimeToSOIChange" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Orbit_get_TimeToSOIChange" [makeArgument 0 thisArg]
     in  makeStream req
 
 getOrbitTimeToSOIChangeStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
@@ -8383,7 +8383,7 @@ getOrbitTrueAnomaly thisArg = do
 
 getOrbitTrueAnomalyStreamReq :: KRPCHS.SpaceCenter.Orbit -> KRPCStreamReq (Double)
 getOrbitTrueAnomalyStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Orbit_get_TrueAnomaly" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Orbit_get_TrueAnomaly" [makeArgument 0 thisArg]
     in  makeStream req
 
 getOrbitTrueAnomalyStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
@@ -8401,7 +8401,7 @@ orbitStaticReferencePlaneDirection referenceFrameArg = do
 
 orbitStaticReferencePlaneDirectionStreamReq :: KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
 orbitStaticReferencePlaneDirectionStreamReq referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "Orbit_static_ReferencePlaneDirection" [makeArgument 0 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "Orbit_static_ReferencePlaneDirection" [makeArgument 0 referenceFrameArg]
     in  makeStream req
 
 orbitStaticReferencePlaneDirectionStream :: KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -8419,7 +8419,7 @@ orbitStaticReferencePlaneNormal referenceFrameArg = do
 
 orbitStaticReferencePlaneNormalStreamReq :: KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
 orbitStaticReferencePlaneNormalStreamReq referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "Orbit_static_ReferencePlaneNormal" [makeArgument 0 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "Orbit_static_ReferencePlaneNormal" [makeArgument 0 referenceFrameArg]
     in  makeStream req
 
 orbitStaticReferencePlaneNormalStream :: KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -8446,7 +8446,7 @@ getParachuteDeployAltitude thisArg = do
 
 getParachuteDeployAltitudeStreamReq :: KRPCHS.SpaceCenter.Parachute -> KRPCStreamReq (Float)
 getParachuteDeployAltitudeStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Parachute_get_DeployAltitude" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Parachute_get_DeployAltitude" [makeArgument 0 thisArg]
     in  makeStream req
 
 getParachuteDeployAltitudeStream :: KRPCHS.SpaceCenter.Parachute -> RPCContext (KRPCStream (Float))
@@ -8463,7 +8463,7 @@ getParachuteDeployMinPressure thisArg = do
 
 getParachuteDeployMinPressureStreamReq :: KRPCHS.SpaceCenter.Parachute -> KRPCStreamReq (Float)
 getParachuteDeployMinPressureStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Parachute_get_DeployMinPressure" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Parachute_get_DeployMinPressure" [makeArgument 0 thisArg]
     in  makeStream req
 
 getParachuteDeployMinPressureStream :: KRPCHS.SpaceCenter.Parachute -> RPCContext (KRPCStream (Float))
@@ -8480,7 +8480,7 @@ getParachuteDeployed thisArg = do
 
 getParachuteDeployedStreamReq :: KRPCHS.SpaceCenter.Parachute -> KRPCStreamReq (Bool)
 getParachuteDeployedStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Parachute_get_Deployed" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Parachute_get_Deployed" [makeArgument 0 thisArg]
     in  makeStream req
 
 getParachuteDeployedStream :: KRPCHS.SpaceCenter.Parachute -> RPCContext (KRPCStream (Bool))
@@ -8497,7 +8497,7 @@ getParachutePart thisArg = do
 
 getParachutePartStreamReq :: KRPCHS.SpaceCenter.Parachute -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
 getParachutePartStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Parachute_get_Part" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Parachute_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
 getParachutePartStream :: KRPCHS.SpaceCenter.Parachute -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
@@ -8514,7 +8514,7 @@ getParachuteState thisArg = do
 
 getParachuteStateStreamReq :: KRPCHS.SpaceCenter.Parachute -> KRPCStreamReq (KRPCHS.SpaceCenter.ParachuteState)
 getParachuteStateStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Parachute_get_State" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Parachute_get_State" [makeArgument 0 thisArg]
     in  makeStream req
 
 getParachuteStateStream :: KRPCHS.SpaceCenter.Parachute -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ParachuteState))
@@ -8550,7 +8550,7 @@ partAddForce thisArg forceArg positionArg referenceFrameArg = do
 
 partAddForceStreamReq :: KRPCHS.SpaceCenter.Part -> (Double, Double, Double) -> (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq (KRPCHS.SpaceCenter.Force)
 partAddForceStreamReq thisArg forceArg positionArg referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "Part_AddForce" [makeArgument 0 thisArg, makeArgument 1 forceArg, makeArgument 2 positionArg, makeArgument 3 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "Part_AddForce" [makeArgument 0 thisArg, makeArgument 1 forceArg, makeArgument 2 positionArg, makeArgument 3 referenceFrameArg]
     in  makeStream req
 
 partAddForceStream :: KRPCHS.SpaceCenter.Part -> (Double, Double, Double) -> (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Force))
@@ -8568,7 +8568,7 @@ partCenterOfMass thisArg referenceFrameArg = do
 
 partCenterOfMassStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
 partCenterOfMassStreamReq thisArg referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "Part_CenterOfMass" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "Part_CenterOfMass" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
 partCenterOfMassStream :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -8585,7 +8585,7 @@ partDirection thisArg referenceFrameArg = do
 
 partDirectionStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
 partDirectionStreamReq thisArg referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "Part_Direction" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "Part_Direction" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
 partDirectionStream :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -8613,7 +8613,7 @@ partPosition thisArg referenceFrameArg = do
 
 partPositionStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
 partPositionStreamReq thisArg referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "Part_Position" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "Part_Position" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
 partPositionStream :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -8630,7 +8630,7 @@ partRotation thisArg referenceFrameArg = do
 
 partRotationStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double, Double))
 partRotationStreamReq thisArg referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "Part_Rotation" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "Part_Rotation" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
 partRotationStream :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double, Double)))
@@ -8647,7 +8647,7 @@ partVelocity thisArg referenceFrameArg = do
 
 partVelocityStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
 partVelocityStreamReq thisArg referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "Part_Velocity" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "Part_Velocity" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
 partVelocityStream :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -8665,7 +8665,7 @@ getPartAxiallyAttached thisArg = do
 
 getPartAxiallyAttachedStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (Bool)
 getPartAxiallyAttachedStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_AxiallyAttached" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_AxiallyAttached" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartAxiallyAttachedStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Bool))
@@ -8682,7 +8682,7 @@ getPartCargoBay thisArg = do
 
 getPartCargoBayStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (KRPCHS.SpaceCenter.CargoBay)
 getPartCargoBayStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_CargoBay" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_CargoBay" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartCargoBayStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.CargoBay))
@@ -8701,7 +8701,7 @@ getPartCenterOfMassReferenceFrame thisArg = do
 
 getPartCenterOfMassReferenceFrameStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (KRPCHS.SpaceCenter.ReferenceFrame)
 getPartCenterOfMassReferenceFrameStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_CenterOfMassReferenceFrame" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_CenterOfMassReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartCenterOfMassReferenceFrameStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
@@ -8719,7 +8719,7 @@ getPartChildren thisArg = do
 
 getPartChildrenStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq ([KRPCHS.SpaceCenter.Part])
 getPartChildrenStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_Children" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_Children" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartChildrenStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
@@ -8736,7 +8736,7 @@ getPartControlSurface thisArg = do
 
 getPartControlSurfaceStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (KRPCHS.SpaceCenter.ControlSurface)
 getPartControlSurfaceStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_ControlSurface" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_ControlSurface" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartControlSurfaceStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ControlSurface))
@@ -8753,7 +8753,7 @@ getPartCost thisArg = do
 
 getPartCostStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (Double)
 getPartCostStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_Cost" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_Cost" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartCostStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Double))
@@ -8770,7 +8770,7 @@ getPartCrossfeed thisArg = do
 
 getPartCrossfeedStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (Bool)
 getPartCrossfeedStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_Crossfeed" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_Crossfeed" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartCrossfeedStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Bool))
@@ -8787,7 +8787,7 @@ getPartDecoupleStage thisArg = do
 
 getPartDecoupleStageStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (Data.Int.Int32)
 getPartDecoupleStageStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_DecoupleStage" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_DecoupleStage" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartDecoupleStageStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Data.Int.Int32))
@@ -8804,7 +8804,7 @@ getPartDecoupler thisArg = do
 
 getPartDecouplerStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (KRPCHS.SpaceCenter.Decoupler)
 getPartDecouplerStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_Decoupler" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_Decoupler" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartDecouplerStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Decoupler))
@@ -8821,7 +8821,7 @@ getPartDockingPort thisArg = do
 
 getPartDockingPortStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (KRPCHS.SpaceCenter.DockingPort)
 getPartDockingPortStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_DockingPort" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_DockingPort" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartDockingPortStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.DockingPort))
@@ -8838,7 +8838,7 @@ getPartDryMass thisArg = do
 
 getPartDryMassStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (Double)
 getPartDryMassStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_DryMass" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_DryMass" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartDryMassStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Double))
@@ -8855,7 +8855,7 @@ getPartDynamicPressure thisArg = do
 
 getPartDynamicPressureStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (Float)
 getPartDynamicPressureStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_DynamicPressure" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_DynamicPressure" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartDynamicPressureStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Float))
@@ -8872,7 +8872,7 @@ getPartEngine thisArg = do
 
 getPartEngineStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (KRPCHS.SpaceCenter.Engine)
 getPartEngineStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_Engine" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_Engine" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartEngineStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Engine))
@@ -8889,7 +8889,7 @@ getPartExperiment thisArg = do
 
 getPartExperimentStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (KRPCHS.SpaceCenter.Experiment)
 getPartExperimentStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_Experiment" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_Experiment" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartExperimentStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Experiment))
@@ -8906,7 +8906,7 @@ getPartFairing thisArg = do
 
 getPartFairingStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (KRPCHS.SpaceCenter.Fairing)
 getPartFairingStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_Fairing" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_Fairing" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartFairingStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Fairing))
@@ -8923,7 +8923,7 @@ getPartFuelLinesFrom thisArg = do
 
 getPartFuelLinesFromStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq ([KRPCHS.SpaceCenter.Part])
 getPartFuelLinesFromStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_FuelLinesFrom" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_FuelLinesFrom" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartFuelLinesFromStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
@@ -8940,7 +8940,7 @@ getPartFuelLinesTo thisArg = do
 
 getPartFuelLinesToStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq ([KRPCHS.SpaceCenter.Part])
 getPartFuelLinesToStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_FuelLinesTo" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_FuelLinesTo" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartFuelLinesToStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
@@ -8957,7 +8957,7 @@ getPartImpactTolerance thisArg = do
 
 getPartImpactToleranceStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (Double)
 getPartImpactToleranceStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_ImpactTolerance" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_ImpactTolerance" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartImpactToleranceStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Double))
@@ -8975,7 +8975,7 @@ getPartInertiaTensor thisArg = do
 
 getPartInertiaTensorStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq ([Double])
 getPartInertiaTensorStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_InertiaTensor" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_InertiaTensor" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartInertiaTensorStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream ([Double]))
@@ -8994,7 +8994,7 @@ getPartIntake thisArg = do
 
 getPartIntakeStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (KRPCHS.SpaceCenter.Intake)
 getPartIntakeStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_Intake" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_Intake" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartIntakeStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Intake))
@@ -9011,7 +9011,7 @@ getPartIsFuelLine thisArg = do
 
 getPartIsFuelLineStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (Bool)
 getPartIsFuelLineStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_IsFuelLine" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_IsFuelLine" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartIsFuelLineStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Bool))
@@ -9028,7 +9028,7 @@ getPartLandingGear thisArg = do
 
 getPartLandingGearStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (KRPCHS.SpaceCenter.LandingGear)
 getPartLandingGearStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_LandingGear" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_LandingGear" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartLandingGearStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.LandingGear))
@@ -9045,7 +9045,7 @@ getPartLandingLeg thisArg = do
 
 getPartLandingLegStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (KRPCHS.SpaceCenter.LandingLeg)
 getPartLandingLegStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_LandingLeg" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_LandingLeg" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartLandingLegStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.LandingLeg))
@@ -9062,7 +9062,7 @@ getPartLaunchClamp thisArg = do
 
 getPartLaunchClampStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (KRPCHS.SpaceCenter.LaunchClamp)
 getPartLaunchClampStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_LaunchClamp" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_LaunchClamp" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartLaunchClampStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.LaunchClamp))
@@ -9079,7 +9079,7 @@ getPartLight thisArg = do
 
 getPartLightStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (KRPCHS.SpaceCenter.Light)
 getPartLightStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_Light" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_Light" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartLightStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Light))
@@ -9097,7 +9097,7 @@ getPartMass thisArg = do
 
 getPartMassStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (Double)
 getPartMassStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_Mass" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_Mass" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartMassStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Double))
@@ -9114,7 +9114,7 @@ getPartMassless thisArg = do
 
 getPartMasslessStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (Bool)
 getPartMasslessStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_Massless" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_Massless" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartMasslessStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Bool))
@@ -9131,7 +9131,7 @@ getPartMaxSkinTemperature thisArg = do
 
 getPartMaxSkinTemperatureStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (Double)
 getPartMaxSkinTemperatureStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_MaxSkinTemperature" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_MaxSkinTemperature" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartMaxSkinTemperatureStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Double))
@@ -9148,7 +9148,7 @@ getPartMaxTemperature thisArg = do
 
 getPartMaxTemperatureStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (Double)
 getPartMaxTemperatureStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_MaxTemperature" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_MaxTemperature" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartMaxTemperatureStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Double))
@@ -9165,7 +9165,7 @@ getPartModules thisArg = do
 
 getPartModulesStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq ([KRPCHS.SpaceCenter.Module])
 getPartModulesStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_Modules" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_Modules" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartModulesStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Module]))
@@ -9183,7 +9183,7 @@ getPartMomentOfInertia thisArg = do
 
 getPartMomentOfInertiaStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq ((Double, Double, Double))
 getPartMomentOfInertiaStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_MomentOfInertia" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_MomentOfInertia" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartMomentOfInertiaStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -9202,7 +9202,7 @@ getPartName thisArg = do
 
 getPartNameStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (Data.Text.Text)
 getPartNameStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_Name" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_Name" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartNameStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Data.Text.Text))
@@ -9219,7 +9219,7 @@ getPartParachute thisArg = do
 
 getPartParachuteStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (KRPCHS.SpaceCenter.Parachute)
 getPartParachuteStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_Parachute" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_Parachute" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartParachuteStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Parachute))
@@ -9237,7 +9237,7 @@ getPartParent thisArg = do
 
 getPartParentStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
 getPartParentStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_Parent" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_Parent" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartParentStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
@@ -9254,7 +9254,7 @@ getPartRCS thisArg = do
 
 getPartRCSStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (KRPCHS.SpaceCenter.RCS)
 getPartRCSStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_RCS" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_RCS" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartRCSStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.RCS))
@@ -9272,7 +9272,7 @@ getPartRadiallyAttached thisArg = do
 
 getPartRadiallyAttachedStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (Bool)
 getPartRadiallyAttachedStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_RadiallyAttached" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_RadiallyAttached" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartRadiallyAttachedStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Bool))
@@ -9289,7 +9289,7 @@ getPartRadiator thisArg = do
 
 getPartRadiatorStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (KRPCHS.SpaceCenter.Radiator)
 getPartRadiatorStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_Radiator" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_Radiator" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartRadiatorStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Radiator))
@@ -9306,7 +9306,7 @@ getPartReactionWheel thisArg = do
 
 getPartReactionWheelStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (KRPCHS.SpaceCenter.ReactionWheel)
 getPartReactionWheelStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_ReactionWheel" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_ReactionWheel" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartReactionWheelStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReactionWheel))
@@ -9325,7 +9325,7 @@ getPartReferenceFrame thisArg = do
 
 getPartReferenceFrameStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (KRPCHS.SpaceCenter.ReferenceFrame)
 getPartReferenceFrameStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_ReferenceFrame" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_ReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartReferenceFrameStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
@@ -9342,7 +9342,7 @@ getPartResourceConverter thisArg = do
 
 getPartResourceConverterStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (KRPCHS.SpaceCenter.ResourceConverter)
 getPartResourceConverterStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_ResourceConverter" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_ResourceConverter" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartResourceConverterStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ResourceConverter))
@@ -9359,7 +9359,7 @@ getPartResourceHarvester thisArg = do
 
 getPartResourceHarvesterStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (KRPCHS.SpaceCenter.ResourceHarvester)
 getPartResourceHarvesterStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_ResourceHarvester" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_ResourceHarvester" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartResourceHarvesterStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ResourceHarvester))
@@ -9376,7 +9376,7 @@ getPartResources thisArg = do
 
 getPartResourcesStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (KRPCHS.SpaceCenter.Resources)
 getPartResourcesStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_Resources" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_Resources" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartResourcesStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Resources))
@@ -9393,7 +9393,7 @@ getPartSensor thisArg = do
 
 getPartSensorStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (KRPCHS.SpaceCenter.Sensor)
 getPartSensorStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_Sensor" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_Sensor" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartSensorStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Sensor))
@@ -9410,7 +9410,7 @@ getPartShielded thisArg = do
 
 getPartShieldedStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (Bool)
 getPartShieldedStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_Shielded" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_Shielded" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartShieldedStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Bool))
@@ -9427,7 +9427,7 @@ getPartSkinTemperature thisArg = do
 
 getPartSkinTemperatureStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (Double)
 getPartSkinTemperatureStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_SkinTemperature" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_SkinTemperature" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartSkinTemperatureStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Double))
@@ -9444,7 +9444,7 @@ getPartSolarPanel thisArg = do
 
 getPartSolarPanelStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (KRPCHS.SpaceCenter.SolarPanel)
 getPartSolarPanelStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_SolarPanel" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_SolarPanel" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartSolarPanelStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.SolarPanel))
@@ -9461,7 +9461,7 @@ getPartStage thisArg = do
 
 getPartStageStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (Data.Int.Int32)
 getPartStageStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_Stage" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_Stage" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartStageStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Data.Int.Int32))
@@ -9479,7 +9479,7 @@ getPartTag thisArg = do
 
 getPartTagStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (Data.Text.Text)
 getPartTagStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_Tag" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_Tag" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartTagStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Data.Text.Text))
@@ -9496,7 +9496,7 @@ getPartTemperature thisArg = do
 
 getPartTemperatureStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (Double)
 getPartTemperatureStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_Temperature" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_Temperature" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartTemperatureStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Double))
@@ -9515,7 +9515,7 @@ getPartThermalConductionFlux thisArg = do
 
 getPartThermalConductionFluxStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (Float)
 getPartThermalConductionFluxStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_ThermalConductionFlux" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_ThermalConductionFlux" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartThermalConductionFluxStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Float))
@@ -9534,7 +9534,7 @@ getPartThermalConvectionFlux thisArg = do
 
 getPartThermalConvectionFluxStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (Float)
 getPartThermalConvectionFluxStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_ThermalConvectionFlux" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_ThermalConvectionFlux" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartThermalConvectionFluxStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Float))
@@ -9554,7 +9554,7 @@ getPartThermalInternalFlux thisArg = do
 
 getPartThermalInternalFluxStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (Float)
 getPartThermalInternalFluxStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_ThermalInternalFlux" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_ThermalInternalFlux" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartThermalInternalFluxStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Float))
@@ -9571,7 +9571,7 @@ getPartThermalMass thisArg = do
 
 getPartThermalMassStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (Float)
 getPartThermalMassStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_ThermalMass" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_ThermalMass" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartThermalMassStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Float))
@@ -9590,7 +9590,7 @@ getPartThermalRadiationFlux thisArg = do
 
 getPartThermalRadiationFluxStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (Float)
 getPartThermalRadiationFluxStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_ThermalRadiationFlux" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_ThermalRadiationFlux" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartThermalRadiationFluxStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Float))
@@ -9607,7 +9607,7 @@ getPartThermalResourceMass thisArg = do
 
 getPartThermalResourceMassStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (Float)
 getPartThermalResourceMassStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_ThermalResourceMass" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_ThermalResourceMass" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartThermalResourceMassStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Float))
@@ -9624,7 +9624,7 @@ getPartThermalSkinMass thisArg = do
 
 getPartThermalSkinMassStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (Float)
 getPartThermalSkinMassStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_ThermalSkinMass" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_ThermalSkinMass" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartThermalSkinMassStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Float))
@@ -9644,7 +9644,7 @@ getPartThermalSkinToInternalFlux thisArg = do
 
 getPartThermalSkinToInternalFluxStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (Float)
 getPartThermalSkinToInternalFluxStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_ThermalSkinToInternalFlux" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_ThermalSkinToInternalFlux" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartThermalSkinToInternalFluxStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Float))
@@ -9661,7 +9661,7 @@ getPartTitle thisArg = do
 
 getPartTitleStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (Data.Text.Text)
 getPartTitleStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_Title" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_Title" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartTitleStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Data.Text.Text))
@@ -9678,7 +9678,7 @@ getPartVessel thisArg = do
 
 getPartVesselStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (KRPCHS.SpaceCenter.Vessel)
 getPartVesselStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_Vessel" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Part_get_Vessel" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartVesselStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Vessel))
@@ -9705,7 +9705,7 @@ partsInDecoupleStage thisArg stageArg = do
 
 partsInDecoupleStageStreamReq :: KRPCHS.SpaceCenter.Parts -> Data.Int.Int32 -> KRPCStreamReq ([KRPCHS.SpaceCenter.Part])
 partsInDecoupleStageStreamReq thisArg stageArg =
-    let req = makeRequest "SpaceCenter" "Parts_InDecoupleStage" [makeArgument 0 thisArg, makeArgument 1 stageArg]
+    let req = makeCallRequest "SpaceCenter" "Parts_InDecoupleStage" [makeArgument 0 thisArg, makeArgument 1 stageArg]
     in  makeStream req
 
 partsInDecoupleStageStream :: KRPCHS.SpaceCenter.Parts -> Data.Int.Int32 -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
@@ -9722,7 +9722,7 @@ partsInStage thisArg stageArg = do
 
 partsInStageStreamReq :: KRPCHS.SpaceCenter.Parts -> Data.Int.Int32 -> KRPCStreamReq ([KRPCHS.SpaceCenter.Part])
 partsInStageStreamReq thisArg stageArg =
-    let req = makeRequest "SpaceCenter" "Parts_InStage" [makeArgument 0 thisArg, makeArgument 1 stageArg]
+    let req = makeCallRequest "SpaceCenter" "Parts_InStage" [makeArgument 0 thisArg, makeArgument 1 stageArg]
     in  makeStream req
 
 partsInStageStream :: KRPCHS.SpaceCenter.Parts -> Data.Int.Int32 -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
@@ -9740,7 +9740,7 @@ partsModulesWithName thisArg moduleNameArg = do
 
 partsModulesWithNameStreamReq :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> KRPCStreamReq ([KRPCHS.SpaceCenter.Module])
 partsModulesWithNameStreamReq thisArg moduleNameArg =
-    let req = makeRequest "SpaceCenter" "Parts_ModulesWithName" [makeArgument 0 thisArg, makeArgument 1 moduleNameArg]
+    let req = makeCallRequest "SpaceCenter" "Parts_ModulesWithName" [makeArgument 0 thisArg, makeArgument 1 moduleNameArg]
     in  makeStream req
 
 partsModulesWithNameStream :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Module]))
@@ -9758,7 +9758,7 @@ partsWithModule thisArg moduleNameArg = do
 
 partsWithModuleStreamReq :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> KRPCStreamReq ([KRPCHS.SpaceCenter.Part])
 partsWithModuleStreamReq thisArg moduleNameArg =
-    let req = makeRequest "SpaceCenter" "Parts_WithModule" [makeArgument 0 thisArg, makeArgument 1 moduleNameArg]
+    let req = makeCallRequest "SpaceCenter" "Parts_WithModule" [makeArgument 0 thisArg, makeArgument 1 moduleNameArg]
     in  makeStream req
 
 partsWithModuleStream :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
@@ -9775,7 +9775,7 @@ partsWithName thisArg nameArg = do
 
 partsWithNameStreamReq :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> KRPCStreamReq ([KRPCHS.SpaceCenter.Part])
 partsWithNameStreamReq thisArg nameArg =
-    let req = makeRequest "SpaceCenter" "Parts_WithName" [makeArgument 0 thisArg, makeArgument 1 nameArg]
+    let req = makeCallRequest "SpaceCenter" "Parts_WithName" [makeArgument 0 thisArg, makeArgument 1 nameArg]
     in  makeStream req
 
 partsWithNameStream :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
@@ -9792,7 +9792,7 @@ partsWithTag thisArg tagArg = do
 
 partsWithTagStreamReq :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> KRPCStreamReq ([KRPCHS.SpaceCenter.Part])
 partsWithTagStreamReq thisArg tagArg =
-    let req = makeRequest "SpaceCenter" "Parts_WithTag" [makeArgument 0 thisArg, makeArgument 1 tagArg]
+    let req = makeCallRequest "SpaceCenter" "Parts_WithTag" [makeArgument 0 thisArg, makeArgument 1 tagArg]
     in  makeStream req
 
 partsWithTagStream :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
@@ -9809,7 +9809,7 @@ partsWithTitle thisArg titleArg = do
 
 partsWithTitleStreamReq :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> KRPCStreamReq ([KRPCHS.SpaceCenter.Part])
 partsWithTitleStreamReq thisArg titleArg =
-    let req = makeRequest "SpaceCenter" "Parts_WithTitle" [makeArgument 0 thisArg, makeArgument 1 titleArg]
+    let req = makeCallRequest "SpaceCenter" "Parts_WithTitle" [makeArgument 0 thisArg, makeArgument 1 titleArg]
     in  makeStream req
 
 partsWithTitleStream :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
@@ -9826,7 +9826,7 @@ getPartsAll thisArg = do
 
 getPartsAllStreamReq :: KRPCHS.SpaceCenter.Parts -> KRPCStreamReq ([KRPCHS.SpaceCenter.Part])
 getPartsAllStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Parts_get_All" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Parts_get_All" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartsAllStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
@@ -9843,7 +9843,7 @@ getPartsCargoBays thisArg = do
 
 getPartsCargoBaysStreamReq :: KRPCHS.SpaceCenter.Parts -> KRPCStreamReq ([KRPCHS.SpaceCenter.CargoBay])
 getPartsCargoBaysStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Parts_get_CargoBays" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Parts_get_CargoBays" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartsCargoBaysStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.CargoBay]))
@@ -9860,7 +9860,7 @@ getPartsControlSurfaces thisArg = do
 
 getPartsControlSurfacesStreamReq :: KRPCHS.SpaceCenter.Parts -> KRPCStreamReq ([KRPCHS.SpaceCenter.ControlSurface])
 getPartsControlSurfacesStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Parts_get_ControlSurfaces" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Parts_get_ControlSurfaces" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartsControlSurfacesStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.ControlSurface]))
@@ -9877,7 +9877,7 @@ getPartsControlling thisArg = do
 
 getPartsControllingStreamReq :: KRPCHS.SpaceCenter.Parts -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
 getPartsControllingStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Parts_get_Controlling" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Parts_get_Controlling" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartsControllingStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
@@ -9894,7 +9894,7 @@ getPartsDecouplers thisArg = do
 
 getPartsDecouplersStreamReq :: KRPCHS.SpaceCenter.Parts -> KRPCStreamReq ([KRPCHS.SpaceCenter.Decoupler])
 getPartsDecouplersStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Parts_get_Decouplers" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Parts_get_Decouplers" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartsDecouplersStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Decoupler]))
@@ -9911,7 +9911,7 @@ getPartsDockingPorts thisArg = do
 
 getPartsDockingPortsStreamReq :: KRPCHS.SpaceCenter.Parts -> KRPCStreamReq ([KRPCHS.SpaceCenter.DockingPort])
 getPartsDockingPortsStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Parts_get_DockingPorts" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Parts_get_DockingPorts" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartsDockingPortsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.DockingPort]))
@@ -9929,7 +9929,7 @@ getPartsEngines thisArg = do
 
 getPartsEnginesStreamReq :: KRPCHS.SpaceCenter.Parts -> KRPCStreamReq ([KRPCHS.SpaceCenter.Engine])
 getPartsEnginesStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Parts_get_Engines" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Parts_get_Engines" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartsEnginesStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Engine]))
@@ -9946,7 +9946,7 @@ getPartsExperiments thisArg = do
 
 getPartsExperimentsStreamReq :: KRPCHS.SpaceCenter.Parts -> KRPCStreamReq ([KRPCHS.SpaceCenter.Experiment])
 getPartsExperimentsStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Parts_get_Experiments" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Parts_get_Experiments" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartsExperimentsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Experiment]))
@@ -9963,7 +9963,7 @@ getPartsFairings thisArg = do
 
 getPartsFairingsStreamReq :: KRPCHS.SpaceCenter.Parts -> KRPCStreamReq ([KRPCHS.SpaceCenter.Fairing])
 getPartsFairingsStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Parts_get_Fairings" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Parts_get_Fairings" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartsFairingsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Fairing]))
@@ -9980,7 +9980,7 @@ getPartsIntakes thisArg = do
 
 getPartsIntakesStreamReq :: KRPCHS.SpaceCenter.Parts -> KRPCStreamReq ([KRPCHS.SpaceCenter.Intake])
 getPartsIntakesStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Parts_get_Intakes" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Parts_get_Intakes" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartsIntakesStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Intake]))
@@ -9997,7 +9997,7 @@ getPartsLandingGear thisArg = do
 
 getPartsLandingGearStreamReq :: KRPCHS.SpaceCenter.Parts -> KRPCStreamReq ([KRPCHS.SpaceCenter.LandingGear])
 getPartsLandingGearStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Parts_get_LandingGear" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Parts_get_LandingGear" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartsLandingGearStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.LandingGear]))
@@ -10014,7 +10014,7 @@ getPartsLandingLegs thisArg = do
 
 getPartsLandingLegsStreamReq :: KRPCHS.SpaceCenter.Parts -> KRPCStreamReq ([KRPCHS.SpaceCenter.LandingLeg])
 getPartsLandingLegsStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Parts_get_LandingLegs" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Parts_get_LandingLegs" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartsLandingLegsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.LandingLeg]))
@@ -10031,7 +10031,7 @@ getPartsLaunchClamps thisArg = do
 
 getPartsLaunchClampsStreamReq :: KRPCHS.SpaceCenter.Parts -> KRPCStreamReq ([KRPCHS.SpaceCenter.LaunchClamp])
 getPartsLaunchClampsStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Parts_get_LaunchClamps" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Parts_get_LaunchClamps" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartsLaunchClampsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.LaunchClamp]))
@@ -10048,7 +10048,7 @@ getPartsLights thisArg = do
 
 getPartsLightsStreamReq :: KRPCHS.SpaceCenter.Parts -> KRPCStreamReq ([KRPCHS.SpaceCenter.Light])
 getPartsLightsStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Parts_get_Lights" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Parts_get_Lights" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartsLightsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Light]))
@@ -10065,7 +10065,7 @@ getPartsParachutes thisArg = do
 
 getPartsParachutesStreamReq :: KRPCHS.SpaceCenter.Parts -> KRPCStreamReq ([KRPCHS.SpaceCenter.Parachute])
 getPartsParachutesStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Parts_get_Parachutes" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Parts_get_Parachutes" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartsParachutesStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Parachute]))
@@ -10082,7 +10082,7 @@ getPartsRCS thisArg = do
 
 getPartsRCSStreamReq :: KRPCHS.SpaceCenter.Parts -> KRPCStreamReq ([KRPCHS.SpaceCenter.RCS])
 getPartsRCSStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Parts_get_RCS" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Parts_get_RCS" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartsRCSStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.RCS]))
@@ -10099,7 +10099,7 @@ getPartsRadiators thisArg = do
 
 getPartsRadiatorsStreamReq :: KRPCHS.SpaceCenter.Parts -> KRPCStreamReq ([KRPCHS.SpaceCenter.Radiator])
 getPartsRadiatorsStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Parts_get_Radiators" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Parts_get_Radiators" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartsRadiatorsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Radiator]))
@@ -10116,7 +10116,7 @@ getPartsReactionWheels thisArg = do
 
 getPartsReactionWheelsStreamReq :: KRPCHS.SpaceCenter.Parts -> KRPCStreamReq ([KRPCHS.SpaceCenter.ReactionWheel])
 getPartsReactionWheelsStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Parts_get_ReactionWheels" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Parts_get_ReactionWheels" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartsReactionWheelsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.ReactionWheel]))
@@ -10133,7 +10133,7 @@ getPartsResourceConverters thisArg = do
 
 getPartsResourceConvertersStreamReq :: KRPCHS.SpaceCenter.Parts -> KRPCStreamReq ([KRPCHS.SpaceCenter.ResourceConverter])
 getPartsResourceConvertersStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Parts_get_ResourceConverters" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Parts_get_ResourceConverters" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartsResourceConvertersStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.ResourceConverter]))
@@ -10150,7 +10150,7 @@ getPartsResourceHarvesters thisArg = do
 
 getPartsResourceHarvestersStreamReq :: KRPCHS.SpaceCenter.Parts -> KRPCStreamReq ([KRPCHS.SpaceCenter.ResourceHarvester])
 getPartsResourceHarvestersStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Parts_get_ResourceHarvesters" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Parts_get_ResourceHarvesters" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartsResourceHarvestersStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.ResourceHarvester]))
@@ -10167,7 +10167,7 @@ getPartsRoot thisArg = do
 
 getPartsRootStreamReq :: KRPCHS.SpaceCenter.Parts -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
 getPartsRootStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Parts_get_Root" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Parts_get_Root" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartsRootStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
@@ -10184,7 +10184,7 @@ getPartsSensors thisArg = do
 
 getPartsSensorsStreamReq :: KRPCHS.SpaceCenter.Parts -> KRPCStreamReq ([KRPCHS.SpaceCenter.Sensor])
 getPartsSensorsStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Parts_get_Sensors" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Parts_get_Sensors" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartsSensorsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Sensor]))
@@ -10201,7 +10201,7 @@ getPartsSolarPanels thisArg = do
 
 getPartsSolarPanelsStreamReq :: KRPCHS.SpaceCenter.Parts -> KRPCStreamReq ([KRPCHS.SpaceCenter.SolarPanel])
 getPartsSolarPanelsStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Parts_get_SolarPanels" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Parts_get_SolarPanels" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPartsSolarPanelsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.SolarPanel]))
@@ -10227,7 +10227,7 @@ getPropellantConnectedResources thisArg = do
 
 getPropellantConnectedResourcesStreamReq :: KRPCHS.SpaceCenter.Propellant -> KRPCStreamReq ([KRPCHS.SpaceCenter.Resource])
 getPropellantConnectedResourcesStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Propellant_get_ConnectedResources" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Propellant_get_ConnectedResources" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPropellantConnectedResourcesStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Resource]))
@@ -10244,7 +10244,7 @@ getPropellantCurrentAmount thisArg = do
 
 getPropellantCurrentAmountStreamReq :: KRPCHS.SpaceCenter.Propellant -> KRPCStreamReq (Double)
 getPropellantCurrentAmountStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Propellant_get_CurrentAmount" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Propellant_get_CurrentAmount" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPropellantCurrentAmountStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Double))
@@ -10261,7 +10261,7 @@ getPropellantCurrentRequirement thisArg = do
 
 getPropellantCurrentRequirementStreamReq :: KRPCHS.SpaceCenter.Propellant -> KRPCStreamReq (Double)
 getPropellantCurrentRequirementStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Propellant_get_CurrentRequirement" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Propellant_get_CurrentRequirement" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPropellantCurrentRequirementStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Double))
@@ -10278,7 +10278,7 @@ getPropellantDrawStackGauge thisArg = do
 
 getPropellantDrawStackGaugeStreamReq :: KRPCHS.SpaceCenter.Propellant -> KRPCStreamReq (Bool)
 getPropellantDrawStackGaugeStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Propellant_get_DrawStackGauge" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Propellant_get_DrawStackGauge" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPropellantDrawStackGaugeStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Bool))
@@ -10295,7 +10295,7 @@ getPropellantIgnoreForIsp thisArg = do
 
 getPropellantIgnoreForIspStreamReq :: KRPCHS.SpaceCenter.Propellant -> KRPCStreamReq (Bool)
 getPropellantIgnoreForIspStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Propellant_get_IgnoreForIsp" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Propellant_get_IgnoreForIsp" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPropellantIgnoreForIspStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Bool))
@@ -10312,7 +10312,7 @@ getPropellantIgnoreForThrustCurve thisArg = do
 
 getPropellantIgnoreForThrustCurveStreamReq :: KRPCHS.SpaceCenter.Propellant -> KRPCStreamReq (Bool)
 getPropellantIgnoreForThrustCurveStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Propellant_get_IgnoreForThrustCurve" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Propellant_get_IgnoreForThrustCurve" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPropellantIgnoreForThrustCurveStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Bool))
@@ -10329,7 +10329,7 @@ getPropellantIsDeprived thisArg = do
 
 getPropellantIsDeprivedStreamReq :: KRPCHS.SpaceCenter.Propellant -> KRPCStreamReq (Bool)
 getPropellantIsDeprivedStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Propellant_get_IsDeprived" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Propellant_get_IsDeprived" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPropellantIsDeprivedStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Bool))
@@ -10346,7 +10346,7 @@ getPropellantName thisArg = do
 
 getPropellantNameStreamReq :: KRPCHS.SpaceCenter.Propellant -> KRPCStreamReq (Data.Text.Text)
 getPropellantNameStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Propellant_get_Name" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Propellant_get_Name" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPropellantNameStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Data.Text.Text))
@@ -10363,7 +10363,7 @@ getPropellantRatio thisArg = do
 
 getPropellantRatioStreamReq :: KRPCHS.SpaceCenter.Propellant -> KRPCStreamReq (Float)
 getPropellantRatioStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Propellant_get_Ratio" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Propellant_get_Ratio" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPropellantRatioStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Float))
@@ -10380,7 +10380,7 @@ getPropellantTotalResourceAvailable thisArg = do
 
 getPropellantTotalResourceAvailableStreamReq :: KRPCHS.SpaceCenter.Propellant -> KRPCStreamReq (Double)
 getPropellantTotalResourceAvailableStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Propellant_get_TotalResourceAvailable" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Propellant_get_TotalResourceAvailable" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPropellantTotalResourceAvailableStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Double))
@@ -10397,7 +10397,7 @@ getPropellantTotalResourceCapacity thisArg = do
 
 getPropellantTotalResourceCapacityStreamReq :: KRPCHS.SpaceCenter.Propellant -> KRPCStreamReq (Double)
 getPropellantTotalResourceCapacityStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Propellant_get_TotalResourceCapacity" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Propellant_get_TotalResourceCapacity" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPropellantTotalResourceCapacityStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Double))
@@ -10435,7 +10435,7 @@ getRCSActive thisArg = do
 
 getRCSActiveStreamReq :: KRPCHS.SpaceCenter.RCS -> KRPCStreamReq (Bool)
 getRCSActiveStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "RCS_get_Active" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "RCS_get_Active" [makeArgument 0 thisArg]
     in  makeStream req
 
 getRCSActiveStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Bool))
@@ -10454,7 +10454,7 @@ getRCSAvailableTorque thisArg = do
 
 getRCSAvailableTorqueStreamReq :: KRPCHS.SpaceCenter.RCS -> KRPCStreamReq ((Double, Double, Double))
 getRCSAvailableTorqueStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "RCS_get_AvailableTorque" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "RCS_get_AvailableTorque" [makeArgument 0 thisArg]
     in  makeStream req
 
 getRCSAvailableTorqueStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -10471,7 +10471,7 @@ getRCSEnabled thisArg = do
 
 getRCSEnabledStreamReq :: KRPCHS.SpaceCenter.RCS -> KRPCStreamReq (Bool)
 getRCSEnabledStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "RCS_get_Enabled" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "RCS_get_Enabled" [makeArgument 0 thisArg]
     in  makeStream req
 
 getRCSEnabledStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Bool))
@@ -10488,7 +10488,7 @@ getRCSForwardEnabled thisArg = do
 
 getRCSForwardEnabledStreamReq :: KRPCHS.SpaceCenter.RCS -> KRPCStreamReq (Bool)
 getRCSForwardEnabledStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "RCS_get_ForwardEnabled" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "RCS_get_ForwardEnabled" [makeArgument 0 thisArg]
     in  makeStream req
 
 getRCSForwardEnabledStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Bool))
@@ -10505,7 +10505,7 @@ getRCSHasFuel thisArg = do
 
 getRCSHasFuelStreamReq :: KRPCHS.SpaceCenter.RCS -> KRPCStreamReq (Bool)
 getRCSHasFuelStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "RCS_get_HasFuel" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "RCS_get_HasFuel" [makeArgument 0 thisArg]
     in  makeStream req
 
 getRCSHasFuelStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Bool))
@@ -10522,7 +10522,7 @@ getRCSKerbinSeaLevelSpecificImpulse thisArg = do
 
 getRCSKerbinSeaLevelSpecificImpulseStreamReq :: KRPCHS.SpaceCenter.RCS -> KRPCStreamReq (Float)
 getRCSKerbinSeaLevelSpecificImpulseStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "RCS_get_KerbinSeaLevelSpecificImpulse" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "RCS_get_KerbinSeaLevelSpecificImpulse" [makeArgument 0 thisArg]
     in  makeStream req
 
 getRCSKerbinSeaLevelSpecificImpulseStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Float))
@@ -10539,7 +10539,7 @@ getRCSMaxThrust thisArg = do
 
 getRCSMaxThrustStreamReq :: KRPCHS.SpaceCenter.RCS -> KRPCStreamReq (Float)
 getRCSMaxThrustStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "RCS_get_MaxThrust" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "RCS_get_MaxThrust" [makeArgument 0 thisArg]
     in  makeStream req
 
 getRCSMaxThrustStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Float))
@@ -10556,7 +10556,7 @@ getRCSMaxVacuumThrust thisArg = do
 
 getRCSMaxVacuumThrustStreamReq :: KRPCHS.SpaceCenter.RCS -> KRPCStreamReq (Float)
 getRCSMaxVacuumThrustStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "RCS_get_MaxVacuumThrust" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "RCS_get_MaxVacuumThrust" [makeArgument 0 thisArg]
     in  makeStream req
 
 getRCSMaxVacuumThrustStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Float))
@@ -10573,7 +10573,7 @@ getRCSPart thisArg = do
 
 getRCSPartStreamReq :: KRPCHS.SpaceCenter.RCS -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
 getRCSPartStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "RCS_get_Part" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "RCS_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
 getRCSPartStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
@@ -10590,7 +10590,7 @@ getRCSPitchEnabled thisArg = do
 
 getRCSPitchEnabledStreamReq :: KRPCHS.SpaceCenter.RCS -> KRPCStreamReq (Bool)
 getRCSPitchEnabledStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "RCS_get_PitchEnabled" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "RCS_get_PitchEnabled" [makeArgument 0 thisArg]
     in  makeStream req
 
 getRCSPitchEnabledStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Bool))
@@ -10608,7 +10608,7 @@ getRCSPropellantRatios thisArg = do
 
 getRCSPropellantRatiosStreamReq :: KRPCHS.SpaceCenter.RCS -> KRPCStreamReq (Data.Map.Map (Data.Text.Text) (Float))
 getRCSPropellantRatiosStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "RCS_get_PropellantRatios" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "RCS_get_PropellantRatios" [makeArgument 0 thisArg]
     in  makeStream req
 
 getRCSPropellantRatiosStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Data.Map.Map (Data.Text.Text) (Float)))
@@ -10625,7 +10625,7 @@ getRCSPropellants thisArg = do
 
 getRCSPropellantsStreamReq :: KRPCHS.SpaceCenter.RCS -> KRPCStreamReq ([Data.Text.Text])
 getRCSPropellantsStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "RCS_get_Propellants" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "RCS_get_Propellants" [makeArgument 0 thisArg]
     in  makeStream req
 
 getRCSPropellantsStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream ([Data.Text.Text]))
@@ -10642,7 +10642,7 @@ getRCSRightEnabled thisArg = do
 
 getRCSRightEnabledStreamReq :: KRPCHS.SpaceCenter.RCS -> KRPCStreamReq (Bool)
 getRCSRightEnabledStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "RCS_get_RightEnabled" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "RCS_get_RightEnabled" [makeArgument 0 thisArg]
     in  makeStream req
 
 getRCSRightEnabledStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Bool))
@@ -10659,7 +10659,7 @@ getRCSRollEnabled thisArg = do
 
 getRCSRollEnabledStreamReq :: KRPCHS.SpaceCenter.RCS -> KRPCStreamReq (Bool)
 getRCSRollEnabledStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "RCS_get_RollEnabled" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "RCS_get_RollEnabled" [makeArgument 0 thisArg]
     in  makeStream req
 
 getRCSRollEnabledStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Bool))
@@ -10677,7 +10677,7 @@ getRCSSpecificImpulse thisArg = do
 
 getRCSSpecificImpulseStreamReq :: KRPCHS.SpaceCenter.RCS -> KRPCStreamReq (Float)
 getRCSSpecificImpulseStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "RCS_get_SpecificImpulse" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "RCS_get_SpecificImpulse" [makeArgument 0 thisArg]
     in  makeStream req
 
 getRCSSpecificImpulseStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Float))
@@ -10694,7 +10694,7 @@ getRCSThrusters thisArg = do
 
 getRCSThrustersStreamReq :: KRPCHS.SpaceCenter.RCS -> KRPCStreamReq ([KRPCHS.SpaceCenter.Thruster])
 getRCSThrustersStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "RCS_get_Thrusters" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "RCS_get_Thrusters" [makeArgument 0 thisArg]
     in  makeStream req
 
 getRCSThrustersStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Thruster]))
@@ -10711,7 +10711,7 @@ getRCSUpEnabled thisArg = do
 
 getRCSUpEnabledStreamReq :: KRPCHS.SpaceCenter.RCS -> KRPCStreamReq (Bool)
 getRCSUpEnabledStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "RCS_get_UpEnabled" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "RCS_get_UpEnabled" [makeArgument 0 thisArg]
     in  makeStream req
 
 getRCSUpEnabledStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Bool))
@@ -10728,7 +10728,7 @@ getRCSVacuumSpecificImpulse thisArg = do
 
 getRCSVacuumSpecificImpulseStreamReq :: KRPCHS.SpaceCenter.RCS -> KRPCStreamReq (Float)
 getRCSVacuumSpecificImpulseStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "RCS_get_VacuumSpecificImpulse" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "RCS_get_VacuumSpecificImpulse" [makeArgument 0 thisArg]
     in  makeStream req
 
 getRCSVacuumSpecificImpulseStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Float))
@@ -10745,7 +10745,7 @@ getRCSYawEnabled thisArg = do
 
 getRCSYawEnabledStreamReq :: KRPCHS.SpaceCenter.RCS -> KRPCStreamReq (Bool)
 getRCSYawEnabledStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "RCS_get_YawEnabled" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "RCS_get_YawEnabled" [makeArgument 0 thisArg]
     in  makeStream req
 
 getRCSYawEnabledStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Bool))
@@ -10825,7 +10825,7 @@ getRadiatorDeployable thisArg = do
 
 getRadiatorDeployableStreamReq :: KRPCHS.SpaceCenter.Radiator -> KRPCStreamReq (Bool)
 getRadiatorDeployableStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Radiator_get_Deployable" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Radiator_get_Deployable" [makeArgument 0 thisArg]
     in  makeStream req
 
 getRadiatorDeployableStream :: KRPCHS.SpaceCenter.Radiator -> RPCContext (KRPCStream (Bool))
@@ -10843,7 +10843,7 @@ getRadiatorDeployed thisArg = do
 
 getRadiatorDeployedStreamReq :: KRPCHS.SpaceCenter.Radiator -> KRPCStreamReq (Bool)
 getRadiatorDeployedStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Radiator_get_Deployed" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Radiator_get_Deployed" [makeArgument 0 thisArg]
     in  makeStream req
 
 getRadiatorDeployedStream :: KRPCHS.SpaceCenter.Radiator -> RPCContext (KRPCStream (Bool))
@@ -10860,7 +10860,7 @@ getRadiatorPart thisArg = do
 
 getRadiatorPartStreamReq :: KRPCHS.SpaceCenter.Radiator -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
 getRadiatorPartStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Radiator_get_Part" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Radiator_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
 getRadiatorPartStream :: KRPCHS.SpaceCenter.Radiator -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
@@ -10877,7 +10877,7 @@ getRadiatorState thisArg = do
 
 getRadiatorStateStreamReq :: KRPCHS.SpaceCenter.Radiator -> KRPCStreamReq (KRPCHS.SpaceCenter.RadiatorState)
 getRadiatorStateStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Radiator_get_State" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Radiator_get_State" [makeArgument 0 thisArg]
     in  makeStream req
 
 getRadiatorStateStream :: KRPCHS.SpaceCenter.Radiator -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.RadiatorState))
@@ -10904,7 +10904,7 @@ getReactionWheelActive thisArg = do
 
 getReactionWheelActiveStreamReq :: KRPCHS.SpaceCenter.ReactionWheel -> KRPCStreamReq (Bool)
 getReactionWheelActiveStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ReactionWheel_get_Active" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ReactionWheel_get_Active" [makeArgument 0 thisArg]
     in  makeStream req
 
 getReactionWheelActiveStream :: KRPCHS.SpaceCenter.ReactionWheel -> RPCContext (KRPCStream (Bool))
@@ -10923,7 +10923,7 @@ getReactionWheelAvailableTorque thisArg = do
 
 getReactionWheelAvailableTorqueStreamReq :: KRPCHS.SpaceCenter.ReactionWheel -> KRPCStreamReq ((Double, Double, Double))
 getReactionWheelAvailableTorqueStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ReactionWheel_get_AvailableTorque" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ReactionWheel_get_AvailableTorque" [makeArgument 0 thisArg]
     in  makeStream req
 
 getReactionWheelAvailableTorqueStream :: KRPCHS.SpaceCenter.ReactionWheel -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -10940,7 +10940,7 @@ getReactionWheelBroken thisArg = do
 
 getReactionWheelBrokenStreamReq :: KRPCHS.SpaceCenter.ReactionWheel -> KRPCStreamReq (Bool)
 getReactionWheelBrokenStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ReactionWheel_get_Broken" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ReactionWheel_get_Broken" [makeArgument 0 thisArg]
     in  makeStream req
 
 getReactionWheelBrokenStream :: KRPCHS.SpaceCenter.ReactionWheel -> RPCContext (KRPCStream (Bool))
@@ -10959,7 +10959,7 @@ getReactionWheelMaxTorque thisArg = do
 
 getReactionWheelMaxTorqueStreamReq :: KRPCHS.SpaceCenter.ReactionWheel -> KRPCStreamReq ((Double, Double, Double))
 getReactionWheelMaxTorqueStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ReactionWheel_get_MaxTorque" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ReactionWheel_get_MaxTorque" [makeArgument 0 thisArg]
     in  makeStream req
 
 getReactionWheelMaxTorqueStream :: KRPCHS.SpaceCenter.ReactionWheel -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -10976,7 +10976,7 @@ getReactionWheelPart thisArg = do
 
 getReactionWheelPartStreamReq :: KRPCHS.SpaceCenter.ReactionWheel -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
 getReactionWheelPartStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ReactionWheel_get_Part" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ReactionWheel_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
 getReactionWheelPartStream :: KRPCHS.SpaceCenter.ReactionWheel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
@@ -11002,7 +11002,7 @@ resourceConverterActive thisArg indexArg = do
 
 resourceConverterActiveStreamReq :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> KRPCStreamReq (Bool)
 resourceConverterActiveStreamReq thisArg indexArg =
-    let req = makeRequest "SpaceCenter" "ResourceConverter_Active" [makeArgument 0 thisArg, makeArgument 1 indexArg]
+    let req = makeCallRequest "SpaceCenter" "ResourceConverter_Active" [makeArgument 0 thisArg, makeArgument 1 indexArg]
     in  makeStream req
 
 resourceConverterActiveStream :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext (KRPCStream (Bool))
@@ -11019,7 +11019,7 @@ resourceConverterInputs thisArg indexArg = do
 
 resourceConverterInputsStreamReq :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> KRPCStreamReq ([Data.Text.Text])
 resourceConverterInputsStreamReq thisArg indexArg =
-    let req = makeRequest "SpaceCenter" "ResourceConverter_Inputs" [makeArgument 0 thisArg, makeArgument 1 indexArg]
+    let req = makeCallRequest "SpaceCenter" "ResourceConverter_Inputs" [makeArgument 0 thisArg, makeArgument 1 indexArg]
     in  makeStream req
 
 resourceConverterInputsStream :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext (KRPCStream ([Data.Text.Text]))
@@ -11036,7 +11036,7 @@ resourceConverterName thisArg indexArg = do
 
 resourceConverterNameStreamReq :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> KRPCStreamReq (Data.Text.Text)
 resourceConverterNameStreamReq thisArg indexArg =
-    let req = makeRequest "SpaceCenter" "ResourceConverter_Name" [makeArgument 0 thisArg, makeArgument 1 indexArg]
+    let req = makeCallRequest "SpaceCenter" "ResourceConverter_Name" [makeArgument 0 thisArg, makeArgument 1 indexArg]
     in  makeStream req
 
 resourceConverterNameStream :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext (KRPCStream (Data.Text.Text))
@@ -11053,7 +11053,7 @@ resourceConverterOutputs thisArg indexArg = do
 
 resourceConverterOutputsStreamReq :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> KRPCStreamReq ([Data.Text.Text])
 resourceConverterOutputsStreamReq thisArg indexArg =
-    let req = makeRequest "SpaceCenter" "ResourceConverter_Outputs" [makeArgument 0 thisArg, makeArgument 1 indexArg]
+    let req = makeCallRequest "SpaceCenter" "ResourceConverter_Outputs" [makeArgument 0 thisArg, makeArgument 1 indexArg]
     in  makeStream req
 
 resourceConverterOutputsStream :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext (KRPCStream ([Data.Text.Text]))
@@ -11079,7 +11079,7 @@ resourceConverterState thisArg indexArg = do
 
 resourceConverterStateStreamReq :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> KRPCStreamReq (KRPCHS.SpaceCenter.ResourceConverterState)
 resourceConverterStateStreamReq thisArg indexArg =
-    let req = makeRequest "SpaceCenter" "ResourceConverter_State" [makeArgument 0 thisArg, makeArgument 1 indexArg]
+    let req = makeCallRequest "SpaceCenter" "ResourceConverter_State" [makeArgument 0 thisArg, makeArgument 1 indexArg]
     in  makeStream req
 
 resourceConverterStateStream :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ResourceConverterState))
@@ -11097,7 +11097,7 @@ resourceConverterStatusInfo thisArg indexArg = do
 
 resourceConverterStatusInfoStreamReq :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> KRPCStreamReq (Data.Text.Text)
 resourceConverterStatusInfoStreamReq thisArg indexArg =
-    let req = makeRequest "SpaceCenter" "ResourceConverter_StatusInfo" [makeArgument 0 thisArg, makeArgument 1 indexArg]
+    let req = makeCallRequest "SpaceCenter" "ResourceConverter_StatusInfo" [makeArgument 0 thisArg, makeArgument 1 indexArg]
     in  makeStream req
 
 resourceConverterStatusInfoStream :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext (KRPCStream (Data.Text.Text))
@@ -11123,7 +11123,7 @@ getResourceConverterCount thisArg = do
 
 getResourceConverterCountStreamReq :: KRPCHS.SpaceCenter.ResourceConverter -> KRPCStreamReq (Data.Int.Int32)
 getResourceConverterCountStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ResourceConverter_get_Count" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ResourceConverter_get_Count" [makeArgument 0 thisArg]
     in  makeStream req
 
 getResourceConverterCountStream :: KRPCHS.SpaceCenter.ResourceConverter -> RPCContext (KRPCStream (Data.Int.Int32))
@@ -11140,7 +11140,7 @@ getResourceConverterPart thisArg = do
 
 getResourceConverterPartStreamReq :: KRPCHS.SpaceCenter.ResourceConverter -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
 getResourceConverterPartStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ResourceConverter_get_Part" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ResourceConverter_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
 getResourceConverterPartStream :: KRPCHS.SpaceCenter.ResourceConverter -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
@@ -11157,7 +11157,7 @@ getResourceHarvesterActive thisArg = do
 
 getResourceHarvesterActiveStreamReq :: KRPCHS.SpaceCenter.ResourceHarvester -> KRPCStreamReq (Bool)
 getResourceHarvesterActiveStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ResourceHarvester_get_Active" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ResourceHarvester_get_Active" [makeArgument 0 thisArg]
     in  makeStream req
 
 getResourceHarvesterActiveStream :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (KRPCStream (Bool))
@@ -11174,7 +11174,7 @@ getResourceHarvesterCoreTemperature thisArg = do
 
 getResourceHarvesterCoreTemperatureStreamReq :: KRPCHS.SpaceCenter.ResourceHarvester -> KRPCStreamReq (Float)
 getResourceHarvesterCoreTemperatureStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ResourceHarvester_get_CoreTemperature" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ResourceHarvester_get_CoreTemperature" [makeArgument 0 thisArg]
     in  makeStream req
 
 getResourceHarvesterCoreTemperatureStream :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (KRPCStream (Float))
@@ -11191,7 +11191,7 @@ getResourceHarvesterDeployed thisArg = do
 
 getResourceHarvesterDeployedStreamReq :: KRPCHS.SpaceCenter.ResourceHarvester -> KRPCStreamReq (Bool)
 getResourceHarvesterDeployedStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ResourceHarvester_get_Deployed" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ResourceHarvester_get_Deployed" [makeArgument 0 thisArg]
     in  makeStream req
 
 getResourceHarvesterDeployedStream :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (KRPCStream (Bool))
@@ -11208,7 +11208,7 @@ getResourceHarvesterExtractionRate thisArg = do
 
 getResourceHarvesterExtractionRateStreamReq :: KRPCHS.SpaceCenter.ResourceHarvester -> KRPCStreamReq (Float)
 getResourceHarvesterExtractionRateStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ResourceHarvester_get_ExtractionRate" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ResourceHarvester_get_ExtractionRate" [makeArgument 0 thisArg]
     in  makeStream req
 
 getResourceHarvesterExtractionRateStream :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (KRPCStream (Float))
@@ -11225,7 +11225,7 @@ getResourceHarvesterOptimumCoreTemperature thisArg = do
 
 getResourceHarvesterOptimumCoreTemperatureStreamReq :: KRPCHS.SpaceCenter.ResourceHarvester -> KRPCStreamReq (Float)
 getResourceHarvesterOptimumCoreTemperatureStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ResourceHarvester_get_OptimumCoreTemperature" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ResourceHarvester_get_OptimumCoreTemperature" [makeArgument 0 thisArg]
     in  makeStream req
 
 getResourceHarvesterOptimumCoreTemperatureStream :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (KRPCStream (Float))
@@ -11242,7 +11242,7 @@ getResourceHarvesterPart thisArg = do
 
 getResourceHarvesterPartStreamReq :: KRPCHS.SpaceCenter.ResourceHarvester -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
 getResourceHarvesterPartStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ResourceHarvester_get_Part" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ResourceHarvester_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
 getResourceHarvesterPartStream :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
@@ -11259,7 +11259,7 @@ getResourceHarvesterState thisArg = do
 
 getResourceHarvesterStateStreamReq :: KRPCHS.SpaceCenter.ResourceHarvester -> KRPCStreamReq (KRPCHS.SpaceCenter.ResourceHarvesterState)
 getResourceHarvesterStateStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ResourceHarvester_get_State" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ResourceHarvester_get_State" [makeArgument 0 thisArg]
     in  makeStream req
 
 getResourceHarvesterStateStream :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ResourceHarvesterState))
@@ -11276,7 +11276,7 @@ getResourceHarvesterThermalEfficiency thisArg = do
 
 getResourceHarvesterThermalEfficiencyStreamReq :: KRPCHS.SpaceCenter.ResourceHarvester -> KRPCStreamReq (Float)
 getResourceHarvesterThermalEfficiencyStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ResourceHarvester_get_ThermalEfficiency" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ResourceHarvester_get_ThermalEfficiency" [makeArgument 0 thisArg]
     in  makeStream req
 
 getResourceHarvesterThermalEfficiencyStream :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (KRPCStream (Float))
@@ -11311,7 +11311,7 @@ getResourceTransferAmount thisArg = do
 
 getResourceTransferAmountStreamReq :: KRPCHS.SpaceCenter.ResourceTransfer -> KRPCStreamReq (Float)
 getResourceTransferAmountStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ResourceTransfer_get_Amount" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ResourceTransfer_get_Amount" [makeArgument 0 thisArg]
     in  makeStream req
 
 getResourceTransferAmountStream :: KRPCHS.SpaceCenter.ResourceTransfer -> RPCContext (KRPCStream (Float))
@@ -11328,7 +11328,7 @@ getResourceTransferComplete thisArg = do
 
 getResourceTransferCompleteStreamReq :: KRPCHS.SpaceCenter.ResourceTransfer -> KRPCStreamReq (Bool)
 getResourceTransferCompleteStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ResourceTransfer_get_Complete" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ResourceTransfer_get_Complete" [makeArgument 0 thisArg]
     in  makeStream req
 
 getResourceTransferCompleteStream :: KRPCHS.SpaceCenter.ResourceTransfer -> RPCContext (KRPCStream (Bool))
@@ -11349,7 +11349,7 @@ resourceTransferStaticStart fromPartArg toPartArg resourceArg maxAmountArg = do
 
 resourceTransferStaticStartStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.Part -> Data.Text.Text -> Float -> KRPCStreamReq (KRPCHS.SpaceCenter.ResourceTransfer)
 resourceTransferStaticStartStreamReq fromPartArg toPartArg resourceArg maxAmountArg =
-    let req = makeRequest "SpaceCenter" "ResourceTransfer_static_Start" [makeArgument 0 fromPartArg, makeArgument 1 toPartArg, makeArgument 2 resourceArg, makeArgument 3 maxAmountArg]
+    let req = makeCallRequest "SpaceCenter" "ResourceTransfer_static_Start" [makeArgument 0 fromPartArg, makeArgument 1 toPartArg, makeArgument 2 resourceArg, makeArgument 3 maxAmountArg]
     in  makeStream req
 
 resourceTransferStaticStartStream :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.Part -> Data.Text.Text -> Float -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ResourceTransfer))
@@ -11366,7 +11366,7 @@ getResourceAmount thisArg = do
 
 getResourceAmountStreamReq :: KRPCHS.SpaceCenter.Resource -> KRPCStreamReq (Float)
 getResourceAmountStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Resource_get_Amount" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Resource_get_Amount" [makeArgument 0 thisArg]
     in  makeStream req
 
 getResourceAmountStream :: KRPCHS.SpaceCenter.Resource -> RPCContext (KRPCStream (Float))
@@ -11383,7 +11383,7 @@ getResourceDensity thisArg = do
 
 getResourceDensityStreamReq :: KRPCHS.SpaceCenter.Resource -> KRPCStreamReq (Float)
 getResourceDensityStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Resource_get_Density" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Resource_get_Density" [makeArgument 0 thisArg]
     in  makeStream req
 
 getResourceDensityStream :: KRPCHS.SpaceCenter.Resource -> RPCContext (KRPCStream (Float))
@@ -11400,7 +11400,7 @@ getResourceEnabled thisArg = do
 
 getResourceEnabledStreamReq :: KRPCHS.SpaceCenter.Resource -> KRPCStreamReq (Bool)
 getResourceEnabledStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Resource_get_Enabled" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Resource_get_Enabled" [makeArgument 0 thisArg]
     in  makeStream req
 
 getResourceEnabledStream :: KRPCHS.SpaceCenter.Resource -> RPCContext (KRPCStream (Bool))
@@ -11417,7 +11417,7 @@ getResourceFlowMode thisArg = do
 
 getResourceFlowModeStreamReq :: KRPCHS.SpaceCenter.Resource -> KRPCStreamReq (KRPCHS.SpaceCenter.ResourceFlowMode)
 getResourceFlowModeStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Resource_get_FlowMode" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Resource_get_FlowMode" [makeArgument 0 thisArg]
     in  makeStream req
 
 getResourceFlowModeStream :: KRPCHS.SpaceCenter.Resource -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ResourceFlowMode))
@@ -11434,7 +11434,7 @@ getResourceMax thisArg = do
 
 getResourceMaxStreamReq :: KRPCHS.SpaceCenter.Resource -> KRPCStreamReq (Float)
 getResourceMaxStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Resource_get_Max" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Resource_get_Max" [makeArgument 0 thisArg]
     in  makeStream req
 
 getResourceMaxStream :: KRPCHS.SpaceCenter.Resource -> RPCContext (KRPCStream (Float))
@@ -11451,7 +11451,7 @@ getResourceName thisArg = do
 
 getResourceNameStreamReq :: KRPCHS.SpaceCenter.Resource -> KRPCStreamReq (Data.Text.Text)
 getResourceNameStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Resource_get_Name" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Resource_get_Name" [makeArgument 0 thisArg]
     in  makeStream req
 
 getResourceNameStream :: KRPCHS.SpaceCenter.Resource -> RPCContext (KRPCStream (Data.Text.Text))
@@ -11468,7 +11468,7 @@ getResourcePart thisArg = do
 
 getResourcePartStreamReq :: KRPCHS.SpaceCenter.Resource -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
 getResourcePartStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Resource_get_Part" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Resource_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
 getResourcePartStream :: KRPCHS.SpaceCenter.Resource -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
@@ -11494,7 +11494,7 @@ resourcesAmount thisArg nameArg = do
 
 resourcesAmountStreamReq :: KRPCHS.SpaceCenter.Resources -> Data.Text.Text -> KRPCStreamReq (Float)
 resourcesAmountStreamReq thisArg nameArg =
-    let req = makeRequest "SpaceCenter" "Resources_Amount" [makeArgument 0 thisArg, makeArgument 1 nameArg]
+    let req = makeCallRequest "SpaceCenter" "Resources_Amount" [makeArgument 0 thisArg, makeArgument 1 nameArg]
     in  makeStream req
 
 resourcesAmountStream :: KRPCHS.SpaceCenter.Resources -> Data.Text.Text -> RPCContext (KRPCStream (Float))
@@ -11511,7 +11511,7 @@ resourcesHasResource thisArg nameArg = do
 
 resourcesHasResourceStreamReq :: KRPCHS.SpaceCenter.Resources -> Data.Text.Text -> KRPCStreamReq (Bool)
 resourcesHasResourceStreamReq thisArg nameArg =
-    let req = makeRequest "SpaceCenter" "Resources_HasResource" [makeArgument 0 thisArg, makeArgument 1 nameArg]
+    let req = makeCallRequest "SpaceCenter" "Resources_HasResource" [makeArgument 0 thisArg, makeArgument 1 nameArg]
     in  makeStream req
 
 resourcesHasResourceStream :: KRPCHS.SpaceCenter.Resources -> Data.Text.Text -> RPCContext (KRPCStream (Bool))
@@ -11528,7 +11528,7 @@ resourcesMax thisArg nameArg = do
 
 resourcesMaxStreamReq :: KRPCHS.SpaceCenter.Resources -> Data.Text.Text -> KRPCStreamReq (Float)
 resourcesMaxStreamReq thisArg nameArg =
-    let req = makeRequest "SpaceCenter" "Resources_Max" [makeArgument 0 thisArg, makeArgument 1 nameArg]
+    let req = makeCallRequest "SpaceCenter" "Resources_Max" [makeArgument 0 thisArg, makeArgument 1 nameArg]
     in  makeStream req
 
 resourcesMaxStream :: KRPCHS.SpaceCenter.Resources -> Data.Text.Text -> RPCContext (KRPCStream (Float))
@@ -11545,7 +11545,7 @@ resourcesWithResource thisArg nameArg = do
 
 resourcesWithResourceStreamReq :: KRPCHS.SpaceCenter.Resources -> Data.Text.Text -> KRPCStreamReq ([KRPCHS.SpaceCenter.Resource])
 resourcesWithResourceStreamReq thisArg nameArg =
-    let req = makeRequest "SpaceCenter" "Resources_WithResource" [makeArgument 0 thisArg, makeArgument 1 nameArg]
+    let req = makeCallRequest "SpaceCenter" "Resources_WithResource" [makeArgument 0 thisArg, makeArgument 1 nameArg]
     in  makeStream req
 
 resourcesWithResourceStream :: KRPCHS.SpaceCenter.Resources -> Data.Text.Text -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Resource]))
@@ -11562,7 +11562,7 @@ getResourcesAll thisArg = do
 
 getResourcesAllStreamReq :: KRPCHS.SpaceCenter.Resources -> KRPCStreamReq ([KRPCHS.SpaceCenter.Resource])
 getResourcesAllStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Resources_get_All" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Resources_get_All" [makeArgument 0 thisArg]
     in  makeStream req
 
 getResourcesAllStream :: KRPCHS.SpaceCenter.Resources -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Resource]))
@@ -11579,7 +11579,7 @@ getResourcesEnabled thisArg = do
 
 getResourcesEnabledStreamReq :: KRPCHS.SpaceCenter.Resources -> KRPCStreamReq (Bool)
 getResourcesEnabledStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Resources_get_Enabled" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Resources_get_Enabled" [makeArgument 0 thisArg]
     in  makeStream req
 
 getResourcesEnabledStream :: KRPCHS.SpaceCenter.Resources -> RPCContext (KRPCStream (Bool))
@@ -11596,7 +11596,7 @@ getResourcesNames thisArg = do
 
 getResourcesNamesStreamReq :: KRPCHS.SpaceCenter.Resources -> KRPCStreamReq ([Data.Text.Text])
 getResourcesNamesStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Resources_get_Names" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Resources_get_Names" [makeArgument 0 thisArg]
     in  makeStream req
 
 getResourcesNamesStream :: KRPCHS.SpaceCenter.Resources -> RPCContext (KRPCStream ([Data.Text.Text]))
@@ -11622,7 +11622,7 @@ resourcesStaticDensity nameArg = do
 
 resourcesStaticDensityStreamReq :: Data.Text.Text -> KRPCStreamReq (Float)
 resourcesStaticDensityStreamReq nameArg =
-    let req = makeRequest "SpaceCenter" "Resources_static_Density" [makeArgument 0 nameArg]
+    let req = makeCallRequest "SpaceCenter" "Resources_static_Density" [makeArgument 0 nameArg]
     in  makeStream req
 
 resourcesStaticDensityStream :: Data.Text.Text -> RPCContext (KRPCStream (Float))
@@ -11639,7 +11639,7 @@ resourcesStaticFlowMode nameArg = do
 
 resourcesStaticFlowModeStreamReq :: Data.Text.Text -> KRPCStreamReq (KRPCHS.SpaceCenter.ResourceFlowMode)
 resourcesStaticFlowModeStreamReq nameArg =
-    let req = makeRequest "SpaceCenter" "Resources_static_FlowMode" [makeArgument 0 nameArg]
+    let req = makeCallRequest "SpaceCenter" "Resources_static_FlowMode" [makeArgument 0 nameArg]
     in  makeStream req
 
 resourcesStaticFlowModeStream :: Data.Text.Text -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ResourceFlowMode))
@@ -11666,7 +11666,7 @@ getScienceDataDataAmount thisArg = do
 
 getScienceDataDataAmountStreamReq :: KRPCHS.SpaceCenter.ScienceData -> KRPCStreamReq (Float)
 getScienceDataDataAmountStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ScienceData_get_DataAmount" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ScienceData_get_DataAmount" [makeArgument 0 thisArg]
     in  makeStream req
 
 getScienceDataDataAmountStream :: KRPCHS.SpaceCenter.ScienceData -> RPCContext (KRPCStream (Float))
@@ -11683,7 +11683,7 @@ getScienceDataScienceValue thisArg = do
 
 getScienceDataScienceValueStreamReq :: KRPCHS.SpaceCenter.ScienceData -> KRPCStreamReq (Float)
 getScienceDataScienceValueStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ScienceData_get_ScienceValue" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ScienceData_get_ScienceValue" [makeArgument 0 thisArg]
     in  makeStream req
 
 getScienceDataScienceValueStream :: KRPCHS.SpaceCenter.ScienceData -> RPCContext (KRPCStream (Float))
@@ -11700,7 +11700,7 @@ getScienceDataTransmitValue thisArg = do
 
 getScienceDataTransmitValueStreamReq :: KRPCHS.SpaceCenter.ScienceData -> KRPCStreamReq (Float)
 getScienceDataTransmitValueStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ScienceData_get_TransmitValue" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ScienceData_get_TransmitValue" [makeArgument 0 thisArg]
     in  makeStream req
 
 getScienceDataTransmitValueStream :: KRPCHS.SpaceCenter.ScienceData -> RPCContext (KRPCStream (Float))
@@ -11717,7 +11717,7 @@ getScienceSubjectDataScale thisArg = do
 
 getScienceSubjectDataScaleStreamReq :: KRPCHS.SpaceCenter.ScienceSubject -> KRPCStreamReq (Float)
 getScienceSubjectDataScaleStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ScienceSubject_get_DataScale" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ScienceSubject_get_DataScale" [makeArgument 0 thisArg]
     in  makeStream req
 
 getScienceSubjectDataScaleStream :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (KRPCStream (Float))
@@ -11734,7 +11734,7 @@ getScienceSubjectIsComplete thisArg = do
 
 getScienceSubjectIsCompleteStreamReq :: KRPCHS.SpaceCenter.ScienceSubject -> KRPCStreamReq (Bool)
 getScienceSubjectIsCompleteStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ScienceSubject_get_IsComplete" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ScienceSubject_get_IsComplete" [makeArgument 0 thisArg]
     in  makeStream req
 
 getScienceSubjectIsCompleteStream :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (KRPCStream (Bool))
@@ -11751,7 +11751,7 @@ getScienceSubjectScience thisArg = do
 
 getScienceSubjectScienceStreamReq :: KRPCHS.SpaceCenter.ScienceSubject -> KRPCStreamReq (Float)
 getScienceSubjectScienceStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ScienceSubject_get_Science" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ScienceSubject_get_Science" [makeArgument 0 thisArg]
     in  makeStream req
 
 getScienceSubjectScienceStream :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (KRPCStream (Float))
@@ -11768,7 +11768,7 @@ getScienceSubjectScienceCap thisArg = do
 
 getScienceSubjectScienceCapStreamReq :: KRPCHS.SpaceCenter.ScienceSubject -> KRPCStreamReq (Float)
 getScienceSubjectScienceCapStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ScienceSubject_get_ScienceCap" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ScienceSubject_get_ScienceCap" [makeArgument 0 thisArg]
     in  makeStream req
 
 getScienceSubjectScienceCapStream :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (KRPCStream (Float))
@@ -11785,7 +11785,7 @@ getScienceSubjectScientificValue thisArg = do
 
 getScienceSubjectScientificValueStreamReq :: KRPCHS.SpaceCenter.ScienceSubject -> KRPCStreamReq (Float)
 getScienceSubjectScientificValueStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ScienceSubject_get_ScientificValue" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ScienceSubject_get_ScientificValue" [makeArgument 0 thisArg]
     in  makeStream req
 
 getScienceSubjectScientificValueStream :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (KRPCStream (Float))
@@ -11802,7 +11802,7 @@ getScienceSubjectSubjectValue thisArg = do
 
 getScienceSubjectSubjectValueStreamReq :: KRPCHS.SpaceCenter.ScienceSubject -> KRPCStreamReq (Float)
 getScienceSubjectSubjectValueStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ScienceSubject_get_SubjectValue" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ScienceSubject_get_SubjectValue" [makeArgument 0 thisArg]
     in  makeStream req
 
 getScienceSubjectSubjectValueStream :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (KRPCStream (Float))
@@ -11819,7 +11819,7 @@ getScienceSubjectTitle thisArg = do
 
 getScienceSubjectTitleStreamReq :: KRPCHS.SpaceCenter.ScienceSubject -> KRPCStreamReq (Data.Text.Text)
 getScienceSubjectTitleStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "ScienceSubject_get_Title" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "ScienceSubject_get_Title" [makeArgument 0 thisArg]
     in  makeStream req
 
 getScienceSubjectTitleStream :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (KRPCStream (Data.Text.Text))
@@ -11836,7 +11836,7 @@ getSensorActive thisArg = do
 
 getSensorActiveStreamReq :: KRPCHS.SpaceCenter.Sensor -> KRPCStreamReq (Bool)
 getSensorActiveStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Sensor_get_Active" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Sensor_get_Active" [makeArgument 0 thisArg]
     in  makeStream req
 
 getSensorActiveStream :: KRPCHS.SpaceCenter.Sensor -> RPCContext (KRPCStream (Bool))
@@ -11853,7 +11853,7 @@ getSensorPart thisArg = do
 
 getSensorPartStreamReq :: KRPCHS.SpaceCenter.Sensor -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
 getSensorPartStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Sensor_get_Part" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Sensor_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
 getSensorPartStream :: KRPCHS.SpaceCenter.Sensor -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
@@ -11870,7 +11870,7 @@ getSensorPowerUsage thisArg = do
 
 getSensorPowerUsageStreamReq :: KRPCHS.SpaceCenter.Sensor -> KRPCStreamReq (Float)
 getSensorPowerUsageStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Sensor_get_PowerUsage" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Sensor_get_PowerUsage" [makeArgument 0 thisArg]
     in  makeStream req
 
 getSensorPowerUsageStream :: KRPCHS.SpaceCenter.Sensor -> RPCContext (KRPCStream (Float))
@@ -11887,7 +11887,7 @@ getSensorValue thisArg = do
 
 getSensorValueStreamReq :: KRPCHS.SpaceCenter.Sensor -> KRPCStreamReq (Data.Text.Text)
 getSensorValueStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Sensor_get_Value" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Sensor_get_Value" [makeArgument 0 thisArg]
     in  makeStream req
 
 getSensorValueStream :: KRPCHS.SpaceCenter.Sensor -> RPCContext (KRPCStream (Data.Text.Text))
@@ -11913,7 +11913,7 @@ getSolarPanelDeployed thisArg = do
 
 getSolarPanelDeployedStreamReq :: KRPCHS.SpaceCenter.SolarPanel -> KRPCStreamReq (Bool)
 getSolarPanelDeployedStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "SolarPanel_get_Deployed" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "SolarPanel_get_Deployed" [makeArgument 0 thisArg]
     in  makeStream req
 
 getSolarPanelDeployedStream :: KRPCHS.SpaceCenter.SolarPanel -> RPCContext (KRPCStream (Bool))
@@ -11931,7 +11931,7 @@ getSolarPanelEnergyFlow thisArg = do
 
 getSolarPanelEnergyFlowStreamReq :: KRPCHS.SpaceCenter.SolarPanel -> KRPCStreamReq (Float)
 getSolarPanelEnergyFlowStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "SolarPanel_get_EnergyFlow" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "SolarPanel_get_EnergyFlow" [makeArgument 0 thisArg]
     in  makeStream req
 
 getSolarPanelEnergyFlowStream :: KRPCHS.SpaceCenter.SolarPanel -> RPCContext (KRPCStream (Float))
@@ -11948,7 +11948,7 @@ getSolarPanelPart thisArg = do
 
 getSolarPanelPartStreamReq :: KRPCHS.SpaceCenter.SolarPanel -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
 getSolarPanelPartStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "SolarPanel_get_Part" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "SolarPanel_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
 getSolarPanelPartStream :: KRPCHS.SpaceCenter.SolarPanel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
@@ -11965,7 +11965,7 @@ getSolarPanelState thisArg = do
 
 getSolarPanelStateStreamReq :: KRPCHS.SpaceCenter.SolarPanel -> KRPCStreamReq (KRPCHS.SpaceCenter.SolarPanelState)
 getSolarPanelStateStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "SolarPanel_get_State" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "SolarPanel_get_State" [makeArgument 0 thisArg]
     in  makeStream req
 
 getSolarPanelStateStream :: KRPCHS.SpaceCenter.SolarPanel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.SolarPanelState))
@@ -11983,7 +11983,7 @@ getSolarPanelSunExposure thisArg = do
 
 getSolarPanelSunExposureStreamReq :: KRPCHS.SpaceCenter.SolarPanel -> KRPCStreamReq (Float)
 getSolarPanelSunExposureStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "SolarPanel_get_SunExposure" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "SolarPanel_get_SunExposure" [makeArgument 0 thisArg]
     in  makeStream req
 
 getSolarPanelSunExposureStream :: KRPCHS.SpaceCenter.SolarPanel -> RPCContext (KRPCStream (Float))
@@ -12009,7 +12009,7 @@ thrusterGimbalPosition thisArg referenceFrameArg = do
 
 thrusterGimbalPositionStreamReq :: KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
 thrusterGimbalPositionStreamReq thisArg referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "Thruster_GimbalPosition" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "Thruster_GimbalPosition" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
 thrusterGimbalPositionStream :: KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -12028,7 +12028,7 @@ thrusterInitialThrustDirection thisArg referenceFrameArg = do
 
 thrusterInitialThrustDirectionStreamReq :: KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
 thrusterInitialThrustDirectionStreamReq thisArg referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "Thruster_InitialThrustDirection" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "Thruster_InitialThrustDirection" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
 thrusterInitialThrustDirectionStream :: KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -12047,7 +12047,7 @@ thrusterInitialThrustPosition thisArg referenceFrameArg = do
 
 thrusterInitialThrustPositionStreamReq :: KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
 thrusterInitialThrustPositionStreamReq thisArg referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "Thruster_InitialThrustPosition" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "Thruster_InitialThrustPosition" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
 thrusterInitialThrustPositionStream :: KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -12066,7 +12066,7 @@ thrusterThrustDirection thisArg referenceFrameArg = do
 
 thrusterThrustDirectionStreamReq :: KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
 thrusterThrustDirectionStreamReq thisArg referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "Thruster_ThrustDirection" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "Thruster_ThrustDirection" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
 thrusterThrustDirectionStream :: KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -12084,7 +12084,7 @@ thrusterThrustPosition thisArg referenceFrameArg = do
 
 thrusterThrustPositionStreamReq :: KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
 thrusterThrustPositionStreamReq thisArg referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "Thruster_ThrustPosition" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "Thruster_ThrustPosition" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
 thrusterThrustPositionStream :: KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -12101,7 +12101,7 @@ getThrusterGimbalAngle thisArg = do
 
 getThrusterGimbalAngleStreamReq :: KRPCHS.SpaceCenter.Thruster -> KRPCStreamReq ((Double, Double, Double))
 getThrusterGimbalAngleStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Thruster_get_GimbalAngle" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Thruster_get_GimbalAngle" [makeArgument 0 thisArg]
     in  makeStream req
 
 getThrusterGimbalAngleStream :: KRPCHS.SpaceCenter.Thruster -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -12118,7 +12118,7 @@ getThrusterGimballed thisArg = do
 
 getThrusterGimballedStreamReq :: KRPCHS.SpaceCenter.Thruster -> KRPCStreamReq (Bool)
 getThrusterGimballedStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Thruster_get_Gimballed" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Thruster_get_Gimballed" [makeArgument 0 thisArg]
     in  makeStream req
 
 getThrusterGimballedStream :: KRPCHS.SpaceCenter.Thruster -> RPCContext (KRPCStream (Bool))
@@ -12135,7 +12135,7 @@ getThrusterPart thisArg = do
 
 getThrusterPartStreamReq :: KRPCHS.SpaceCenter.Thruster -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
 getThrusterPartStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Thruster_get_Part" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Thruster_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
 getThrusterPartStream :: KRPCHS.SpaceCenter.Thruster -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
@@ -12156,7 +12156,7 @@ getThrusterThrustReferenceFrame thisArg = do
 
 getThrusterThrustReferenceFrameStreamReq :: KRPCHS.SpaceCenter.Thruster -> KRPCStreamReq (KRPCHS.SpaceCenter.ReferenceFrame)
 getThrusterThrustReferenceFrameStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Thruster_get_ThrustReferenceFrame" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Thruster_get_ThrustReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
 getThrusterThrustReferenceFrameStream :: KRPCHS.SpaceCenter.Thruster -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
@@ -12173,7 +12173,7 @@ transformDirection directionArg fromArg toArg = do
 
 transformDirectionStreamReq :: (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
 transformDirectionStreamReq directionArg fromArg toArg =
-    let req = makeRequest "SpaceCenter" "TransformDirection" [makeArgument 0 directionArg, makeArgument 1 fromArg, makeArgument 2 toArg]
+    let req = makeCallRequest "SpaceCenter" "TransformDirection" [makeArgument 0 directionArg, makeArgument 1 fromArg, makeArgument 2 toArg]
     in  makeStream req
 
 transformDirectionStream :: (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -12190,7 +12190,7 @@ transformPosition positionArg fromArg toArg = do
 
 transformPositionStreamReq :: (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
 transformPositionStreamReq positionArg fromArg toArg =
-    let req = makeRequest "SpaceCenter" "TransformPosition" [makeArgument 0 positionArg, makeArgument 1 fromArg, makeArgument 2 toArg]
+    let req = makeCallRequest "SpaceCenter" "TransformPosition" [makeArgument 0 positionArg, makeArgument 1 fromArg, makeArgument 2 toArg]
     in  makeStream req
 
 transformPositionStream :: (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -12207,7 +12207,7 @@ transformRotation rotationArg fromArg toArg = do
 
 transformRotationStreamReq :: (Double, Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double, Double))
 transformRotationStreamReq rotationArg fromArg toArg =
-    let req = makeRequest "SpaceCenter" "TransformRotation" [makeArgument 0 rotationArg, makeArgument 1 fromArg, makeArgument 2 toArg]
+    let req = makeCallRequest "SpaceCenter" "TransformRotation" [makeArgument 0 rotationArg, makeArgument 1 fromArg, makeArgument 2 toArg]
     in  makeStream req
 
 transformRotationStream :: (Double, Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double, Double)))
@@ -12226,7 +12226,7 @@ transformVelocity positionArg velocityArg fromArg toArg = do
 
 transformVelocityStreamReq :: (Double, Double, Double) -> (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
 transformVelocityStreamReq positionArg velocityArg fromArg toArg =
-    let req = makeRequest "SpaceCenter" "TransformVelocity" [makeArgument 0 positionArg, makeArgument 1 velocityArg, makeArgument 2 fromArg, makeArgument 3 toArg]
+    let req = makeCallRequest "SpaceCenter" "TransformVelocity" [makeArgument 0 positionArg, makeArgument 1 velocityArg, makeArgument 2 fromArg, makeArgument 3 toArg]
     in  makeStream req
 
 transformVelocityStream :: (Double, Double, Double) -> (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -12245,7 +12245,7 @@ vesselAngularVelocity thisArg referenceFrameArg = do
 
 vesselAngularVelocityStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
 vesselAngularVelocityStreamReq thisArg referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "Vessel_AngularVelocity" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_AngularVelocity" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
 vesselAngularVelocityStream :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -12262,7 +12262,7 @@ vesselDirection thisArg referenceFrameArg = do
 
 vesselDirectionStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
 vesselDirectionStreamReq thisArg referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "Vessel_Direction" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_Direction" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
 vesselDirectionStream :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -12281,7 +12281,7 @@ vesselFlight thisArg referenceFrameArg = do
 
 vesselFlightStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq (KRPCHS.SpaceCenter.Flight)
 vesselFlightStreamReq thisArg referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "Vessel_Flight" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_Flight" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
 vesselFlightStream :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Flight))
@@ -12298,7 +12298,7 @@ vesselPosition thisArg referenceFrameArg = do
 
 vesselPositionStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
 vesselPositionStreamReq thisArg referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "Vessel_Position" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_Position" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
 vesselPositionStream :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -12327,7 +12327,7 @@ vesselResourcesInDecoupleStage thisArg stageArg cumulativeArg = do
 
 vesselResourcesInDecoupleStageStreamReq :: KRPCHS.SpaceCenter.Vessel -> Data.Int.Int32 -> Bool -> KRPCStreamReq (KRPCHS.SpaceCenter.Resources)
 vesselResourcesInDecoupleStageStreamReq thisArg stageArg cumulativeArg =
-    let req = makeRequest "SpaceCenter" "Vessel_ResourcesInDecoupleStage" [makeArgument 0 thisArg, makeArgument 1 stageArg, makeArgument 2 cumulativeArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_ResourcesInDecoupleStage" [makeArgument 0 thisArg, makeArgument 1 stageArg, makeArgument 2 cumulativeArg]
     in  makeStream req
 
 vesselResourcesInDecoupleStageStream :: KRPCHS.SpaceCenter.Vessel -> Data.Int.Int32 -> Bool -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Resources))
@@ -12344,7 +12344,7 @@ vesselRotation thisArg referenceFrameArg = do
 
 vesselRotationStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double, Double))
 vesselRotationStreamReq thisArg referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "Vessel_Rotation" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_Rotation" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
 vesselRotationStream :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double, Double)))
@@ -12361,7 +12361,7 @@ vesselVelocity thisArg referenceFrameArg = do
 
 vesselVelocityStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
 vesselVelocityStreamReq thisArg referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "Vessel_Velocity" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_Velocity" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
 vesselVelocityStream :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -12379,7 +12379,7 @@ getVesselAutoPilot thisArg = do
 
 getVesselAutoPilotStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (KRPCHS.SpaceCenter.AutoPilot)
 getVesselAutoPilotStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Vessel_get_AutoPilot" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_get_AutoPilot" [makeArgument 0 thisArg]
     in  makeStream req
 
 getVesselAutoPilotStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.AutoPilot))
@@ -12399,7 +12399,7 @@ getVesselAvailableControlSurfaceTorque thisArg = do
 
 getVesselAvailableControlSurfaceTorqueStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq ((Double, Double, Double))
 getVesselAvailableControlSurfaceTorqueStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Vessel_get_AvailableControlSurfaceTorque" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_get_AvailableControlSurfaceTorque" [makeArgument 0 thisArg]
     in  makeStream req
 
 getVesselAvailableControlSurfaceTorqueStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -12419,7 +12419,7 @@ getVesselAvailableEngineTorque thisArg = do
 
 getVesselAvailableEngineTorqueStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq ((Double, Double, Double))
 getVesselAvailableEngineTorqueStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Vessel_get_AvailableEngineTorque" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_get_AvailableEngineTorque" [makeArgument 0 thisArg]
     in  makeStream req
 
 getVesselAvailableEngineTorqueStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -12439,7 +12439,7 @@ getVesselAvailableRCSTorque thisArg = do
 
 getVesselAvailableRCSTorqueStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq ((Double, Double, Double))
 getVesselAvailableRCSTorqueStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Vessel_get_AvailableRCSTorque" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_get_AvailableRCSTorque" [makeArgument 0 thisArg]
     in  makeStream req
 
 getVesselAvailableRCSTorqueStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -12459,7 +12459,7 @@ getVesselAvailableReactionWheelTorque thisArg = do
 
 getVesselAvailableReactionWheelTorqueStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq ((Double, Double, Double))
 getVesselAvailableReactionWheelTorqueStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Vessel_get_AvailableReactionWheelTorque" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_get_AvailableReactionWheelTorque" [makeArgument 0 thisArg]
     in  makeStream req
 
 getVesselAvailableReactionWheelTorqueStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -12478,7 +12478,7 @@ getVesselAvailableThrust thisArg = do
 
 getVesselAvailableThrustStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (Float)
 getVesselAvailableThrustStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Vessel_get_AvailableThrust" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_get_AvailableThrust" [makeArgument 0 thisArg]
     in  makeStream req
 
 getVesselAvailableThrustStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Float))
@@ -12499,7 +12499,7 @@ getVesselAvailableTorque thisArg = do
 
 getVesselAvailableTorqueStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq ((Double, Double, Double))
 getVesselAvailableTorqueStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Vessel_get_AvailableTorque" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_get_AvailableTorque" [makeArgument 0 thisArg]
     in  makeStream req
 
 getVesselAvailableTorqueStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -12516,7 +12516,7 @@ getVesselBiome thisArg = do
 
 getVesselBiomeStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (Data.Text.Text)
 getVesselBiomeStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Vessel_get_Biome" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_get_Biome" [makeArgument 0 thisArg]
     in  makeStream req
 
 getVesselBiomeStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Data.Text.Text))
@@ -12535,7 +12535,7 @@ getVesselControl thisArg = do
 
 getVesselControlStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (KRPCHS.SpaceCenter.Control)
 getVesselControlStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Vessel_get_Control" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_get_Control" [makeArgument 0 thisArg]
     in  makeStream req
 
 getVesselControlStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Control))
@@ -12552,7 +12552,7 @@ getVesselDryMass thisArg = do
 
 getVesselDryMassStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (Float)
 getVesselDryMassStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Vessel_get_DryMass" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_get_DryMass" [makeArgument 0 thisArg]
     in  makeStream req
 
 getVesselDryMassStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Float))
@@ -12570,7 +12570,7 @@ getVesselInertiaTensor thisArg = do
 
 getVesselInertiaTensorStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq ([Double])
 getVesselInertiaTensorStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Vessel_get_InertiaTensor" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_get_InertiaTensor" [makeArgument 0 thisArg]
     in  makeStream req
 
 getVesselInertiaTensorStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream ([Double]))
@@ -12589,7 +12589,7 @@ getVesselKerbinSeaLevelSpecificImpulse thisArg = do
 
 getVesselKerbinSeaLevelSpecificImpulseStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (Float)
 getVesselKerbinSeaLevelSpecificImpulseStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Vessel_get_KerbinSeaLevelSpecificImpulse" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_get_KerbinSeaLevelSpecificImpulse" [makeArgument 0 thisArg]
     in  makeStream req
 
 getVesselKerbinSeaLevelSpecificImpulseStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Float))
@@ -12606,7 +12606,7 @@ getVesselMET thisArg = do
 
 getVesselMETStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (Double)
 getVesselMETStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Vessel_get_MET" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_get_MET" [makeArgument 0 thisArg]
     in  makeStream req
 
 getVesselMETStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Double))
@@ -12623,7 +12623,7 @@ getVesselMass thisArg = do
 
 getVesselMassStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (Float)
 getVesselMassStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Vessel_get_Mass" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_get_Mass" [makeArgument 0 thisArg]
     in  makeStream req
 
 getVesselMassStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Float))
@@ -12642,7 +12642,7 @@ getVesselMaxThrust thisArg = do
 
 getVesselMaxThrustStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (Float)
 getVesselMaxThrustStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Vessel_get_MaxThrust" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_get_MaxThrust" [makeArgument 0 thisArg]
     in  makeStream req
 
 getVesselMaxThrustStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Float))
@@ -12661,7 +12661,7 @@ getVesselMaxVacuumThrust thisArg = do
 
 getVesselMaxVacuumThrustStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (Float)
 getVesselMaxVacuumThrustStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Vessel_get_MaxVacuumThrust" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_get_MaxVacuumThrust" [makeArgument 0 thisArg]
     in  makeStream req
 
 getVesselMaxVacuumThrustStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Float))
@@ -12680,7 +12680,7 @@ getVesselMomentOfInertia thisArg = do
 
 getVesselMomentOfInertiaStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq ((Double, Double, Double))
 getVesselMomentOfInertiaStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Vessel_get_MomentOfInertia" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_get_MomentOfInertia" [makeArgument 0 thisArg]
     in  makeStream req
 
 getVesselMomentOfInertiaStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -12697,7 +12697,7 @@ getVesselName thisArg = do
 
 getVesselNameStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (Data.Text.Text)
 getVesselNameStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Vessel_get_Name" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_get_Name" [makeArgument 0 thisArg]
     in  makeStream req
 
 getVesselNameStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Data.Text.Text))
@@ -12714,7 +12714,7 @@ getVesselOrbit thisArg = do
 
 getVesselOrbitStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (KRPCHS.SpaceCenter.Orbit)
 getVesselOrbitStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Vessel_get_Orbit" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_get_Orbit" [makeArgument 0 thisArg]
     in  makeStream req
 
 getVesselOrbitStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Orbit))
@@ -12733,7 +12733,7 @@ getVesselOrbitalReferenceFrame thisArg = do
 
 getVesselOrbitalReferenceFrameStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (KRPCHS.SpaceCenter.ReferenceFrame)
 getVesselOrbitalReferenceFrameStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Vessel_get_OrbitalReferenceFrame" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_get_OrbitalReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
 getVesselOrbitalReferenceFrameStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
@@ -12750,7 +12750,7 @@ getVesselParts thisArg = do
 
 getVesselPartsStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (KRPCHS.SpaceCenter.Parts)
 getVesselPartsStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Vessel_get_Parts" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_get_Parts" [makeArgument 0 thisArg]
     in  makeStream req
 
 getVesselPartsStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Parts))
@@ -12767,7 +12767,7 @@ getVesselRecoverable thisArg = do
 
 getVesselRecoverableStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (Bool)
 getVesselRecoverableStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Vessel_get_Recoverable" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_get_Recoverable" [makeArgument 0 thisArg]
     in  makeStream req
 
 getVesselRecoverableStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Bool))
@@ -12785,7 +12785,7 @@ getVesselReferenceFrame thisArg = do
 
 getVesselReferenceFrameStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (KRPCHS.SpaceCenter.ReferenceFrame)
 getVesselReferenceFrameStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Vessel_get_ReferenceFrame" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_get_ReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
 getVesselReferenceFrameStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
@@ -12803,7 +12803,7 @@ getVesselResources thisArg = do
 
 getVesselResourcesStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (KRPCHS.SpaceCenter.Resources)
 getVesselResourcesStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Vessel_get_Resources" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_get_Resources" [makeArgument 0 thisArg]
     in  makeStream req
 
 getVesselResourcesStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Resources))
@@ -12820,7 +12820,7 @@ getVesselSituation thisArg = do
 
 getVesselSituationStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (KRPCHS.SpaceCenter.VesselSituation)
 getVesselSituationStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Vessel_get_Situation" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_get_Situation" [makeArgument 0 thisArg]
     in  makeStream req
 
 getVesselSituationStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.VesselSituation))
@@ -12838,7 +12838,7 @@ getVesselSpecificImpulse thisArg = do
 
 getVesselSpecificImpulseStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (Float)
 getVesselSpecificImpulseStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Vessel_get_SpecificImpulse" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_get_SpecificImpulse" [makeArgument 0 thisArg]
     in  makeStream req
 
 getVesselSpecificImpulseStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Float))
@@ -12862,7 +12862,7 @@ getVesselSurfaceReferenceFrame thisArg = do
 
 getVesselSurfaceReferenceFrameStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (KRPCHS.SpaceCenter.ReferenceFrame)
 getVesselSurfaceReferenceFrameStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Vessel_get_SurfaceReferenceFrame" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_get_SurfaceReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
 getVesselSurfaceReferenceFrameStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
@@ -12883,7 +12883,7 @@ getVesselSurfaceVelocityReferenceFrame thisArg = do
 
 getVesselSurfaceVelocityReferenceFrameStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (KRPCHS.SpaceCenter.ReferenceFrame)
 getVesselSurfaceVelocityReferenceFrameStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Vessel_get_SurfaceVelocityReferenceFrame" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_get_SurfaceVelocityReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
 getVesselSurfaceVelocityReferenceFrameStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
@@ -12902,7 +12902,7 @@ getVesselThrust thisArg = do
 
 getVesselThrustStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (Float)
 getVesselThrustStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Vessel_get_Thrust" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_get_Thrust" [makeArgument 0 thisArg]
     in  makeStream req
 
 getVesselThrustStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Float))
@@ -12919,7 +12919,7 @@ getVesselType thisArg = do
 
 getVesselTypeStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (KRPCHS.SpaceCenter.VesselType)
 getVesselTypeStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Vessel_get_Type" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_get_Type" [makeArgument 0 thisArg]
     in  makeStream req
 
 getVesselTypeStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.VesselType))
@@ -12937,7 +12937,7 @@ getVesselVacuumSpecificImpulse thisArg = do
 
 getVesselVacuumSpecificImpulseStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (Float)
 getVesselVacuumSpecificImpulseStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Vessel_get_VacuumSpecificImpulse" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Vessel_get_VacuumSpecificImpulse" [makeArgument 0 thisArg]
     in  makeStream req
 
 getVesselVacuumSpecificImpulseStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Float))
@@ -12988,7 +12988,7 @@ waypointManagerAddWaypoint thisArg latitudeArg longitudeArg bodyArg nameArg = do
 
 waypointManagerAddWaypointStreamReq :: KRPCHS.SpaceCenter.WaypointManager -> Double -> Double -> KRPCHS.SpaceCenter.CelestialBody -> Data.Text.Text -> KRPCStreamReq (KRPCHS.SpaceCenter.Waypoint)
 waypointManagerAddWaypointStreamReq thisArg latitudeArg longitudeArg bodyArg nameArg =
-    let req = makeRequest "SpaceCenter" "WaypointManager_AddWaypoint" [makeArgument 0 thisArg, makeArgument 1 latitudeArg, makeArgument 2 longitudeArg, makeArgument 3 bodyArg, makeArgument 4 nameArg]
+    let req = makeCallRequest "SpaceCenter" "WaypointManager_AddWaypoint" [makeArgument 0 thisArg, makeArgument 1 latitudeArg, makeArgument 2 longitudeArg, makeArgument 3 bodyArg, makeArgument 4 nameArg]
     in  makeStream req
 
 waypointManagerAddWaypointStream :: KRPCHS.SpaceCenter.WaypointManager -> Double -> Double -> KRPCHS.SpaceCenter.CelestialBody -> Data.Text.Text -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Waypoint))
@@ -13006,7 +13006,7 @@ getWaypointManagerColors thisArg = do
 
 getWaypointManagerColorsStreamReq :: KRPCHS.SpaceCenter.WaypointManager -> KRPCStreamReq (Data.Map.Map (Data.Text.Text) (Data.Int.Int32))
 getWaypointManagerColorsStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "WaypointManager_get_Colors" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "WaypointManager_get_Colors" [makeArgument 0 thisArg]
     in  makeStream req
 
 getWaypointManagerColorsStream :: KRPCHS.SpaceCenter.WaypointManager -> RPCContext (KRPCStream (Data.Map.Map (Data.Text.Text) (Data.Int.Int32)))
@@ -13023,7 +13023,7 @@ getWaypointManagerIcons thisArg = do
 
 getWaypointManagerIconsStreamReq :: KRPCHS.SpaceCenter.WaypointManager -> KRPCStreamReq ([Data.Text.Text])
 getWaypointManagerIconsStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "WaypointManager_get_Icons" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "WaypointManager_get_Icons" [makeArgument 0 thisArg]
     in  makeStream req
 
 getWaypointManagerIconsStream :: KRPCHS.SpaceCenter.WaypointManager -> RPCContext (KRPCStream ([Data.Text.Text]))
@@ -13040,7 +13040,7 @@ getWaypointManagerWaypoints thisArg = do
 
 getWaypointManagerWaypointsStreamReq :: KRPCHS.SpaceCenter.WaypointManager -> KRPCStreamReq ([KRPCHS.SpaceCenter.Waypoint])
 getWaypointManagerWaypointsStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "WaypointManager_get_Waypoints" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "WaypointManager_get_Waypoints" [makeArgument 0 thisArg]
     in  makeStream req
 
 getWaypointManagerWaypointsStream :: KRPCHS.SpaceCenter.WaypointManager -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Waypoint]))
@@ -13066,7 +13066,7 @@ getWaypointBedrockAltitude thisArg = do
 
 getWaypointBedrockAltitudeStreamReq :: KRPCHS.SpaceCenter.Waypoint -> KRPCStreamReq (Double)
 getWaypointBedrockAltitudeStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Waypoint_get_BedrockAltitude" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Waypoint_get_BedrockAltitude" [makeArgument 0 thisArg]
     in  makeStream req
 
 getWaypointBedrockAltitudeStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Double))
@@ -13083,7 +13083,7 @@ getWaypointBody thisArg = do
 
 getWaypointBodyStreamReq :: KRPCHS.SpaceCenter.Waypoint -> KRPCStreamReq (KRPCHS.SpaceCenter.CelestialBody)
 getWaypointBodyStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Waypoint_get_Body" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Waypoint_get_Body" [makeArgument 0 thisArg]
     in  makeStream req
 
 getWaypointBodyStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.CelestialBody))
@@ -13101,7 +13101,7 @@ getWaypointClustered thisArg = do
 
 getWaypointClusteredStreamReq :: KRPCHS.SpaceCenter.Waypoint -> KRPCStreamReq (Bool)
 getWaypointClusteredStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Waypoint_get_Clustered" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Waypoint_get_Clustered" [makeArgument 0 thisArg]
     in  makeStream req
 
 getWaypointClusteredStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Bool))
@@ -13118,7 +13118,7 @@ getWaypointColor thisArg = do
 
 getWaypointColorStreamReq :: KRPCHS.SpaceCenter.Waypoint -> KRPCStreamReq (Data.Int.Int32)
 getWaypointColorStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Waypoint_get_Color" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Waypoint_get_Color" [makeArgument 0 thisArg]
     in  makeStream req
 
 getWaypointColorStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Data.Int.Int32))
@@ -13136,7 +13136,7 @@ getWaypointContractId thisArg = do
 
 getWaypointContractIdStreamReq :: KRPCHS.SpaceCenter.Waypoint -> KRPCStreamReq (Data.Int.Int64)
 getWaypointContractIdStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Waypoint_get_ContractId" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Waypoint_get_ContractId" [makeArgument 0 thisArg]
     in  makeStream req
 
 getWaypointContractIdStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Data.Int.Int64))
@@ -13153,7 +13153,7 @@ getWaypointGrounded thisArg = do
 
 getWaypointGroundedStreamReq :: KRPCHS.SpaceCenter.Waypoint -> KRPCStreamReq (Bool)
 getWaypointGroundedStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Waypoint_get_Grounded" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Waypoint_get_Grounded" [makeArgument 0 thisArg]
     in  makeStream req
 
 getWaypointGroundedStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Bool))
@@ -13170,7 +13170,7 @@ getWaypointHasContract thisArg = do
 
 getWaypointHasContractStreamReq :: KRPCHS.SpaceCenter.Waypoint -> KRPCStreamReq (Bool)
 getWaypointHasContractStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Waypoint_get_HasContract" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Waypoint_get_HasContract" [makeArgument 0 thisArg]
     in  makeStream req
 
 getWaypointHasContractStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Bool))
@@ -13187,7 +13187,7 @@ getWaypointIcon thisArg = do
 
 getWaypointIconStreamReq :: KRPCHS.SpaceCenter.Waypoint -> KRPCStreamReq (Data.Text.Text)
 getWaypointIconStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Waypoint_get_Icon" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Waypoint_get_Icon" [makeArgument 0 thisArg]
     in  makeStream req
 
 getWaypointIconStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Data.Text.Text))
@@ -13207,7 +13207,7 @@ getWaypointIndex thisArg = do
 
 getWaypointIndexStreamReq :: KRPCHS.SpaceCenter.Waypoint -> KRPCStreamReq (Data.Int.Int32)
 getWaypointIndexStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Waypoint_get_Index" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Waypoint_get_Index" [makeArgument 0 thisArg]
     in  makeStream req
 
 getWaypointIndexStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Data.Int.Int32))
@@ -13224,7 +13224,7 @@ getWaypointLatitude thisArg = do
 
 getWaypointLatitudeStreamReq :: KRPCHS.SpaceCenter.Waypoint -> KRPCStreamReq (Double)
 getWaypointLatitudeStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Waypoint_get_Latitude" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Waypoint_get_Latitude" [makeArgument 0 thisArg]
     in  makeStream req
 
 getWaypointLatitudeStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Double))
@@ -13241,7 +13241,7 @@ getWaypointLongitude thisArg = do
 
 getWaypointLongitudeStreamReq :: KRPCHS.SpaceCenter.Waypoint -> KRPCStreamReq (Double)
 getWaypointLongitudeStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Waypoint_get_Longitude" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Waypoint_get_Longitude" [makeArgument 0 thisArg]
     in  makeStream req
 
 getWaypointLongitudeStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Double))
@@ -13258,7 +13258,7 @@ getWaypointMeanAltitude thisArg = do
 
 getWaypointMeanAltitudeStreamReq :: KRPCHS.SpaceCenter.Waypoint -> KRPCStreamReq (Double)
 getWaypointMeanAltitudeStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Waypoint_get_MeanAltitude" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Waypoint_get_MeanAltitude" [makeArgument 0 thisArg]
     in  makeStream req
 
 getWaypointMeanAltitudeStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Double))
@@ -13275,7 +13275,7 @@ getWaypointName thisArg = do
 
 getWaypointNameStreamReq :: KRPCHS.SpaceCenter.Waypoint -> KRPCStreamReq (Data.Text.Text)
 getWaypointNameStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Waypoint_get_Name" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Waypoint_get_Name" [makeArgument 0 thisArg]
     in  makeStream req
 
 getWaypointNameStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Data.Text.Text))
@@ -13292,7 +13292,7 @@ getWaypointNearSurface thisArg = do
 
 getWaypointNearSurfaceStreamReq :: KRPCHS.SpaceCenter.Waypoint -> KRPCStreamReq (Bool)
 getWaypointNearSurfaceStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Waypoint_get_NearSurface" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Waypoint_get_NearSurface" [makeArgument 0 thisArg]
     in  makeStream req
 
 getWaypointNearSurfaceStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Bool))
@@ -13309,7 +13309,7 @@ getWaypointSurfaceAltitude thisArg = do
 
 getWaypointSurfaceAltitudeStreamReq :: KRPCHS.SpaceCenter.Waypoint -> KRPCStreamReq (Double)
 getWaypointSurfaceAltitudeStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Waypoint_get_SurfaceAltitude" [makeArgument 0 thisArg]
+    let req = makeCallRequest "SpaceCenter" "Waypoint_get_SurfaceAltitude" [makeArgument 0 thisArg]
     in  makeStream req
 
 getWaypointSurfaceAltitudeStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Double))
@@ -13407,7 +13407,7 @@ getActiveVessel  = do
 
 getActiveVesselStreamReq :: KRPCStreamReq (KRPCHS.SpaceCenter.Vessel)
 getActiveVesselStreamReq  =
-    let req = makeRequest "SpaceCenter" "get_ActiveVessel" []
+    let req = makeCallRequest "SpaceCenter" "get_ActiveVessel" []
     in  makeStream req
 
 getActiveVesselStream :: RPCContext (KRPCStream (KRPCHS.SpaceCenter.Vessel))
@@ -13425,7 +13425,7 @@ getBodies  = do
 
 getBodiesStreamReq :: KRPCStreamReq (Data.Map.Map (Data.Text.Text) (KRPCHS.SpaceCenter.CelestialBody))
 getBodiesStreamReq  =
-    let req = makeRequest "SpaceCenter" "get_Bodies" []
+    let req = makeCallRequest "SpaceCenter" "get_Bodies" []
     in  makeStream req
 
 getBodiesStream :: RPCContext (KRPCStream (Data.Map.Map (Data.Text.Text) (KRPCHS.SpaceCenter.CelestialBody)))
@@ -13442,7 +13442,7 @@ getCamera  = do
 
 getCameraStreamReq :: KRPCStreamReq (KRPCHS.SpaceCenter.Camera)
 getCameraStreamReq  =
-    let req = makeRequest "SpaceCenter" "get_Camera" []
+    let req = makeCallRequest "SpaceCenter" "get_Camera" []
     in  makeStream req
 
 getCameraStream :: RPCContext (KRPCStream (KRPCHS.SpaceCenter.Camera))
@@ -13459,7 +13459,7 @@ getFARAvailable  = do
 
 getFARAvailableStreamReq :: KRPCStreamReq (Bool)
 getFARAvailableStreamReq  =
-    let req = makeRequest "SpaceCenter" "get_FARAvailable" []
+    let req = makeCallRequest "SpaceCenter" "get_FARAvailable" []
     in  makeStream req
 
 getFARAvailableStream :: RPCContext (KRPCStream (Bool))
@@ -13476,7 +13476,7 @@ getG  = do
 
 getGStreamReq :: KRPCStreamReq (Float)
 getGStreamReq  =
-    let req = makeRequest "SpaceCenter" "get_G" []
+    let req = makeCallRequest "SpaceCenter" "get_G" []
     in  makeStream req
 
 getGStream :: RPCContext (KRPCStream (Float))
@@ -13495,7 +13495,7 @@ getMaximumRailsWarpFactor  = do
 
 getMaximumRailsWarpFactorStreamReq :: KRPCStreamReq (Data.Int.Int32)
 getMaximumRailsWarpFactorStreamReq  =
-    let req = makeRequest "SpaceCenter" "get_MaximumRailsWarpFactor" []
+    let req = makeCallRequest "SpaceCenter" "get_MaximumRailsWarpFactor" []
     in  makeStream req
 
 getMaximumRailsWarpFactorStream :: RPCContext (KRPCStream (Data.Int.Int32))
@@ -13513,7 +13513,7 @@ getPhysicsWarpFactor  = do
 
 getPhysicsWarpFactorStreamReq :: KRPCStreamReq (Data.Int.Int32)
 getPhysicsWarpFactorStreamReq  =
-    let req = makeRequest "SpaceCenter" "get_PhysicsWarpFactor" []
+    let req = makeCallRequest "SpaceCenter" "get_PhysicsWarpFactor" []
     in  makeStream req
 
 getPhysicsWarpFactorStream :: RPCContext (KRPCStream (Data.Int.Int32))
@@ -13537,7 +13537,7 @@ getRailsWarpFactor  = do
 
 getRailsWarpFactorStreamReq :: KRPCStreamReq (Data.Int.Int32)
 getRailsWarpFactorStreamReq  =
-    let req = makeRequest "SpaceCenter" "get_RailsWarpFactor" []
+    let req = makeCallRequest "SpaceCenter" "get_RailsWarpFactor" []
     in  makeStream req
 
 getRailsWarpFactorStream :: RPCContext (KRPCStream (Data.Int.Int32))
@@ -13554,7 +13554,7 @@ getTargetBody  = do
 
 getTargetBodyStreamReq :: KRPCStreamReq (KRPCHS.SpaceCenter.CelestialBody)
 getTargetBodyStreamReq  =
-    let req = makeRequest "SpaceCenter" "get_TargetBody" []
+    let req = makeCallRequest "SpaceCenter" "get_TargetBody" []
     in  makeStream req
 
 getTargetBodyStream :: RPCContext (KRPCStream (KRPCHS.SpaceCenter.CelestialBody))
@@ -13571,7 +13571,7 @@ getTargetDockingPort  = do
 
 getTargetDockingPortStreamReq :: KRPCStreamReq (KRPCHS.SpaceCenter.DockingPort)
 getTargetDockingPortStreamReq  =
-    let req = makeRequest "SpaceCenter" "get_TargetDockingPort" []
+    let req = makeCallRequest "SpaceCenter" "get_TargetDockingPort" []
     in  makeStream req
 
 getTargetDockingPortStream :: RPCContext (KRPCStream (KRPCHS.SpaceCenter.DockingPort))
@@ -13588,7 +13588,7 @@ getTargetVessel  = do
 
 getTargetVesselStreamReq :: KRPCStreamReq (KRPCHS.SpaceCenter.Vessel)
 getTargetVesselStreamReq  =
-    let req = makeRequest "SpaceCenter" "get_TargetVessel" []
+    let req = makeCallRequest "SpaceCenter" "get_TargetVessel" []
     in  makeStream req
 
 getTargetVesselStream :: RPCContext (KRPCStream (KRPCHS.SpaceCenter.Vessel))
@@ -13605,7 +13605,7 @@ getUT  = do
 
 getUTStreamReq :: KRPCStreamReq (Double)
 getUTStreamReq  =
-    let req = makeRequest "SpaceCenter" "get_UT" []
+    let req = makeCallRequest "SpaceCenter" "get_UT" []
     in  makeStream req
 
 getUTStream :: RPCContext (KRPCStream (Double))
@@ -13622,7 +13622,7 @@ getVessels  = do
 
 getVesselsStreamReq :: KRPCStreamReq ([KRPCHS.SpaceCenter.Vessel])
 getVesselsStreamReq  =
-    let req = makeRequest "SpaceCenter" "get_Vessels" []
+    let req = makeCallRequest "SpaceCenter" "get_Vessels" []
     in  makeStream req
 
 getVesselsStream :: RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Vessel]))
@@ -13643,7 +13643,7 @@ getWarpFactor  = do
 
 getWarpFactorStreamReq :: KRPCStreamReq (Float)
 getWarpFactorStreamReq  =
-    let req = makeRequest "SpaceCenter" "get_WarpFactor" []
+    let req = makeCallRequest "SpaceCenter" "get_WarpFactor" []
     in  makeStream req
 
 getWarpFactorStream :: RPCContext (KRPCStream (Float))
@@ -13662,7 +13662,7 @@ getWarpMode  = do
 
 getWarpModeStreamReq :: KRPCStreamReq (KRPCHS.SpaceCenter.WarpMode)
 getWarpModeStreamReq  =
-    let req = makeRequest "SpaceCenter" "get_WarpMode" []
+    let req = makeCallRequest "SpaceCenter" "get_WarpMode" []
     in  makeStream req
 
 getWarpModeStream :: RPCContext (KRPCStream (KRPCHS.SpaceCenter.WarpMode))
@@ -13682,7 +13682,7 @@ getWarpRate  = do
 
 getWarpRateStreamReq :: KRPCStreamReq (Float)
 getWarpRateStreamReq  =
-    let req = makeRequest "SpaceCenter" "get_WarpRate" []
+    let req = makeCallRequest "SpaceCenter" "get_WarpRate" []
     in  makeStream req
 
 getWarpRateStream :: RPCContext (KRPCStream (Float))
@@ -13699,7 +13699,7 @@ getWaypointManager  = do
 
 getWaypointManagerStreamReq :: KRPCStreamReq (KRPCHS.SpaceCenter.WaypointManager)
 getWaypointManagerStreamReq  =
-    let req = makeRequest "SpaceCenter" "get_WaypointManager" []
+    let req = makeCallRequest "SpaceCenter" "get_WaypointManager" []
     in  makeStream req
 
 getWaypointManagerStream :: RPCContext (KRPCStream (KRPCHS.SpaceCenter.WaypointManager))

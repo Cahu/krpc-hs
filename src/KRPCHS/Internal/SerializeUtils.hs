@@ -29,6 +29,7 @@ import qualified Text.ProtocolBuffers.Get         as G
 import qualified Text.ProtocolBuffers.Basic       as B
 import qualified Text.ProtocolBuffers.WireMessage as W
 
+import qualified PB.KRPC.Stream          as KStr
 import qualified PB.KRPC.List            as KList
 import qualified PB.KRPC.Tuple           as KTuple
 import qualified PB.KRPC.Dictionary      as KDict
@@ -100,6 +101,11 @@ class PbSerializable a where
 instance PbSerializable () where
     decodePb _ = Right ()
     encodePb _ = undefined
+
+
+instance PbSerializable KStr.Stream where
+    decodePb = messageGet
+    encodePb = messagePut
 
 
 instance PbSerializable Double where

@@ -337,7 +337,7 @@ instance KRPCResponseExtractable [% enum.name %]
 [% proc.name _ 'StreamReq' %] :: KRPCStreamReq ([% proc.ret %])
 [%- END %]
 [% proc.name _ 'StreamReq' %] [% names.join(' ') %] =
-    let req = makeRequest "[% serviceName %]" "[% proc.rpcname %]" [[% args.join(', ') %]]
+    let req = makeCallRequest "[% serviceName %]" "[% proc.rpcname %]" [[% args.join(', ') %]]
     in  makeStream req
 
 [%- IF types.size > 0 %]

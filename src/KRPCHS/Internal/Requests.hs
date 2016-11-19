@@ -9,6 +9,7 @@ module KRPCHS.Internal.Requests
 , KRPCStream(..)
 , KRPCStreamReq(..)
 , KRPCStreamMsg(..)
+, StreamID
 , emptyKRPCStreamMsg
 
 , KRPCResponseExtractable
@@ -17,6 +18,7 @@ module KRPCHS.Internal.Requests
 , makeArgument
 , processResult
 , processResponse
+, makeCallRequest
 , makeRequest
 , sendRequest
 , makeStream
@@ -37,6 +39,7 @@ import KRPCHS.Internal.SerializeUtils
 import qualified PB.KRPC.Argument        as KArg
 import qualified PB.KRPC.Request         as KReq
 import qualified PB.KRPC.Response        as KRes
+import qualified PB.KRPC.Stream          as KStr
 import qualified PB.KRPC.ProcedureCall   as KPReq
 import qualified PB.KRPC.ProcedureResult as KPRes
 import qualified PB.KRPC.StreamUpdate    as KStreamMsg
@@ -55,20 +58,26 @@ import qualified Data.ByteString.Lazy  as BS
 import qualified Text.ProtocolBuffers  as P
 
 
-data RPCClient    = RPCClient    { rpcSocket    :: Socket, clientId :: BS.ByteString }
+-- | An RPC client bound to a KRPC server
+data RPCClient = RPCClient { rpcSocket :: Socket, clientId :: BS.ByteString }
+
+-- | A stream client bound to a KRPC Stream server
 data StreamClient = StreamClient { streamSocket :: Socket }
+
+
+type StreamID = Word64
 
 
 newtype RPCContext a = RPCContext { runRPCContext :: ReaderT RPCClient IO a }
     deriving (Functor, Applicative, Monad, MonadIO, MonadReader RPCClient, MonadThrow, MonadCatch, MonadMask)
 
-newtype KRPCStream a = KRPCStream { streamId :: Int }
+newtype KRPCStream a = KRPCStream { streamId :: StreamID }
     deriving (Show)
 
 newtype KRPCStreamReq a = KRPCStreamReq { streamReq :: KReq.Request }
     deriving (Show)
 
-newtype KRPCStreamMsg = KRPCStreamMsg { streamMsg :: M.Map Int KPRes.ProcedureResult }
+newtype KRPCStreamMsg = KRPCStreamMsg { streamMsg :: M.Map StreamID KPRes.ProcedureResult }
     deriving (Show)
 
 emptyKRPCStreamMsg :: KRPCStreamMsg
@@ -80,6 +89,7 @@ class (PbSerializable a) => KRPCResponseExtractable a where
     extract r = do
         checkError r
         maybe (Left ResponseEmpty) (decodePb) (KPRes.value r)
+
 
 instance KRPCResponseExtractable Bool
 instance KRPCResponseExtractable Float
@@ -93,6 +103,9 @@ instance KRPCResponseExtractable T.Text
 instance (PbSerializable a, PbSerializable b)                                     => KRPCResponseExtractable (a, b)
 instance (PbSerializable a, PbSerializable b, PbSerializable c)                   => KRPCResponseExtractable (a, b, c)
 instance (PbSerializable a, PbSerializable b, PbSerializable c, PbSerializable d) => KRPCResponseExtractable (a, b, c, d)
+
+-- as of krpc 0.4, stream ids are encapsulated in a message
+instance KRPCResponseExtractable KStr.Stream
 
 
 instance KRPCResponseExtractable () where
@@ -154,7 +167,7 @@ makeRequest :: String -> String -> [KArg.Argument] -> KReq.Request
 makeRequest serviceName procName params = KReq.Request . Seq.singleton $ makeCallRequest serviceName procName params
 
 
-makeStream :: KReq.Request -> KRPCStreamReq a
+makeStream :: KPReq.ProcedureCall -> KRPCStreamReq a
 makeStream r = KRPCStreamReq $
     makeRequest "KRPC" "AddStream" [KArg.Argument (Just 0) (Just $ messagePut r)]
 
@@ -162,18 +175,19 @@ makeStream r = KRPCStreamReq $
 requestStream :: KRPCResponseExtractable a => KRPCStreamReq a -> RPCContext (KRPCStream a)
 requestStream KRPCStreamReq{..} = do
     res <- sendRequest streamReq
-    sid <- processResponse res
+    str <- processResponse res
+    let sid = fromJust (KStr.id str)
     return (KRPCStream sid)
 
 
-extractStreamResponse :: KStreamRes.StreamResult -> Maybe (Int, KPRes.ProcedureResult)
+extractStreamResponse :: KStreamRes.StreamResult -> Maybe (StreamID, KPRes.ProcedureResult)
 extractStreamResponse streamRes = do
     sid <- KStreamRes.id     streamRes
     res <- KStreamRes.result streamRes
-    return (fromIntegral sid, res)
+    return (sid, res)
 
 
-extractStreamMessage :: KStreamMsg.StreamUpdate -> [(Int, KPRes.ProcedureResult)]
+extractStreamMessage :: KStreamMsg.StreamUpdate -> [(StreamID, KPRes.ProcedureResult)]
 extractStreamMessage msg = mapMaybe extractStreamResponse responseList
     where responseList = Data.Foldable.toList (KStreamMsg.results msg)
 

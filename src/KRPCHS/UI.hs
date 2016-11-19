@@ -334,7 +334,7 @@ addCanvas  = do
 
 addCanvasStreamReq :: KRPCStreamReq (KRPCHS.UI.Canvas)
 addCanvasStreamReq  =
-    let req = makeRequest "UI" "AddCanvas" []
+    let req = makeCallRequest "UI" "AddCanvas" []
     in  makeStream req
 
 addCanvasStream :: RPCContext (KRPCStream (KRPCHS.UI.Canvas))
@@ -361,7 +361,7 @@ getButtonClicked thisArg = do
 
 getButtonClickedStreamReq :: KRPCHS.UI.Button -> KRPCStreamReq (Bool)
 getButtonClickedStreamReq thisArg =
-    let req = makeRequest "UI" "Button_get_Clicked" [makeArgument 0 thisArg]
+    let req = makeCallRequest "UI" "Button_get_Clicked" [makeArgument 0 thisArg]
     in  makeStream req
 
 getButtonClickedStream :: KRPCHS.UI.Button -> RPCContext (KRPCStream (Bool))
@@ -378,7 +378,7 @@ getButtonRectTransform thisArg = do
 
 getButtonRectTransformStreamReq :: KRPCHS.UI.Button -> KRPCStreamReq (KRPCHS.UI.RectTransform)
 getButtonRectTransformStreamReq thisArg =
-    let req = makeRequest "UI" "Button_get_RectTransform" [makeArgument 0 thisArg]
+    let req = makeCallRequest "UI" "Button_get_RectTransform" [makeArgument 0 thisArg]
     in  makeStream req
 
 getButtonRectTransformStream :: KRPCHS.UI.Button -> RPCContext (KRPCStream (KRPCHS.UI.RectTransform))
@@ -395,7 +395,7 @@ getButtonText thisArg = do
 
 getButtonTextStreamReq :: KRPCHS.UI.Button -> KRPCStreamReq (KRPCHS.UI.Text)
 getButtonTextStreamReq thisArg =
-    let req = makeRequest "UI" "Button_get_Text" [makeArgument 0 thisArg]
+    let req = makeCallRequest "UI" "Button_get_Text" [makeArgument 0 thisArg]
     in  makeStream req
 
 getButtonTextStream :: KRPCHS.UI.Button -> RPCContext (KRPCStream (KRPCHS.UI.Text))
@@ -412,7 +412,7 @@ getButtonVisible thisArg = do
 
 getButtonVisibleStreamReq :: KRPCHS.UI.Button -> KRPCStreamReq (Bool)
 getButtonVisibleStreamReq thisArg =
-    let req = makeRequest "UI" "Button_get_Visible" [makeArgument 0 thisArg]
+    let req = makeCallRequest "UI" "Button_get_Visible" [makeArgument 0 thisArg]
     in  makeStream req
 
 getButtonVisibleStream :: KRPCHS.UI.Button -> RPCContext (KRPCStream (Bool))
@@ -448,7 +448,7 @@ canvasAddButton thisArg contentArg visibleArg = do
 
 canvasAddButtonStreamReq :: KRPCHS.UI.Canvas -> Data.Text.Text -> Bool -> KRPCStreamReq (KRPCHS.UI.Button)
 canvasAddButtonStreamReq thisArg contentArg visibleArg =
-    let req = makeRequest "UI" "Canvas_AddButton" [makeArgument 0 thisArg, makeArgument 1 contentArg, makeArgument 2 visibleArg]
+    let req = makeCallRequest "UI" "Canvas_AddButton" [makeArgument 0 thisArg, makeArgument 1 contentArg, makeArgument 2 visibleArg]
     in  makeStream req
 
 canvasAddButtonStream :: KRPCHS.UI.Canvas -> Data.Text.Text -> Bool -> RPCContext (KRPCStream (KRPCHS.UI.Button))
@@ -465,7 +465,7 @@ canvasAddInputField thisArg visibleArg = do
 
 canvasAddInputFieldStreamReq :: KRPCHS.UI.Canvas -> Bool -> KRPCStreamReq (KRPCHS.UI.InputField)
 canvasAddInputFieldStreamReq thisArg visibleArg =
-    let req = makeRequest "UI" "Canvas_AddInputField" [makeArgument 0 thisArg, makeArgument 1 visibleArg]
+    let req = makeCallRequest "UI" "Canvas_AddInputField" [makeArgument 0 thisArg, makeArgument 1 visibleArg]
     in  makeStream req
 
 canvasAddInputFieldStream :: KRPCHS.UI.Canvas -> Bool -> RPCContext (KRPCStream (KRPCHS.UI.InputField))
@@ -482,7 +482,7 @@ canvasAddPanel thisArg visibleArg = do
 
 canvasAddPanelStreamReq :: KRPCHS.UI.Canvas -> Bool -> KRPCStreamReq (KRPCHS.UI.Panel)
 canvasAddPanelStreamReq thisArg visibleArg =
-    let req = makeRequest "UI" "Canvas_AddPanel" [makeArgument 0 thisArg, makeArgument 1 visibleArg]
+    let req = makeCallRequest "UI" "Canvas_AddPanel" [makeArgument 0 thisArg, makeArgument 1 visibleArg]
     in  makeStream req
 
 canvasAddPanelStream :: KRPCHS.UI.Canvas -> Bool -> RPCContext (KRPCStream (KRPCHS.UI.Panel))
@@ -499,7 +499,7 @@ canvasAddText thisArg contentArg visibleArg = do
 
 canvasAddTextStreamReq :: KRPCHS.UI.Canvas -> Data.Text.Text -> Bool -> KRPCStreamReq (KRPCHS.UI.Text)
 canvasAddTextStreamReq thisArg contentArg visibleArg =
-    let req = makeRequest "UI" "Canvas_AddText" [makeArgument 0 thisArg, makeArgument 1 contentArg, makeArgument 2 visibleArg]
+    let req = makeCallRequest "UI" "Canvas_AddText" [makeArgument 0 thisArg, makeArgument 1 contentArg, makeArgument 2 visibleArg]
     in  makeStream req
 
 canvasAddTextStream :: KRPCHS.UI.Canvas -> Data.Text.Text -> Bool -> RPCContext (KRPCStream (KRPCHS.UI.Text))
@@ -525,7 +525,7 @@ getCanvasRectTransform thisArg = do
 
 getCanvasRectTransformStreamReq :: KRPCHS.UI.Canvas -> KRPCStreamReq (KRPCHS.UI.RectTransform)
 getCanvasRectTransformStreamReq thisArg =
-    let req = makeRequest "UI" "Canvas_get_RectTransform" [makeArgument 0 thisArg]
+    let req = makeCallRequest "UI" "Canvas_get_RectTransform" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCanvasRectTransformStream :: KRPCHS.UI.Canvas -> RPCContext (KRPCStream (KRPCHS.UI.RectTransform))
@@ -542,7 +542,7 @@ getCanvasVisible thisArg = do
 
 getCanvasVisibleStreamReq :: KRPCHS.UI.Canvas -> KRPCStreamReq (Bool)
 getCanvasVisibleStreamReq thisArg =
-    let req = makeRequest "UI" "Canvas_get_Visible" [makeArgument 0 thisArg]
+    let req = makeCallRequest "UI" "Canvas_get_Visible" [makeArgument 0 thisArg]
     in  makeStream req
 
 getCanvasVisibleStream :: KRPCHS.UI.Canvas -> RPCContext (KRPCStream (Bool))
@@ -587,7 +587,7 @@ getInputFieldChanged thisArg = do
 
 getInputFieldChangedStreamReq :: KRPCHS.UI.InputField -> KRPCStreamReq (Bool)
 getInputFieldChangedStreamReq thisArg =
-    let req = makeRequest "UI" "InputField_get_Changed" [makeArgument 0 thisArg]
+    let req = makeCallRequest "UI" "InputField_get_Changed" [makeArgument 0 thisArg]
     in  makeStream req
 
 getInputFieldChangedStream :: KRPCHS.UI.InputField -> RPCContext (KRPCStream (Bool))
@@ -604,7 +604,7 @@ getInputFieldRectTransform thisArg = do
 
 getInputFieldRectTransformStreamReq :: KRPCHS.UI.InputField -> KRPCStreamReq (KRPCHS.UI.RectTransform)
 getInputFieldRectTransformStreamReq thisArg =
-    let req = makeRequest "UI" "InputField_get_RectTransform" [makeArgument 0 thisArg]
+    let req = makeCallRequest "UI" "InputField_get_RectTransform" [makeArgument 0 thisArg]
     in  makeStream req
 
 getInputFieldRectTransformStream :: KRPCHS.UI.InputField -> RPCContext (KRPCStream (KRPCHS.UI.RectTransform))
@@ -622,7 +622,7 @@ getInputFieldText thisArg = do
 
 getInputFieldTextStreamReq :: KRPCHS.UI.InputField -> KRPCStreamReq (KRPCHS.UI.Text)
 getInputFieldTextStreamReq thisArg =
-    let req = makeRequest "UI" "InputField_get_Text" [makeArgument 0 thisArg]
+    let req = makeCallRequest "UI" "InputField_get_Text" [makeArgument 0 thisArg]
     in  makeStream req
 
 getInputFieldTextStream :: KRPCHS.UI.InputField -> RPCContext (KRPCStream (KRPCHS.UI.Text))
@@ -639,7 +639,7 @@ getInputFieldValue thisArg = do
 
 getInputFieldValueStreamReq :: KRPCHS.UI.InputField -> KRPCStreamReq (Data.Text.Text)
 getInputFieldValueStreamReq thisArg =
-    let req = makeRequest "UI" "InputField_get_Value" [makeArgument 0 thisArg]
+    let req = makeCallRequest "UI" "InputField_get_Value" [makeArgument 0 thisArg]
     in  makeStream req
 
 getInputFieldValueStream :: KRPCHS.UI.InputField -> RPCContext (KRPCStream (Data.Text.Text))
@@ -656,7 +656,7 @@ getInputFieldVisible thisArg = do
 
 getInputFieldVisibleStreamReq :: KRPCHS.UI.InputField -> KRPCStreamReq (Bool)
 getInputFieldVisibleStreamReq thisArg =
-    let req = makeRequest "UI" "InputField_get_Visible" [makeArgument 0 thisArg]
+    let req = makeCallRequest "UI" "InputField_get_Visible" [makeArgument 0 thisArg]
     in  makeStream req
 
 getInputFieldVisibleStream :: KRPCHS.UI.InputField -> RPCContext (KRPCStream (Bool))
@@ -710,7 +710,7 @@ panelAddButton thisArg contentArg visibleArg = do
 
 panelAddButtonStreamReq :: KRPCHS.UI.Panel -> Data.Text.Text -> Bool -> KRPCStreamReq (KRPCHS.UI.Button)
 panelAddButtonStreamReq thisArg contentArg visibleArg =
-    let req = makeRequest "UI" "Panel_AddButton" [makeArgument 0 thisArg, makeArgument 1 contentArg, makeArgument 2 visibleArg]
+    let req = makeCallRequest "UI" "Panel_AddButton" [makeArgument 0 thisArg, makeArgument 1 contentArg, makeArgument 2 visibleArg]
     in  makeStream req
 
 panelAddButtonStream :: KRPCHS.UI.Panel -> Data.Text.Text -> Bool -> RPCContext (KRPCStream (KRPCHS.UI.Button))
@@ -727,7 +727,7 @@ panelAddInputField thisArg visibleArg = do
 
 panelAddInputFieldStreamReq :: KRPCHS.UI.Panel -> Bool -> KRPCStreamReq (KRPCHS.UI.InputField)
 panelAddInputFieldStreamReq thisArg visibleArg =
-    let req = makeRequest "UI" "Panel_AddInputField" [makeArgument 0 thisArg, makeArgument 1 visibleArg]
+    let req = makeCallRequest "UI" "Panel_AddInputField" [makeArgument 0 thisArg, makeArgument 1 visibleArg]
     in  makeStream req
 
 panelAddInputFieldStream :: KRPCHS.UI.Panel -> Bool -> RPCContext (KRPCStream (KRPCHS.UI.InputField))
@@ -744,7 +744,7 @@ panelAddPanel thisArg visibleArg = do
 
 panelAddPanelStreamReq :: KRPCHS.UI.Panel -> Bool -> KRPCStreamReq (KRPCHS.UI.Panel)
 panelAddPanelStreamReq thisArg visibleArg =
-    let req = makeRequest "UI" "Panel_AddPanel" [makeArgument 0 thisArg, makeArgument 1 visibleArg]
+    let req = makeCallRequest "UI" "Panel_AddPanel" [makeArgument 0 thisArg, makeArgument 1 visibleArg]
     in  makeStream req
 
 panelAddPanelStream :: KRPCHS.UI.Panel -> Bool -> RPCContext (KRPCStream (KRPCHS.UI.Panel))
@@ -761,7 +761,7 @@ panelAddText thisArg contentArg visibleArg = do
 
 panelAddTextStreamReq :: KRPCHS.UI.Panel -> Data.Text.Text -> Bool -> KRPCStreamReq (KRPCHS.UI.Text)
 panelAddTextStreamReq thisArg contentArg visibleArg =
-    let req = makeRequest "UI" "Panel_AddText" [makeArgument 0 thisArg, makeArgument 1 contentArg, makeArgument 2 visibleArg]
+    let req = makeCallRequest "UI" "Panel_AddText" [makeArgument 0 thisArg, makeArgument 1 contentArg, makeArgument 2 visibleArg]
     in  makeStream req
 
 panelAddTextStream :: KRPCHS.UI.Panel -> Data.Text.Text -> Bool -> RPCContext (KRPCStream (KRPCHS.UI.Text))
@@ -787,7 +787,7 @@ getPanelRectTransform thisArg = do
 
 getPanelRectTransformStreamReq :: KRPCHS.UI.Panel -> KRPCStreamReq (KRPCHS.UI.RectTransform)
 getPanelRectTransformStreamReq thisArg =
-    let req = makeRequest "UI" "Panel_get_RectTransform" [makeArgument 0 thisArg]
+    let req = makeCallRequest "UI" "Panel_get_RectTransform" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPanelRectTransformStream :: KRPCHS.UI.Panel -> RPCContext (KRPCStream (KRPCHS.UI.RectTransform))
@@ -804,7 +804,7 @@ getPanelVisible thisArg = do
 
 getPanelVisibleStreamReq :: KRPCHS.UI.Panel -> KRPCStreamReq (Bool)
 getPanelVisibleStreamReq thisArg =
-    let req = makeRequest "UI" "Panel_get_Visible" [makeArgument 0 thisArg]
+    let req = makeCallRequest "UI" "Panel_get_Visible" [makeArgument 0 thisArg]
     in  makeStream req
 
 getPanelVisibleStream :: KRPCHS.UI.Panel -> RPCContext (KRPCStream (Bool))
@@ -830,7 +830,7 @@ getRectTransformAnchorMax thisArg = do
 
 getRectTransformAnchorMaxStreamReq :: KRPCHS.UI.RectTransform -> KRPCStreamReq ((Double, Double))
 getRectTransformAnchorMaxStreamReq thisArg =
-    let req = makeRequest "UI" "RectTransform_get_AnchorMax" [makeArgument 0 thisArg]
+    let req = makeCallRequest "UI" "RectTransform_get_AnchorMax" [makeArgument 0 thisArg]
     in  makeStream req
 
 getRectTransformAnchorMaxStream :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStream ((Double, Double)))
@@ -847,7 +847,7 @@ getRectTransformAnchorMin thisArg = do
 
 getRectTransformAnchorMinStreamReq :: KRPCHS.UI.RectTransform -> KRPCStreamReq ((Double, Double))
 getRectTransformAnchorMinStreamReq thisArg =
-    let req = makeRequest "UI" "RectTransform_get_AnchorMin" [makeArgument 0 thisArg]
+    let req = makeCallRequest "UI" "RectTransform_get_AnchorMin" [makeArgument 0 thisArg]
     in  makeStream req
 
 getRectTransformAnchorMinStream :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStream ((Double, Double)))
@@ -864,7 +864,7 @@ getRectTransformLocalPosition thisArg = do
 
 getRectTransformLocalPositionStreamReq :: KRPCHS.UI.RectTransform -> KRPCStreamReq ((Double, Double, Double))
 getRectTransformLocalPositionStreamReq thisArg =
-    let req = makeRequest "UI" "RectTransform_get_LocalPosition" [makeArgument 0 thisArg]
+    let req = makeCallRequest "UI" "RectTransform_get_LocalPosition" [makeArgument 0 thisArg]
     in  makeStream req
 
 getRectTransformLocalPositionStream :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -881,7 +881,7 @@ getRectTransformLowerLeft thisArg = do
 
 getRectTransformLowerLeftStreamReq :: KRPCHS.UI.RectTransform -> KRPCStreamReq ((Double, Double))
 getRectTransformLowerLeftStreamReq thisArg =
-    let req = makeRequest "UI" "RectTransform_get_LowerLeft" [makeArgument 0 thisArg]
+    let req = makeCallRequest "UI" "RectTransform_get_LowerLeft" [makeArgument 0 thisArg]
     in  makeStream req
 
 getRectTransformLowerLeftStream :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStream ((Double, Double)))
@@ -898,7 +898,7 @@ getRectTransformPivot thisArg = do
 
 getRectTransformPivotStreamReq :: KRPCHS.UI.RectTransform -> KRPCStreamReq ((Double, Double))
 getRectTransformPivotStreamReq thisArg =
-    let req = makeRequest "UI" "RectTransform_get_Pivot" [makeArgument 0 thisArg]
+    let req = makeCallRequest "UI" "RectTransform_get_Pivot" [makeArgument 0 thisArg]
     in  makeStream req
 
 getRectTransformPivotStream :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStream ((Double, Double)))
@@ -915,7 +915,7 @@ getRectTransformPosition thisArg = do
 
 getRectTransformPositionStreamReq :: KRPCHS.UI.RectTransform -> KRPCStreamReq ((Double, Double))
 getRectTransformPositionStreamReq thisArg =
-    let req = makeRequest "UI" "RectTransform_get_Position" [makeArgument 0 thisArg]
+    let req = makeCallRequest "UI" "RectTransform_get_Position" [makeArgument 0 thisArg]
     in  makeStream req
 
 getRectTransformPositionStream :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStream ((Double, Double)))
@@ -932,7 +932,7 @@ getRectTransformRotation thisArg = do
 
 getRectTransformRotationStreamReq :: KRPCHS.UI.RectTransform -> KRPCStreamReq ((Double, Double, Double, Double))
 getRectTransformRotationStreamReq thisArg =
-    let req = makeRequest "UI" "RectTransform_get_Rotation" [makeArgument 0 thisArg]
+    let req = makeCallRequest "UI" "RectTransform_get_Rotation" [makeArgument 0 thisArg]
     in  makeStream req
 
 getRectTransformRotationStream :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStream ((Double, Double, Double, Double)))
@@ -949,7 +949,7 @@ getRectTransformScale thisArg = do
 
 getRectTransformScaleStreamReq :: KRPCHS.UI.RectTransform -> KRPCStreamReq ((Double, Double, Double))
 getRectTransformScaleStreamReq thisArg =
-    let req = makeRequest "UI" "RectTransform_get_Scale" [makeArgument 0 thisArg]
+    let req = makeCallRequest "UI" "RectTransform_get_Scale" [makeArgument 0 thisArg]
     in  makeStream req
 
 getRectTransformScaleStream :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -966,7 +966,7 @@ getRectTransformSize thisArg = do
 
 getRectTransformSizeStreamReq :: KRPCHS.UI.RectTransform -> KRPCStreamReq ((Double, Double))
 getRectTransformSizeStreamReq thisArg =
-    let req = makeRequest "UI" "RectTransform_get_Size" [makeArgument 0 thisArg]
+    let req = makeCallRequest "UI" "RectTransform_get_Size" [makeArgument 0 thisArg]
     in  makeStream req
 
 getRectTransformSizeStream :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStream ((Double, Double)))
@@ -983,7 +983,7 @@ getRectTransformUpperRight thisArg = do
 
 getRectTransformUpperRightStreamReq :: KRPCHS.UI.RectTransform -> KRPCStreamReq ((Double, Double))
 getRectTransformUpperRightStreamReq thisArg =
-    let req = makeRequest "UI" "RectTransform_get_UpperRight" [makeArgument 0 thisArg]
+    let req = makeCallRequest "UI" "RectTransform_get_UpperRight" [makeArgument 0 thisArg]
     in  makeStream req
 
 getRectTransformUpperRightStream :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStream ((Double, Double)))
@@ -1108,7 +1108,7 @@ getTextAlignment thisArg = do
 
 getTextAlignmentStreamReq :: KRPCHS.UI.Text -> KRPCStreamReq (KRPCHS.UI.TextAnchor)
 getTextAlignmentStreamReq thisArg =
-    let req = makeRequest "UI" "Text_get_Alignment" [makeArgument 0 thisArg]
+    let req = makeCallRequest "UI" "Text_get_Alignment" [makeArgument 0 thisArg]
     in  makeStream req
 
 getTextAlignmentStream :: KRPCHS.UI.Text -> RPCContext (KRPCStream (KRPCHS.UI.TextAnchor))
@@ -1125,7 +1125,7 @@ getTextAvailableFonts thisArg = do
 
 getTextAvailableFontsStreamReq :: KRPCHS.UI.Text -> KRPCStreamReq ([Data.Text.Text])
 getTextAvailableFontsStreamReq thisArg =
-    let req = makeRequest "UI" "Text_get_AvailableFonts" [makeArgument 0 thisArg]
+    let req = makeCallRequest "UI" "Text_get_AvailableFonts" [makeArgument 0 thisArg]
     in  makeStream req
 
 getTextAvailableFontsStream :: KRPCHS.UI.Text -> RPCContext (KRPCStream ([Data.Text.Text]))
@@ -1142,7 +1142,7 @@ getTextColor thisArg = do
 
 getTextColorStreamReq :: KRPCHS.UI.Text -> KRPCStreamReq ((Double, Double, Double))
 getTextColorStreamReq thisArg =
-    let req = makeRequest "UI" "Text_get_Color" [makeArgument 0 thisArg]
+    let req = makeCallRequest "UI" "Text_get_Color" [makeArgument 0 thisArg]
     in  makeStream req
 
 getTextColorStream :: KRPCHS.UI.Text -> RPCContext (KRPCStream ((Double, Double, Double)))
@@ -1159,7 +1159,7 @@ getTextContent thisArg = do
 
 getTextContentStreamReq :: KRPCHS.UI.Text -> KRPCStreamReq (Data.Text.Text)
 getTextContentStreamReq thisArg =
-    let req = makeRequest "UI" "Text_get_Content" [makeArgument 0 thisArg]
+    let req = makeCallRequest "UI" "Text_get_Content" [makeArgument 0 thisArg]
     in  makeStream req
 
 getTextContentStream :: KRPCHS.UI.Text -> RPCContext (KRPCStream (Data.Text.Text))
@@ -1176,7 +1176,7 @@ getTextFont thisArg = do
 
 getTextFontStreamReq :: KRPCHS.UI.Text -> KRPCStreamReq (Data.Text.Text)
 getTextFontStreamReq thisArg =
-    let req = makeRequest "UI" "Text_get_Font" [makeArgument 0 thisArg]
+    let req = makeCallRequest "UI" "Text_get_Font" [makeArgument 0 thisArg]
     in  makeStream req
 
 getTextFontStream :: KRPCHS.UI.Text -> RPCContext (KRPCStream (Data.Text.Text))
@@ -1193,7 +1193,7 @@ getTextLineSpacing thisArg = do
 
 getTextLineSpacingStreamReq :: KRPCHS.UI.Text -> KRPCStreamReq (Float)
 getTextLineSpacingStreamReq thisArg =
-    let req = makeRequest "UI" "Text_get_LineSpacing" [makeArgument 0 thisArg]
+    let req = makeCallRequest "UI" "Text_get_LineSpacing" [makeArgument 0 thisArg]
     in  makeStream req
 
 getTextLineSpacingStream :: KRPCHS.UI.Text -> RPCContext (KRPCStream (Float))
@@ -1210,7 +1210,7 @@ getTextRectTransform thisArg = do
 
 getTextRectTransformStreamReq :: KRPCHS.UI.Text -> KRPCStreamReq (KRPCHS.UI.RectTransform)
 getTextRectTransformStreamReq thisArg =
-    let req = makeRequest "UI" "Text_get_RectTransform" [makeArgument 0 thisArg]
+    let req = makeCallRequest "UI" "Text_get_RectTransform" [makeArgument 0 thisArg]
     in  makeStream req
 
 getTextRectTransformStream :: KRPCHS.UI.Text -> RPCContext (KRPCStream (KRPCHS.UI.RectTransform))
@@ -1227,7 +1227,7 @@ getTextSize thisArg = do
 
 getTextSizeStreamReq :: KRPCHS.UI.Text -> KRPCStreamReq (Data.Int.Int32)
 getTextSizeStreamReq thisArg =
-    let req = makeRequest "UI" "Text_get_Size" [makeArgument 0 thisArg]
+    let req = makeCallRequest "UI" "Text_get_Size" [makeArgument 0 thisArg]
     in  makeStream req
 
 getTextSizeStream :: KRPCHS.UI.Text -> RPCContext (KRPCStream (Data.Int.Int32))
@@ -1244,7 +1244,7 @@ getTextStyle thisArg = do
 
 getTextStyleStreamReq :: KRPCHS.UI.Text -> KRPCStreamReq (KRPCHS.UI.FontStyle)
 getTextStyleStreamReq thisArg =
-    let req = makeRequest "UI" "Text_get_Style" [makeArgument 0 thisArg]
+    let req = makeCallRequest "UI" "Text_get_Style" [makeArgument 0 thisArg]
     in  makeStream req
 
 getTextStyleStream :: KRPCHS.UI.Text -> RPCContext (KRPCStream (KRPCHS.UI.FontStyle))
@@ -1261,7 +1261,7 @@ getTextVisible thisArg = do
 
 getTextVisibleStreamReq :: KRPCHS.UI.Text -> KRPCStreamReq (Bool)
 getTextVisibleStreamReq thisArg =
-    let req = makeRequest "UI" "Text_get_Visible" [makeArgument 0 thisArg]
+    let req = makeCallRequest "UI" "Text_get_Visible" [makeArgument 0 thisArg]
     in  makeStream req
 
 getTextVisibleStream :: KRPCHS.UI.Text -> RPCContext (KRPCStream (Bool))
@@ -1350,7 +1350,7 @@ getStockCanvas  = do
 
 getStockCanvasStreamReq :: KRPCStreamReq (KRPCHS.UI.Canvas)
 getStockCanvasStreamReq  =
-    let req = makeRequest "UI" "get_StockCanvas" []
+    let req = makeCallRequest "UI" "get_StockCanvas" []
     in  makeStream req
 
 getStockCanvasStream :: RPCContext (KRPCStream (KRPCHS.UI.Canvas))
