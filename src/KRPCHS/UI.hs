@@ -180,8 +180,8 @@ import KRPCHS.Internal.Requests
 import KRPCHS.Internal.SerializeUtils
 
 
-{-
- - A text label. See <see cref="M:UI.Panel.AddButton" />.
+{-|
+A text label. See <see cref="M:UI.Panel.AddButton" />.
  -}
 newtype Button = Button { buttonId :: Int }
     deriving (Show, Eq, Ord)
@@ -192,8 +192,8 @@ instance PbSerializable Button where
 
 instance KRPCResponseExtractable Button
 
-{-
- - A canvas for user interface elements. See <see cref="M:UI.StockCanvas" /> and <see cref="M:UI.AddCanvas" />.
+{-|
+A canvas for user interface elements. See <see cref="M:UI.StockCanvas" /> and <see cref="M:UI.AddCanvas" />.
  -}
 newtype Canvas = Canvas { canvasId :: Int }
     deriving (Show, Eq, Ord)
@@ -204,8 +204,8 @@ instance PbSerializable Canvas where
 
 instance KRPCResponseExtractable Canvas
 
-{-
- - An input field. See <see cref="M:UI.Panel.AddInputField" />.
+{-|
+An input field. See <see cref="M:UI.Panel.AddInputField" />.
  -}
 newtype InputField = InputField { inputFieldId :: Int }
     deriving (Show, Eq, Ord)
@@ -216,8 +216,8 @@ instance PbSerializable InputField where
 
 instance KRPCResponseExtractable InputField
 
-{-
- - A container for user interface elements. See <see cref="M:UI.Canvas.AddPanel" />.
+{-|
+A container for user interface elements. See <see cref="M:UI.Canvas.AddPanel" />.
  -}
 newtype Panel = Panel { panelId :: Int }
     deriving (Show, Eq, Ord)
@@ -228,9 +228,9 @@ instance PbSerializable Panel where
 
 instance KRPCResponseExtractable Panel
 
-{-
- - A Unity engine Rect Transform for a UI object.
- - See the <a href="http://docs.unity3d.com/Manual/class-RectTransform.html">Unity manualfor more details.
+{-|
+A Unity engine Rect Transform for a UI object.
+See the <a href="http://docs.unity3d.com/Manual/class-RectTransform.html">Unity manualfor more details.
  -}
 newtype RectTransform = RectTransform { rectTransformId :: Int }
     deriving (Show, Eq, Ord)
@@ -241,8 +241,8 @@ instance PbSerializable RectTransform where
 
 instance KRPCResponseExtractable RectTransform
 
-{-
- - A text label. See <see cref="M:UI.Panel.AddText" />.
+{-|
+A text label. See <see cref="M:UI.Panel.AddText" />.
  -}
 newtype Text = Text { textId :: Int }
     deriving (Show, Eq, Ord)
@@ -254,8 +254,8 @@ instance PbSerializable Text where
 instance KRPCResponseExtractable Text
 
 
-{-
- - Font style.
+{-|
+Font style.
  -}
 data FontStyle
     = FontStyle'Normal
@@ -270,8 +270,8 @@ instance PbSerializable FontStyle where
 
 instance KRPCResponseExtractable FontStyle
 
-{-
- - Message position.
+{-|
+Message position.
  -}
 data MessagePosition
     = MessagePosition'BottomCenter
@@ -286,8 +286,8 @@ instance PbSerializable MessagePosition where
 
 instance KRPCResponseExtractable MessagePosition
 
-{-
- - Text alignment.
+{-|
+Text alignment.
  -}
 data TextAlignment
     = TextAlignment'Left
@@ -301,8 +301,8 @@ instance PbSerializable TextAlignment where
 
 instance KRPCResponseExtractable TextAlignment
 
-{-
- - Text alignment.
+{-|
+Text alignment.
  -}
 data TextAnchor
     = TextAnchor'LowerCenter
@@ -323,8 +323,8 @@ instance PbSerializable TextAnchor where
 instance KRPCResponseExtractable TextAnchor
 
 
-{-
- - Add a new canvas.If you want to add UI elements to KSPs stock UI canvas, use <see cref="M:UI.StockCanvas" />.
+{-|
+Add a new canvas.If you want to add UI elements to KSPs stock UI canvas, use <see cref="M:UI.StockCanvas" />.
  -}
 addCanvas :: RPCContext (KRPCHS.UI.Canvas)
 addCanvas  = do
@@ -340,8 +340,8 @@ addCanvasStreamReq  =
 addCanvasStream :: RPCContext (KRPCStream (KRPCHS.UI.Canvas))
 addCanvasStream  = requestStream $ addCanvasStreamReq  
 
-{-
- - Remove the UI object.
+{-|
+Remove the UI object.
  -}
 buttonRemove :: KRPCHS.UI.Button -> RPCContext ()
 buttonRemove thisArg = do
@@ -349,9 +349,9 @@ buttonRemove thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Whether the button has been clicked.This property is set to true when the user clicks the button.
- - A client script should reset the property to false in order to detect subsequent button presses.
+{-|
+Whether the button has been clicked.This property is set to true when the user clicks the button.
+A client script should reset the property to false in order to detect subsequent button presses.
  -}
 getButtonClicked :: KRPCHS.UI.Button -> RPCContext (Bool)
 getButtonClicked thisArg = do
@@ -367,8 +367,8 @@ getButtonClickedStreamReq thisArg =
 getButtonClickedStream :: KRPCHS.UI.Button -> RPCContext (KRPCStream (Bool))
 getButtonClickedStream thisArg = requestStream $ getButtonClickedStreamReq thisArg 
 
-{-
- - The rect transform for the text.
+{-|
+The rect transform for the text.
  -}
 getButtonRectTransform :: KRPCHS.UI.Button -> RPCContext (KRPCHS.UI.RectTransform)
 getButtonRectTransform thisArg = do
@@ -384,8 +384,8 @@ getButtonRectTransformStreamReq thisArg =
 getButtonRectTransformStream :: KRPCHS.UI.Button -> RPCContext (KRPCStream (KRPCHS.UI.RectTransform))
 getButtonRectTransformStream thisArg = requestStream $ getButtonRectTransformStreamReq thisArg 
 
-{-
- - The text for the button.
+{-|
+The text for the button.
  -}
 getButtonText :: KRPCHS.UI.Button -> RPCContext (KRPCHS.UI.Text)
 getButtonText thisArg = do
@@ -401,8 +401,8 @@ getButtonTextStreamReq thisArg =
 getButtonTextStream :: KRPCHS.UI.Button -> RPCContext (KRPCStream (KRPCHS.UI.Text))
 getButtonTextStream thisArg = requestStream $ getButtonTextStreamReq thisArg 
 
-{-
- - Whether the UI object is visible.
+{-|
+Whether the UI object is visible.
  -}
 getButtonVisible :: KRPCHS.UI.Button -> RPCContext (Bool)
 getButtonVisible thisArg = do
@@ -418,9 +418,9 @@ getButtonVisibleStreamReq thisArg =
 getButtonVisibleStream :: KRPCHS.UI.Button -> RPCContext (KRPCStream (Bool))
 getButtonVisibleStream thisArg = requestStream $ getButtonVisibleStreamReq thisArg 
 
-{-
- - Whether the button has been clicked.This property is set to true when the user clicks the button.
- - A client script should reset the property to false in order to detect subsequent button presses.
+{-|
+Whether the button has been clicked.This property is set to true when the user clicks the button.
+A client script should reset the property to false in order to detect subsequent button presses.
  -}
 setButtonClicked :: KRPCHS.UI.Button -> Bool -> RPCContext ()
 setButtonClicked thisArg valueArg = do
@@ -428,8 +428,8 @@ setButtonClicked thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Whether the UI object is visible.
+{-|
+Whether the UI object is visible.
  -}
 setButtonVisible :: KRPCHS.UI.Button -> Bool -> RPCContext ()
 setButtonVisible thisArg valueArg = do
@@ -437,8 +437,8 @@ setButtonVisible thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Add a button to the canvas.<param name="content">The label for the button.<param name="visible">Whether the button is visible.
+{-|
+Add a button to the canvas.<param name="content">The label for the button.<param name="visible">Whether the button is visible.
  -}
 canvasAddButton :: KRPCHS.UI.Canvas -> Data.Text.Text -> Bool -> RPCContext (KRPCHS.UI.Button)
 canvasAddButton thisArg contentArg visibleArg = do
@@ -454,8 +454,8 @@ canvasAddButtonStreamReq thisArg contentArg visibleArg =
 canvasAddButtonStream :: KRPCHS.UI.Canvas -> Data.Text.Text -> Bool -> RPCContext (KRPCStream (KRPCHS.UI.Button))
 canvasAddButtonStream thisArg contentArg visibleArg = requestStream $ canvasAddButtonStreamReq thisArg contentArg visibleArg 
 
-{-
- - Add an input field to the canvas.<param name="visible">Whether the input field is visible.
+{-|
+Add an input field to the canvas.<param name="visible">Whether the input field is visible.
  -}
 canvasAddInputField :: KRPCHS.UI.Canvas -> Bool -> RPCContext (KRPCHS.UI.InputField)
 canvasAddInputField thisArg visibleArg = do
@@ -471,8 +471,8 @@ canvasAddInputFieldStreamReq thisArg visibleArg =
 canvasAddInputFieldStream :: KRPCHS.UI.Canvas -> Bool -> RPCContext (KRPCStream (KRPCHS.UI.InputField))
 canvasAddInputFieldStream thisArg visibleArg = requestStream $ canvasAddInputFieldStreamReq thisArg visibleArg 
 
-{-
- - Create a new container for user interface elements.<param name="visible">Whether the panel is visible.
+{-|
+Create a new container for user interface elements.<param name="visible">Whether the panel is visible.
  -}
 canvasAddPanel :: KRPCHS.UI.Canvas -> Bool -> RPCContext (KRPCHS.UI.Panel)
 canvasAddPanel thisArg visibleArg = do
@@ -488,8 +488,8 @@ canvasAddPanelStreamReq thisArg visibleArg =
 canvasAddPanelStream :: KRPCHS.UI.Canvas -> Bool -> RPCContext (KRPCStream (KRPCHS.UI.Panel))
 canvasAddPanelStream thisArg visibleArg = requestStream $ canvasAddPanelStreamReq thisArg visibleArg 
 
-{-
- - Add text to the canvas.<param name="content">The text.<param name="visible">Whether the text is visible.
+{-|
+Add text to the canvas.<param name="content">The text.<param name="visible">Whether the text is visible.
  -}
 canvasAddText :: KRPCHS.UI.Canvas -> Data.Text.Text -> Bool -> RPCContext (KRPCHS.UI.Text)
 canvasAddText thisArg contentArg visibleArg = do
@@ -505,8 +505,8 @@ canvasAddTextStreamReq thisArg contentArg visibleArg =
 canvasAddTextStream :: KRPCHS.UI.Canvas -> Data.Text.Text -> Bool -> RPCContext (KRPCStream (KRPCHS.UI.Text))
 canvasAddTextStream thisArg contentArg visibleArg = requestStream $ canvasAddTextStreamReq thisArg contentArg visibleArg 
 
-{-
- - Remove the UI object.
+{-|
+Remove the UI object.
  -}
 canvasRemove :: KRPCHS.UI.Canvas -> RPCContext ()
 canvasRemove thisArg = do
@@ -514,8 +514,8 @@ canvasRemove thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The rect transform for the canvas.
+{-|
+The rect transform for the canvas.
  -}
 getCanvasRectTransform :: KRPCHS.UI.Canvas -> RPCContext (KRPCHS.UI.RectTransform)
 getCanvasRectTransform thisArg = do
@@ -531,8 +531,8 @@ getCanvasRectTransformStreamReq thisArg =
 getCanvasRectTransformStream :: KRPCHS.UI.Canvas -> RPCContext (KRPCStream (KRPCHS.UI.RectTransform))
 getCanvasRectTransformStream thisArg = requestStream $ getCanvasRectTransformStreamReq thisArg 
 
-{-
- - Whether the UI object is visible.
+{-|
+Whether the UI object is visible.
  -}
 getCanvasVisible :: KRPCHS.UI.Canvas -> RPCContext (Bool)
 getCanvasVisible thisArg = do
@@ -548,8 +548,8 @@ getCanvasVisibleStreamReq thisArg =
 getCanvasVisibleStream :: KRPCHS.UI.Canvas -> RPCContext (KRPCStream (Bool))
 getCanvasVisibleStream thisArg = requestStream $ getCanvasVisibleStreamReq thisArg 
 
-{-
- - Whether the UI object is visible.
+{-|
+Whether the UI object is visible.
  -}
 setCanvasVisible :: KRPCHS.UI.Canvas -> Bool -> RPCContext ()
 setCanvasVisible thisArg valueArg = do
@@ -557,8 +557,8 @@ setCanvasVisible thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Remove all user interface elements.<param name="clientOnly">If true, only remove objects created by the calling client.
+{-|
+Remove all user interface elements.<param name="clientOnly">If true, only remove objects created by the calling client.
  -}
 clear :: Bool -> RPCContext ()
 clear clientOnlyArg = do
@@ -566,8 +566,8 @@ clear clientOnlyArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Remove the UI object.
+{-|
+Remove the UI object.
  -}
 inputFieldRemove :: KRPCHS.UI.InputField -> RPCContext ()
 inputFieldRemove thisArg = do
@@ -575,9 +575,9 @@ inputFieldRemove thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Whether the input field has been changed.This property is set to true when the user modifies the value of the input field.
- - A client script should reset the property to false in order to detect subsequent changes.
+{-|
+Whether the input field has been changed.This property is set to true when the user modifies the value of the input field.
+A client script should reset the property to false in order to detect subsequent changes.
  -}
 getInputFieldChanged :: KRPCHS.UI.InputField -> RPCContext (Bool)
 getInputFieldChanged thisArg = do
@@ -593,8 +593,8 @@ getInputFieldChangedStreamReq thisArg =
 getInputFieldChangedStream :: KRPCHS.UI.InputField -> RPCContext (KRPCStream (Bool))
 getInputFieldChangedStream thisArg = requestStream $ getInputFieldChangedStreamReq thisArg 
 
-{-
- - The rect transform for the input field.
+{-|
+The rect transform for the input field.
  -}
 getInputFieldRectTransform :: KRPCHS.UI.InputField -> RPCContext (KRPCHS.UI.RectTransform)
 getInputFieldRectTransform thisArg = do
@@ -610,9 +610,9 @@ getInputFieldRectTransformStreamReq thisArg =
 getInputFieldRectTransformStream :: KRPCHS.UI.InputField -> RPCContext (KRPCStream (KRPCHS.UI.RectTransform))
 getInputFieldRectTransformStream thisArg = requestStream $ getInputFieldRectTransformStreamReq thisArg 
 
-{-
- - The text component of the input field.Use <see cref="M:UI.InputField.Value" /> to get and set the value in the field.
- - This object can be used to alter the style of the input field's text.
+{-|
+The text component of the input field.Use <see cref="M:UI.InputField.Value" /> to get and set the value in the field.
+This object can be used to alter the style of the input field's text.
  -}
 getInputFieldText :: KRPCHS.UI.InputField -> RPCContext (KRPCHS.UI.Text)
 getInputFieldText thisArg = do
@@ -628,8 +628,8 @@ getInputFieldTextStreamReq thisArg =
 getInputFieldTextStream :: KRPCHS.UI.InputField -> RPCContext (KRPCStream (KRPCHS.UI.Text))
 getInputFieldTextStream thisArg = requestStream $ getInputFieldTextStreamReq thisArg 
 
-{-
- - The value of the input field.
+{-|
+The value of the input field.
  -}
 getInputFieldValue :: KRPCHS.UI.InputField -> RPCContext (Data.Text.Text)
 getInputFieldValue thisArg = do
@@ -645,8 +645,8 @@ getInputFieldValueStreamReq thisArg =
 getInputFieldValueStream :: KRPCHS.UI.InputField -> RPCContext (KRPCStream (Data.Text.Text))
 getInputFieldValueStream thisArg = requestStream $ getInputFieldValueStreamReq thisArg 
 
-{-
- - Whether the UI object is visible.
+{-|
+Whether the UI object is visible.
  -}
 getInputFieldVisible :: KRPCHS.UI.InputField -> RPCContext (Bool)
 getInputFieldVisible thisArg = do
@@ -662,9 +662,9 @@ getInputFieldVisibleStreamReq thisArg =
 getInputFieldVisibleStream :: KRPCHS.UI.InputField -> RPCContext (KRPCStream (Bool))
 getInputFieldVisibleStream thisArg = requestStream $ getInputFieldVisibleStreamReq thisArg 
 
-{-
- - Whether the input field has been changed.This property is set to true when the user modifies the value of the input field.
- - A client script should reset the property to false in order to detect subsequent changes.
+{-|
+Whether the input field has been changed.This property is set to true when the user modifies the value of the input field.
+A client script should reset the property to false in order to detect subsequent changes.
  -}
 setInputFieldChanged :: KRPCHS.UI.InputField -> Bool -> RPCContext ()
 setInputFieldChanged thisArg valueArg = do
@@ -672,8 +672,8 @@ setInputFieldChanged thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The value of the input field.
+{-|
+The value of the input field.
  -}
 setInputFieldValue :: KRPCHS.UI.InputField -> Data.Text.Text -> RPCContext ()
 setInputFieldValue thisArg valueArg = do
@@ -681,8 +681,8 @@ setInputFieldValue thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Whether the UI object is visible.
+{-|
+Whether the UI object is visible.
  -}
 setInputFieldVisible :: KRPCHS.UI.InputField -> Bool -> RPCContext ()
 setInputFieldVisible thisArg valueArg = do
@@ -690,8 +690,8 @@ setInputFieldVisible thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Display a message on the screen.The message appears just like a stock message, for example quicksave or quickload messages.<param name="content">Message content.<param name="duration">Duration before the message disappears, in seconds.<param name="position">Position to display the message.
+{-|
+Display a message on the screen.The message appears just like a stock message, for example quicksave or quickload messages.<param name="content">Message content.<param name="duration">Duration before the message disappears, in seconds.<param name="position">Position to display the message.
  -}
 message :: Data.Text.Text -> Float -> KRPCHS.UI.MessagePosition -> RPCContext ()
 message contentArg durationArg positionArg = do
@@ -699,8 +699,8 @@ message contentArg durationArg positionArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Add a button to the panel.<param name="content">The label for the button.<param name="visible">Whether the button is visible.
+{-|
+Add a button to the panel.<param name="content">The label for the button.<param name="visible">Whether the button is visible.
  -}
 panelAddButton :: KRPCHS.UI.Panel -> Data.Text.Text -> Bool -> RPCContext (KRPCHS.UI.Button)
 panelAddButton thisArg contentArg visibleArg = do
@@ -716,8 +716,8 @@ panelAddButtonStreamReq thisArg contentArg visibleArg =
 panelAddButtonStream :: KRPCHS.UI.Panel -> Data.Text.Text -> Bool -> RPCContext (KRPCStream (KRPCHS.UI.Button))
 panelAddButtonStream thisArg contentArg visibleArg = requestStream $ panelAddButtonStreamReq thisArg contentArg visibleArg 
 
-{-
- - Add an input field to the panel.<param name="visible">Whether the input field is visible.
+{-|
+Add an input field to the panel.<param name="visible">Whether the input field is visible.
  -}
 panelAddInputField :: KRPCHS.UI.Panel -> Bool -> RPCContext (KRPCHS.UI.InputField)
 panelAddInputField thisArg visibleArg = do
@@ -733,8 +733,8 @@ panelAddInputFieldStreamReq thisArg visibleArg =
 panelAddInputFieldStream :: KRPCHS.UI.Panel -> Bool -> RPCContext (KRPCStream (KRPCHS.UI.InputField))
 panelAddInputFieldStream thisArg visibleArg = requestStream $ panelAddInputFieldStreamReq thisArg visibleArg 
 
-{-
- - Create a panel within this panel.<param name="visible">Whether the new panel is visible.
+{-|
+Create a panel within this panel.<param name="visible">Whether the new panel is visible.
  -}
 panelAddPanel :: KRPCHS.UI.Panel -> Bool -> RPCContext (KRPCHS.UI.Panel)
 panelAddPanel thisArg visibleArg = do
@@ -750,8 +750,8 @@ panelAddPanelStreamReq thisArg visibleArg =
 panelAddPanelStream :: KRPCHS.UI.Panel -> Bool -> RPCContext (KRPCStream (KRPCHS.UI.Panel))
 panelAddPanelStream thisArg visibleArg = requestStream $ panelAddPanelStreamReq thisArg visibleArg 
 
-{-
- - Add text to the panel.<param name="content">The text.<param name="visible">Whether the text is visible.
+{-|
+Add text to the panel.<param name="content">The text.<param name="visible">Whether the text is visible.
  -}
 panelAddText :: KRPCHS.UI.Panel -> Data.Text.Text -> Bool -> RPCContext (KRPCHS.UI.Text)
 panelAddText thisArg contentArg visibleArg = do
@@ -767,8 +767,8 @@ panelAddTextStreamReq thisArg contentArg visibleArg =
 panelAddTextStream :: KRPCHS.UI.Panel -> Data.Text.Text -> Bool -> RPCContext (KRPCStream (KRPCHS.UI.Text))
 panelAddTextStream thisArg contentArg visibleArg = requestStream $ panelAddTextStreamReq thisArg contentArg visibleArg 
 
-{-
- - Remove the UI object.
+{-|
+Remove the UI object.
  -}
 panelRemove :: KRPCHS.UI.Panel -> RPCContext ()
 panelRemove thisArg = do
@@ -776,8 +776,8 @@ panelRemove thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The rect transform for the panel.
+{-|
+The rect transform for the panel.
  -}
 getPanelRectTransform :: KRPCHS.UI.Panel -> RPCContext (KRPCHS.UI.RectTransform)
 getPanelRectTransform thisArg = do
@@ -793,8 +793,8 @@ getPanelRectTransformStreamReq thisArg =
 getPanelRectTransformStream :: KRPCHS.UI.Panel -> RPCContext (KRPCStream (KRPCHS.UI.RectTransform))
 getPanelRectTransformStream thisArg = requestStream $ getPanelRectTransformStreamReq thisArg 
 
-{-
- - Whether the UI object is visible.
+{-|
+Whether the UI object is visible.
  -}
 getPanelVisible :: KRPCHS.UI.Panel -> RPCContext (Bool)
 getPanelVisible thisArg = do
@@ -810,8 +810,8 @@ getPanelVisibleStreamReq thisArg =
 getPanelVisibleStream :: KRPCHS.UI.Panel -> RPCContext (KRPCStream (Bool))
 getPanelVisibleStream thisArg = requestStream $ getPanelVisibleStreamReq thisArg 
 
-{-
- - Whether the UI object is visible.
+{-|
+Whether the UI object is visible.
  -}
 setPanelVisible :: KRPCHS.UI.Panel -> Bool -> RPCContext ()
 setPanelVisible thisArg valueArg = do
@@ -819,8 +819,8 @@ setPanelVisible thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The anchor point for the lower left corner of the rectangle defined as a fraction of the size of the parent rectangle.
+{-|
+The anchor point for the lower left corner of the rectangle defined as a fraction of the size of the parent rectangle.
  -}
 getRectTransformAnchorMax :: KRPCHS.UI.RectTransform -> RPCContext ((Double, Double))
 getRectTransformAnchorMax thisArg = do
@@ -836,8 +836,8 @@ getRectTransformAnchorMaxStreamReq thisArg =
 getRectTransformAnchorMaxStream :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStream ((Double, Double)))
 getRectTransformAnchorMaxStream thisArg = requestStream $ getRectTransformAnchorMaxStreamReq thisArg 
 
-{-
- - The anchor point for the upper right corner of the rectangle defined as a fraction of the size of the parent rectangle.
+{-|
+The anchor point for the upper right corner of the rectangle defined as a fraction of the size of the parent rectangle.
  -}
 getRectTransformAnchorMin :: KRPCHS.UI.RectTransform -> RPCContext ((Double, Double))
 getRectTransformAnchorMin thisArg = do
@@ -853,8 +853,8 @@ getRectTransformAnchorMinStreamReq thisArg =
 getRectTransformAnchorMinStream :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStream ((Double, Double)))
 getRectTransformAnchorMinStream thisArg = requestStream $ getRectTransformAnchorMinStreamReq thisArg 
 
-{-
- - Position of the rectangles pivot point relative to the anchors.
+{-|
+Position of the rectangles pivot point relative to the anchors.
  -}
 getRectTransformLocalPosition :: KRPCHS.UI.RectTransform -> RPCContext ((Double, Double, Double))
 getRectTransformLocalPosition thisArg = do
@@ -870,8 +870,8 @@ getRectTransformLocalPositionStreamReq thisArg =
 getRectTransformLocalPositionStream :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStream ((Double, Double, Double)))
 getRectTransformLocalPositionStream thisArg = requestStream $ getRectTransformLocalPositionStreamReq thisArg 
 
-{-
- - Position of the rectangles lower left corner relative to the anchors.
+{-|
+Position of the rectangles lower left corner relative to the anchors.
  -}
 getRectTransformLowerLeft :: KRPCHS.UI.RectTransform -> RPCContext ((Double, Double))
 getRectTransformLowerLeft thisArg = do
@@ -887,8 +887,8 @@ getRectTransformLowerLeftStreamReq thisArg =
 getRectTransformLowerLeftStream :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStream ((Double, Double)))
 getRectTransformLowerLeftStream thisArg = requestStream $ getRectTransformLowerLeftStreamReq thisArg 
 
-{-
- - Location of the pivot point around which the rectangle rotates, defined as a fraction of the size of the rectangle itself.
+{-|
+Location of the pivot point around which the rectangle rotates, defined as a fraction of the size of the rectangle itself.
  -}
 getRectTransformPivot :: KRPCHS.UI.RectTransform -> RPCContext ((Double, Double))
 getRectTransformPivot thisArg = do
@@ -904,8 +904,8 @@ getRectTransformPivotStreamReq thisArg =
 getRectTransformPivotStream :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStream ((Double, Double)))
 getRectTransformPivotStream thisArg = requestStream $ getRectTransformPivotStreamReq thisArg 
 
-{-
- - Position of the rectangles pivot point relative to the anchors.
+{-|
+Position of the rectangles pivot point relative to the anchors.
  -}
 getRectTransformPosition :: KRPCHS.UI.RectTransform -> RPCContext ((Double, Double))
 getRectTransformPosition thisArg = do
@@ -921,8 +921,8 @@ getRectTransformPositionStreamReq thisArg =
 getRectTransformPositionStream :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStream ((Double, Double)))
 getRectTransformPositionStream thisArg = requestStream $ getRectTransformPositionStreamReq thisArg 
 
-{-
- - Rotation, as a quaternion, of the object around its pivot point.
+{-|
+Rotation, as a quaternion, of the object around its pivot point.
  -}
 getRectTransformRotation :: KRPCHS.UI.RectTransform -> RPCContext ((Double, Double, Double, Double))
 getRectTransformRotation thisArg = do
@@ -938,8 +938,8 @@ getRectTransformRotationStreamReq thisArg =
 getRectTransformRotationStream :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStream ((Double, Double, Double, Double)))
 getRectTransformRotationStream thisArg = requestStream $ getRectTransformRotationStreamReq thisArg 
 
-{-
- - Scale factor applied to the object in the x, y and z dimensions.
+{-|
+Scale factor applied to the object in the x, y and z dimensions.
  -}
 getRectTransformScale :: KRPCHS.UI.RectTransform -> RPCContext ((Double, Double, Double))
 getRectTransformScale thisArg = do
@@ -955,8 +955,8 @@ getRectTransformScaleStreamReq thisArg =
 getRectTransformScaleStream :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStream ((Double, Double, Double)))
 getRectTransformScaleStream thisArg = requestStream $ getRectTransformScaleStreamReq thisArg 
 
-{-
- - Width and height of the rectangle.
+{-|
+Width and height of the rectangle.
  -}
 getRectTransformSize :: KRPCHS.UI.RectTransform -> RPCContext ((Double, Double))
 getRectTransformSize thisArg = do
@@ -972,8 +972,8 @@ getRectTransformSizeStreamReq thisArg =
 getRectTransformSizeStream :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStream ((Double, Double)))
 getRectTransformSizeStream thisArg = requestStream $ getRectTransformSizeStreamReq thisArg 
 
-{-
- - Position of the rectangles upper right corner relative to the anchors.
+{-|
+Position of the rectangles upper right corner relative to the anchors.
  -}
 getRectTransformUpperRight :: KRPCHS.UI.RectTransform -> RPCContext ((Double, Double))
 getRectTransformUpperRight thisArg = do
@@ -989,8 +989,8 @@ getRectTransformUpperRightStreamReq thisArg =
 getRectTransformUpperRightStream :: KRPCHS.UI.RectTransform -> RPCContext (KRPCStream ((Double, Double)))
 getRectTransformUpperRightStream thisArg = requestStream $ getRectTransformUpperRightStreamReq thisArg 
 
-{-
- - Set the minimum and maximum anchor points as a fraction of the size of the parent rectangle.
+{-|
+Set the minimum and maximum anchor points as a fraction of the size of the parent rectangle.
  -}
 setRectTransformAnchor :: KRPCHS.UI.RectTransform -> (Double, Double) -> RPCContext ()
 setRectTransformAnchor thisArg valueArg = do
@@ -998,8 +998,8 @@ setRectTransformAnchor thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The anchor point for the lower left corner of the rectangle defined as a fraction of the size of the parent rectangle.
+{-|
+The anchor point for the lower left corner of the rectangle defined as a fraction of the size of the parent rectangle.
  -}
 setRectTransformAnchorMax :: KRPCHS.UI.RectTransform -> (Double, Double) -> RPCContext ()
 setRectTransformAnchorMax thisArg valueArg = do
@@ -1007,8 +1007,8 @@ setRectTransformAnchorMax thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The anchor point for the upper right corner of the rectangle defined as a fraction of the size of the parent rectangle.
+{-|
+The anchor point for the upper right corner of the rectangle defined as a fraction of the size of the parent rectangle.
  -}
 setRectTransformAnchorMin :: KRPCHS.UI.RectTransform -> (Double, Double) -> RPCContext ()
 setRectTransformAnchorMin thisArg valueArg = do
@@ -1016,8 +1016,8 @@ setRectTransformAnchorMin thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Position of the rectangles pivot point relative to the anchors.
+{-|
+Position of the rectangles pivot point relative to the anchors.
  -}
 setRectTransformLocalPosition :: KRPCHS.UI.RectTransform -> (Double, Double, Double) -> RPCContext ()
 setRectTransformLocalPosition thisArg valueArg = do
@@ -1025,8 +1025,8 @@ setRectTransformLocalPosition thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Position of the rectangles lower left corner relative to the anchors.
+{-|
+Position of the rectangles lower left corner relative to the anchors.
  -}
 setRectTransformLowerLeft :: KRPCHS.UI.RectTransform -> (Double, Double) -> RPCContext ()
 setRectTransformLowerLeft thisArg valueArg = do
@@ -1034,8 +1034,8 @@ setRectTransformLowerLeft thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Location of the pivot point around which the rectangle rotates, defined as a fraction of the size of the rectangle itself.
+{-|
+Location of the pivot point around which the rectangle rotates, defined as a fraction of the size of the rectangle itself.
  -}
 setRectTransformPivot :: KRPCHS.UI.RectTransform -> (Double, Double) -> RPCContext ()
 setRectTransformPivot thisArg valueArg = do
@@ -1043,8 +1043,8 @@ setRectTransformPivot thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Position of the rectangles pivot point relative to the anchors.
+{-|
+Position of the rectangles pivot point relative to the anchors.
  -}
 setRectTransformPosition :: KRPCHS.UI.RectTransform -> (Double, Double) -> RPCContext ()
 setRectTransformPosition thisArg valueArg = do
@@ -1052,8 +1052,8 @@ setRectTransformPosition thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Rotation, as a quaternion, of the object around its pivot point.
+{-|
+Rotation, as a quaternion, of the object around its pivot point.
  -}
 setRectTransformRotation :: KRPCHS.UI.RectTransform -> (Double, Double, Double, Double) -> RPCContext ()
 setRectTransformRotation thisArg valueArg = do
@@ -1061,8 +1061,8 @@ setRectTransformRotation thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Scale factor applied to the object in the x, y and z dimensions.
+{-|
+Scale factor applied to the object in the x, y and z dimensions.
  -}
 setRectTransformScale :: KRPCHS.UI.RectTransform -> (Double, Double, Double) -> RPCContext ()
 setRectTransformScale thisArg valueArg = do
@@ -1070,8 +1070,8 @@ setRectTransformScale thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Width and height of the rectangle.
+{-|
+Width and height of the rectangle.
  -}
 setRectTransformSize :: KRPCHS.UI.RectTransform -> (Double, Double) -> RPCContext ()
 setRectTransformSize thisArg valueArg = do
@@ -1079,8 +1079,8 @@ setRectTransformSize thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Position of the rectangles upper right corner relative to the anchors.
+{-|
+Position of the rectangles upper right corner relative to the anchors.
  -}
 setRectTransformUpperRight :: KRPCHS.UI.RectTransform -> (Double, Double) -> RPCContext ()
 setRectTransformUpperRight thisArg valueArg = do
@@ -1088,8 +1088,8 @@ setRectTransformUpperRight thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Remove the UI object.
+{-|
+Remove the UI object.
  -}
 textRemove :: KRPCHS.UI.Text -> RPCContext ()
 textRemove thisArg = do
@@ -1097,8 +1097,8 @@ textRemove thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Alignment.
+{-|
+Alignment.
  -}
 getTextAlignment :: KRPCHS.UI.Text -> RPCContext (KRPCHS.UI.TextAnchor)
 getTextAlignment thisArg = do
@@ -1114,8 +1114,8 @@ getTextAlignmentStreamReq thisArg =
 getTextAlignmentStream :: KRPCHS.UI.Text -> RPCContext (KRPCStream (KRPCHS.UI.TextAnchor))
 getTextAlignmentStream thisArg = requestStream $ getTextAlignmentStreamReq thisArg 
 
-{-
- - A list of all available fonts.
+{-|
+A list of all available fonts.
  -}
 getTextAvailableFonts :: KRPCHS.UI.Text -> RPCContext ([Data.Text.Text])
 getTextAvailableFonts thisArg = do
@@ -1131,8 +1131,8 @@ getTextAvailableFontsStreamReq thisArg =
 getTextAvailableFontsStream :: KRPCHS.UI.Text -> RPCContext (KRPCStream ([Data.Text.Text]))
 getTextAvailableFontsStream thisArg = requestStream $ getTextAvailableFontsStreamReq thisArg 
 
-{-
- - Set the color
+{-|
+Set the color
  -}
 getTextColor :: KRPCHS.UI.Text -> RPCContext ((Double, Double, Double))
 getTextColor thisArg = do
@@ -1148,8 +1148,8 @@ getTextColorStreamReq thisArg =
 getTextColorStream :: KRPCHS.UI.Text -> RPCContext (KRPCStream ((Double, Double, Double)))
 getTextColorStream thisArg = requestStream $ getTextColorStreamReq thisArg 
 
-{-
- - The text string
+{-|
+The text string
  -}
 getTextContent :: KRPCHS.UI.Text -> RPCContext (Data.Text.Text)
 getTextContent thisArg = do
@@ -1165,8 +1165,8 @@ getTextContentStreamReq thisArg =
 getTextContentStream :: KRPCHS.UI.Text -> RPCContext (KRPCStream (Data.Text.Text))
 getTextContentStream thisArg = requestStream $ getTextContentStreamReq thisArg 
 
-{-
- - Name of the font
+{-|
+Name of the font
  -}
 getTextFont :: KRPCHS.UI.Text -> RPCContext (Data.Text.Text)
 getTextFont thisArg = do
@@ -1182,8 +1182,8 @@ getTextFontStreamReq thisArg =
 getTextFontStream :: KRPCHS.UI.Text -> RPCContext (KRPCStream (Data.Text.Text))
 getTextFontStream thisArg = requestStream $ getTextFontStreamReq thisArg 
 
-{-
- - Line spacing.
+{-|
+Line spacing.
  -}
 getTextLineSpacing :: KRPCHS.UI.Text -> RPCContext (Float)
 getTextLineSpacing thisArg = do
@@ -1199,8 +1199,8 @@ getTextLineSpacingStreamReq thisArg =
 getTextLineSpacingStream :: KRPCHS.UI.Text -> RPCContext (KRPCStream (Float))
 getTextLineSpacingStream thisArg = requestStream $ getTextLineSpacingStreamReq thisArg 
 
-{-
- - The rect transform for the text.
+{-|
+The rect transform for the text.
  -}
 getTextRectTransform :: KRPCHS.UI.Text -> RPCContext (KRPCHS.UI.RectTransform)
 getTextRectTransform thisArg = do
@@ -1216,8 +1216,8 @@ getTextRectTransformStreamReq thisArg =
 getTextRectTransformStream :: KRPCHS.UI.Text -> RPCContext (KRPCStream (KRPCHS.UI.RectTransform))
 getTextRectTransformStream thisArg = requestStream $ getTextRectTransformStreamReq thisArg 
 
-{-
- - Font size.
+{-|
+Font size.
  -}
 getTextSize :: KRPCHS.UI.Text -> RPCContext (Data.Int.Int32)
 getTextSize thisArg = do
@@ -1233,8 +1233,8 @@ getTextSizeStreamReq thisArg =
 getTextSizeStream :: KRPCHS.UI.Text -> RPCContext (KRPCStream (Data.Int.Int32))
 getTextSizeStream thisArg = requestStream $ getTextSizeStreamReq thisArg 
 
-{-
- - Font style.
+{-|
+Font style.
  -}
 getTextStyle :: KRPCHS.UI.Text -> RPCContext (KRPCHS.UI.FontStyle)
 getTextStyle thisArg = do
@@ -1250,8 +1250,8 @@ getTextStyleStreamReq thisArg =
 getTextStyleStream :: KRPCHS.UI.Text -> RPCContext (KRPCStream (KRPCHS.UI.FontStyle))
 getTextStyleStream thisArg = requestStream $ getTextStyleStreamReq thisArg 
 
-{-
- - Whether the UI object is visible.
+{-|
+Whether the UI object is visible.
  -}
 getTextVisible :: KRPCHS.UI.Text -> RPCContext (Bool)
 getTextVisible thisArg = do
@@ -1267,8 +1267,8 @@ getTextVisibleStreamReq thisArg =
 getTextVisibleStream :: KRPCHS.UI.Text -> RPCContext (KRPCStream (Bool))
 getTextVisibleStream thisArg = requestStream $ getTextVisibleStreamReq thisArg 
 
-{-
- - Alignment.
+{-|
+Alignment.
  -}
 setTextAlignment :: KRPCHS.UI.Text -> KRPCHS.UI.TextAnchor -> RPCContext ()
 setTextAlignment thisArg valueArg = do
@@ -1276,8 +1276,8 @@ setTextAlignment thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Set the color
+{-|
+Set the color
  -}
 setTextColor :: KRPCHS.UI.Text -> (Double, Double, Double) -> RPCContext ()
 setTextColor thisArg valueArg = do
@@ -1285,8 +1285,8 @@ setTextColor thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The text string
+{-|
+The text string
  -}
 setTextContent :: KRPCHS.UI.Text -> Data.Text.Text -> RPCContext ()
 setTextContent thisArg valueArg = do
@@ -1294,8 +1294,8 @@ setTextContent thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Name of the font
+{-|
+Name of the font
  -}
 setTextFont :: KRPCHS.UI.Text -> Data.Text.Text -> RPCContext ()
 setTextFont thisArg valueArg = do
@@ -1303,8 +1303,8 @@ setTextFont thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Line spacing.
+{-|
+Line spacing.
  -}
 setTextLineSpacing :: KRPCHS.UI.Text -> Float -> RPCContext ()
 setTextLineSpacing thisArg valueArg = do
@@ -1312,8 +1312,8 @@ setTextLineSpacing thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Font size.
+{-|
+Font size.
  -}
 setTextSize :: KRPCHS.UI.Text -> Data.Int.Int32 -> RPCContext ()
 setTextSize thisArg valueArg = do
@@ -1321,8 +1321,8 @@ setTextSize thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Font style.
+{-|
+Font style.
  -}
 setTextStyle :: KRPCHS.UI.Text -> KRPCHS.UI.FontStyle -> RPCContext ()
 setTextStyle thisArg valueArg = do
@@ -1330,8 +1330,8 @@ setTextStyle thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Whether the UI object is visible.
+{-|
+Whether the UI object is visible.
  -}
 setTextVisible :: KRPCHS.UI.Text -> Bool -> RPCContext ()
 setTextVisible thisArg valueArg = do
@@ -1339,8 +1339,8 @@ setTextVisible thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The stock UI canvas.
+{-|
+The stock UI canvas.
  -}
 getStockCanvas :: RPCContext (KRPCHS.UI.Canvas)
 getStockCanvas  = do

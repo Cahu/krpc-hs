@@ -278,8 +278,8 @@ import KRPCHS.Internal.SerializeUtils
 
 [%- FOREACH proxy IN proxys %]
 [%- accessor = proxy.name.lcfirst _ 'Id' %]
-{-
-[% proxy.doc.replace('{-', '{ -') FILTER format(' - %s') %]
+{-|
+[% proxy.doc.replace('{-', '{ -') %]
  -}
 newtype [% proxy.name %] = [% proxy.name %] { [% accessor %] :: Int }
     deriving (Show, Eq, Ord)
@@ -293,8 +293,8 @@ instance KRPCResponseExtractable [% proxy.name %]
 [%- END %]
 
 [%- FOREACH enum IN enums %]
-{-
-[% enum.doc.replace('{-', '{ -') FILTER format(' - %s') %]
+{-|
+[% enum.doc.replace('{-', '{ -') %]
  -}
 data [% enum.name %]
     = [% enum.values.join("\n    | ") %]
@@ -317,8 +317,8 @@ instance KRPCResponseExtractable [% enum.name %]
 [%- names.push(p.name) %]
 [%- args.push('makeArgument ' _ (loop.count - 1) _ ' ' _ p.name) %]
 [%- END %]
-{-
-[% proc.doc.replace('{-', '{ -') FILTER format(' - %s') %]
+{-|
+[% proc.doc.replace('{-', '{ -') %]
  -}
 [%- IF types.size > 0 %]
 [% proc.name %] :: [% types.join(' -> ') %] -> RPCContext ([% proc.ret %])

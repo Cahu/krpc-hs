@@ -73,11 +73,11 @@ import KRPCHS.Internal.Requests
 import KRPCHS.Internal.SerializeUtils
 
 
-{-
- - Represents an alarm. Obtained by calling
- - <see cref="M:KerbalAlarmClock.Alarms" />,
- - <see cref="M:KerbalAlarmClock.AlarmWithName" /> or
- - <see cref="M:KerbalAlarmClock.AlarmsWithType" />.
+{-|
+Represents an alarm. Obtained by calling
+<see cref="M:KerbalAlarmClock.Alarms" />,
+<see cref="M:KerbalAlarmClock.AlarmWithName" /> or
+<see cref="M:KerbalAlarmClock.AlarmsWithType" />.
  -}
 newtype Alarm = Alarm { alarmId :: Int }
     deriving (Show, Eq, Ord)
@@ -89,8 +89,8 @@ instance PbSerializable Alarm where
 instance KRPCResponseExtractable Alarm
 
 
-{-
- - The action performed by an alarm when it fires.
+{-|
+The action performed by an alarm when it fires.
  -}
 data AlarmAction
     = AlarmAction'DoNothing
@@ -107,8 +107,8 @@ instance PbSerializable AlarmAction where
 
 instance KRPCResponseExtractable AlarmAction
 
-{-
- - The type of an alarm.
+{-|
+The type of an alarm.
  -}
 data AlarmType
     = AlarmType'Raw
@@ -138,9 +138,9 @@ instance PbSerializable AlarmType where
 instance KRPCResponseExtractable AlarmType
 
 
-{-
- - Get the alarm with the given <paramref name="name" />, ornullif no alarms have that name. If more than one alarm has the name,
- - only returns one of them.<param name="name">Name of the alarm to search for.
+{-|
+Get the alarm with the given <paramref name="name" />, ornullif no alarms have that name. If more than one alarm has the name,
+only returns one of them.<param name="name">Name of the alarm to search for.
  -}
 alarmWithName :: Data.Text.Text -> RPCContext (KRPCHS.KerbalAlarmClock.Alarm)
 alarmWithName nameArg = do
@@ -156,8 +156,8 @@ alarmWithNameStreamReq nameArg =
 alarmWithNameStream :: Data.Text.Text -> RPCContext (KRPCStream (KRPCHS.KerbalAlarmClock.Alarm))
 alarmWithNameStream nameArg = requestStream $ alarmWithNameStreamReq nameArg 
 
-{-
- - Removes the alarm.
+{-|
+Removes the alarm.
  -}
 alarmRemove :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext ()
 alarmRemove thisArg = do
@@ -165,8 +165,8 @@ alarmRemove thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The action that the alarm triggers.
+{-|
+The action that the alarm triggers.
  -}
 getAlarmAction :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCHS.KerbalAlarmClock.AlarmAction)
 getAlarmAction thisArg = do
@@ -182,8 +182,8 @@ getAlarmActionStreamReq thisArg =
 getAlarmActionStream :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStream (KRPCHS.KerbalAlarmClock.AlarmAction))
 getAlarmActionStream thisArg = requestStream $ getAlarmActionStreamReq thisArg 
 
-{-
- - The unique identifier for the alarm.
+{-|
+The unique identifier for the alarm.
  -}
 getAlarmID :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (Data.Text.Text)
 getAlarmID thisArg = do
@@ -199,8 +199,8 @@ getAlarmIDStreamReq thisArg =
 getAlarmIDStream :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStream (Data.Text.Text))
 getAlarmIDStream thisArg = requestStream $ getAlarmIDStreamReq thisArg 
 
-{-
- - The number of seconds before the event that the alarm will fire.
+{-|
+The number of seconds before the event that the alarm will fire.
  -}
 getAlarmMargin :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (Double)
 getAlarmMargin thisArg = do
@@ -216,8 +216,8 @@ getAlarmMarginStreamReq thisArg =
 getAlarmMarginStream :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStream (Double))
 getAlarmMarginStream thisArg = requestStream $ getAlarmMarginStreamReq thisArg 
 
-{-
- - The short name of the alarm.
+{-|
+The short name of the alarm.
  -}
 getAlarmName :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (Data.Text.Text)
 getAlarmName thisArg = do
@@ -233,8 +233,8 @@ getAlarmNameStreamReq thisArg =
 getAlarmNameStream :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStream (Data.Text.Text))
 getAlarmNameStream thisArg = requestStream $ getAlarmNameStreamReq thisArg 
 
-{-
- - The long description of the alarm.
+{-|
+The long description of the alarm.
  -}
 getAlarmNotes :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (Data.Text.Text)
 getAlarmNotes thisArg = do
@@ -250,8 +250,8 @@ getAlarmNotesStreamReq thisArg =
 getAlarmNotesStream :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStream (Data.Text.Text))
 getAlarmNotesStream thisArg = requestStream $ getAlarmNotesStreamReq thisArg 
 
-{-
- - The number of seconds until the alarm will fire.
+{-|
+The number of seconds until the alarm will fire.
  -}
 getAlarmRemaining :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (Double)
 getAlarmRemaining thisArg = do
@@ -267,8 +267,8 @@ getAlarmRemainingStreamReq thisArg =
 getAlarmRemainingStream :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStream (Double))
 getAlarmRemainingStream thisArg = requestStream $ getAlarmRemainingStreamReq thisArg 
 
-{-
- - Whether the alarm will be repeated after it has fired.
+{-|
+Whether the alarm will be repeated after it has fired.
  -}
 getAlarmRepeat :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (Bool)
 getAlarmRepeat thisArg = do
@@ -284,8 +284,8 @@ getAlarmRepeatStreamReq thisArg =
 getAlarmRepeatStream :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStream (Bool))
 getAlarmRepeatStream thisArg = requestStream $ getAlarmRepeatStreamReq thisArg 
 
-{-
- - The time delay to automatically create an alarm after it has fired.
+{-|
+The time delay to automatically create an alarm after it has fired.
  -}
 getAlarmRepeatPeriod :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (Double)
 getAlarmRepeatPeriod thisArg = do
@@ -301,8 +301,8 @@ getAlarmRepeatPeriodStreamReq thisArg =
 getAlarmRepeatPeriodStream :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStream (Double))
 getAlarmRepeatPeriodStream thisArg = requestStream $ getAlarmRepeatPeriodStreamReq thisArg 
 
-{-
- - The time at which the alarm will fire.
+{-|
+The time at which the alarm will fire.
  -}
 getAlarmTime :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (Double)
 getAlarmTime thisArg = do
@@ -318,8 +318,8 @@ getAlarmTimeStreamReq thisArg =
 getAlarmTimeStream :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStream (Double))
 getAlarmTimeStream thisArg = requestStream $ getAlarmTimeStreamReq thisArg 
 
-{-
- - The type of the alarm.
+{-|
+The type of the alarm.
  -}
 getAlarmType :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCHS.KerbalAlarmClock.AlarmType)
 getAlarmType thisArg = do
@@ -335,8 +335,8 @@ getAlarmTypeStreamReq thisArg =
 getAlarmTypeStream :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStream (KRPCHS.KerbalAlarmClock.AlarmType))
 getAlarmTypeStream thisArg = requestStream $ getAlarmTypeStreamReq thisArg 
 
-{-
- - The vessel that the alarm is attached to.
+{-|
+The vessel that the alarm is attached to.
  -}
 getAlarmVessel :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCHS.SpaceCenter.Vessel)
 getAlarmVessel thisArg = do
@@ -352,8 +352,8 @@ getAlarmVesselStreamReq thisArg =
 getAlarmVesselStream :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Vessel))
 getAlarmVesselStream thisArg = requestStream $ getAlarmVesselStreamReq thisArg 
 
-{-
- - The celestial body the vessel is departing from.
+{-|
+The celestial body the vessel is departing from.
  -}
 getAlarmXferOriginBody :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCHS.SpaceCenter.CelestialBody)
 getAlarmXferOriginBody thisArg = do
@@ -369,8 +369,8 @@ getAlarmXferOriginBodyStreamReq thisArg =
 getAlarmXferOriginBodyStream :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.CelestialBody))
 getAlarmXferOriginBodyStream thisArg = requestStream $ getAlarmXferOriginBodyStreamReq thisArg 
 
-{-
- - The celestial body the vessel is arriving at.
+{-|
+The celestial body the vessel is arriving at.
  -}
 getAlarmXferTargetBody :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCHS.SpaceCenter.CelestialBody)
 getAlarmXferTargetBody thisArg = do
@@ -386,8 +386,8 @@ getAlarmXferTargetBodyStreamReq thisArg =
 getAlarmXferTargetBodyStream :: KRPCHS.KerbalAlarmClock.Alarm -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.CelestialBody))
 getAlarmXferTargetBodyStream thisArg = requestStream $ getAlarmXferTargetBodyStreamReq thisArg 
 
-{-
- - The action that the alarm triggers.
+{-|
+The action that the alarm triggers.
  -}
 setAlarmAction :: KRPCHS.KerbalAlarmClock.Alarm -> KRPCHS.KerbalAlarmClock.AlarmAction -> RPCContext ()
 setAlarmAction thisArg valueArg = do
@@ -395,8 +395,8 @@ setAlarmAction thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The number of seconds before the event that the alarm will fire.
+{-|
+The number of seconds before the event that the alarm will fire.
  -}
 setAlarmMargin :: KRPCHS.KerbalAlarmClock.Alarm -> Double -> RPCContext ()
 setAlarmMargin thisArg valueArg = do
@@ -404,8 +404,8 @@ setAlarmMargin thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The short name of the alarm.
+{-|
+The short name of the alarm.
  -}
 setAlarmName :: KRPCHS.KerbalAlarmClock.Alarm -> Data.Text.Text -> RPCContext ()
 setAlarmName thisArg valueArg = do
@@ -413,8 +413,8 @@ setAlarmName thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The long description of the alarm.
+{-|
+The long description of the alarm.
  -}
 setAlarmNotes :: KRPCHS.KerbalAlarmClock.Alarm -> Data.Text.Text -> RPCContext ()
 setAlarmNotes thisArg valueArg = do
@@ -422,8 +422,8 @@ setAlarmNotes thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Whether the alarm will be repeated after it has fired.
+{-|
+Whether the alarm will be repeated after it has fired.
  -}
 setAlarmRepeat :: KRPCHS.KerbalAlarmClock.Alarm -> Bool -> RPCContext ()
 setAlarmRepeat thisArg valueArg = do
@@ -431,8 +431,8 @@ setAlarmRepeat thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The time delay to automatically create an alarm after it has fired.
+{-|
+The time delay to automatically create an alarm after it has fired.
  -}
 setAlarmRepeatPeriod :: KRPCHS.KerbalAlarmClock.Alarm -> Double -> RPCContext ()
 setAlarmRepeatPeriod thisArg valueArg = do
@@ -440,8 +440,8 @@ setAlarmRepeatPeriod thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The time at which the alarm will fire.
+{-|
+The time at which the alarm will fire.
  -}
 setAlarmTime :: KRPCHS.KerbalAlarmClock.Alarm -> Double -> RPCContext ()
 setAlarmTime thisArg valueArg = do
@@ -449,8 +449,8 @@ setAlarmTime thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The vessel that the alarm is attached to.
+{-|
+The vessel that the alarm is attached to.
  -}
 setAlarmVessel :: KRPCHS.KerbalAlarmClock.Alarm -> KRPCHS.SpaceCenter.Vessel -> RPCContext ()
 setAlarmVessel thisArg valueArg = do
@@ -458,8 +458,8 @@ setAlarmVessel thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The celestial body the vessel is departing from.
+{-|
+The celestial body the vessel is departing from.
  -}
 setAlarmXferOriginBody :: KRPCHS.KerbalAlarmClock.Alarm -> KRPCHS.SpaceCenter.CelestialBody -> RPCContext ()
 setAlarmXferOriginBody thisArg valueArg = do
@@ -467,8 +467,8 @@ setAlarmXferOriginBody thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The celestial body the vessel is arriving at.
+{-|
+The celestial body the vessel is arriving at.
  -}
 setAlarmXferTargetBody :: KRPCHS.KerbalAlarmClock.Alarm -> KRPCHS.SpaceCenter.CelestialBody -> RPCContext ()
 setAlarmXferTargetBody thisArg valueArg = do
@@ -476,8 +476,8 @@ setAlarmXferTargetBody thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Get a list of alarms of the specified <paramref name="type" />.<param name="type">Type of alarm to return.
+{-|
+Get a list of alarms of the specified <paramref name="type" />.<param name="type">Type of alarm to return.
  -}
 alarmsWithType :: KRPCHS.KerbalAlarmClock.AlarmType -> RPCContext ([KRPCHS.KerbalAlarmClock.Alarm])
 alarmsWithType typeArg = do
@@ -493,8 +493,8 @@ alarmsWithTypeStreamReq typeArg =
 alarmsWithTypeStream :: KRPCHS.KerbalAlarmClock.AlarmType -> RPCContext (KRPCStream ([KRPCHS.KerbalAlarmClock.Alarm]))
 alarmsWithTypeStream typeArg = requestStream $ alarmsWithTypeStreamReq typeArg 
 
-{-
- - Create a new alarm and return it.<param name="type">Type of the new alarm.<param name="name">Name of the new alarm.<param name="ut">Time at which the new alarm should trigger.
+{-|
+Create a new alarm and return it.<param name="type">Type of the new alarm.<param name="name">Name of the new alarm.<param name="ut">Time at which the new alarm should trigger.
  -}
 createAlarm :: KRPCHS.KerbalAlarmClock.AlarmType -> Data.Text.Text -> Double -> RPCContext (KRPCHS.KerbalAlarmClock.Alarm)
 createAlarm typeArg nameArg utArg = do
@@ -510,8 +510,8 @@ createAlarmStreamReq typeArg nameArg utArg =
 createAlarmStream :: KRPCHS.KerbalAlarmClock.AlarmType -> Data.Text.Text -> Double -> RPCContext (KRPCStream (KRPCHS.KerbalAlarmClock.Alarm))
 createAlarmStream typeArg nameArg utArg = requestStream $ createAlarmStreamReq typeArg nameArg utArg 
 
-{-
- - A list of all the alarms.
+{-|
+A list of all the alarms.
  -}
 getAlarms :: RPCContext ([KRPCHS.KerbalAlarmClock.Alarm])
 getAlarms  = do

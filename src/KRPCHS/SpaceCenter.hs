@@ -886,12 +886,6 @@ module KRPCHS.SpaceCenter
 , orbitRadiusAtTrueAnomaly
 , orbitRadiusAtTrueAnomalyStream
 , orbitRadiusAtTrueAnomalyStreamReq
-, orbitReferencePlaneDirection
-, orbitReferencePlaneDirectionStream
-, orbitReferencePlaneDirectionStreamReq
-, orbitReferencePlaneNormal
-, orbitReferencePlaneNormalStream
-, orbitReferencePlaneNormalStreamReq
 , orbitTrueAnomalyAtRadius
 , orbitTrueAnomalyAtRadiusStream
 , orbitTrueAnomalyAtRadiusStreamReq
@@ -973,6 +967,12 @@ module KRPCHS.SpaceCenter
 , getOrbitTrueAnomaly
 , getOrbitTrueAnomalyStream
 , getOrbitTrueAnomalyStreamReq
+, orbitStaticReferencePlaneDirection
+, orbitStaticReferencePlaneDirectionStream
+, orbitStaticReferencePlaneDirectionStreamReq
+, orbitStaticReferencePlaneNormal
+, orbitStaticReferencePlaneNormalStream
+, orbitStaticReferencePlaneNormalStreamReq
 , parachuteDeploy
 , getParachuteDeployAltitude
 , getParachuteDeployAltitudeStream
@@ -1459,15 +1459,15 @@ module KRPCHS.SpaceCenter
 , getResourceHarvesterThermalEfficiencyStreamReq
 , setResourceHarvesterActive
 , setResourceHarvesterDeployed
-, resourceTransferStart
-, resourceTransferStartStream
-, resourceTransferStartStreamReq
 , getResourceTransferAmount
 , getResourceTransferAmountStream
 , getResourceTransferAmountStreamReq
 , getResourceTransferComplete
 , getResourceTransferCompleteStream
 , getResourceTransferCompleteStreamReq
+, resourceTransferStaticStart
+, resourceTransferStaticStartStream
+, resourceTransferStaticStartStreamReq
 , getResourceAmount
 , getResourceAmountStream
 , getResourceAmountStreamReq
@@ -1493,12 +1493,6 @@ module KRPCHS.SpaceCenter
 , resourcesAmount
 , resourcesAmountStream
 , resourcesAmountStreamReq
-, resourcesDensity
-, resourcesDensityStream
-, resourcesDensityStreamReq
-, resourcesFlowMode
-, resourcesFlowModeStream
-, resourcesFlowModeStreamReq
 , resourcesHasResource
 , resourcesHasResourceStream
 , resourcesHasResourceStreamReq
@@ -1518,6 +1512,12 @@ module KRPCHS.SpaceCenter
 , getResourcesNamesStream
 , getResourcesNamesStreamReq
 , setResourcesEnabled
+, resourcesStaticDensity
+, resourcesStaticDensityStream
+, resourcesStaticDensityStreamReq
+, resourcesStaticFlowMode
+, resourcesStaticFlowModeStream
+, resourcesStaticFlowModeStreamReq
 , save
 , getScienceDataDataAmount
 , getScienceDataDataAmountStream
@@ -1870,10 +1870,10 @@ import KRPCHS.Internal.Requests
 import KRPCHS.Internal.SerializeUtils
 
 
-{-
- - Provides basic auto-piloting utilities for a vessel.
- - Created by calling <see cref="M:SpaceCenter.Vessel.AutoPilot" />.If a client engages the auto-pilot and then closes its connection to the server,
- - the auto-pilot will be disengaged and its target reference frame, direction and roll reset to default.
+{-|
+Provides basic auto-piloting utilities for a vessel.
+Created by calling <see cref="M:SpaceCenter.Vessel.AutoPilot" />.If a client engages the auto-pilot and then closes its connection to the server,
+the auto-pilot will be disengaged and its target reference frame, direction and roll reset to default.
  -}
 newtype AutoPilot = AutoPilot { autoPilotId :: Int }
     deriving (Show, Eq, Ord)
@@ -1884,9 +1884,9 @@ instance PbSerializable AutoPilot where
 
 instance KRPCResponseExtractable AutoPilot
 
-{-
- - Controls the game's camera.
- - Obtained by calling <see cref="M:SpaceCenter.Camera" />.
+{-|
+Controls the game's camera.
+Obtained by calling <see cref="M:SpaceCenter.Camera" />.
  -}
 newtype Camera = Camera { cameraId :: Int }
     deriving (Show, Eq, Ord)
@@ -1897,8 +1897,8 @@ instance PbSerializable Camera where
 
 instance KRPCResponseExtractable Camera
 
-{-
- - A cargo bay. Obtained by calling <see cref="M:SpaceCenter.Part.CargoBay" />.
+{-|
+A cargo bay. Obtained by calling <see cref="M:SpaceCenter.Part.CargoBay" />.
  -}
 newtype CargoBay = CargoBay { cargoBayId :: Int }
     deriving (Show, Eq, Ord)
@@ -1909,9 +1909,9 @@ instance PbSerializable CargoBay where
 
 instance KRPCResponseExtractable CargoBay
 
-{-
- - Represents a celestial body (such as a planet or moon).
- - See <see cref="M:SpaceCenter.Bodies" />.
+{-|
+Represents a celestial body (such as a planet or moon).
+See <see cref="M:SpaceCenter.Bodies" />.
  -}
 newtype CelestialBody = CelestialBody { celestialBodyId :: Int }
     deriving (Show, Eq, Ord)
@@ -1922,12 +1922,12 @@ instance PbSerializable CelestialBody where
 
 instance KRPCResponseExtractable CelestialBody
 
-{-
- - Used to manipulate the controls of a vessel. This includes adjusting the
- - throttle, enabling/disabling systems such as SAS and RCS, or altering the
- - direction in which the vessel is pointing.
- - Obtained by calling <see cref="M:SpaceCenter.Vessel.Control" />.Control inputs (such as pitch, yaw and roll) are zeroed when all clients
- - that have set one or more of these inputs are no longer connected.
+{-|
+Used to manipulate the controls of a vessel. This includes adjusting the
+throttle, enabling/disabling systems such as SAS and RCS, or altering the
+direction in which the vessel is pointing.
+Obtained by calling <see cref="M:SpaceCenter.Vessel.Control" />.Control inputs (such as pitch, yaw and roll) are zeroed when all clients
+that have set one or more of these inputs are no longer connected.
  -}
 newtype Control = Control { controlId :: Int }
     deriving (Show, Eq, Ord)
@@ -1938,8 +1938,8 @@ instance PbSerializable Control where
 
 instance KRPCResponseExtractable Control
 
-{-
- - An aerodynamic control surface. Obtained by calling <see cref="M:SpaceCenter.Part.ControlSurface" />.
+{-|
+An aerodynamic control surface. Obtained by calling <see cref="M:SpaceCenter.Part.ControlSurface" />.
  -}
 newtype ControlSurface = ControlSurface { controlSurfaceId :: Int }
     deriving (Show, Eq, Ord)
@@ -1950,8 +1950,8 @@ instance PbSerializable ControlSurface where
 
 instance KRPCResponseExtractable ControlSurface
 
-{-
- - A decoupler. Obtained by calling <see cref="M:SpaceCenter.Part.Decoupler" />
+{-|
+A decoupler. Obtained by calling <see cref="M:SpaceCenter.Part.Decoupler" />
  -}
 newtype Decoupler = Decoupler { decouplerId :: Int }
     deriving (Show, Eq, Ord)
@@ -1962,8 +1962,8 @@ instance PbSerializable Decoupler where
 
 instance KRPCResponseExtractable Decoupler
 
-{-
- - A docking port. Obtained by calling <see cref="M:SpaceCenter.Part.DockingPort" />
+{-|
+A docking port. Obtained by calling <see cref="M:SpaceCenter.Part.DockingPort" />
  -}
 newtype DockingPort = DockingPort { dockingPortId :: Int }
     deriving (Show, Eq, Ord)
@@ -1974,10 +1974,10 @@ instance PbSerializable DockingPort where
 
 instance KRPCResponseExtractable DockingPort
 
-{-
- - An engine, including ones of various types.
- - For example liquid fuelled gimballed engines, solid rocket boosters and jet engines.
- - Obtained by calling <see cref="M:SpaceCenter.Part.Engine" />.For RCS thrusters <see cref="M:SpaceCenter.Part.RCS" />.
+{-|
+An engine, including ones of various types.
+For example liquid fuelled gimballed engines, solid rocket boosters and jet engines.
+Obtained by calling <see cref="M:SpaceCenter.Part.Engine" />.For RCS thrusters <see cref="M:SpaceCenter.Part.RCS" />.
  -}
 newtype Engine = Engine { engineId :: Int }
     deriving (Show, Eq, Ord)
@@ -1988,8 +1988,8 @@ instance PbSerializable Engine where
 
 instance KRPCResponseExtractable Engine
 
-{-
- - Obtained by calling <see cref="M:SpaceCenter.Part.Experiment" />.
+{-|
+Obtained by calling <see cref="M:SpaceCenter.Part.Experiment" />.
  -}
 newtype Experiment = Experiment { experimentId :: Int }
     deriving (Show, Eq, Ord)
@@ -2000,8 +2000,8 @@ instance PbSerializable Experiment where
 
 instance KRPCResponseExtractable Experiment
 
-{-
- - A fairing. Obtained by calling <see cref="M:SpaceCenter.Part.Fairing" />.
+{-|
+A fairing. Obtained by calling <see cref="M:SpaceCenter.Part.Fairing" />.
  -}
 newtype Fairing = Fairing { fairingId :: Int }
     deriving (Show, Eq, Ord)
@@ -2012,11 +2012,11 @@ instance PbSerializable Fairing where
 
 instance KRPCResponseExtractable Fairing
 
-{-
- - Used to get flight telemetry for a vessel, by calling <see cref="M:SpaceCenter.Vessel.Flight" />.
- - All of the information returned by this class is given in the reference frame
- - passed to that method.
- - Obtained by calling <see cref="M:SpaceCenter.Vessel.Flight" />.To get orbital information, such as the apoapsis or inclination, see <see cref="T:SpaceCenter.Orbit" />.
+{-|
+Used to get flight telemetry for a vessel, by calling <see cref="M:SpaceCenter.Vessel.Flight" />.
+All of the information returned by this class is given in the reference frame
+passed to that method.
+Obtained by calling <see cref="M:SpaceCenter.Vessel.Flight" />.To get orbital information, such as the apoapsis or inclination, see <see cref="T:SpaceCenter.Orbit" />.
  -}
 newtype Flight = Flight { flightId :: Int }
     deriving (Show, Eq, Ord)
@@ -2027,8 +2027,8 @@ instance PbSerializable Flight where
 
 instance KRPCResponseExtractable Flight
 
-{-
- - Obtained by calling <see cref="M:SpaceCenter.Part.AddForce" />.
+{-|
+Obtained by calling <see cref="M:SpaceCenter.Part.AddForce" />.
  -}
 newtype Force = Force { forceId :: Int }
     deriving (Show, Eq, Ord)
@@ -2039,8 +2039,8 @@ instance PbSerializable Force where
 
 instance KRPCResponseExtractable Force
 
-{-
- - An air intake. Obtained by calling <see cref="M:SpaceCenter.Part.Intake" />.
+{-|
+An air intake. Obtained by calling <see cref="M:SpaceCenter.Part.Intake" />.
  -}
 newtype Intake = Intake { intakeId :: Int }
     deriving (Show, Eq, Ord)
@@ -2051,8 +2051,8 @@ instance PbSerializable Intake where
 
 instance KRPCResponseExtractable Intake
 
-{-
- - Landing gear with wheels. Obtained by calling <see cref="M:SpaceCenter.Part.LandingGear" />.
+{-|
+Landing gear with wheels. Obtained by calling <see cref="M:SpaceCenter.Part.LandingGear" />.
  -}
 newtype LandingGear = LandingGear { landingGearId :: Int }
     deriving (Show, Eq, Ord)
@@ -2063,8 +2063,8 @@ instance PbSerializable LandingGear where
 
 instance KRPCResponseExtractable LandingGear
 
-{-
- - A landing leg. Obtained by calling <see cref="M:SpaceCenter.Part.LandingLeg" />.
+{-|
+A landing leg. Obtained by calling <see cref="M:SpaceCenter.Part.LandingLeg" />.
  -}
 newtype LandingLeg = LandingLeg { landingLegId :: Int }
     deriving (Show, Eq, Ord)
@@ -2075,8 +2075,8 @@ instance PbSerializable LandingLeg where
 
 instance KRPCResponseExtractable LandingLeg
 
-{-
- - A launch clamp. Obtained by calling <see cref="M:SpaceCenter.Part.LaunchClamp" />.
+{-|
+A launch clamp. Obtained by calling <see cref="M:SpaceCenter.Part.LaunchClamp" />.
  -}
 newtype LaunchClamp = LaunchClamp { launchClampId :: Int }
     deriving (Show, Eq, Ord)
@@ -2087,8 +2087,8 @@ instance PbSerializable LaunchClamp where
 
 instance KRPCResponseExtractable LaunchClamp
 
-{-
- - A light. Obtained by calling <see cref="M:SpaceCenter.Part.Light" />.
+{-|
+A light. Obtained by calling <see cref="M:SpaceCenter.Part.Light" />.
  -}
 newtype Light = Light { lightId :: Int }
     deriving (Show, Eq, Ord)
@@ -2099,14 +2099,14 @@ instance PbSerializable Light where
 
 instance KRPCResponseExtractable Light
 
-{-
- - This can be used to interact with a specific part module. This includes part modules in stock KSP,
- - and those added by mods.
- - 
- - In KSP, each part has zero or more
- - <a href="http://wiki.kerbalspaceprogram.com/wiki/CFG_File_Documentation#MODULES">PartModulesassociated with it. Each one contains some of the functionality of the part.
- - For example, an engine has a "ModuleEngines" part module that contains all the
- - functionality of an engine.
+{-|
+This can be used to interact with a specific part module. This includes part modules in stock KSP,
+and those added by mods.
+
+In KSP, each part has zero or more
+<a href="http://wiki.kerbalspaceprogram.com/wiki/CFG_File_Documentation#MODULES">PartModulesassociated with it. Each one contains some of the functionality of the part.
+For example, an engine has a "ModuleEngines" part module that contains all the
+functionality of an engine.
  -}
 newtype Module = Module { moduleId :: Int }
     deriving (Show, Eq, Ord)
@@ -2117,8 +2117,8 @@ instance PbSerializable Module where
 
 instance KRPCResponseExtractable Module
 
-{-
- - Represents a maneuver node. Can be created using <see cref="M:SpaceCenter.Control.AddNode" />.
+{-|
+Represents a maneuver node. Can be created using <see cref="M:SpaceCenter.Control.AddNode" />.
  -}
 newtype Node = Node { nodeId :: Int }
     deriving (Show, Eq, Ord)
@@ -2129,10 +2129,10 @@ instance PbSerializable Node where
 
 instance KRPCResponseExtractable Node
 
-{-
- - Describes an orbit. For example, the orbit of a vessel, obtained by calling
- - <see cref="M:SpaceCenter.Vessel.Orbit" />, or a celestial body, obtained by calling
- - <see cref="M:SpaceCenter.CelestialBody.Orbit" />.
+{-|
+Describes an orbit. For example, the orbit of a vessel, obtained by calling
+<see cref="M:SpaceCenter.Vessel.Orbit" />, or a celestial body, obtained by calling
+<see cref="M:SpaceCenter.CelestialBody.Orbit" />.
  -}
 newtype Orbit = Orbit { orbitId :: Int }
     deriving (Show, Eq, Ord)
@@ -2143,8 +2143,8 @@ instance PbSerializable Orbit where
 
 instance KRPCResponseExtractable Orbit
 
-{-
- - A parachute. Obtained by calling <see cref="M:SpaceCenter.Part.Parachute" />.
+{-|
+A parachute. Obtained by calling <see cref="M:SpaceCenter.Part.Parachute" />.
  -}
 newtype Parachute = Parachute { parachuteId :: Int }
     deriving (Show, Eq, Ord)
@@ -2155,9 +2155,9 @@ instance PbSerializable Parachute where
 
 instance KRPCResponseExtractable Parachute
 
-{-
- - Represents an individual part. Vessels are made up of multiple parts.
- - Instances of this class can be obtained by several methods in <see cref="T:SpaceCenter.Parts" />.
+{-|
+Represents an individual part. Vessels are made up of multiple parts.
+Instances of this class can be obtained by several methods in <see cref="T:SpaceCenter.Parts" />.
  -}
 newtype Part = Part { partId :: Int }
     deriving (Show, Eq, Ord)
@@ -2168,9 +2168,9 @@ instance PbSerializable Part where
 
 instance KRPCResponseExtractable Part
 
-{-
- - Instances of this class are used to interact with the parts of a vessel.
- - An instance can be obtained by calling <see cref="M:SpaceCenter.Vessel.Parts" />.
+{-|
+Instances of this class are used to interact with the parts of a vessel.
+An instance can be obtained by calling <see cref="M:SpaceCenter.Vessel.Parts" />.
  -}
 newtype Parts = Parts { partsId :: Int }
     deriving (Show, Eq, Ord)
@@ -2181,8 +2181,8 @@ instance PbSerializable Parts where
 
 instance KRPCResponseExtractable Parts
 
-{-
- - A propellant for an engine. Obtains by calling <see cref="M:SpaceCenter.Engine.Propellants" />.
+{-|
+A propellant for an engine. Obtains by calling <see cref="M:SpaceCenter.Engine.Propellants" />.
  -}
 newtype Propellant = Propellant { propellantId :: Int }
     deriving (Show, Eq, Ord)
@@ -2193,8 +2193,8 @@ instance PbSerializable Propellant where
 
 instance KRPCResponseExtractable Propellant
 
-{-
- - An RCS block or thruster. Obtained by calling <see cref="M:SpaceCenter.Part.RCS" />.
+{-|
+An RCS block or thruster. Obtained by calling <see cref="M:SpaceCenter.Part.RCS" />.
  -}
 newtype RCS = RCS { rCSId :: Int }
     deriving (Show, Eq, Ord)
@@ -2205,8 +2205,8 @@ instance PbSerializable RCS where
 
 instance KRPCResponseExtractable RCS
 
-{-
- - A radiator. Obtained by calling <see cref="M:SpaceCenter.Part.Radiator" />.
+{-|
+A radiator. Obtained by calling <see cref="M:SpaceCenter.Part.Radiator" />.
  -}
 newtype Radiator = Radiator { radiatorId :: Int }
     deriving (Show, Eq, Ord)
@@ -2217,8 +2217,8 @@ instance PbSerializable Radiator where
 
 instance KRPCResponseExtractable Radiator
 
-{-
- - A reaction wheel. Obtained by calling <see cref="M:SpaceCenter.Part.ReactionWheel" />.
+{-|
+A reaction wheel. Obtained by calling <see cref="M:SpaceCenter.Part.ReactionWheel" />.
  -}
 newtype ReactionWheel = ReactionWheel { reactionWheelId :: Int }
     deriving (Show, Eq, Ord)
@@ -2229,11 +2229,11 @@ instance PbSerializable ReactionWheel where
 
 instance KRPCResponseExtractable ReactionWheel
 
-{-
- - Represents a reference frame for positions, rotations and
- - velocities. Contains:
- - <list type="bullet">The position of the origin.The directions of the x, y and z axes.The linear velocity of the frame.The angular velocity of the frame.This class does not contain any properties or methods. It is only
- - used as a parameter to other functions.
+{-|
+Represents a reference frame for positions, rotations and
+velocities. Contains:
+<list type="bullet">The position of the origin.The directions of the x, y and z axes.The linear velocity of the frame.The angular velocity of the frame.This class does not contain any properties or methods. It is only
+used as a parameter to other functions.
  -}
 newtype ReferenceFrame = ReferenceFrame { referenceFrameId :: Int }
     deriving (Show, Eq, Ord)
@@ -2244,9 +2244,9 @@ instance PbSerializable ReferenceFrame where
 
 instance KRPCResponseExtractable ReferenceFrame
 
-{-
- - An individual resource stored within a part.
- - Created using methods in the <see cref="T:SpaceCenter.Resources" /> class.
+{-|
+An individual resource stored within a part.
+Created using methods in the <see cref="T:SpaceCenter.Resources" /> class.
  -}
 newtype Resource = Resource { resourceId :: Int }
     deriving (Show, Eq, Ord)
@@ -2257,8 +2257,8 @@ instance PbSerializable Resource where
 
 instance KRPCResponseExtractable Resource
 
-{-
- - A resource converter. Obtained by calling <see cref="M:SpaceCenter.Part.ResourceConverter" />.
+{-|
+A resource converter. Obtained by calling <see cref="M:SpaceCenter.Part.ResourceConverter" />.
  -}
 newtype ResourceConverter = ResourceConverter { resourceConverterId :: Int }
     deriving (Show, Eq, Ord)
@@ -2269,8 +2269,8 @@ instance PbSerializable ResourceConverter where
 
 instance KRPCResponseExtractable ResourceConverter
 
-{-
- - A resource harvester (drill). Obtained by calling <see cref="M:SpaceCenter.Part.ResourceHarvester" />.
+{-|
+A resource harvester (drill). Obtained by calling <see cref="M:SpaceCenter.Part.ResourceHarvester" />.
  -}
 newtype ResourceHarvester = ResourceHarvester { resourceHarvesterId :: Int }
     deriving (Show, Eq, Ord)
@@ -2281,8 +2281,8 @@ instance PbSerializable ResourceHarvester where
 
 instance KRPCResponseExtractable ResourceHarvester
 
-{-
- - Transfer resources between parts.
+{-|
+Transfer resources between parts.
  -}
 newtype ResourceTransfer = ResourceTransfer { resourceTransferId :: Int }
     deriving (Show, Eq, Ord)
@@ -2293,11 +2293,11 @@ instance PbSerializable ResourceTransfer where
 
 instance KRPCResponseExtractable ResourceTransfer
 
-{-
- - Represents the collection of resources stored in a vessel, stage or part.
- - Created by calling <see cref="M:SpaceCenter.Vessel.Resources" />,
- - <see cref="M:SpaceCenter.Vessel.ResourcesInDecoupleStage" /> or
- - <see cref="M:SpaceCenter.Part.Resources" />.
+{-|
+Represents the collection of resources stored in a vessel, stage or part.
+Created by calling <see cref="M:SpaceCenter.Vessel.Resources" />,
+<see cref="M:SpaceCenter.Vessel.ResourcesInDecoupleStage" /> or
+<see cref="M:SpaceCenter.Part.Resources" />.
  -}
 newtype Resources = Resources { resourcesId :: Int }
     deriving (Show, Eq, Ord)
@@ -2308,8 +2308,8 @@ instance PbSerializable Resources where
 
 instance KRPCResponseExtractable Resources
 
-{-
- - Obtained by calling <see cref="M:SpaceCenter.Experiment.Data" />.
+{-|
+Obtained by calling <see cref="M:SpaceCenter.Experiment.Data" />.
  -}
 newtype ScienceData = ScienceData { scienceDataId :: Int }
     deriving (Show, Eq, Ord)
@@ -2320,8 +2320,8 @@ instance PbSerializable ScienceData where
 
 instance KRPCResponseExtractable ScienceData
 
-{-
- - Obtained by calling <see cref="M:SpaceCenter.Experiment.ScienceSubject" />.
+{-|
+Obtained by calling <see cref="M:SpaceCenter.Experiment.ScienceSubject" />.
  -}
 newtype ScienceSubject = ScienceSubject { scienceSubjectId :: Int }
     deriving (Show, Eq, Ord)
@@ -2332,8 +2332,8 @@ instance PbSerializable ScienceSubject where
 
 instance KRPCResponseExtractable ScienceSubject
 
-{-
- - A sensor, such as a thermometer. Obtained by calling <see cref="M:SpaceCenter.Part.Sensor" />.
+{-|
+A sensor, such as a thermometer. Obtained by calling <see cref="M:SpaceCenter.Part.Sensor" />.
  -}
 newtype Sensor = Sensor { sensorId :: Int }
     deriving (Show, Eq, Ord)
@@ -2344,8 +2344,8 @@ instance PbSerializable Sensor where
 
 instance KRPCResponseExtractable Sensor
 
-{-
- - A solar panel. Obtained by calling <see cref="M:SpaceCenter.Part.SolarPanel" />.
+{-|
+A solar panel. Obtained by calling <see cref="M:SpaceCenter.Part.SolarPanel" />.
  -}
 newtype SolarPanel = SolarPanel { solarPanelId :: Int }
     deriving (Show, Eq, Ord)
@@ -2356,10 +2356,10 @@ instance PbSerializable SolarPanel where
 
 instance KRPCResponseExtractable SolarPanel
 
-{-
- - The component of an <see cref="T:SpaceCenter.Engine" /> or <see cref="T:SpaceCenter.RCS" /> part that generates thrust.
- - Can obtained by calling <see cref="M:SpaceCenter.Engine.Thrusters" /> or <see cref="M:SpaceCenter.RCS.Thrusters" />.Engines can consist of multiple thrusters.
- - For example, the S3 KS-25x4 "Mammoth" has four rocket nozzels, and so consists of four thrusters.
+{-|
+The component of an <see cref="T:SpaceCenter.Engine" /> or <see cref="T:SpaceCenter.RCS" /> part that generates thrust.
+Can obtained by calling <see cref="M:SpaceCenter.Engine.Thrusters" /> or <see cref="M:SpaceCenter.RCS.Thrusters" />.Engines can consist of multiple thrusters.
+For example, the S3 KS-25x4 "Mammoth" has four rocket nozzels, and so consists of four thrusters.
  -}
 newtype Thruster = Thruster { thrusterId :: Int }
     deriving (Show, Eq, Ord)
@@ -2370,10 +2370,10 @@ instance PbSerializable Thruster where
 
 instance KRPCResponseExtractable Thruster
 
-{-
- - These objects are used to interact with vessels in KSP. This includes getting
- - orbital and flight data, manipulating control inputs and managing resources.
- - Created using <see cref="M:SpaceCenter.ActiveVessel" /> or <see cref="M:SpaceCenter.Vessels" />.
+{-|
+These objects are used to interact with vessels in KSP. This includes getting
+orbital and flight data, manipulating control inputs and managing resources.
+Created using <see cref="M:SpaceCenter.ActiveVessel" /> or <see cref="M:SpaceCenter.Vessels" />.
  -}
 newtype Vessel = Vessel { vesselId :: Int }
     deriving (Show, Eq, Ord)
@@ -2384,8 +2384,8 @@ instance PbSerializable Vessel where
 
 instance KRPCResponseExtractable Vessel
 
-{-
- - Represents a waypoint. Can be created using <see cref="M:SpaceCenter.WaypointManager.AddWaypoint" />.
+{-|
+Represents a waypoint. Can be created using <see cref="M:SpaceCenter.WaypointManager.AddWaypoint" />.
  -}
 newtype Waypoint = Waypoint { waypointId :: Int }
     deriving (Show, Eq, Ord)
@@ -2396,10 +2396,10 @@ instance PbSerializable Waypoint where
 
 instance KRPCResponseExtractable Waypoint
 
-{-
- - Waypoints are the location markers you can see on the map view showing you where contracts are targeted for. 
- - With this structure, you can obtain coordinate data for the locations of these waypoints.
- - Obtained by calling <see cref="M:SpaceCenter.WaypointManager" />.
+{-|
+Waypoints are the location markers you can see on the map view showing you where contracts are targeted for. 
+With this structure, you can obtain coordinate data for the locations of these waypoints.
+Obtained by calling <see cref="M:SpaceCenter.WaypointManager" />.
  -}
 newtype WaypointManager = WaypointManager { waypointManagerId :: Int }
     deriving (Show, Eq, Ord)
@@ -2411,8 +2411,8 @@ instance PbSerializable WaypointManager where
 instance KRPCResponseExtractable WaypointManager
 
 
-{-
- - See <see cref="M:SpaceCenter.Camera.Mode" />.
+{-|
+See <see cref="M:SpaceCenter.Camera.Mode" />.
  -}
 data CameraMode
     = CameraMode'Automatic
@@ -2430,8 +2430,8 @@ instance PbSerializable CameraMode where
 
 instance KRPCResponseExtractable CameraMode
 
-{-
- - The state of a cargo bay. See <see cref="M:SpaceCenter.CargoBay.State" />.
+{-|
+The state of a cargo bay. See <see cref="M:SpaceCenter.CargoBay.State" />.
  -}
 data CargoBayState
     = CargoBayState'Open
@@ -2446,8 +2446,8 @@ instance PbSerializable CargoBayState where
 
 instance KRPCResponseExtractable CargoBayState
 
-{-
- - The state of a docking port. See <see cref="M:SpaceCenter.DockingPort.State" />.
+{-|
+The state of a docking port. See <see cref="M:SpaceCenter.DockingPort.State" />.
  -}
 data DockingPortState
     = DockingPortState'Ready
@@ -2464,8 +2464,8 @@ instance PbSerializable DockingPortState where
 
 instance KRPCResponseExtractable DockingPortState
 
-{-
- - The state of a landing gear. See <see cref="M:SpaceCenter.LandingGear.State" />.
+{-|
+The state of a landing gear. See <see cref="M:SpaceCenter.LandingGear.State" />.
  -}
 data LandingGearState
     = LandingGearState'Deployed
@@ -2481,8 +2481,8 @@ instance PbSerializable LandingGearState where
 
 instance KRPCResponseExtractable LandingGearState
 
-{-
- - The state of a landing leg. See <see cref="M:SpaceCenter.LandingLeg.State" />.
+{-|
+The state of a landing leg. See <see cref="M:SpaceCenter.LandingLeg.State" />.
  -}
 data LandingLegState
     = LandingLegState'Deployed
@@ -2498,8 +2498,8 @@ instance PbSerializable LandingLegState where
 
 instance KRPCResponseExtractable LandingLegState
 
-{-
- - The state of a parachute. See <see cref="M:SpaceCenter.Parachute.State" />.
+{-|
+The state of a parachute. See <see cref="M:SpaceCenter.Parachute.State" />.
  -}
 data ParachuteState
     = ParachuteState'Active
@@ -2515,8 +2515,8 @@ instance PbSerializable ParachuteState where
 
 instance KRPCResponseExtractable ParachuteState
 
-{-
- - The state of a radiator. <see cref="T:SpaceCenter.RadiatorState" />
+{-|
+The state of a radiator. <see cref="T:SpaceCenter.RadiatorState" />
  -}
 data RadiatorState
     = RadiatorState'Extended
@@ -2532,8 +2532,8 @@ instance PbSerializable RadiatorState where
 
 instance KRPCResponseExtractable RadiatorState
 
-{-
- - The state of a resource converter. See <see cref="M:SpaceCenter.ResourceConverter.State" />.
+{-|
+The state of a resource converter. See <see cref="M:SpaceCenter.ResourceConverter.State" />.
  -}
 data ResourceConverterState
     = ResourceConverterState'Running
@@ -2550,8 +2550,8 @@ instance PbSerializable ResourceConverterState where
 
 instance KRPCResponseExtractable ResourceConverterState
 
-{-
- - The way in which a resource flows between parts. See <see cref="M:SpaceCenter.Resources.FlowMode" />.
+{-|
+The way in which a resource flows between parts. See <see cref="M:SpaceCenter.Resources.FlowMode" />.
  -}
 data ResourceFlowMode
     = ResourceFlowMode'Vessel
@@ -2566,8 +2566,8 @@ instance PbSerializable ResourceFlowMode where
 
 instance KRPCResponseExtractable ResourceFlowMode
 
-{-
- - The state of a resource harvester. See <see cref="M:SpaceCenter.ResourceHarvester.State" />.
+{-|
+The state of a resource harvester. See <see cref="M:SpaceCenter.ResourceHarvester.State" />.
  -}
 data ResourceHarvesterState
     = ResourceHarvesterState'Deploying
@@ -2583,8 +2583,8 @@ instance PbSerializable ResourceHarvesterState where
 
 instance KRPCResponseExtractable ResourceHarvesterState
 
-{-
- - The behavior of the SAS auto-pilot. See <see cref="M:SpaceCenter.AutoPilot.SASMode" />.
+{-|
+The behavior of the SAS auto-pilot. See <see cref="M:SpaceCenter.AutoPilot.SASMode" />.
  -}
 data SASMode
     = SASMode'StabilityAssist
@@ -2605,8 +2605,8 @@ instance PbSerializable SASMode where
 
 instance KRPCResponseExtractable SASMode
 
-{-
- - The state of a solar panel. See <see cref="M:SpaceCenter.SolarPanel.State" />.
+{-|
+The state of a solar panel. See <see cref="M:SpaceCenter.SolarPanel.State" />.
  -}
 data SolarPanelState
     = SolarPanelState'Extended
@@ -2622,9 +2622,9 @@ instance PbSerializable SolarPanelState where
 
 instance KRPCResponseExtractable SolarPanelState
 
-{-
- - The mode of the speed reported in the navball.
- - See <see cref="M:SpaceCenter.Control.SpeedMode" />.
+{-|
+The mode of the speed reported in the navball.
+See <see cref="M:SpaceCenter.Control.SpeedMode" />.
  -}
 data SpeedMode
     = SpeedMode'Orbit
@@ -2638,9 +2638,9 @@ instance PbSerializable SpeedMode where
 
 instance KRPCResponseExtractable SpeedMode
 
-{-
- - The situation a vessel is in.
- - See <see cref="M:SpaceCenter.Vessel.Situation" />.
+{-|
+The situation a vessel is in.
+See <see cref="M:SpaceCenter.Vessel.Situation" />.
  -}
 data VesselSituation
     = VesselSituation'PreLaunch
@@ -2659,9 +2659,9 @@ instance PbSerializable VesselSituation where
 
 instance KRPCResponseExtractable VesselSituation
 
-{-
- - The type of a vessel.
- - See <see cref="M:SpaceCenter.Vessel.Type" />.
+{-|
+The type of a vessel.
+See <see cref="M:SpaceCenter.Vessel.Type" />.
  -}
 data VesselType
     = VesselType'Ship
@@ -2679,9 +2679,9 @@ instance PbSerializable VesselType where
 
 instance KRPCResponseExtractable VesselType
 
-{-
- - The time warp mode.
- - Returned by <see cref="T:SpaceCenter.WarpMode" />
+{-|
+The time warp mode.
+Returned by <see cref="T:SpaceCenter.WarpMode" />
  -}
 data WarpMode
     = WarpMode'Rails
@@ -2696,8 +2696,8 @@ instance PbSerializable WarpMode where
 instance KRPCResponseExtractable WarpMode
 
 
-{-
- - Disengage the auto-pilot.
+{-|
+Disengage the auto-pilot.
  -}
 autoPilotDisengage :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext ()
 autoPilotDisengage thisArg = do
@@ -2705,8 +2705,8 @@ autoPilotDisengage thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Engage the auto-pilot.
+{-|
+Engage the auto-pilot.
  -}
 autoPilotEngage :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext ()
 autoPilotEngage thisArg = do
@@ -2714,8 +2714,8 @@ autoPilotEngage thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Set target pitch and heading angles.<param name="pitch">Target pitch angle, in degrees between -90° and +90°.<param name="heading">Target heading angle, in degrees between 0° and 360°.
+{-|
+Set target pitch and heading angles.<param name="pitch">Target pitch angle, in degrees between -90° and +90°.<param name="heading">Target heading angle, in degrees between 0° and 360°.
  -}
 autoPilotTargetPitchAndHeading :: KRPCHS.SpaceCenter.AutoPilot -> Float -> Float -> RPCContext ()
 autoPilotTargetPitchAndHeading thisArg pitchArg headingArg = do
@@ -2723,8 +2723,8 @@ autoPilotTargetPitchAndHeading thisArg pitchArg headingArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Blocks until the vessel is pointing in the target direction and has the target roll (if set).
+{-|
+Blocks until the vessel is pointing in the target direction and has the target roll (if set).
  -}
 autoPilotWait :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext ()
 autoPilotWait thisArg = do
@@ -2732,11 +2732,11 @@ autoPilotWait thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The angle at which the autopilot considers the vessel to be pointing close to the target.
- - This determines the midpoint of the target velocity attenuation function.
- - A vector of three angles, in degrees, one for each of the pitch, roll and yaw axes.
- - Defaults to 1° for each axis.
+{-|
+The angle at which the autopilot considers the vessel to be pointing close to the target.
+This determines the midpoint of the target velocity attenuation function.
+A vector of three angles, in degrees, one for each of the pitch, roll and yaw axes.
+Defaults to 1° for each axis.
  -}
 getAutoPilotAttenuationAngle :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext ((Double, Double, Double))
 getAutoPilotAttenuationAngle thisArg = do
@@ -2752,10 +2752,10 @@ getAutoPilotAttenuationAngleStreamReq thisArg =
 getAutoPilotAttenuationAngleStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
 getAutoPilotAttenuationAngleStream thisArg = requestStream $ getAutoPilotAttenuationAngleStreamReq thisArg 
 
-{-
- - Whether the rotation rate controllers PID parameters should be automatically tuned using the
- - vessels moment of inertia and available torque. Defaults totrue.
- - See <see cref="M:SpaceCenter.AutoPilot.TimeToPeak" /> and  <see cref="M:SpaceCenter.AutoPilot.Overshoot" />.
+{-|
+Whether the rotation rate controllers PID parameters should be automatically tuned using the
+vessels moment of inertia and available torque. Defaults totrue.
+See <see cref="M:SpaceCenter.AutoPilot.TimeToPeak" /> and  <see cref="M:SpaceCenter.AutoPilot.Overshoot" />.
  -}
 getAutoPilotAutoTune :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Bool)
 getAutoPilotAutoTune thisArg = do
@@ -2771,11 +2771,11 @@ getAutoPilotAutoTuneStreamReq thisArg =
 getAutoPilotAutoTuneStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Bool))
 getAutoPilotAutoTuneStream thisArg = requestStream $ getAutoPilotAutoTuneStreamReq thisArg 
 
-{-
- - The time the vessel should take to come to a stop pointing in the target direction.
- - This determines the angular acceleration used to decelerate the vessel.
- - A vector of three times, in seconds, one for each of the pitch, roll and yaw axes.
- - Defaults to 5 seconds for each axis.
+{-|
+The time the vessel should take to come to a stop pointing in the target direction.
+This determines the angular acceleration used to decelerate the vessel.
+A vector of three times, in seconds, one for each of the pitch, roll and yaw axes.
+Defaults to 5 seconds for each axis.
  -}
 getAutoPilotDecelerationTime :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext ((Double, Double, Double))
 getAutoPilotDecelerationTime thisArg = do
@@ -2791,10 +2791,10 @@ getAutoPilotDecelerationTimeStreamReq thisArg =
 getAutoPilotDecelerationTimeStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
 getAutoPilotDecelerationTimeStream thisArg = requestStream $ getAutoPilotDecelerationTimeStreamReq thisArg 
 
-{-
- - The error, in degrees, between the direction the ship has been asked
- - to point in and the direction it is pointing in. Returns zero if the auto-pilot
- - has not been engaged and SAS is not enabled or is in stability assist mode.
+{-|
+The error, in degrees, between the direction the ship has been asked
+to point in and the direction it is pointing in. Returns zero if the auto-pilot
+has not been engaged and SAS is not enabled or is in stability assist mode.
  -}
 getAutoPilotError :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Float)
 getAutoPilotError thisArg = do
@@ -2810,9 +2810,9 @@ getAutoPilotErrorStreamReq thisArg =
 getAutoPilotErrorStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Float))
 getAutoPilotErrorStream thisArg = requestStream $ getAutoPilotErrorStreamReq thisArg 
 
-{-
- - The error, in degrees, between the vessels current and target heading.
- - Returns zero if the auto-pilot has not been engaged.
+{-|
+The error, in degrees, between the vessels current and target heading.
+Returns zero if the auto-pilot has not been engaged.
  -}
 getAutoPilotHeadingError :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Float)
 getAutoPilotHeadingError thisArg = do
@@ -2828,10 +2828,10 @@ getAutoPilotHeadingErrorStreamReq thisArg =
 getAutoPilotHeadingErrorStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Float))
 getAutoPilotHeadingErrorStream thisArg = requestStream $ getAutoPilotHeadingErrorStreamReq thisArg 
 
-{-
- - The target overshoot percentage used to autotune the PID controllers.
- - A vector of three values, between 0 and 1, for each of the pitch, roll and yaw axes.
- - Defaults to 0.01 for each axis.
+{-|
+The target overshoot percentage used to autotune the PID controllers.
+A vector of three values, between 0 and 1, for each of the pitch, roll and yaw axes.
+Defaults to 0.01 for each axis.
  -}
 getAutoPilotOvershoot :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext ((Double, Double, Double))
 getAutoPilotOvershoot thisArg = do
@@ -2847,9 +2847,9 @@ getAutoPilotOvershootStreamReq thisArg =
 getAutoPilotOvershootStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
 getAutoPilotOvershootStream thisArg = requestStream $ getAutoPilotOvershootStreamReq thisArg 
 
-{-
- - The error, in degrees, between the vessels current and target pitch.
- - Returns zero if the auto-pilot has not been engaged.
+{-|
+The error, in degrees, between the vessels current and target pitch.
+Returns zero if the auto-pilot has not been engaged.
  -}
 getAutoPilotPitchError :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Float)
 getAutoPilotPitchError thisArg = do
@@ -2865,8 +2865,8 @@ getAutoPilotPitchErrorStreamReq thisArg =
 getAutoPilotPitchErrorStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Float))
 getAutoPilotPitchErrorStream thisArg = requestStream $ getAutoPilotPitchErrorStreamReq thisArg 
 
-{-
- - Gains for the pitch PID controller.When <see cref="M:SpaceCenter.AutoPilot.AutoTune" /> is true, these values are updated automatically, which will overwrite any manual changes.
+{-|
+Gains for the pitch PID controller.When <see cref="M:SpaceCenter.AutoPilot.AutoTune" /> is true, these values are updated automatically, which will overwrite any manual changes.
  -}
 getAutoPilotPitchPIDGains :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext ((Double, Double, Double))
 getAutoPilotPitchPIDGains thisArg = do
@@ -2882,9 +2882,9 @@ getAutoPilotPitchPIDGainsStreamReq thisArg =
 getAutoPilotPitchPIDGainsStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
 getAutoPilotPitchPIDGainsStream thisArg = requestStream $ getAutoPilotPitchPIDGainsStreamReq thisArg 
 
-{-
- - The reference frame for the target direction (<see cref="M:SpaceCenter.AutoPilot.TargetDirection" />).An error will be thrown if this property is set to a reference frame that rotates with the vessel being controlled,
- - as it is impossible to rotate the vessel in such a reference frame.
+{-|
+The reference frame for the target direction (<see cref="M:SpaceCenter.AutoPilot.TargetDirection" />).An error will be thrown if this property is set to a reference frame that rotates with the vessel being controlled,
+as it is impossible to rotate the vessel in such a reference frame.
  -}
 getAutoPilotReferenceFrame :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
 getAutoPilotReferenceFrame thisArg = do
@@ -2900,9 +2900,9 @@ getAutoPilotReferenceFrameStreamReq thisArg =
 getAutoPilotReferenceFrameStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 getAutoPilotReferenceFrameStream thisArg = requestStream $ getAutoPilotReferenceFrameStreamReq thisArg 
 
-{-
- - The error, in degrees, between the vessels current and target roll.
- - Returns zero if the auto-pilot has not been engaged or no target roll is set.
+{-|
+The error, in degrees, between the vessels current and target roll.
+Returns zero if the auto-pilot has not been engaged or no target roll is set.
  -}
 getAutoPilotRollError :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Float)
 getAutoPilotRollError thisArg = do
@@ -2918,8 +2918,8 @@ getAutoPilotRollErrorStreamReq thisArg =
 getAutoPilotRollErrorStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Float))
 getAutoPilotRollErrorStream thisArg = requestStream $ getAutoPilotRollErrorStreamReq thisArg 
 
-{-
- - Gains for the roll PID controller.When <see cref="M:SpaceCenter.AutoPilot.AutoTune" /> is true, these values are updated automatically, which will overwrite any manual changes.
+{-|
+Gains for the roll PID controller.When <see cref="M:SpaceCenter.AutoPilot.AutoTune" /> is true, these values are updated automatically, which will overwrite any manual changes.
  -}
 getAutoPilotRollPIDGains :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext ((Double, Double, Double))
 getAutoPilotRollPIDGains thisArg = do
@@ -2935,9 +2935,9 @@ getAutoPilotRollPIDGainsStreamReq thisArg =
 getAutoPilotRollPIDGainsStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
 getAutoPilotRollPIDGainsStream thisArg = requestStream $ getAutoPilotRollPIDGainsStreamReq thisArg 
 
-{-
- - The threshold at which the autopilot will try to match the target roll angle, if any.
- - Defaults to 5 degrees.
+{-|
+The threshold at which the autopilot will try to match the target roll angle, if any.
+Defaults to 5 degrees.
  -}
 getAutoPilotRollThreshold :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Double)
 getAutoPilotRollThreshold thisArg = do
@@ -2953,8 +2953,8 @@ getAutoPilotRollThresholdStreamReq thisArg =
 getAutoPilotRollThresholdStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Double))
 getAutoPilotRollThresholdStream thisArg = requestStream $ getAutoPilotRollThresholdStreamReq thisArg 
 
-{-
- - The state of SAS.Equivalent to <see cref="M:SpaceCenter.Control.SAS" />
+{-|
+The state of SAS.Equivalent to <see cref="M:SpaceCenter.Control.SAS" />
  -}
 getAutoPilotSAS :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Bool)
 getAutoPilotSAS thisArg = do
@@ -2970,9 +2970,9 @@ getAutoPilotSASStreamReq thisArg =
 getAutoPilotSASStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Bool))
 getAutoPilotSASStream thisArg = requestStream $ getAutoPilotSASStreamReq thisArg 
 
-{-
- - The current <see cref="T:SpaceCenter.SASMode" />.
- - These modes are equivalent to the mode buttons to the left of the navball that appear when SAS is enabled.Equivalent to <see cref="M:SpaceCenter.Control.SASMode" />
+{-|
+The current <see cref="T:SpaceCenter.SASMode" />.
+These modes are equivalent to the mode buttons to the left of the navball that appear when SAS is enabled.Equivalent to <see cref="M:SpaceCenter.Control.SASMode" />
  -}
 getAutoPilotSASMode :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCHS.SpaceCenter.SASMode)
 getAutoPilotSASMode thisArg = do
@@ -2988,11 +2988,11 @@ getAutoPilotSASModeStreamReq thisArg =
 getAutoPilotSASModeStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.SASMode))
 getAutoPilotSASModeStream thisArg = requestStream $ getAutoPilotSASModeStreamReq thisArg 
 
-{-
- - The maximum amount of time that the vessel should need to come to a complete stop.
- - This determines the maximum angular velocity of the vessel.
- - A vector of three stopping times, in seconds, one for each of the pitch, roll and yaw axes.
- - Defaults to 0.5 seconds for each axis.
+{-|
+The maximum amount of time that the vessel should need to come to a complete stop.
+This determines the maximum angular velocity of the vessel.
+A vector of three stopping times, in seconds, one for each of the pitch, roll and yaw axes.
+Defaults to 0.5 seconds for each axis.
  -}
 getAutoPilotStoppingTime :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext ((Double, Double, Double))
 getAutoPilotStoppingTime thisArg = do
@@ -3008,8 +3008,8 @@ getAutoPilotStoppingTimeStreamReq thisArg =
 getAutoPilotStoppingTimeStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
 getAutoPilotStoppingTimeStream thisArg = requestStream $ getAutoPilotStoppingTimeStreamReq thisArg 
 
-{-
- - Direction vector corresponding to the target pitch and heading.
+{-|
+Direction vector corresponding to the target pitch and heading.
  -}
 getAutoPilotTargetDirection :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext ((Double, Double, Double))
 getAutoPilotTargetDirection thisArg = do
@@ -3025,8 +3025,8 @@ getAutoPilotTargetDirectionStreamReq thisArg =
 getAutoPilotTargetDirectionStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
 getAutoPilotTargetDirectionStream thisArg = requestStream $ getAutoPilotTargetDirectionStreamReq thisArg 
 
-{-
- - The target heading, in degrees, between 0° and 360°.
+{-|
+The target heading, in degrees, between 0° and 360°.
  -}
 getAutoPilotTargetHeading :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Float)
 getAutoPilotTargetHeading thisArg = do
@@ -3042,8 +3042,8 @@ getAutoPilotTargetHeadingStreamReq thisArg =
 getAutoPilotTargetHeadingStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Float))
 getAutoPilotTargetHeadingStream thisArg = requestStream $ getAutoPilotTargetHeadingStreamReq thisArg 
 
-{-
- - The target pitch, in degrees, between -90° and +90°.
+{-|
+The target pitch, in degrees, between -90° and +90°.
  -}
 getAutoPilotTargetPitch :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Float)
 getAutoPilotTargetPitch thisArg = do
@@ -3059,8 +3059,8 @@ getAutoPilotTargetPitchStreamReq thisArg =
 getAutoPilotTargetPitchStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Float))
 getAutoPilotTargetPitchStream thisArg = requestStream $ getAutoPilotTargetPitchStreamReq thisArg 
 
-{-
- - The target roll, in degrees.NaNif no target roll is set.
+{-|
+The target roll, in degrees.NaNif no target roll is set.
  -}
 getAutoPilotTargetRoll :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Float)
 getAutoPilotTargetRoll thisArg = do
@@ -3076,10 +3076,10 @@ getAutoPilotTargetRollStreamReq thisArg =
 getAutoPilotTargetRollStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Float))
 getAutoPilotTargetRollStream thisArg = requestStream $ getAutoPilotTargetRollStreamReq thisArg 
 
-{-
- - The target time to peak used to autotune the PID controllers.
- - A vector of three times, in seconds, for each of the pitch, roll and yaw axes.
- - Defaults to 3 seconds for each axis.
+{-|
+The target time to peak used to autotune the PID controllers.
+A vector of three times, in seconds, for each of the pitch, roll and yaw axes.
+Defaults to 3 seconds for each axis.
  -}
 getAutoPilotTimeToPeak :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext ((Double, Double, Double))
 getAutoPilotTimeToPeak thisArg = do
@@ -3095,8 +3095,8 @@ getAutoPilotTimeToPeakStreamReq thisArg =
 getAutoPilotTimeToPeakStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
 getAutoPilotTimeToPeakStream thisArg = requestStream $ getAutoPilotTimeToPeakStreamReq thisArg 
 
-{-
- - Gains for the yaw PID controller.When <see cref="M:SpaceCenter.AutoPilot.AutoTune" /> is true, these values are updated automatically, which will overwrite any manual changes.
+{-|
+Gains for the yaw PID controller.When <see cref="M:SpaceCenter.AutoPilot.AutoTune" /> is true, these values are updated automatically, which will overwrite any manual changes.
  -}
 getAutoPilotYawPIDGains :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext ((Double, Double, Double))
 getAutoPilotYawPIDGains thisArg = do
@@ -3112,11 +3112,11 @@ getAutoPilotYawPIDGainsStreamReq thisArg =
 getAutoPilotYawPIDGainsStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
 getAutoPilotYawPIDGainsStream thisArg = requestStream $ getAutoPilotYawPIDGainsStreamReq thisArg 
 
-{-
- - The angle at which the autopilot considers the vessel to be pointing close to the target.
- - This determines the midpoint of the target velocity attenuation function.
- - A vector of three angles, in degrees, one for each of the pitch, roll and yaw axes.
- - Defaults to 1° for each axis.
+{-|
+The angle at which the autopilot considers the vessel to be pointing close to the target.
+This determines the midpoint of the target velocity attenuation function.
+A vector of three angles, in degrees, one for each of the pitch, roll and yaw axes.
+Defaults to 1° for each axis.
  -}
 setAutoPilotAttenuationAngle :: KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> RPCContext ()
 setAutoPilotAttenuationAngle thisArg valueArg = do
@@ -3124,10 +3124,10 @@ setAutoPilotAttenuationAngle thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Whether the rotation rate controllers PID parameters should be automatically tuned using the
- - vessels moment of inertia and available torque. Defaults totrue.
- - See <see cref="M:SpaceCenter.AutoPilot.TimeToPeak" /> and  <see cref="M:SpaceCenter.AutoPilot.Overshoot" />.
+{-|
+Whether the rotation rate controllers PID parameters should be automatically tuned using the
+vessels moment of inertia and available torque. Defaults totrue.
+See <see cref="M:SpaceCenter.AutoPilot.TimeToPeak" /> and  <see cref="M:SpaceCenter.AutoPilot.Overshoot" />.
  -}
 setAutoPilotAutoTune :: KRPCHS.SpaceCenter.AutoPilot -> Bool -> RPCContext ()
 setAutoPilotAutoTune thisArg valueArg = do
@@ -3135,11 +3135,11 @@ setAutoPilotAutoTune thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The time the vessel should take to come to a stop pointing in the target direction.
- - This determines the angular acceleration used to decelerate the vessel.
- - A vector of three times, in seconds, one for each of the pitch, roll and yaw axes.
- - Defaults to 5 seconds for each axis.
+{-|
+The time the vessel should take to come to a stop pointing in the target direction.
+This determines the angular acceleration used to decelerate the vessel.
+A vector of three times, in seconds, one for each of the pitch, roll and yaw axes.
+Defaults to 5 seconds for each axis.
  -}
 setAutoPilotDecelerationTime :: KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> RPCContext ()
 setAutoPilotDecelerationTime thisArg valueArg = do
@@ -3147,10 +3147,10 @@ setAutoPilotDecelerationTime thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The target overshoot percentage used to autotune the PID controllers.
- - A vector of three values, between 0 and 1, for each of the pitch, roll and yaw axes.
- - Defaults to 0.01 for each axis.
+{-|
+The target overshoot percentage used to autotune the PID controllers.
+A vector of three values, between 0 and 1, for each of the pitch, roll and yaw axes.
+Defaults to 0.01 for each axis.
  -}
 setAutoPilotOvershoot :: KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> RPCContext ()
 setAutoPilotOvershoot thisArg valueArg = do
@@ -3158,8 +3158,8 @@ setAutoPilotOvershoot thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Gains for the pitch PID controller.When <see cref="M:SpaceCenter.AutoPilot.AutoTune" /> is true, these values are updated automatically, which will overwrite any manual changes.
+{-|
+Gains for the pitch PID controller.When <see cref="M:SpaceCenter.AutoPilot.AutoTune" /> is true, these values are updated automatically, which will overwrite any manual changes.
  -}
 setAutoPilotPitchPIDGains :: KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> RPCContext ()
 setAutoPilotPitchPIDGains thisArg valueArg = do
@@ -3167,9 +3167,9 @@ setAutoPilotPitchPIDGains thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The reference frame for the target direction (<see cref="M:SpaceCenter.AutoPilot.TargetDirection" />).An error will be thrown if this property is set to a reference frame that rotates with the vessel being controlled,
- - as it is impossible to rotate the vessel in such a reference frame.
+{-|
+The reference frame for the target direction (<see cref="M:SpaceCenter.AutoPilot.TargetDirection" />).An error will be thrown if this property is set to a reference frame that rotates with the vessel being controlled,
+as it is impossible to rotate the vessel in such a reference frame.
  -}
 setAutoPilotReferenceFrame :: KRPCHS.SpaceCenter.AutoPilot -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ()
 setAutoPilotReferenceFrame thisArg valueArg = do
@@ -3177,8 +3177,8 @@ setAutoPilotReferenceFrame thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Gains for the roll PID controller.When <see cref="M:SpaceCenter.AutoPilot.AutoTune" /> is true, these values are updated automatically, which will overwrite any manual changes.
+{-|
+Gains for the roll PID controller.When <see cref="M:SpaceCenter.AutoPilot.AutoTune" /> is true, these values are updated automatically, which will overwrite any manual changes.
  -}
 setAutoPilotRollPIDGains :: KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> RPCContext ()
 setAutoPilotRollPIDGains thisArg valueArg = do
@@ -3186,9 +3186,9 @@ setAutoPilotRollPIDGains thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The threshold at which the autopilot will try to match the target roll angle, if any.
- - Defaults to 5 degrees.
+{-|
+The threshold at which the autopilot will try to match the target roll angle, if any.
+Defaults to 5 degrees.
  -}
 setAutoPilotRollThreshold :: KRPCHS.SpaceCenter.AutoPilot -> Double -> RPCContext ()
 setAutoPilotRollThreshold thisArg valueArg = do
@@ -3196,8 +3196,8 @@ setAutoPilotRollThreshold thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The state of SAS.Equivalent to <see cref="M:SpaceCenter.Control.SAS" />
+{-|
+The state of SAS.Equivalent to <see cref="M:SpaceCenter.Control.SAS" />
  -}
 setAutoPilotSAS :: KRPCHS.SpaceCenter.AutoPilot -> Bool -> RPCContext ()
 setAutoPilotSAS thisArg valueArg = do
@@ -3205,9 +3205,9 @@ setAutoPilotSAS thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The current <see cref="T:SpaceCenter.SASMode" />.
- - These modes are equivalent to the mode buttons to the left of the navball that appear when SAS is enabled.Equivalent to <see cref="M:SpaceCenter.Control.SASMode" />
+{-|
+The current <see cref="T:SpaceCenter.SASMode" />.
+These modes are equivalent to the mode buttons to the left of the navball that appear when SAS is enabled.Equivalent to <see cref="M:SpaceCenter.Control.SASMode" />
  -}
 setAutoPilotSASMode :: KRPCHS.SpaceCenter.AutoPilot -> KRPCHS.SpaceCenter.SASMode -> RPCContext ()
 setAutoPilotSASMode thisArg valueArg = do
@@ -3215,11 +3215,11 @@ setAutoPilotSASMode thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The maximum amount of time that the vessel should need to come to a complete stop.
- - This determines the maximum angular velocity of the vessel.
- - A vector of three stopping times, in seconds, one for each of the pitch, roll and yaw axes.
- - Defaults to 0.5 seconds for each axis.
+{-|
+The maximum amount of time that the vessel should need to come to a complete stop.
+This determines the maximum angular velocity of the vessel.
+A vector of three stopping times, in seconds, one for each of the pitch, roll and yaw axes.
+Defaults to 0.5 seconds for each axis.
  -}
 setAutoPilotStoppingTime :: KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> RPCContext ()
 setAutoPilotStoppingTime thisArg valueArg = do
@@ -3227,8 +3227,8 @@ setAutoPilotStoppingTime thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Direction vector corresponding to the target pitch and heading.
+{-|
+Direction vector corresponding to the target pitch and heading.
  -}
 setAutoPilotTargetDirection :: KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> RPCContext ()
 setAutoPilotTargetDirection thisArg valueArg = do
@@ -3236,8 +3236,8 @@ setAutoPilotTargetDirection thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The target heading, in degrees, between 0° and 360°.
+{-|
+The target heading, in degrees, between 0° and 360°.
  -}
 setAutoPilotTargetHeading :: KRPCHS.SpaceCenter.AutoPilot -> Float -> RPCContext ()
 setAutoPilotTargetHeading thisArg valueArg = do
@@ -3245,8 +3245,8 @@ setAutoPilotTargetHeading thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The target pitch, in degrees, between -90° and +90°.
+{-|
+The target pitch, in degrees, between -90° and +90°.
  -}
 setAutoPilotTargetPitch :: KRPCHS.SpaceCenter.AutoPilot -> Float -> RPCContext ()
 setAutoPilotTargetPitch thisArg valueArg = do
@@ -3254,8 +3254,8 @@ setAutoPilotTargetPitch thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The target roll, in degrees.NaNif no target roll is set.
+{-|
+The target roll, in degrees.NaNif no target roll is set.
  -}
 setAutoPilotTargetRoll :: KRPCHS.SpaceCenter.AutoPilot -> Float -> RPCContext ()
 setAutoPilotTargetRoll thisArg valueArg = do
@@ -3263,10 +3263,10 @@ setAutoPilotTargetRoll thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The target time to peak used to autotune the PID controllers.
- - A vector of three times, in seconds, for each of the pitch, roll and yaw axes.
- - Defaults to 3 seconds for each axis.
+{-|
+The target time to peak used to autotune the PID controllers.
+A vector of three times, in seconds, for each of the pitch, roll and yaw axes.
+Defaults to 3 seconds for each axis.
  -}
 setAutoPilotTimeToPeak :: KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> RPCContext ()
 setAutoPilotTimeToPeak thisArg valueArg = do
@@ -3274,8 +3274,8 @@ setAutoPilotTimeToPeak thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Gains for the yaw PID controller.When <see cref="M:SpaceCenter.AutoPilot.AutoTune" /> is true, these values are updated automatically, which will overwrite any manual changes.
+{-|
+Gains for the yaw PID controller.When <see cref="M:SpaceCenter.AutoPilot.AutoTune" /> is true, these values are updated automatically, which will overwrite any manual changes.
  -}
 setAutoPilotYawPIDGains :: KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> RPCContext ()
 setAutoPilotYawPIDGains thisArg valueArg = do
@@ -3283,8 +3283,8 @@ setAutoPilotYawPIDGains thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Default distance from the camera to the subject, in meters.
+{-|
+Default distance from the camera to the subject, in meters.
  -}
 getCameraDefaultDistance :: KRPCHS.SpaceCenter.Camera -> RPCContext (Float)
 getCameraDefaultDistance thisArg = do
@@ -3300,9 +3300,9 @@ getCameraDefaultDistanceStreamReq thisArg =
 getCameraDefaultDistanceStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (Float))
 getCameraDefaultDistanceStream thisArg = requestStream $ getCameraDefaultDistanceStreamReq thisArg 
 
-{-
- - The distance from the camera to the subject, in meters.
- - A value between <see cref="M:SpaceCenter.Camera.MinDistance" /> and <see cref="M:SpaceCenter.Camera.MaxDistance" />.
+{-|
+The distance from the camera to the subject, in meters.
+A value between <see cref="M:SpaceCenter.Camera.MinDistance" /> and <see cref="M:SpaceCenter.Camera.MaxDistance" />.
  -}
 getCameraDistance :: KRPCHS.SpaceCenter.Camera -> RPCContext (Float)
 getCameraDistance thisArg = do
@@ -3318,10 +3318,10 @@ getCameraDistanceStreamReq thisArg =
 getCameraDistanceStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (Float))
 getCameraDistanceStream thisArg = requestStream $ getCameraDistanceStreamReq thisArg 
 
-{-
- - In map mode, the celestial body that the camera is focussed on.
- - Returnsnullif the camera is not focussed on a celestial body.
- - Returns an error is the camera is not in map mode.
+{-|
+In map mode, the celestial body that the camera is focussed on.
+Returnsnullif the camera is not focussed on a celestial body.
+Returns an error is the camera is not in map mode.
  -}
 getCameraFocussedBody :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCHS.SpaceCenter.CelestialBody)
 getCameraFocussedBody thisArg = do
@@ -3337,10 +3337,10 @@ getCameraFocussedBodyStreamReq thisArg =
 getCameraFocussedBodyStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.CelestialBody))
 getCameraFocussedBodyStream thisArg = requestStream $ getCameraFocussedBodyStreamReq thisArg 
 
-{-
- - In map mode, the maneuver node that the camera is focussed on.
- - Returnsnullif the camera is not focussed on a maneuver node.
- - Returns an error is the camera is not in map mode.
+{-|
+In map mode, the maneuver node that the camera is focussed on.
+Returnsnullif the camera is not focussed on a maneuver node.
+Returns an error is the camera is not in map mode.
  -}
 getCameraFocussedNode :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCHS.SpaceCenter.Node)
 getCameraFocussedNode thisArg = do
@@ -3356,10 +3356,10 @@ getCameraFocussedNodeStreamReq thisArg =
 getCameraFocussedNodeStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Node))
 getCameraFocussedNodeStream thisArg = requestStream $ getCameraFocussedNodeStreamReq thisArg 
 
-{-
- - In map mode, the vessel that the camera is focussed on.
- - Returnsnullif the camera is not focussed on a vessel.
- - Returns an error is the camera is not in map mode.
+{-|
+In map mode, the vessel that the camera is focussed on.
+Returnsnullif the camera is not focussed on a vessel.
+Returns an error is the camera is not in map mode.
  -}
 getCameraFocussedVessel :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCHS.SpaceCenter.Vessel)
 getCameraFocussedVessel thisArg = do
@@ -3375,8 +3375,8 @@ getCameraFocussedVesselStreamReq thisArg =
 getCameraFocussedVesselStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Vessel))
 getCameraFocussedVesselStream thisArg = requestStream $ getCameraFocussedVesselStreamReq thisArg 
 
-{-
- - The heading of the camera, in degrees.
+{-|
+The heading of the camera, in degrees.
  -}
 getCameraHeading :: KRPCHS.SpaceCenter.Camera -> RPCContext (Float)
 getCameraHeading thisArg = do
@@ -3392,8 +3392,8 @@ getCameraHeadingStreamReq thisArg =
 getCameraHeadingStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (Float))
 getCameraHeadingStream thisArg = requestStream $ getCameraHeadingStreamReq thisArg 
 
-{-
- - Maximum distance from the camera to the subject, in meters.
+{-|
+Maximum distance from the camera to the subject, in meters.
  -}
 getCameraMaxDistance :: KRPCHS.SpaceCenter.Camera -> RPCContext (Float)
 getCameraMaxDistance thisArg = do
@@ -3409,8 +3409,8 @@ getCameraMaxDistanceStreamReq thisArg =
 getCameraMaxDistanceStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (Float))
 getCameraMaxDistanceStream thisArg = requestStream $ getCameraMaxDistanceStreamReq thisArg 
 
-{-
- - The maximum pitch of the camera.
+{-|
+The maximum pitch of the camera.
  -}
 getCameraMaxPitch :: KRPCHS.SpaceCenter.Camera -> RPCContext (Float)
 getCameraMaxPitch thisArg = do
@@ -3426,8 +3426,8 @@ getCameraMaxPitchStreamReq thisArg =
 getCameraMaxPitchStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (Float))
 getCameraMaxPitchStream thisArg = requestStream $ getCameraMaxPitchStreamReq thisArg 
 
-{-
- - Minimum distance from the camera to the subject, in meters.
+{-|
+Minimum distance from the camera to the subject, in meters.
  -}
 getCameraMinDistance :: KRPCHS.SpaceCenter.Camera -> RPCContext (Float)
 getCameraMinDistance thisArg = do
@@ -3443,8 +3443,8 @@ getCameraMinDistanceStreamReq thisArg =
 getCameraMinDistanceStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (Float))
 getCameraMinDistanceStream thisArg = requestStream $ getCameraMinDistanceStreamReq thisArg 
 
-{-
- - The minimum pitch of the camera.
+{-|
+The minimum pitch of the camera.
  -}
 getCameraMinPitch :: KRPCHS.SpaceCenter.Camera -> RPCContext (Float)
 getCameraMinPitch thisArg = do
@@ -3460,8 +3460,8 @@ getCameraMinPitchStreamReq thisArg =
 getCameraMinPitchStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (Float))
 getCameraMinPitchStream thisArg = requestStream $ getCameraMinPitchStreamReq thisArg 
 
-{-
- - The current mode of the camera.
+{-|
+The current mode of the camera.
  -}
 getCameraMode :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCHS.SpaceCenter.CameraMode)
 getCameraMode thisArg = do
@@ -3477,9 +3477,9 @@ getCameraModeStreamReq thisArg =
 getCameraModeStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.CameraMode))
 getCameraModeStream thisArg = requestStream $ getCameraModeStreamReq thisArg 
 
-{-
- - The pitch of the camera, in degrees.
- - A value between <see cref="M:SpaceCenter.Camera.MinPitch" /> and <see cref="M:SpaceCenter.Camera.MaxPitch" />
+{-|
+The pitch of the camera, in degrees.
+A value between <see cref="M:SpaceCenter.Camera.MinPitch" /> and <see cref="M:SpaceCenter.Camera.MaxPitch" />
  -}
 getCameraPitch :: KRPCHS.SpaceCenter.Camera -> RPCContext (Float)
 getCameraPitch thisArg = do
@@ -3495,9 +3495,9 @@ getCameraPitchStreamReq thisArg =
 getCameraPitchStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (Float))
 getCameraPitchStream thisArg = requestStream $ getCameraPitchStreamReq thisArg 
 
-{-
- - The distance from the camera to the subject, in meters.
- - A value between <see cref="M:SpaceCenter.Camera.MinDistance" /> and <see cref="M:SpaceCenter.Camera.MaxDistance" />.
+{-|
+The distance from the camera to the subject, in meters.
+A value between <see cref="M:SpaceCenter.Camera.MinDistance" /> and <see cref="M:SpaceCenter.Camera.MaxDistance" />.
  -}
 setCameraDistance :: KRPCHS.SpaceCenter.Camera -> Float -> RPCContext ()
 setCameraDistance thisArg valueArg = do
@@ -3505,10 +3505,10 @@ setCameraDistance thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - In map mode, the celestial body that the camera is focussed on.
- - Returnsnullif the camera is not focussed on a celestial body.
- - Returns an error is the camera is not in map mode.
+{-|
+In map mode, the celestial body that the camera is focussed on.
+Returnsnullif the camera is not focussed on a celestial body.
+Returns an error is the camera is not in map mode.
  -}
 setCameraFocussedBody :: KRPCHS.SpaceCenter.Camera -> KRPCHS.SpaceCenter.CelestialBody -> RPCContext ()
 setCameraFocussedBody thisArg valueArg = do
@@ -3516,10 +3516,10 @@ setCameraFocussedBody thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - In map mode, the maneuver node that the camera is focussed on.
- - Returnsnullif the camera is not focussed on a maneuver node.
- - Returns an error is the camera is not in map mode.
+{-|
+In map mode, the maneuver node that the camera is focussed on.
+Returnsnullif the camera is not focussed on a maneuver node.
+Returns an error is the camera is not in map mode.
  -}
 setCameraFocussedNode :: KRPCHS.SpaceCenter.Camera -> KRPCHS.SpaceCenter.Node -> RPCContext ()
 setCameraFocussedNode thisArg valueArg = do
@@ -3527,10 +3527,10 @@ setCameraFocussedNode thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - In map mode, the vessel that the camera is focussed on.
- - Returnsnullif the camera is not focussed on a vessel.
- - Returns an error is the camera is not in map mode.
+{-|
+In map mode, the vessel that the camera is focussed on.
+Returnsnullif the camera is not focussed on a vessel.
+Returns an error is the camera is not in map mode.
  -}
 setCameraFocussedVessel :: KRPCHS.SpaceCenter.Camera -> KRPCHS.SpaceCenter.Vessel -> RPCContext ()
 setCameraFocussedVessel thisArg valueArg = do
@@ -3538,8 +3538,8 @@ setCameraFocussedVessel thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The heading of the camera, in degrees.
+{-|
+The heading of the camera, in degrees.
  -}
 setCameraHeading :: KRPCHS.SpaceCenter.Camera -> Float -> RPCContext ()
 setCameraHeading thisArg valueArg = do
@@ -3547,8 +3547,8 @@ setCameraHeading thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The current mode of the camera.
+{-|
+The current mode of the camera.
  -}
 setCameraMode :: KRPCHS.SpaceCenter.Camera -> KRPCHS.SpaceCenter.CameraMode -> RPCContext ()
 setCameraMode thisArg valueArg = do
@@ -3556,9 +3556,9 @@ setCameraMode thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The pitch of the camera, in degrees.
- - A value between <see cref="M:SpaceCenter.Camera.MinPitch" /> and <see cref="M:SpaceCenter.Camera.MaxPitch" />
+{-|
+The pitch of the camera, in degrees.
+A value between <see cref="M:SpaceCenter.Camera.MinPitch" /> and <see cref="M:SpaceCenter.Camera.MaxPitch" />
  -}
 setCameraPitch :: KRPCHS.SpaceCenter.Camera -> Float -> RPCContext ()
 setCameraPitch thisArg valueArg = do
@@ -3566,11 +3566,11 @@ setCameraPitch thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Returnstrueif regular "on-rails" time warp can be used, at the specified warp
- - <paramref name="factor" />. The maximum time warp rate is limited by various things,
- - including how close the active vessel is to a planet. See
- - <a href="http://wiki.kerbalspaceprogram.com/wiki/Time_warp">the KSP wikifor details.<param name="factor">The warp factor to check.
+{-|
+Returnstrueif regular "on-rails" time warp can be used, at the specified warp
+<paramref name="factor" />. The maximum time warp rate is limited by various things,
+including how close the active vessel is to a planet. See
+<a href="http://wiki.kerbalspaceprogram.com/wiki/Time_warp">the KSP wikifor details.<param name="factor">The warp factor to check.
  -}
 canRailsWarpAt :: Data.Int.Int32 -> RPCContext (Bool)
 canRailsWarpAt factorArg = do
@@ -3586,8 +3586,8 @@ canRailsWarpAtStreamReq factorArg =
 canRailsWarpAtStream :: Data.Int.Int32 -> RPCContext (KRPCStream (Bool))
 canRailsWarpAtStream factorArg = requestStream $ canRailsWarpAtStreamReq factorArg 
 
-{-
- - Whether the cargo bay is open.
+{-|
+Whether the cargo bay is open.
  -}
 getCargoBayOpen :: KRPCHS.SpaceCenter.CargoBay -> RPCContext (Bool)
 getCargoBayOpen thisArg = do
@@ -3603,8 +3603,8 @@ getCargoBayOpenStreamReq thisArg =
 getCargoBayOpenStream :: KRPCHS.SpaceCenter.CargoBay -> RPCContext (KRPCStream (Bool))
 getCargoBayOpenStream thisArg = requestStream $ getCargoBayOpenStreamReq thisArg 
 
-{-
- - The part object for this cargo bay.
+{-|
+The part object for this cargo bay.
  -}
 getCargoBayPart :: KRPCHS.SpaceCenter.CargoBay -> RPCContext (KRPCHS.SpaceCenter.Part)
 getCargoBayPart thisArg = do
@@ -3620,8 +3620,8 @@ getCargoBayPartStreamReq thisArg =
 getCargoBayPartStream :: KRPCHS.SpaceCenter.CargoBay -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
 getCargoBayPartStream thisArg = requestStream $ getCargoBayPartStreamReq thisArg 
 
-{-
- - The state of the cargo bay.
+{-|
+The state of the cargo bay.
  -}
 getCargoBayState :: KRPCHS.SpaceCenter.CargoBay -> RPCContext (KRPCHS.SpaceCenter.CargoBayState)
 getCargoBayState thisArg = do
@@ -3637,8 +3637,8 @@ getCargoBayStateStreamReq thisArg =
 getCargoBayStateStream :: KRPCHS.SpaceCenter.CargoBay -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.CargoBayState))
 getCargoBayStateStream thisArg = requestStream $ getCargoBayStateStreamReq thisArg 
 
-{-
- - Whether the cargo bay is open.
+{-|
+Whether the cargo bay is open.
  -}
 setCargoBayOpen :: KRPCHS.SpaceCenter.CargoBay -> Bool -> RPCContext ()
 setCargoBayOpen thisArg valueArg = do
@@ -3646,11 +3646,11 @@ setCargoBayOpen thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Returns the angular velocity of the body in the specified reference
- - frame. The magnitude of the vector is the rotational speed of the body, in
- - radians per second, and the direction of the vector indicates the axis of
- - rotation, using the right-hand rule.<param name="referenceFrame">
+{-|
+Returns the angular velocity of the body in the specified reference
+frame. The magnitude of the vector is the rotational speed of the body, in
+radians per second, and the direction of the vector indicates the axis of
+rotation, using the right-hand rule.<param name="referenceFrame">
  -}
 celestialBodyAngularVelocity :: KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
 celestialBodyAngularVelocity thisArg referenceFrameArg = do
@@ -3666,10 +3666,10 @@ celestialBodyAngularVelocityStreamReq thisArg referenceFrameArg =
 celestialBodyAngularVelocityStream :: KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
 celestialBodyAngularVelocityStream thisArg referenceFrameArg = requestStream $ celestialBodyAngularVelocityStreamReq thisArg referenceFrameArg 
 
-{-
- - The height of the surface relative to mean sea level at the given position,
- - in meters. When over water, this is the height of the sea-bed and is therefore a
- - negative value.<param name="latitude">Latitude in degrees<param name="longitude">Longitude in degrees
+{-|
+The height of the surface relative to mean sea level at the given position,
+in meters. When over water, this is the height of the sea-bed and is therefore a
+negative value.<param name="latitude">Latitude in degrees<param name="longitude">Longitude in degrees
  -}
 celestialBodyBedrockHeight :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> RPCContext (Double)
 celestialBodyBedrockHeight thisArg latitudeArg longitudeArg = do
@@ -3685,9 +3685,9 @@ celestialBodyBedrockHeightStreamReq thisArg latitudeArg longitudeArg =
 celestialBodyBedrockHeightStream :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> RPCContext (KRPCStream (Double))
 celestialBodyBedrockHeightStream thisArg latitudeArg longitudeArg = requestStream $ celestialBodyBedrockHeightStreamReq thisArg latitudeArg longitudeArg 
 
-{-
- - The position of the surface at the given latitude and longitude, in the given
- - reference frame. When over water, this is the position at the bottom of the sea-bed.<param name="latitude">Latitude in degrees<param name="longitude">Longitude in degrees<param name="referenceFrame">Reference frame for the returned position vector
+{-|
+The position of the surface at the given latitude and longitude, in the given
+reference frame. When over water, this is the position at the bottom of the sea-bed.<param name="latitude">Latitude in degrees<param name="longitude">Longitude in degrees<param name="referenceFrame">Reference frame for the returned position vector
  -}
 celestialBodyBedrockPosition :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
 celestialBodyBedrockPosition thisArg latitudeArg longitudeArg referenceFrameArg = do
@@ -3703,8 +3703,8 @@ celestialBodyBedrockPositionStreamReq thisArg latitudeArg longitudeArg reference
 celestialBodyBedrockPositionStream :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
 celestialBodyBedrockPositionStream thisArg latitudeArg longitudeArg referenceFrameArg = requestStream $ celestialBodyBedrockPositionStreamReq thisArg latitudeArg longitudeArg referenceFrameArg 
 
-{-
- - The biomes at the given latitude and longitude, in degrees.
+{-|
+The biomes at the given latitude and longitude, in degrees.
  -}
 celestialBodyBiomeAt :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> RPCContext (Data.Text.Text)
 celestialBodyBiomeAt thisArg latitudeArg longitudeArg = do
@@ -3720,9 +3720,9 @@ celestialBodyBiomeAtStreamReq thisArg latitudeArg longitudeArg =
 celestialBodyBiomeAtStream :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> RPCContext (KRPCStream (Data.Text.Text))
 celestialBodyBiomeAtStream thisArg latitudeArg longitudeArg = requestStream $ celestialBodyBiomeAtStreamReq thisArg latitudeArg longitudeArg 
 
-{-
- - Returns the direction in which the north pole of the celestial body is
- - pointing, as a unit vector, in the specified reference frame.<param name="referenceFrame">
+{-|
+Returns the direction in which the north pole of the celestial body is
+pointing, as a unit vector, in the specified reference frame.<param name="referenceFrame">
  -}
 celestialBodyDirection :: KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
 celestialBodyDirection thisArg referenceFrameArg = do
@@ -3738,8 +3738,8 @@ celestialBodyDirectionStreamReq thisArg referenceFrameArg =
 celestialBodyDirectionStream :: KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
 celestialBodyDirectionStream thisArg referenceFrameArg = requestStream $ celestialBodyDirectionStreamReq thisArg referenceFrameArg 
 
-{-
- - The position at mean sea level at the given latitude and longitude, in the given reference frame.<param name="latitude">Latitude in degrees<param name="longitude">Longitude in degrees<param name="referenceFrame">Reference frame for the returned position vector
+{-|
+The position at mean sea level at the given latitude and longitude, in the given reference frame.<param name="latitude">Latitude in degrees<param name="longitude">Longitude in degrees<param name="referenceFrame">Reference frame for the returned position vector
  -}
 celestialBodyMSLPosition :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
 celestialBodyMSLPosition thisArg latitudeArg longitudeArg referenceFrameArg = do
@@ -3755,8 +3755,8 @@ celestialBodyMSLPositionStreamReq thisArg latitudeArg longitudeArg referenceFram
 celestialBodyMSLPositionStream :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
 celestialBodyMSLPositionStream thisArg latitudeArg longitudeArg referenceFrameArg = requestStream $ celestialBodyMSLPositionStreamReq thisArg latitudeArg longitudeArg referenceFrameArg 
 
-{-
- - Returns the position vector of the center of the body in the specified reference frame.<param name="referenceFrame">
+{-|
+Returns the position vector of the center of the body in the specified reference frame.<param name="referenceFrame">
  -}
 celestialBodyPosition :: KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
 celestialBodyPosition thisArg referenceFrameArg = do
@@ -3772,8 +3772,8 @@ celestialBodyPositionStreamReq thisArg referenceFrameArg =
 celestialBodyPositionStream :: KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
 celestialBodyPositionStream thisArg referenceFrameArg = requestStream $ celestialBodyPositionStreamReq thisArg referenceFrameArg 
 
-{-
- - Returns the rotation of the body in the specified reference frame.<param name="referenceFrame">
+{-|
+Returns the rotation of the body in the specified reference frame.<param name="referenceFrame">
  -}
 celestialBodyRotation :: KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double, Double))
 celestialBodyRotation thisArg referenceFrameArg = do
@@ -3789,9 +3789,9 @@ celestialBodyRotationStreamReq thisArg referenceFrameArg =
 celestialBodyRotationStream :: KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double, Double)))
 celestialBodyRotationStream thisArg referenceFrameArg = requestStream $ celestialBodyRotationStreamReq thisArg referenceFrameArg 
 
-{-
- - The height of the surface relative to mean sea level at the given position,
- - in meters. When over water this is equal to 0.<param name="latitude">Latitude in degrees<param name="longitude">Longitude in degrees
+{-|
+The height of the surface relative to mean sea level at the given position,
+in meters. When over water this is equal to 0.<param name="latitude">Latitude in degrees<param name="longitude">Longitude in degrees
  -}
 celestialBodySurfaceHeight :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> RPCContext (Double)
 celestialBodySurfaceHeight thisArg latitudeArg longitudeArg = do
@@ -3807,9 +3807,9 @@ celestialBodySurfaceHeightStreamReq thisArg latitudeArg longitudeArg =
 celestialBodySurfaceHeightStream :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> RPCContext (KRPCStream (Double))
 celestialBodySurfaceHeightStream thisArg latitudeArg longitudeArg = requestStream $ celestialBodySurfaceHeightStreamReq thisArg latitudeArg longitudeArg 
 
-{-
- - The position of the surface at the given latitude and longitude, in the given
- - reference frame. When over water, this is the position of the surface of the water.<param name="latitude">Latitude in degrees<param name="longitude">Longitude in degrees<param name="referenceFrame">Reference frame for the returned position vector
+{-|
+The position of the surface at the given latitude and longitude, in the given
+reference frame. When over water, this is the position of the surface of the water.<param name="latitude">Latitude in degrees<param name="longitude">Longitude in degrees<param name="referenceFrame">Reference frame for the returned position vector
  -}
 celestialBodySurfacePosition :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
 celestialBodySurfacePosition thisArg latitudeArg longitudeArg referenceFrameArg = do
@@ -3825,8 +3825,8 @@ celestialBodySurfacePositionStreamReq thisArg latitudeArg longitudeArg reference
 celestialBodySurfacePositionStream :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
 celestialBodySurfacePositionStream thisArg latitudeArg longitudeArg referenceFrameArg = requestStream $ celestialBodySurfacePositionStreamReq thisArg latitudeArg longitudeArg referenceFrameArg 
 
-{-
- - Returns the velocity vector of the body in the specified reference frame.<param name="referenceFrame">
+{-|
+Returns the velocity vector of the body in the specified reference frame.<param name="referenceFrame">
  -}
 celestialBodyVelocity :: KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
 celestialBodyVelocity thisArg referenceFrameArg = do
@@ -3842,8 +3842,8 @@ celestialBodyVelocityStreamReq thisArg referenceFrameArg =
 celestialBodyVelocityStream :: KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
 celestialBodyVelocityStream thisArg referenceFrameArg = requestStream $ celestialBodyVelocityStreamReq thisArg referenceFrameArg 
 
-{-
- - The depth of the atmosphere, in meters.
+{-|
+The depth of the atmosphere, in meters.
  -}
 getCelestialBodyAtmosphereDepth :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Float)
 getCelestialBodyAtmosphereDepth thisArg = do
@@ -3859,8 +3859,8 @@ getCelestialBodyAtmosphereDepthStreamReq thisArg =
 getCelestialBodyAtmosphereDepthStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Float))
 getCelestialBodyAtmosphereDepthStream thisArg = requestStream $ getCelestialBodyAtmosphereDepthStreamReq thisArg 
 
-{-
- - The biomes present on this body.
+{-|
+The biomes present on this body.
  -}
 getCelestialBodyBiomes :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext ([Data.Text.Text])
 getCelestialBodyBiomes thisArg = do
@@ -3876,8 +3876,8 @@ getCelestialBodyBiomesStreamReq thisArg =
 getCelestialBodyBiomesStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream ([Data.Text.Text]))
 getCelestialBodyBiomesStream thisArg = requestStream $ getCelestialBodyBiomesStreamReq thisArg 
 
-{-
- - The equatorial radius of the body, in meters.
+{-|
+The equatorial radius of the body, in meters.
  -}
 getCelestialBodyEquatorialRadius :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Float)
 getCelestialBodyEquatorialRadius thisArg = do
@@ -3893,8 +3893,8 @@ getCelestialBodyEquatorialRadiusStreamReq thisArg =
 getCelestialBodyEquatorialRadiusStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Float))
 getCelestialBodyEquatorialRadiusStream thisArg = requestStream $ getCelestialBodyEquatorialRadiusStreamReq thisArg 
 
-{-
- - The altitude, in meters, above which a vessel is considered to be flying "high" when doing science.
+{-|
+The altitude, in meters, above which a vessel is considered to be flying "high" when doing science.
  -}
 getCelestialBodyFlyingHighAltitudeThreshold :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Float)
 getCelestialBodyFlyingHighAltitudeThreshold thisArg = do
@@ -3910,9 +3910,9 @@ getCelestialBodyFlyingHighAltitudeThresholdStreamReq thisArg =
 getCelestialBodyFlyingHighAltitudeThresholdStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Float))
 getCelestialBodyFlyingHighAltitudeThresholdStream thisArg = requestStream $ getCelestialBodyFlyingHighAltitudeThresholdStreamReq thisArg 
 
-{-
- - The <a href="https://en.wikipedia.org/wiki/Standard_gravitational_parameter">standard
- - gravitational parameterof the body inm^3s^{ -2}.
+{-|
+The <a href="https://en.wikipedia.org/wiki/Standard_gravitational_parameter">standard
+gravitational parameterof the body inm^3s^{ -2}.
  -}
 getCelestialBodyGravitationalParameter :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Float)
 getCelestialBodyGravitationalParameter thisArg = do
@@ -3928,8 +3928,8 @@ getCelestialBodyGravitationalParameterStreamReq thisArg =
 getCelestialBodyGravitationalParameterStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Float))
 getCelestialBodyGravitationalParameterStream thisArg = requestStream $ getCelestialBodyGravitationalParameterStreamReq thisArg 
 
-{-
- - trueif the body has an atmosphere.
+{-|
+trueif the body has an atmosphere.
  -}
 getCelestialBodyHasAtmosphere :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Bool)
 getCelestialBodyHasAtmosphere thisArg = do
@@ -3945,8 +3945,8 @@ getCelestialBodyHasAtmosphereStreamReq thisArg =
 getCelestialBodyHasAtmosphereStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Bool))
 getCelestialBodyHasAtmosphereStream thisArg = requestStream $ getCelestialBodyHasAtmosphereStreamReq thisArg 
 
-{-
- - trueif there is oxygen in the atmosphere, required for air-breathing engines.
+{-|
+trueif there is oxygen in the atmosphere, required for air-breathing engines.
  -}
 getCelestialBodyHasAtmosphericOxygen :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Bool)
 getCelestialBodyHasAtmosphericOxygen thisArg = do
@@ -3962,8 +3962,8 @@ getCelestialBodyHasAtmosphericOxygenStreamReq thisArg =
 getCelestialBodyHasAtmosphericOxygenStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Bool))
 getCelestialBodyHasAtmosphericOxygenStream thisArg = requestStream $ getCelestialBodyHasAtmosphericOxygenStreamReq thisArg 
 
-{-
- - The mass of the body, in kilograms.
+{-|
+The mass of the body, in kilograms.
  -}
 getCelestialBodyMass :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Float)
 getCelestialBodyMass thisArg = do
@@ -3979,8 +3979,8 @@ getCelestialBodyMassStreamReq thisArg =
 getCelestialBodyMassStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Float))
 getCelestialBodyMassStream thisArg = requestStream $ getCelestialBodyMassStreamReq thisArg 
 
-{-
- - The name of the body.
+{-|
+The name of the body.
  -}
 getCelestialBodyName :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Data.Text.Text)
 getCelestialBodyName thisArg = do
@@ -3996,13 +3996,13 @@ getCelestialBodyNameStreamReq thisArg =
 getCelestialBodyNameStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Data.Text.Text))
 getCelestialBodyNameStream thisArg = requestStream $ getCelestialBodyNameStreamReq thisArg 
 
-{-
- - The reference frame that is fixed relative to this celestial body, and
- - orientated in a fixed direction (it does not rotate with the body).
- - <list type="bullet">The origin is at the center of the body.The axes do not rotate.The x-axis points in an arbitrary direction through the
- - equator.The y-axis points from the center of the body towards
- - the north pole.The z-axis points in an arbitrary direction through the
- - equator.
+{-|
+The reference frame that is fixed relative to this celestial body, and
+orientated in a fixed direction (it does not rotate with the body).
+<list type="bullet">The origin is at the center of the body.The axes do not rotate.The x-axis points in an arbitrary direction through the
+equator.The y-axis points from the center of the body towards
+the north pole.The z-axis points in an arbitrary direction through the
+equator.
  -}
 getCelestialBodyNonRotatingReferenceFrame :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
 getCelestialBodyNonRotatingReferenceFrame thisArg = do
@@ -4018,8 +4018,8 @@ getCelestialBodyNonRotatingReferenceFrameStreamReq thisArg =
 getCelestialBodyNonRotatingReferenceFrameStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 getCelestialBodyNonRotatingReferenceFrameStream thisArg = requestStream $ getCelestialBodyNonRotatingReferenceFrameStreamReq thisArg 
 
-{-
- - The orbit of the body.
+{-|
+The orbit of the body.
  -}
 getCelestialBodyOrbit :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCHS.SpaceCenter.Orbit)
 getCelestialBodyOrbit thisArg = do
@@ -4035,11 +4035,11 @@ getCelestialBodyOrbitStreamReq thisArg =
 getCelestialBodyOrbitStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Orbit))
 getCelestialBodyOrbitStream thisArg = requestStream $ getCelestialBodyOrbitStreamReq thisArg 
 
-{-
- - Gets the reference frame that is fixed relative to this celestial body, but
- - orientated with the body's orbital prograde/normal/radial directions.
- - <list type="bullet">The origin is at the center of the body.The axes rotate with the orbital prograde/normal/radial
- - directions.The x-axis points in the orbital anti-radial direction.The y-axis points in the orbital prograde direction.The z-axis points in the orbital normal direction.
+{-|
+Gets the reference frame that is fixed relative to this celestial body, but
+orientated with the body's orbital prograde/normal/radial directions.
+<list type="bullet">The origin is at the center of the body.The axes rotate with the orbital prograde/normal/radial
+directions.The x-axis points in the orbital anti-radial direction.The y-axis points in the orbital prograde direction.The z-axis points in the orbital normal direction.
  -}
 getCelestialBodyOrbitalReferenceFrame :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
 getCelestialBodyOrbitalReferenceFrame thisArg = do
@@ -4055,13 +4055,13 @@ getCelestialBodyOrbitalReferenceFrameStreamReq thisArg =
 getCelestialBodyOrbitalReferenceFrameStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 getCelestialBodyOrbitalReferenceFrameStream thisArg = requestStream $ getCelestialBodyOrbitalReferenceFrameStreamReq thisArg 
 
-{-
- - The reference frame that is fixed relative to the celestial body.
- - <list type="bullet">The origin is at the center of the body.The axes rotate with the body.The x-axis points from the center of the body
- - towards the intersection of the prime meridian and equator (the
- - position at 0° longitude, 0° latitude).The y-axis points from the center of the body
- - towards the north pole.The z-axis points from the center of the body
- - towards the equator at 90°E longitude.
+{-|
+The reference frame that is fixed relative to the celestial body.
+<list type="bullet">The origin is at the center of the body.The axes rotate with the body.The x-axis points from the center of the body
+towards the intersection of the prime meridian and equator (the
+position at 0° longitude, 0° latitude).The y-axis points from the center of the body
+towards the north pole.The z-axis points from the center of the body
+towards the equator at 90°E longitude.
  -}
 getCelestialBodyReferenceFrame :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
 getCelestialBodyReferenceFrame thisArg = do
@@ -4077,8 +4077,8 @@ getCelestialBodyReferenceFrameStreamReq thisArg =
 getCelestialBodyReferenceFrameStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 getCelestialBodyReferenceFrameStream thisArg = requestStream $ getCelestialBodyReferenceFrameStreamReq thisArg 
 
-{-
- - The sidereal rotational period of the body, in seconds.
+{-|
+The sidereal rotational period of the body, in seconds.
  -}
 getCelestialBodyRotationalPeriod :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Float)
 getCelestialBodyRotationalPeriod thisArg = do
@@ -4094,8 +4094,8 @@ getCelestialBodyRotationalPeriodStreamReq thisArg =
 getCelestialBodyRotationalPeriodStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Float))
 getCelestialBodyRotationalPeriodStream thisArg = requestStream $ getCelestialBodyRotationalPeriodStreamReq thisArg 
 
-{-
- - The rotational speed of the body, in radians per second.
+{-|
+The rotational speed of the body, in radians per second.
  -}
 getCelestialBodyRotationalSpeed :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Float)
 getCelestialBodyRotationalSpeed thisArg = do
@@ -4111,8 +4111,8 @@ getCelestialBodyRotationalSpeedStreamReq thisArg =
 getCelestialBodyRotationalSpeedStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Float))
 getCelestialBodyRotationalSpeedStream thisArg = requestStream $ getCelestialBodyRotationalSpeedStreamReq thisArg 
 
-{-
- - A list of celestial bodies that are in orbit around this celestial body.
+{-|
+A list of celestial bodies that are in orbit around this celestial body.
  -}
 getCelestialBodySatellites :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext ([KRPCHS.SpaceCenter.CelestialBody])
 getCelestialBodySatellites thisArg = do
@@ -4128,8 +4128,8 @@ getCelestialBodySatellitesStreamReq thisArg =
 getCelestialBodySatellitesStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.CelestialBody]))
 getCelestialBodySatellitesStream thisArg = requestStream $ getCelestialBodySatellitesStreamReq thisArg 
 
-{-
- - The altitude, in meters, above which a vessel is considered to be in "high" space when doing science.
+{-|
+The altitude, in meters, above which a vessel is considered to be in "high" space when doing science.
  -}
 getCelestialBodySpaceHighAltitudeThreshold :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Float)
 getCelestialBodySpaceHighAltitudeThreshold thisArg = do
@@ -4145,8 +4145,8 @@ getCelestialBodySpaceHighAltitudeThresholdStreamReq thisArg =
 getCelestialBodySpaceHighAltitudeThresholdStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Float))
 getCelestialBodySpaceHighAltitudeThresholdStream thisArg = requestStream $ getCelestialBodySpaceHighAltitudeThresholdStreamReq thisArg 
 
-{-
- - The radius of the sphere of influence of the body, in meters.
+{-|
+The radius of the sphere of influence of the body, in meters.
  -}
 getCelestialBodySphereOfInfluence :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Float)
 getCelestialBodySphereOfInfluence thisArg = do
@@ -4162,8 +4162,8 @@ getCelestialBodySphereOfInfluenceStreamReq thisArg =
 getCelestialBodySphereOfInfluenceStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Float))
 getCelestialBodySphereOfInfluenceStream thisArg = requestStream $ getCelestialBodySphereOfInfluenceStreamReq thisArg 
 
-{-
- - The acceleration due to gravity at sea level (mean altitude) on the body, inm/s^2.
+{-|
+The acceleration due to gravity at sea level (mean altitude) on the body, inm/s^2.
  -}
 getCelestialBodySurfaceGravity :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Float)
 getCelestialBodySurfaceGravity thisArg = do
@@ -4179,8 +4179,8 @@ getCelestialBodySurfaceGravityStreamReq thisArg =
 getCelestialBodySurfaceGravityStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Float))
 getCelestialBodySurfaceGravityStream thisArg = requestStream $ getCelestialBodySurfaceGravityStreamReq thisArg 
 
-{-
- - Clears the current target.
+{-|
+Clears the current target.
  -}
 clearTarget :: RPCContext ()
 clearTarget  = do
@@ -4188,9 +4188,9 @@ clearTarget  = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The available torque in the pitch, roll and yaw axes of the vessel, in Newton meters.
- - These axes correspond to the coordinate axes of the <see cref="M:SpaceCenter.Vessel.ReferenceFrame" />.
+{-|
+The available torque in the pitch, roll and yaw axes of the vessel, in Newton meters.
+These axes correspond to the coordinate axes of the <see cref="M:SpaceCenter.Vessel.ReferenceFrame" />.
  -}
 getControlSurfaceAvailableTorque :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext ((Double, Double, Double))
 getControlSurfaceAvailableTorque thisArg = do
@@ -4206,8 +4206,8 @@ getControlSurfaceAvailableTorqueStreamReq thisArg =
 getControlSurfaceAvailableTorqueStream :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (KRPCStream ((Double, Double, Double)))
 getControlSurfaceAvailableTorqueStream thisArg = requestStream $ getControlSurfaceAvailableTorqueStreamReq thisArg 
 
-{-
- - Whether the control surface has been fully deployed.
+{-|
+Whether the control surface has been fully deployed.
  -}
 getControlSurfaceDeployed :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (Bool)
 getControlSurfaceDeployed thisArg = do
@@ -4223,8 +4223,8 @@ getControlSurfaceDeployedStreamReq thisArg =
 getControlSurfaceDeployedStream :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (KRPCStream (Bool))
 getControlSurfaceDeployedStream thisArg = requestStream $ getControlSurfaceDeployedStreamReq thisArg 
 
-{-
- - Whether the control surface movement is inverted.
+{-|
+Whether the control surface movement is inverted.
  -}
 getControlSurfaceInverted :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (Bool)
 getControlSurfaceInverted thisArg = do
@@ -4240,8 +4240,8 @@ getControlSurfaceInvertedStreamReq thisArg =
 getControlSurfaceInvertedStream :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (KRPCStream (Bool))
 getControlSurfaceInvertedStream thisArg = requestStream $ getControlSurfaceInvertedStreamReq thisArg 
 
-{-
- - The part object for this control surface.
+{-|
+The part object for this control surface.
  -}
 getControlSurfacePart :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (KRPCHS.SpaceCenter.Part)
 getControlSurfacePart thisArg = do
@@ -4257,8 +4257,8 @@ getControlSurfacePartStreamReq thisArg =
 getControlSurfacePartStream :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
 getControlSurfacePartStream thisArg = requestStream $ getControlSurfacePartStreamReq thisArg 
 
-{-
- - Whether the control surface has pitch control enabled.
+{-|
+Whether the control surface has pitch control enabled.
  -}
 getControlSurfacePitchEnabled :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (Bool)
 getControlSurfacePitchEnabled thisArg = do
@@ -4274,8 +4274,8 @@ getControlSurfacePitchEnabledStreamReq thisArg =
 getControlSurfacePitchEnabledStream :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (KRPCStream (Bool))
 getControlSurfacePitchEnabledStream thisArg = requestStream $ getControlSurfacePitchEnabledStreamReq thisArg 
 
-{-
- - Whether the control surface has roll control enabled.
+{-|
+Whether the control surface has roll control enabled.
  -}
 getControlSurfaceRollEnabled :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (Bool)
 getControlSurfaceRollEnabled thisArg = do
@@ -4291,8 +4291,8 @@ getControlSurfaceRollEnabledStreamReq thisArg =
 getControlSurfaceRollEnabledStream :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (KRPCStream (Bool))
 getControlSurfaceRollEnabledStream thisArg = requestStream $ getControlSurfaceRollEnabledStreamReq thisArg 
 
-{-
- - Surface area of the control surface inm^2.
+{-|
+Surface area of the control surface inm^2.
  -}
 getControlSurfaceSurfaceArea :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (Float)
 getControlSurfaceSurfaceArea thisArg = do
@@ -4308,8 +4308,8 @@ getControlSurfaceSurfaceAreaStreamReq thisArg =
 getControlSurfaceSurfaceAreaStream :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (KRPCStream (Float))
 getControlSurfaceSurfaceAreaStream thisArg = requestStream $ getControlSurfaceSurfaceAreaStreamReq thisArg 
 
-{-
- - Whether the control surface has yaw control enabled.
+{-|
+Whether the control surface has yaw control enabled.
  -}
 getControlSurfaceYawEnabled :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (Bool)
 getControlSurfaceYawEnabled thisArg = do
@@ -4325,8 +4325,8 @@ getControlSurfaceYawEnabledStreamReq thisArg =
 getControlSurfaceYawEnabledStream :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (KRPCStream (Bool))
 getControlSurfaceYawEnabledStream thisArg = requestStream $ getControlSurfaceYawEnabledStreamReq thisArg 
 
-{-
- - Whether the control surface has been fully deployed.
+{-|
+Whether the control surface has been fully deployed.
  -}
 setControlSurfaceDeployed :: KRPCHS.SpaceCenter.ControlSurface -> Bool -> RPCContext ()
 setControlSurfaceDeployed thisArg valueArg = do
@@ -4334,8 +4334,8 @@ setControlSurfaceDeployed thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Whether the control surface movement is inverted.
+{-|
+Whether the control surface movement is inverted.
  -}
 setControlSurfaceInverted :: KRPCHS.SpaceCenter.ControlSurface -> Bool -> RPCContext ()
 setControlSurfaceInverted thisArg valueArg = do
@@ -4343,8 +4343,8 @@ setControlSurfaceInverted thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Whether the control surface has pitch control enabled.
+{-|
+Whether the control surface has pitch control enabled.
  -}
 setControlSurfacePitchEnabled :: KRPCHS.SpaceCenter.ControlSurface -> Bool -> RPCContext ()
 setControlSurfacePitchEnabled thisArg valueArg = do
@@ -4352,8 +4352,8 @@ setControlSurfacePitchEnabled thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Whether the control surface has roll control enabled.
+{-|
+Whether the control surface has roll control enabled.
  -}
 setControlSurfaceRollEnabled :: KRPCHS.SpaceCenter.ControlSurface -> Bool -> RPCContext ()
 setControlSurfaceRollEnabled thisArg valueArg = do
@@ -4361,8 +4361,8 @@ setControlSurfaceRollEnabled thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Whether the control surface has yaw control enabled.
+{-|
+Whether the control surface has yaw control enabled.
  -}
 setControlSurfaceYawEnabled :: KRPCHS.SpaceCenter.ControlSurface -> Bool -> RPCContext ()
 setControlSurfaceYawEnabled thisArg valueArg = do
@@ -4370,8 +4370,8 @@ setControlSurfaceYawEnabled thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Activates the next stage. Equivalent to pressing the space bar in-game.A list of vessel objects that are jettisoned from the active vessel.
+{-|
+Activates the next stage. Equivalent to pressing the space bar in-game.A list of vessel objects that are jettisoned from the active vessel.
  -}
 controlActivateNextStage :: KRPCHS.SpaceCenter.Control -> RPCContext ([KRPCHS.SpaceCenter.Vessel])
 controlActivateNextStage thisArg = do
@@ -4387,11 +4387,11 @@ controlActivateNextStageStreamReq thisArg =
 controlActivateNextStageStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Vessel]))
 controlActivateNextStageStream thisArg = requestStream $ controlActivateNextStageStreamReq thisArg 
 
-{-
- - Creates a maneuver node at the given universal time, and returns a
- - <see cref="T:SpaceCenter.Node" /> object that can be used to modify it.
- - Optionally sets the magnitude of the delta-v for the maneuver node
- - in the prograde, normal and radial directions.<param name="ut">Universal time of the maneuver node.<param name="prograde">Delta-v in the prograde direction.<param name="normal">Delta-v in the normal direction.<param name="radial">Delta-v in the radial direction.
+{-|
+Creates a maneuver node at the given universal time, and returns a
+<see cref="T:SpaceCenter.Node" /> object that can be used to modify it.
+Optionally sets the magnitude of the delta-v for the maneuver node
+in the prograde, normal and radial directions.<param name="ut">Universal time of the maneuver node.<param name="prograde">Delta-v in the prograde direction.<param name="normal">Delta-v in the normal direction.<param name="radial">Delta-v in the radial direction.
  -}
 controlAddNode :: KRPCHS.SpaceCenter.Control -> Double -> Float -> Float -> Float -> RPCContext (KRPCHS.SpaceCenter.Node)
 controlAddNode thisArg utArg progradeArg normalArg radialArg = do
@@ -4407,8 +4407,8 @@ controlAddNodeStreamReq thisArg utArg progradeArg normalArg radialArg =
 controlAddNodeStream :: KRPCHS.SpaceCenter.Control -> Double -> Float -> Float -> Float -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Node))
 controlAddNodeStream thisArg utArg progradeArg normalArg radialArg = requestStream $ controlAddNodeStreamReq thisArg utArg progradeArg normalArg radialArg 
 
-{-
- - Returnstrueif the given action group is enabled.<param name="group">A number between 0 and 9 inclusive.
+{-|
+Returnstrueif the given action group is enabled.<param name="group">A number between 0 and 9 inclusive.
  -}
 controlGetActionGroup :: KRPCHS.SpaceCenter.Control -> Data.Word.Word32 -> RPCContext (Bool)
 controlGetActionGroup thisArg groupArg = do
@@ -4424,8 +4424,8 @@ controlGetActionGroupStreamReq thisArg groupArg =
 controlGetActionGroupStream :: KRPCHS.SpaceCenter.Control -> Data.Word.Word32 -> RPCContext (KRPCStream (Bool))
 controlGetActionGroupStream thisArg groupArg = requestStream $ controlGetActionGroupStreamReq thisArg groupArg 
 
-{-
- - Remove all maneuver nodes.
+{-|
+Remove all maneuver nodes.
  -}
 controlRemoveNodes :: KRPCHS.SpaceCenter.Control -> RPCContext ()
 controlRemoveNodes thisArg = do
@@ -4433,9 +4433,9 @@ controlRemoveNodes thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Sets the state of the given action group (a value between 0 and 9
- - inclusive).<param name="group">A number between 0 and 9 inclusive.<param name="state">
+{-|
+Sets the state of the given action group (a value between 0 and 9
+inclusive).<param name="group">A number between 0 and 9 inclusive.<param name="state">
  -}
 controlSetActionGroup :: KRPCHS.SpaceCenter.Control -> Data.Word.Word32 -> Bool -> RPCContext ()
 controlSetActionGroup thisArg groupArg stateArg = do
@@ -4443,8 +4443,8 @@ controlSetActionGroup thisArg groupArg stateArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Toggles the state of the given action group.<param name="group">A number between 0 and 9 inclusive.
+{-|
+Toggles the state of the given action group.<param name="group">A number between 0 and 9 inclusive.
  -}
 controlToggleActionGroup :: KRPCHS.SpaceCenter.Control -> Data.Word.Word32 -> RPCContext ()
 controlToggleActionGroup thisArg groupArg = do
@@ -4452,8 +4452,8 @@ controlToggleActionGroup thisArg groupArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The state of the abort action group.
+{-|
+The state of the abort action group.
  -}
 getControlAbort :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
 getControlAbort thisArg = do
@@ -4469,8 +4469,8 @@ getControlAbortStreamReq thisArg =
 getControlAbortStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
 getControlAbortStream thisArg = requestStream $ getControlAbortStreamReq thisArg 
 
-{-
- - The state of the wheel brakes.
+{-|
+The state of the wheel brakes.
  -}
 getControlBrakes :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
 getControlBrakes thisArg = do
@@ -4486,9 +4486,9 @@ getControlBrakesStreamReq thisArg =
 getControlBrakesStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
 getControlBrakesStream thisArg = requestStream $ getControlBrakesStreamReq thisArg 
 
-{-
- - The current stage of the vessel. Corresponds to the stage number in
- - the in-game UI.
+{-|
+The current stage of the vessel. Corresponds to the stage number in
+the in-game UI.
  -}
 getControlCurrentStage :: KRPCHS.SpaceCenter.Control -> RPCContext (Data.Int.Int32)
 getControlCurrentStage thisArg = do
@@ -4504,10 +4504,10 @@ getControlCurrentStageStreamReq thisArg =
 getControlCurrentStageStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Data.Int.Int32))
 getControlCurrentStageStream thisArg = requestStream $ getControlCurrentStageStreamReq thisArg 
 
-{-
- - The state of the forward translational control.
- - A value between -1 and 1.
- - Equivalent to the h and n keys.
+{-|
+The state of the forward translational control.
+A value between -1 and 1.
+Equivalent to the h and n keys.
  -}
 getControlForward :: KRPCHS.SpaceCenter.Control -> RPCContext (Float)
 getControlForward thisArg = do
@@ -4523,8 +4523,8 @@ getControlForwardStreamReq thisArg =
 getControlForwardStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Float))
 getControlForwardStream thisArg = requestStream $ getControlForwardStreamReq thisArg 
 
-{-
- - The state of the landing gear/legs.
+{-|
+The state of the landing gear/legs.
  -}
 getControlGear :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
 getControlGear thisArg = do
@@ -4540,8 +4540,8 @@ getControlGearStreamReq thisArg =
 getControlGearStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
 getControlGearStream thisArg = requestStream $ getControlGearStreamReq thisArg 
 
-{-
- - The state of the lights.
+{-|
+The state of the lights.
  -}
 getControlLights :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
 getControlLights thisArg = do
@@ -4557,8 +4557,8 @@ getControlLightsStreamReq thisArg =
 getControlLightsStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
 getControlLightsStream thisArg = requestStream $ getControlLightsStreamReq thisArg 
 
-{-
- - Returns a list of all existing maneuver nodes, ordered by time from first to last.
+{-|
+Returns a list of all existing maneuver nodes, ordered by time from first to last.
  -}
 getControlNodes :: KRPCHS.SpaceCenter.Control -> RPCContext ([KRPCHS.SpaceCenter.Node])
 getControlNodes thisArg = do
@@ -4574,10 +4574,10 @@ getControlNodesStreamReq thisArg =
 getControlNodesStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Node]))
 getControlNodesStream thisArg = requestStream $ getControlNodesStreamReq thisArg 
 
-{-
- - The state of the pitch control.
- - A value between -1 and 1.
- - Equivalent to the w and s keys.
+{-|
+The state of the pitch control.
+A value between -1 and 1.
+Equivalent to the w and s keys.
  -}
 getControlPitch :: KRPCHS.SpaceCenter.Control -> RPCContext (Float)
 getControlPitch thisArg = do
@@ -4593,8 +4593,8 @@ getControlPitchStreamReq thisArg =
 getControlPitchStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Float))
 getControlPitchStream thisArg = requestStream $ getControlPitchStreamReq thisArg 
 
-{-
- - The state of RCS.
+{-|
+The state of RCS.
  -}
 getControlRCS :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
 getControlRCS thisArg = do
@@ -4610,10 +4610,10 @@ getControlRCSStreamReq thisArg =
 getControlRCSStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
 getControlRCSStream thisArg = requestStream $ getControlRCSStreamReq thisArg 
 
-{-
- - The state of the right translational control.
- - A value between -1 and 1.
- - Equivalent to the j and l keys.
+{-|
+The state of the right translational control.
+A value between -1 and 1.
+Equivalent to the j and l keys.
  -}
 getControlRight :: KRPCHS.SpaceCenter.Control -> RPCContext (Float)
 getControlRight thisArg = do
@@ -4629,10 +4629,10 @@ getControlRightStreamReq thisArg =
 getControlRightStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Float))
 getControlRightStream thisArg = requestStream $ getControlRightStreamReq thisArg 
 
-{-
- - The state of the roll control.
- - A value between -1 and 1.
- - Equivalent to the q and e keys.
+{-|
+The state of the roll control.
+A value between -1 and 1.
+Equivalent to the q and e keys.
  -}
 getControlRoll :: KRPCHS.SpaceCenter.Control -> RPCContext (Float)
 getControlRoll thisArg = do
@@ -4648,8 +4648,8 @@ getControlRollStreamReq thisArg =
 getControlRollStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Float))
 getControlRollStream thisArg = requestStream $ getControlRollStreamReq thisArg 
 
-{-
- - The state of SAS.Equivalent to <see cref="M:SpaceCenter.AutoPilot.SAS" />
+{-|
+The state of SAS.Equivalent to <see cref="M:SpaceCenter.AutoPilot.SAS" />
  -}
 getControlSAS :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
 getControlSAS thisArg = do
@@ -4665,10 +4665,10 @@ getControlSASStreamReq thisArg =
 getControlSASStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
 getControlSASStream thisArg = requestStream $ getControlSASStreamReq thisArg 
 
-{-
- - The current <see cref="T:SpaceCenter.SASMode" />.
- - These modes are equivalent to the mode buttons to
- - the left of the navball that appear when SAS is enabled.Equivalent to <see cref="M:SpaceCenter.AutoPilot.SASMode" />
+{-|
+The current <see cref="T:SpaceCenter.SASMode" />.
+These modes are equivalent to the mode buttons to
+the left of the navball that appear when SAS is enabled.Equivalent to <see cref="M:SpaceCenter.AutoPilot.SASMode" />
  -}
 getControlSASMode :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCHS.SpaceCenter.SASMode)
 getControlSASMode thisArg = do
@@ -4684,9 +4684,9 @@ getControlSASModeStreamReq thisArg =
 getControlSASModeStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.SASMode))
 getControlSASModeStream thisArg = requestStream $ getControlSASModeStreamReq thisArg 
 
-{-
- - The current <see cref="T:SpaceCenter.SpeedMode" /> of the navball.
- - This is the mode displayed next to the speed at the top of the navball.
+{-|
+The current <see cref="T:SpaceCenter.SpeedMode" /> of the navball.
+This is the mode displayed next to the speed at the top of the navball.
  -}
 getControlSpeedMode :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCHS.SpaceCenter.SpeedMode)
 getControlSpeedMode thisArg = do
@@ -4702,8 +4702,8 @@ getControlSpeedModeStreamReq thisArg =
 getControlSpeedModeStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.SpeedMode))
 getControlSpeedModeStream thisArg = requestStream $ getControlSpeedModeStreamReq thisArg 
 
-{-
- - The state of the throttle. A value between 0 and 1.
+{-|
+The state of the throttle. A value between 0 and 1.
  -}
 getControlThrottle :: KRPCHS.SpaceCenter.Control -> RPCContext (Float)
 getControlThrottle thisArg = do
@@ -4719,10 +4719,10 @@ getControlThrottleStreamReq thisArg =
 getControlThrottleStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Float))
 getControlThrottleStream thisArg = requestStream $ getControlThrottleStreamReq thisArg 
 
-{-
- - The state of the up translational control.
- - A value between -1 and 1.
- - Equivalent to the i and k keys.
+{-|
+The state of the up translational control.
+A value between -1 and 1.
+Equivalent to the i and k keys.
  -}
 getControlUp :: KRPCHS.SpaceCenter.Control -> RPCContext (Float)
 getControlUp thisArg = do
@@ -4738,10 +4738,10 @@ getControlUpStreamReq thisArg =
 getControlUpStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Float))
 getControlUpStream thisArg = requestStream $ getControlUpStreamReq thisArg 
 
-{-
- - The state of the wheel steering.
- - A value between -1 and 1.
- - A value of 1 steers to the left, and a value of -1 steers to the right.
+{-|
+The state of the wheel steering.
+A value between -1 and 1.
+A value of 1 steers to the left, and a value of -1 steers to the right.
  -}
 getControlWheelSteering :: KRPCHS.SpaceCenter.Control -> RPCContext (Float)
 getControlWheelSteering thisArg = do
@@ -4757,11 +4757,11 @@ getControlWheelSteeringStreamReq thisArg =
 getControlWheelSteeringStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Float))
 getControlWheelSteeringStream thisArg = requestStream $ getControlWheelSteeringStreamReq thisArg 
 
-{-
- - The state of the wheel throttle.
- - A value between -1 and 1.
- - A value of 1 rotates the wheels forwards, a value of -1 rotates
- - the wheels backwards.
+{-|
+The state of the wheel throttle.
+A value between -1 and 1.
+A value of 1 rotates the wheels forwards, a value of -1 rotates
+the wheels backwards.
  -}
 getControlWheelThrottle :: KRPCHS.SpaceCenter.Control -> RPCContext (Float)
 getControlWheelThrottle thisArg = do
@@ -4777,10 +4777,10 @@ getControlWheelThrottleStreamReq thisArg =
 getControlWheelThrottleStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Float))
 getControlWheelThrottleStream thisArg = requestStream $ getControlWheelThrottleStreamReq thisArg 
 
-{-
- - The state of the yaw control.
- - A value between -1 and 1.
- - Equivalent to the a and d keys.
+{-|
+The state of the yaw control.
+A value between -1 and 1.
+Equivalent to the a and d keys.
  -}
 getControlYaw :: KRPCHS.SpaceCenter.Control -> RPCContext (Float)
 getControlYaw thisArg = do
@@ -4796,8 +4796,8 @@ getControlYawStreamReq thisArg =
 getControlYawStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Float))
 getControlYawStream thisArg = requestStream $ getControlYawStreamReq thisArg 
 
-{-
- - The state of the abort action group.
+{-|
+The state of the abort action group.
  -}
 setControlAbort :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
 setControlAbort thisArg valueArg = do
@@ -4805,8 +4805,8 @@ setControlAbort thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The state of the wheel brakes.
+{-|
+The state of the wheel brakes.
  -}
 setControlBrakes :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
 setControlBrakes thisArg valueArg = do
@@ -4814,10 +4814,10 @@ setControlBrakes thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The state of the forward translational control.
- - A value between -1 and 1.
- - Equivalent to the h and n keys.
+{-|
+The state of the forward translational control.
+A value between -1 and 1.
+Equivalent to the h and n keys.
  -}
 setControlForward :: KRPCHS.SpaceCenter.Control -> Float -> RPCContext ()
 setControlForward thisArg valueArg = do
@@ -4825,8 +4825,8 @@ setControlForward thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The state of the landing gear/legs.
+{-|
+The state of the landing gear/legs.
  -}
 setControlGear :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
 setControlGear thisArg valueArg = do
@@ -4834,8 +4834,8 @@ setControlGear thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The state of the lights.
+{-|
+The state of the lights.
  -}
 setControlLights :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
 setControlLights thisArg valueArg = do
@@ -4843,10 +4843,10 @@ setControlLights thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The state of the pitch control.
- - A value between -1 and 1.
- - Equivalent to the w and s keys.
+{-|
+The state of the pitch control.
+A value between -1 and 1.
+Equivalent to the w and s keys.
  -}
 setControlPitch :: KRPCHS.SpaceCenter.Control -> Float -> RPCContext ()
 setControlPitch thisArg valueArg = do
@@ -4854,8 +4854,8 @@ setControlPitch thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The state of RCS.
+{-|
+The state of RCS.
  -}
 setControlRCS :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
 setControlRCS thisArg valueArg = do
@@ -4863,10 +4863,10 @@ setControlRCS thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The state of the right translational control.
- - A value between -1 and 1.
- - Equivalent to the j and l keys.
+{-|
+The state of the right translational control.
+A value between -1 and 1.
+Equivalent to the j and l keys.
  -}
 setControlRight :: KRPCHS.SpaceCenter.Control -> Float -> RPCContext ()
 setControlRight thisArg valueArg = do
@@ -4874,10 +4874,10 @@ setControlRight thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The state of the roll control.
- - A value between -1 and 1.
- - Equivalent to the q and e keys.
+{-|
+The state of the roll control.
+A value between -1 and 1.
+Equivalent to the q and e keys.
  -}
 setControlRoll :: KRPCHS.SpaceCenter.Control -> Float -> RPCContext ()
 setControlRoll thisArg valueArg = do
@@ -4885,8 +4885,8 @@ setControlRoll thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The state of SAS.Equivalent to <see cref="M:SpaceCenter.AutoPilot.SAS" />
+{-|
+The state of SAS.Equivalent to <see cref="M:SpaceCenter.AutoPilot.SAS" />
  -}
 setControlSAS :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
 setControlSAS thisArg valueArg = do
@@ -4894,10 +4894,10 @@ setControlSAS thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The current <see cref="T:SpaceCenter.SASMode" />.
- - These modes are equivalent to the mode buttons to
- - the left of the navball that appear when SAS is enabled.Equivalent to <see cref="M:SpaceCenter.AutoPilot.SASMode" />
+{-|
+The current <see cref="T:SpaceCenter.SASMode" />.
+These modes are equivalent to the mode buttons to
+the left of the navball that appear when SAS is enabled.Equivalent to <see cref="M:SpaceCenter.AutoPilot.SASMode" />
  -}
 setControlSASMode :: KRPCHS.SpaceCenter.Control -> KRPCHS.SpaceCenter.SASMode -> RPCContext ()
 setControlSASMode thisArg valueArg = do
@@ -4905,9 +4905,9 @@ setControlSASMode thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The current <see cref="T:SpaceCenter.SpeedMode" /> of the navball.
- - This is the mode displayed next to the speed at the top of the navball.
+{-|
+The current <see cref="T:SpaceCenter.SpeedMode" /> of the navball.
+This is the mode displayed next to the speed at the top of the navball.
  -}
 setControlSpeedMode :: KRPCHS.SpaceCenter.Control -> KRPCHS.SpaceCenter.SpeedMode -> RPCContext ()
 setControlSpeedMode thisArg valueArg = do
@@ -4915,8 +4915,8 @@ setControlSpeedMode thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The state of the throttle. A value between 0 and 1.
+{-|
+The state of the throttle. A value between 0 and 1.
  -}
 setControlThrottle :: KRPCHS.SpaceCenter.Control -> Float -> RPCContext ()
 setControlThrottle thisArg valueArg = do
@@ -4924,10 +4924,10 @@ setControlThrottle thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The state of the up translational control.
- - A value between -1 and 1.
- - Equivalent to the i and k keys.
+{-|
+The state of the up translational control.
+A value between -1 and 1.
+Equivalent to the i and k keys.
  -}
 setControlUp :: KRPCHS.SpaceCenter.Control -> Float -> RPCContext ()
 setControlUp thisArg valueArg = do
@@ -4935,10 +4935,10 @@ setControlUp thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The state of the wheel steering.
- - A value between -1 and 1.
- - A value of 1 steers to the left, and a value of -1 steers to the right.
+{-|
+The state of the wheel steering.
+A value between -1 and 1.
+A value of 1 steers to the left, and a value of -1 steers to the right.
  -}
 setControlWheelSteering :: KRPCHS.SpaceCenter.Control -> Float -> RPCContext ()
 setControlWheelSteering thisArg valueArg = do
@@ -4946,11 +4946,11 @@ setControlWheelSteering thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The state of the wheel throttle.
- - A value between -1 and 1.
- - A value of 1 rotates the wheels forwards, a value of -1 rotates
- - the wheels backwards.
+{-|
+The state of the wheel throttle.
+A value between -1 and 1.
+A value of 1 rotates the wheels forwards, a value of -1 rotates
+the wheels backwards.
  -}
 setControlWheelThrottle :: KRPCHS.SpaceCenter.Control -> Float -> RPCContext ()
 setControlWheelThrottle thisArg valueArg = do
@@ -4958,10 +4958,10 @@ setControlWheelThrottle thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The state of the yaw control.
- - A value between -1 and 1.
- - Equivalent to the a and d keys.
+{-|
+The state of the yaw control.
+A value between -1 and 1.
+Equivalent to the a and d keys.
  -}
 setControlYaw :: KRPCHS.SpaceCenter.Control -> Float -> RPCContext ()
 setControlYaw thisArg valueArg = do
@@ -4969,9 +4969,9 @@ setControlYaw thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Fires the decoupler. Returns the new vessel created when the decoupler fires.
- - Throws an exception if the decoupler has already fired.
+{-|
+Fires the decoupler. Returns the new vessel created when the decoupler fires.
+Throws an exception if the decoupler has already fired.
  -}
 decouplerDecouple :: KRPCHS.SpaceCenter.Decoupler -> RPCContext (KRPCHS.SpaceCenter.Vessel)
 decouplerDecouple thisArg = do
@@ -4987,8 +4987,8 @@ decouplerDecoupleStreamReq thisArg =
 decouplerDecoupleStream :: KRPCHS.SpaceCenter.Decoupler -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Vessel))
 decouplerDecoupleStream thisArg = requestStream $ decouplerDecoupleStreamReq thisArg 
 
-{-
- - Whether the decoupler has fired.
+{-|
+Whether the decoupler has fired.
  -}
 getDecouplerDecoupled :: KRPCHS.SpaceCenter.Decoupler -> RPCContext (Bool)
 getDecouplerDecoupled thisArg = do
@@ -5004,8 +5004,8 @@ getDecouplerDecoupledStreamReq thisArg =
 getDecouplerDecoupledStream :: KRPCHS.SpaceCenter.Decoupler -> RPCContext (KRPCStream (Bool))
 getDecouplerDecoupledStream thisArg = requestStream $ getDecouplerDecoupledStreamReq thisArg 
 
-{-
- - The impulse that the decoupler imparts when it is fired, in Newton seconds.
+{-|
+The impulse that the decoupler imparts when it is fired, in Newton seconds.
  -}
 getDecouplerImpulse :: KRPCHS.SpaceCenter.Decoupler -> RPCContext (Float)
 getDecouplerImpulse thisArg = do
@@ -5021,8 +5021,8 @@ getDecouplerImpulseStreamReq thisArg =
 getDecouplerImpulseStream :: KRPCHS.SpaceCenter.Decoupler -> RPCContext (KRPCStream (Float))
 getDecouplerImpulseStream thisArg = requestStream $ getDecouplerImpulseStreamReq thisArg 
 
-{-
- - The part object for this decoupler.
+{-|
+The part object for this decoupler.
  -}
 getDecouplerPart :: KRPCHS.SpaceCenter.Decoupler -> RPCContext (KRPCHS.SpaceCenter.Part)
 getDecouplerPart thisArg = do
@@ -5038,8 +5038,8 @@ getDecouplerPartStreamReq thisArg =
 getDecouplerPartStream :: KRPCHS.SpaceCenter.Decoupler -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
 getDecouplerPartStream thisArg = requestStream $ getDecouplerPartStreamReq thisArg 
 
-{-
- - Whether the decoupler is enabled in the staging sequence.
+{-|
+Whether the decoupler is enabled in the staging sequence.
  -}
 getDecouplerStaged :: KRPCHS.SpaceCenter.Decoupler -> RPCContext (Bool)
 getDecouplerStaged thisArg = do
@@ -5055,8 +5055,8 @@ getDecouplerStagedStreamReq thisArg =
 getDecouplerStagedStream :: KRPCHS.SpaceCenter.Decoupler -> RPCContext (KRPCStream (Bool))
 getDecouplerStagedStream thisArg = requestStream $ getDecouplerStagedStreamReq thisArg 
 
-{-
- - The direction that docking port points in, in the given reference frame.
+{-|
+The direction that docking port points in, in the given reference frame.
  -}
 dockingPortDirection :: KRPCHS.SpaceCenter.DockingPort -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
 dockingPortDirection thisArg referenceFrameArg = do
@@ -5072,8 +5072,8 @@ dockingPortDirectionStreamReq thisArg referenceFrameArg =
 dockingPortDirectionStream :: KRPCHS.SpaceCenter.DockingPort -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
 dockingPortDirectionStream thisArg referenceFrameArg = requestStream $ dockingPortDirectionStreamReq thisArg referenceFrameArg 
 
-{-
- - The position of the docking port in the given reference frame.
+{-|
+The position of the docking port in the given reference frame.
  -}
 dockingPortPosition :: KRPCHS.SpaceCenter.DockingPort -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
 dockingPortPosition thisArg referenceFrameArg = do
@@ -5089,8 +5089,8 @@ dockingPortPositionStreamReq thisArg referenceFrameArg =
 dockingPortPositionStream :: KRPCHS.SpaceCenter.DockingPort -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
 dockingPortPositionStream thisArg referenceFrameArg = requestStream $ dockingPortPositionStreamReq thisArg referenceFrameArg 
 
-{-
- - The rotation of the docking port, in the given reference frame.
+{-|
+The rotation of the docking port, in the given reference frame.
  -}
 dockingPortRotation :: KRPCHS.SpaceCenter.DockingPort -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double, Double))
 dockingPortRotation thisArg referenceFrameArg = do
@@ -5106,10 +5106,10 @@ dockingPortRotationStreamReq thisArg referenceFrameArg =
 dockingPortRotationStream :: KRPCHS.SpaceCenter.DockingPort -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double, Double)))
 dockingPortRotationStream thisArg referenceFrameArg = requestStream $ dockingPortRotationStreamReq thisArg referenceFrameArg 
 
-{-
- - Undocks the docking port and returns the new <see cref="T:SpaceCenter.Vessel" /> that is created.
- - This method can be called for either docking port in a docked pair.
- - Throws an exception if the docking port is not docked to anything.After undocking, the active vessel may change. See <see cref="M:SpaceCenter.ActiveVessel" />.
+{-|
+Undocks the docking port and returns the new <see cref="T:SpaceCenter.Vessel" /> that is created.
+This method can be called for either docking port in a docked pair.
+Throws an exception if the docking port is not docked to anything.After undocking, the active vessel may change. See <see cref="M:SpaceCenter.ActiveVessel" />.
  -}
 dockingPortUndock :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCHS.SpaceCenter.Vessel)
 dockingPortUndock thisArg = do
@@ -5125,9 +5125,9 @@ dockingPortUndockStreamReq thisArg =
 dockingPortUndockStream :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Vessel))
 dockingPortUndockStream thisArg = requestStream $ dockingPortUndockStreamReq thisArg 
 
-{-
- - The part that this docking port is docked to. Returnsnullif this
- - docking port is not docked to anything.
+{-|
+The part that this docking port is docked to. Returnsnullif this
+docking port is not docked to anything.
  -}
 getDockingPortDockedPart :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCHS.SpaceCenter.Part)
 getDockingPortDockedPart thisArg = do
@@ -5143,8 +5143,8 @@ getDockingPortDockedPartStreamReq thisArg =
 getDockingPortDockedPartStream :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
 getDockingPortDockedPartStream thisArg = requestStream $ getDockingPortDockedPartStreamReq thisArg 
 
-{-
- - Whether the docking port has a shield.
+{-|
+Whether the docking port has a shield.
  -}
 getDockingPortHasShield :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (Bool)
 getDockingPortHasShield thisArg = do
@@ -5160,8 +5160,8 @@ getDockingPortHasShieldStreamReq thisArg =
 getDockingPortHasShieldStream :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCStream (Bool))
 getDockingPortHasShieldStream thisArg = requestStream $ getDockingPortHasShieldStreamReq thisArg 
 
-{-
- - The part object for this docking port.
+{-|
+The part object for this docking port.
  -}
 getDockingPortPart :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCHS.SpaceCenter.Part)
 getDockingPortPart thisArg = do
@@ -5177,9 +5177,9 @@ getDockingPortPartStreamReq thisArg =
 getDockingPortPartStream :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
 getDockingPortPartStream thisArg = requestStream $ getDockingPortPartStreamReq thisArg 
 
-{-
- - The distance a docking port must move away when it undocks before it
- - becomes ready to dock with another port, in meters.
+{-|
+The distance a docking port must move away when it undocks before it
+becomes ready to dock with another port, in meters.
  -}
 getDockingPortReengageDistance :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (Float)
 getDockingPortReengageDistance thisArg = do
@@ -5195,11 +5195,11 @@ getDockingPortReengageDistanceStreamReq thisArg =
 getDockingPortReengageDistanceStream :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCStream (Float))
 getDockingPortReengageDistanceStream thisArg = requestStream $ getDockingPortReengageDistanceStreamReq thisArg 
 
-{-
- - The reference frame that is fixed relative to this docking port, and
- - oriented with the port.
- - <list type="bullet">The origin is at the position of the docking port.The axes rotate with the docking port.The x-axis points out to the right side of the docking port.The y-axis points in the direction the docking port is facing.The z-axis points out of the bottom off the docking port.This reference frame is not necessarily equivalent to the reference frame
- - for the part, returned by <see cref="M:SpaceCenter.Part.ReferenceFrame" />.
+{-|
+The reference frame that is fixed relative to this docking port, and
+oriented with the port.
+<list type="bullet">The origin is at the position of the docking port.The axes rotate with the docking port.The x-axis points out to the right side of the docking port.The y-axis points in the direction the docking port is facing.The z-axis points out of the bottom off the docking port.This reference frame is not necessarily equivalent to the reference frame
+for the part, returned by <see cref="M:SpaceCenter.Part.ReferenceFrame" />.
  -}
 getDockingPortReferenceFrame :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
 getDockingPortReferenceFrame thisArg = do
@@ -5215,13 +5215,13 @@ getDockingPortReferenceFrameStreamReq thisArg =
 getDockingPortReferenceFrameStream :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 getDockingPortReferenceFrameStream thisArg = requestStream $ getDockingPortReferenceFrameStreamReq thisArg 
 
-{-
- - The state of the docking ports shield, if it has one.
- - 
- - Returnstrueif the docking port has a shield, and the shield is
- - closed. Otherwise returnsfalse. When set totrue, the shield is
- - closed, and when set tofalsethe shield is opened. If the docking
- - port does not have a shield, setting this attribute has no effect.
+{-|
+The state of the docking ports shield, if it has one.
+
+Returnstrueif the docking port has a shield, and the shield is
+closed. Otherwise returnsfalse. When set totrue, the shield is
+closed, and when set tofalsethe shield is opened. If the docking
+port does not have a shield, setting this attribute has no effect.
  -}
 getDockingPortShielded :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (Bool)
 getDockingPortShielded thisArg = do
@@ -5237,8 +5237,8 @@ getDockingPortShieldedStreamReq thisArg =
 getDockingPortShieldedStream :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCStream (Bool))
 getDockingPortShieldedStream thisArg = requestStream $ getDockingPortShieldedStreamReq thisArg 
 
-{-
- - The current state of the docking port.
+{-|
+The current state of the docking port.
  -}
 getDockingPortState :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCHS.SpaceCenter.DockingPortState)
 getDockingPortState thisArg = do
@@ -5254,13 +5254,13 @@ getDockingPortStateStreamReq thisArg =
 getDockingPortStateStream :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.DockingPortState))
 getDockingPortStateStream thisArg = requestStream $ getDockingPortStateStreamReq thisArg 
 
-{-
- - The state of the docking ports shield, if it has one.
- - 
- - Returnstrueif the docking port has a shield, and the shield is
- - closed. Otherwise returnsfalse. When set totrue, the shield is
- - closed, and when set tofalsethe shield is opened. If the docking
- - port does not have a shield, setting this attribute has no effect.
+{-|
+The state of the docking ports shield, if it has one.
+
+Returnstrueif the docking port has a shield, and the shield is
+closed. Otherwise returnsfalse. When set totrue, the shield is
+closed, and when set tofalsethe shield is opened. If the docking
+port does not have a shield, setting this attribute has no effect.
  -}
 setDockingPortShielded :: KRPCHS.SpaceCenter.DockingPort -> Bool -> RPCContext ()
 setDockingPortShielded thisArg valueArg = do
@@ -5268,8 +5268,8 @@ setDockingPortShielded thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Toggle the current engine mode.
+{-|
+Toggle the current engine mode.
  -}
 engineToggleMode :: KRPCHS.SpaceCenter.Engine -> RPCContext ()
 engineToggleMode thisArg = do
@@ -5277,9 +5277,9 @@ engineToggleMode thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Whether the engine is active. Setting this attribute may have no effect,
- - depending on <see cref="M:SpaceCenter.Engine.CanShutdown" /> and <see cref="M:SpaceCenter.Engine.CanRestart" />.
+{-|
+Whether the engine is active. Setting this attribute may have no effect,
+depending on <see cref="M:SpaceCenter.Engine.CanShutdown" /> and <see cref="M:SpaceCenter.Engine.CanRestart" />.
  -}
 getEngineActive :: KRPCHS.SpaceCenter.Engine -> RPCContext (Bool)
 getEngineActive thisArg = do
@@ -5295,8 +5295,8 @@ getEngineActiveStreamReq thisArg =
 getEngineActiveStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Bool))
 getEngineActiveStream thisArg = requestStream $ getEngineActiveStreamReq thisArg 
 
-{-
- - Whether the engine will automatically switch modes.
+{-|
+Whether the engine will automatically switch modes.
  -}
 getEngineAutoModeSwitch :: KRPCHS.SpaceCenter.Engine -> RPCContext (Bool)
 getEngineAutoModeSwitch thisArg = do
@@ -5312,11 +5312,11 @@ getEngineAutoModeSwitchStreamReq thisArg =
 getEngineAutoModeSwitchStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Bool))
 getEngineAutoModeSwitchStream thisArg = requestStream $ getEngineAutoModeSwitchStreamReq thisArg 
 
-{-
- - The amount of thrust, in Newtons, that would be produced by the engine
- - when activated and with its throttle set to 100%.
- - Returns zero if the engine does not have any fuel.
- - Takes the engine's current <see cref="M:SpaceCenter.Engine.ThrustLimit" /> and atmospheric conditions into account.
+{-|
+The amount of thrust, in Newtons, that would be produced by the engine
+when activated and with its throttle set to 100%.
+Returns zero if the engine does not have any fuel.
+Takes the engine's current <see cref="M:SpaceCenter.Engine.ThrustLimit" /> and atmospheric conditions into account.
  -}
 getEngineAvailableThrust :: KRPCHS.SpaceCenter.Engine -> RPCContext (Float)
 getEngineAvailableThrust thisArg = do
@@ -5332,10 +5332,10 @@ getEngineAvailableThrustStreamReq thisArg =
 getEngineAvailableThrustStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Float))
 getEngineAvailableThrustStream thisArg = requestStream $ getEngineAvailableThrustStreamReq thisArg 
 
-{-
- - The available torque in the pitch, roll and yaw axes of the vessel, in Newton meters.
- - These axes correspond to the coordinate axes of the <see cref="M:SpaceCenter.Vessel.ReferenceFrame" />.
- - Returns zero if the engine is inactive, or not gimballed.
+{-|
+The available torque in the pitch, roll and yaw axes of the vessel, in Newton meters.
+These axes correspond to the coordinate axes of the <see cref="M:SpaceCenter.Vessel.ReferenceFrame" />.
+Returns zero if the engine is inactive, or not gimballed.
  -}
 getEngineAvailableTorque :: KRPCHS.SpaceCenter.Engine -> RPCContext ((Double, Double, Double))
 getEngineAvailableTorque thisArg = do
@@ -5351,10 +5351,10 @@ getEngineAvailableTorqueStreamReq thisArg =
 getEngineAvailableTorqueStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream ((Double, Double, Double)))
 getEngineAvailableTorqueStream thisArg = requestStream $ getEngineAvailableTorqueStreamReq thisArg 
 
-{-
- - Whether the engine can be restarted once shutdown. If the engine cannot be shutdown,
- - returnsfalse. For example, this istruefor liquid fueled rockets
- - andfalsefor solid rocket boosters.
+{-|
+Whether the engine can be restarted once shutdown. If the engine cannot be shutdown,
+returnsfalse. For example, this istruefor liquid fueled rockets
+andfalsefor solid rocket boosters.
  -}
 getEngineCanRestart :: KRPCHS.SpaceCenter.Engine -> RPCContext (Bool)
 getEngineCanRestart thisArg = do
@@ -5370,8 +5370,8 @@ getEngineCanRestartStreamReq thisArg =
 getEngineCanRestartStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Bool))
 getEngineCanRestartStream thisArg = requestStream $ getEngineCanRestartStreamReq thisArg 
 
-{-
- - Whether the engine can be shutdown once activated. For example, this istruefor liquid fueled rockets andfalsefor solid rocket boosters.
+{-|
+Whether the engine can be shutdown once activated. For example, this istruefor liquid fueled rockets andfalsefor solid rocket boosters.
  -}
 getEngineCanShutdown :: KRPCHS.SpaceCenter.Engine -> RPCContext (Bool)
 getEngineCanShutdown thisArg = do
@@ -5387,9 +5387,9 @@ getEngineCanShutdownStreamReq thisArg =
 getEngineCanShutdownStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Bool))
 getEngineCanShutdownStream thisArg = requestStream $ getEngineCanShutdownStreamReq thisArg 
 
-{-
- - The gimbal limiter of the engine. A value between 0 and 1.
- - Returns 0 if the gimbal is locked.
+{-|
+The gimbal limiter of the engine. A value between 0 and 1.
+Returns 0 if the gimbal is locked.
  -}
 getEngineGimbalLimit :: KRPCHS.SpaceCenter.Engine -> RPCContext (Float)
 getEngineGimbalLimit thisArg = do
@@ -5405,9 +5405,9 @@ getEngineGimbalLimitStreamReq thisArg =
 getEngineGimbalLimitStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Float))
 getEngineGimbalLimitStream thisArg = requestStream $ getEngineGimbalLimitStreamReq thisArg 
 
-{-
- - Whether the engines gimbal is locked in place. Setting this attribute has
- - no effect if the engine is not gimballed.
+{-|
+Whether the engines gimbal is locked in place. Setting this attribute has
+no effect if the engine is not gimballed.
  -}
 getEngineGimbalLocked :: KRPCHS.SpaceCenter.Engine -> RPCContext (Bool)
 getEngineGimbalLocked thisArg = do
@@ -5423,9 +5423,9 @@ getEngineGimbalLockedStreamReq thisArg =
 getEngineGimbalLockedStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Bool))
 getEngineGimbalLockedStream thisArg = requestStream $ getEngineGimbalLockedStreamReq thisArg 
 
-{-
- - The range over which the gimbal can move, in degrees.
- - Returns 0 if the engine is not gimballed.
+{-|
+The range over which the gimbal can move, in degrees.
+Returns 0 if the engine is not gimballed.
  -}
 getEngineGimbalRange :: KRPCHS.SpaceCenter.Engine -> RPCContext (Float)
 getEngineGimbalRange thisArg = do
@@ -5441,8 +5441,8 @@ getEngineGimbalRangeStreamReq thisArg =
 getEngineGimbalRangeStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Float))
 getEngineGimbalRangeStream thisArg = requestStream $ getEngineGimbalRangeStreamReq thisArg 
 
-{-
- - Whether the engine is gimballed.
+{-|
+Whether the engine is gimballed.
  -}
 getEngineGimballed :: KRPCHS.SpaceCenter.Engine -> RPCContext (Bool)
 getEngineGimballed thisArg = do
@@ -5458,8 +5458,8 @@ getEngineGimballedStreamReq thisArg =
 getEngineGimballedStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Bool))
 getEngineGimballedStream thisArg = requestStream $ getEngineGimballedStreamReq thisArg 
 
-{-
- - Whether the engine has any fuel available.The engine must be activated for this property to update correctly.
+{-|
+Whether the engine has any fuel available.The engine must be activated for this property to update correctly.
  -}
 getEngineHasFuel :: KRPCHS.SpaceCenter.Engine -> RPCContext (Bool)
 getEngineHasFuel thisArg = do
@@ -5475,8 +5475,8 @@ getEngineHasFuelStreamReq thisArg =
 getEngineHasFuelStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Bool))
 getEngineHasFuelStream thisArg = requestStream $ getEngineHasFuelStreamReq thisArg 
 
-{-
- - Whether the engine has multiple modes of operation.
+{-|
+Whether the engine has multiple modes of operation.
  -}
 getEngineHasModes :: KRPCHS.SpaceCenter.Engine -> RPCContext (Bool)
 getEngineHasModes thisArg = do
@@ -5492,8 +5492,8 @@ getEngineHasModesStreamReq thisArg =
 getEngineHasModesStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Bool))
 getEngineHasModesStream thisArg = requestStream $ getEngineHasModesStreamReq thisArg 
 
-{-
- - The specific impulse of the engine at sea level on Kerbin, in seconds.
+{-|
+The specific impulse of the engine at sea level on Kerbin, in seconds.
  -}
 getEngineKerbinSeaLevelSpecificImpulse :: KRPCHS.SpaceCenter.Engine -> RPCContext (Float)
 getEngineKerbinSeaLevelSpecificImpulse thisArg = do
@@ -5509,9 +5509,9 @@ getEngineKerbinSeaLevelSpecificImpulseStreamReq thisArg =
 getEngineKerbinSeaLevelSpecificImpulseStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Float))
 getEngineKerbinSeaLevelSpecificImpulseStream thisArg = requestStream $ getEngineKerbinSeaLevelSpecificImpulseStreamReq thisArg 
 
-{-
- - The amount of thrust, in Newtons, that would be produced by the engine
- - when activated and fueled, with its throttle and throttle limiter set to 100%.
+{-|
+The amount of thrust, in Newtons, that would be produced by the engine
+when activated and fueled, with its throttle and throttle limiter set to 100%.
  -}
 getEngineMaxThrust :: KRPCHS.SpaceCenter.Engine -> RPCContext (Float)
 getEngineMaxThrust thisArg = do
@@ -5527,11 +5527,11 @@ getEngineMaxThrustStreamReq thisArg =
 getEngineMaxThrustStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Float))
 getEngineMaxThrustStream thisArg = requestStream $ getEngineMaxThrustStreamReq thisArg 
 
-{-
- - The maximum amount of thrust that can be produced by the engine in a
- - vacuum, in Newtons. This is the amount of thrust produced by the engine
- - when activated, <see cref="M:SpaceCenter.Engine.ThrustLimit" /> is set to 100%, the main
- - vessel's throttle is set to 100% and the engine is in a vacuum.
+{-|
+The maximum amount of thrust that can be produced by the engine in a
+vacuum, in Newtons. This is the amount of thrust produced by the engine
+when activated, <see cref="M:SpaceCenter.Engine.ThrustLimit" /> is set to 100%, the main
+vessel's throttle is set to 100% and the engine is in a vacuum.
  -}
 getEngineMaxVacuumThrust :: KRPCHS.SpaceCenter.Engine -> RPCContext (Float)
 getEngineMaxVacuumThrust thisArg = do
@@ -5547,8 +5547,8 @@ getEngineMaxVacuumThrustStreamReq thisArg =
 getEngineMaxVacuumThrustStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Float))
 getEngineMaxVacuumThrustStream thisArg = requestStream $ getEngineMaxVacuumThrustStreamReq thisArg 
 
-{-
- - The name of the current engine mode.
+{-|
+The name of the current engine mode.
  -}
 getEngineMode :: KRPCHS.SpaceCenter.Engine -> RPCContext (Data.Text.Text)
 getEngineMode thisArg = do
@@ -5564,9 +5564,9 @@ getEngineModeStreamReq thisArg =
 getEngineModeStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Data.Text.Text))
 getEngineModeStream thisArg = requestStream $ getEngineModeStreamReq thisArg 
 
-{-
- - The available modes for the engine.
- - A dictionary mapping mode names to <see cref="T:SpaceCenter.Engine" /> objects.
+{-|
+The available modes for the engine.
+A dictionary mapping mode names to <see cref="T:SpaceCenter.Engine" /> objects.
  -}
 getEngineModes :: KRPCHS.SpaceCenter.Engine -> RPCContext (Data.Map.Map (Data.Text.Text) (KRPCHS.SpaceCenter.Engine))
 getEngineModes thisArg = do
@@ -5582,8 +5582,8 @@ getEngineModesStreamReq thisArg =
 getEngineModesStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Data.Map.Map (Data.Text.Text) (KRPCHS.SpaceCenter.Engine)))
 getEngineModesStream thisArg = requestStream $ getEngineModesStreamReq thisArg 
 
-{-
- - The part object for this engine.
+{-|
+The part object for this engine.
  -}
 getEnginePart :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCHS.SpaceCenter.Part)
 getEnginePart thisArg = do
@@ -5599,8 +5599,8 @@ getEnginePartStreamReq thisArg =
 getEnginePartStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
 getEnginePartStream thisArg = requestStream $ getEnginePartStreamReq thisArg 
 
-{-
- - The names of the propellants that the engine consumes.
+{-|
+The names of the propellants that the engine consumes.
  -}
 getEnginePropellantNames :: KRPCHS.SpaceCenter.Engine -> RPCContext ([Data.Text.Text])
 getEnginePropellantNames thisArg = do
@@ -5616,10 +5616,10 @@ getEnginePropellantNamesStreamReq thisArg =
 getEnginePropellantNamesStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream ([Data.Text.Text]))
 getEnginePropellantNamesStream thisArg = requestStream $ getEnginePropellantNamesStreamReq thisArg 
 
-{-
- - The ratio of resources that the engine consumes. A dictionary mapping resource names
- - to the ratio at which they are consumed by the engine.For example, if the ratios are 0.6 for LiquidFuel and 0.4 for Oxidizer, then for every 0.6 units of
- - LiquidFuel that the engine burns, it will burn 0.4 units of Oxidizer.
+{-|
+The ratio of resources that the engine consumes. A dictionary mapping resource names
+to the ratio at which they are consumed by the engine.For example, if the ratios are 0.6 for LiquidFuel and 0.4 for Oxidizer, then for every 0.6 units of
+LiquidFuel that the engine burns, it will burn 0.4 units of Oxidizer.
  -}
 getEnginePropellantRatios :: KRPCHS.SpaceCenter.Engine -> RPCContext (Data.Map.Map (Data.Text.Text) (Float))
 getEnginePropellantRatios thisArg = do
@@ -5635,8 +5635,8 @@ getEnginePropellantRatiosStreamReq thisArg =
 getEnginePropellantRatiosStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Data.Map.Map (Data.Text.Text) (Float)))
 getEnginePropellantRatiosStream thisArg = requestStream $ getEnginePropellantRatiosStreamReq thisArg 
 
-{-
- - The propellants that the engine consumes.
+{-|
+The propellants that the engine consumes.
  -}
 getEnginePropellants :: KRPCHS.SpaceCenter.Engine -> RPCContext ([KRPCHS.SpaceCenter.Propellant])
 getEnginePropellants thisArg = do
@@ -5652,9 +5652,9 @@ getEnginePropellantsStreamReq thisArg =
 getEnginePropellantsStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Propellant]))
 getEnginePropellantsStream thisArg = requestStream $ getEnginePropellantsStreamReq thisArg 
 
-{-
- - The current specific impulse of the engine, in seconds. Returns zero
- - if the engine is not active.
+{-|
+The current specific impulse of the engine, in seconds. Returns zero
+if the engine is not active.
  -}
 getEngineSpecificImpulse :: KRPCHS.SpaceCenter.Engine -> RPCContext (Float)
 getEngineSpecificImpulse thisArg = do
@@ -5670,11 +5670,11 @@ getEngineSpecificImpulseStreamReq thisArg =
 getEngineSpecificImpulseStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Float))
 getEngineSpecificImpulseStream thisArg = requestStream $ getEngineSpecificImpulseStreamReq thisArg 
 
-{-
- - The current throttle setting for the engine. A value between 0 and 1.
- - This is not necessarily the same as the vessel's main throttle
- - setting, as some engines take time to adjust their throttle
- - (such as jet engines).
+{-|
+The current throttle setting for the engine. A value between 0 and 1.
+This is not necessarily the same as the vessel's main throttle
+setting, as some engines take time to adjust their throttle
+(such as jet engines).
  -}
 getEngineThrottle :: KRPCHS.SpaceCenter.Engine -> RPCContext (Float)
 getEngineThrottle thisArg = do
@@ -5690,10 +5690,10 @@ getEngineThrottleStreamReq thisArg =
 getEngineThrottleStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Float))
 getEngineThrottleStream thisArg = requestStream $ getEngineThrottleStreamReq thisArg 
 
-{-
- - Whether the <see cref="M:SpaceCenter.Control.Throttle" /> affects the engine. For example,
- - this istruefor liquid fueled rockets, andfalsefor solid rocket
- - boosters.
+{-|
+Whether the <see cref="M:SpaceCenter.Control.Throttle" /> affects the engine. For example,
+this istruefor liquid fueled rockets, andfalsefor solid rocket
+boosters.
  -}
 getEngineThrottleLocked :: KRPCHS.SpaceCenter.Engine -> RPCContext (Bool)
 getEngineThrottleLocked thisArg = do
@@ -5709,8 +5709,8 @@ getEngineThrottleLockedStreamReq thisArg =
 getEngineThrottleLockedStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Bool))
 getEngineThrottleLockedStream thisArg = requestStream $ getEngineThrottleLockedStreamReq thisArg 
 
-{-
- - The current amount of thrust being produced by the engine, in Newtons.
+{-|
+The current amount of thrust being produced by the engine, in Newtons.
  -}
 getEngineThrust :: KRPCHS.SpaceCenter.Engine -> RPCContext (Float)
 getEngineThrust thisArg = do
@@ -5726,10 +5726,10 @@ getEngineThrustStreamReq thisArg =
 getEngineThrustStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Float))
 getEngineThrustStream thisArg = requestStream $ getEngineThrustStreamReq thisArg 
 
-{-
- - The thrust limiter of the engine. A value between 0 and 1. Setting this
- - attribute may have no effect, for example the thrust limit for a solid
- - rocket booster cannot be changed in flight.
+{-|
+The thrust limiter of the engine. A value between 0 and 1. Setting this
+attribute may have no effect, for example the thrust limit for a solid
+rocket booster cannot be changed in flight.
  -}
 getEngineThrustLimit :: KRPCHS.SpaceCenter.Engine -> RPCContext (Float)
 getEngineThrustLimit thisArg = do
@@ -5745,11 +5745,11 @@ getEngineThrustLimitStreamReq thisArg =
 getEngineThrustLimitStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Float))
 getEngineThrustLimitStream thisArg = requestStream $ getEngineThrustLimitStreamReq thisArg 
 
-{-
- - The components of the engine that generate thrust.For example, this corresponds to the rocket nozzel on a solid rocket booster,
- - or the individual nozzels on a RAPIER engine.
- - The overall thrust produced by the engine, as reported by <see cref="M:SpaceCenter.Engine.AvailableThrust" />,
- - <see cref="M:SpaceCenter.Engine.MaxThrust" /> and others, is the sum of the thrust generated by each thruster.
+{-|
+The components of the engine that generate thrust.For example, this corresponds to the rocket nozzel on a solid rocket booster,
+or the individual nozzels on a RAPIER engine.
+The overall thrust produced by the engine, as reported by <see cref="M:SpaceCenter.Engine.AvailableThrust" />,
+<see cref="M:SpaceCenter.Engine.MaxThrust" /> and others, is the sum of the thrust generated by each thruster.
  -}
 getEngineThrusters :: KRPCHS.SpaceCenter.Engine -> RPCContext ([KRPCHS.SpaceCenter.Thruster])
 getEngineThrusters thisArg = do
@@ -5765,8 +5765,8 @@ getEngineThrustersStreamReq thisArg =
 getEngineThrustersStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Thruster]))
 getEngineThrustersStream thisArg = requestStream $ getEngineThrustersStreamReq thisArg 
 
-{-
- - The vacuum specific impulse of the engine, in seconds.
+{-|
+The vacuum specific impulse of the engine, in seconds.
  -}
 getEngineVacuumSpecificImpulse :: KRPCHS.SpaceCenter.Engine -> RPCContext (Float)
 getEngineVacuumSpecificImpulse thisArg = do
@@ -5782,9 +5782,9 @@ getEngineVacuumSpecificImpulseStreamReq thisArg =
 getEngineVacuumSpecificImpulseStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Float))
 getEngineVacuumSpecificImpulseStream thisArg = requestStream $ getEngineVacuumSpecificImpulseStreamReq thisArg 
 
-{-
- - Whether the engine is active. Setting this attribute may have no effect,
- - depending on <see cref="M:SpaceCenter.Engine.CanShutdown" /> and <see cref="M:SpaceCenter.Engine.CanRestart" />.
+{-|
+Whether the engine is active. Setting this attribute may have no effect,
+depending on <see cref="M:SpaceCenter.Engine.CanShutdown" /> and <see cref="M:SpaceCenter.Engine.CanRestart" />.
  -}
 setEngineActive :: KRPCHS.SpaceCenter.Engine -> Bool -> RPCContext ()
 setEngineActive thisArg valueArg = do
@@ -5792,8 +5792,8 @@ setEngineActive thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Whether the engine will automatically switch modes.
+{-|
+Whether the engine will automatically switch modes.
  -}
 setEngineAutoModeSwitch :: KRPCHS.SpaceCenter.Engine -> Bool -> RPCContext ()
 setEngineAutoModeSwitch thisArg valueArg = do
@@ -5801,9 +5801,9 @@ setEngineAutoModeSwitch thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The gimbal limiter of the engine. A value between 0 and 1.
- - Returns 0 if the gimbal is locked.
+{-|
+The gimbal limiter of the engine. A value between 0 and 1.
+Returns 0 if the gimbal is locked.
  -}
 setEngineGimbalLimit :: KRPCHS.SpaceCenter.Engine -> Float -> RPCContext ()
 setEngineGimbalLimit thisArg valueArg = do
@@ -5811,9 +5811,9 @@ setEngineGimbalLimit thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Whether the engines gimbal is locked in place. Setting this attribute has
- - no effect if the engine is not gimballed.
+{-|
+Whether the engines gimbal is locked in place. Setting this attribute has
+no effect if the engine is not gimballed.
  -}
 setEngineGimbalLocked :: KRPCHS.SpaceCenter.Engine -> Bool -> RPCContext ()
 setEngineGimbalLocked thisArg valueArg = do
@@ -5821,8 +5821,8 @@ setEngineGimbalLocked thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The name of the current engine mode.
+{-|
+The name of the current engine mode.
  -}
 setEngineMode :: KRPCHS.SpaceCenter.Engine -> Data.Text.Text -> RPCContext ()
 setEngineMode thisArg valueArg = do
@@ -5830,10 +5830,10 @@ setEngineMode thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The thrust limiter of the engine. A value between 0 and 1. Setting this
- - attribute may have no effect, for example the thrust limit for a solid
- - rocket booster cannot be changed in flight.
+{-|
+The thrust limiter of the engine. A value between 0 and 1. Setting this
+attribute may have no effect, for example the thrust limit for a solid
+rocket booster cannot be changed in flight.
  -}
 setEngineThrustLimit :: KRPCHS.SpaceCenter.Engine -> Float -> RPCContext ()
 setEngineThrustLimit thisArg valueArg = do
@@ -5841,8 +5841,8 @@ setEngineThrustLimit thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Dump the experimental data contained by the experiment.
+{-|
+Dump the experimental data contained by the experiment.
  -}
 experimentDump :: KRPCHS.SpaceCenter.Experiment -> RPCContext ()
 experimentDump thisArg = do
@@ -5850,8 +5850,8 @@ experimentDump thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Reset the experiment.
+{-|
+Reset the experiment.
  -}
 experimentReset :: KRPCHS.SpaceCenter.Experiment -> RPCContext ()
 experimentReset thisArg = do
@@ -5859,8 +5859,8 @@ experimentReset thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Run the experiment.
+{-|
+Run the experiment.
  -}
 experimentRun :: KRPCHS.SpaceCenter.Experiment -> RPCContext ()
 experimentRun thisArg = do
@@ -5868,8 +5868,8 @@ experimentRun thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Transmit all experimental data contained by this part.
+{-|
+Transmit all experimental data contained by this part.
  -}
 experimentTransmit :: KRPCHS.SpaceCenter.Experiment -> RPCContext ()
 experimentTransmit thisArg = do
@@ -5877,8 +5877,8 @@ experimentTransmit thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Determines if the experiment is available given the current conditions.
+{-|
+Determines if the experiment is available given the current conditions.
  -}
 getExperimentAvailable :: KRPCHS.SpaceCenter.Experiment -> RPCContext (Bool)
 getExperimentAvailable thisArg = do
@@ -5894,8 +5894,8 @@ getExperimentAvailableStreamReq thisArg =
 getExperimentAvailableStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream (Bool))
 getExperimentAvailableStream thisArg = requestStream $ getExperimentAvailableStreamReq thisArg 
 
-{-
- - The name of the biome the experiment is currently in.
+{-|
+The name of the biome the experiment is currently in.
  -}
 getExperimentBiome :: KRPCHS.SpaceCenter.Experiment -> RPCContext (Data.Text.Text)
 getExperimentBiome thisArg = do
@@ -5911,8 +5911,8 @@ getExperimentBiomeStreamReq thisArg =
 getExperimentBiomeStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream (Data.Text.Text))
 getExperimentBiomeStream thisArg = requestStream $ getExperimentBiomeStreamReq thisArg 
 
-{-
- - The data contained in this experiment.
+{-|
+The data contained in this experiment.
  -}
 getExperimentData :: KRPCHS.SpaceCenter.Experiment -> RPCContext ([KRPCHS.SpaceCenter.ScienceData])
 getExperimentData thisArg = do
@@ -5928,8 +5928,8 @@ getExperimentDataStreamReq thisArg =
 getExperimentDataStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.ScienceData]))
 getExperimentDataStream thisArg = requestStream $ getExperimentDataStreamReq thisArg 
 
-{-
- - Whether the experiment has been deployed.
+{-|
+Whether the experiment has been deployed.
  -}
 getExperimentDeployed :: KRPCHS.SpaceCenter.Experiment -> RPCContext (Bool)
 getExperimentDeployed thisArg = do
@@ -5945,8 +5945,8 @@ getExperimentDeployedStreamReq thisArg =
 getExperimentDeployedStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream (Bool))
 getExperimentDeployedStream thisArg = requestStream $ getExperimentDeployedStreamReq thisArg 
 
-{-
- - Whether the experiment contains data.
+{-|
+Whether the experiment contains data.
  -}
 getExperimentHasData :: KRPCHS.SpaceCenter.Experiment -> RPCContext (Bool)
 getExperimentHasData thisArg = do
@@ -5962,8 +5962,8 @@ getExperimentHasDataStreamReq thisArg =
 getExperimentHasDataStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream (Bool))
 getExperimentHasDataStream thisArg = requestStream $ getExperimentHasDataStreamReq thisArg 
 
-{-
- - Whether the experiment is inoperable.
+{-|
+Whether the experiment is inoperable.
  -}
 getExperimentInoperable :: KRPCHS.SpaceCenter.Experiment -> RPCContext (Bool)
 getExperimentInoperable thisArg = do
@@ -5979,8 +5979,8 @@ getExperimentInoperableStreamReq thisArg =
 getExperimentInoperableStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream (Bool))
 getExperimentInoperableStream thisArg = requestStream $ getExperimentInoperableStreamReq thisArg 
 
-{-
- - The part object for this experiment.
+{-|
+The part object for this experiment.
  -}
 getExperimentPart :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCHS.SpaceCenter.Part)
 getExperimentPart thisArg = do
@@ -5996,8 +5996,8 @@ getExperimentPartStreamReq thisArg =
 getExperimentPartStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
 getExperimentPartStream thisArg = requestStream $ getExperimentPartStreamReq thisArg 
 
-{-
- - Whether the experiment can be re-run.
+{-|
+Whether the experiment can be re-run.
  -}
 getExperimentRerunnable :: KRPCHS.SpaceCenter.Experiment -> RPCContext (Bool)
 getExperimentRerunnable thisArg = do
@@ -6013,9 +6013,9 @@ getExperimentRerunnableStreamReq thisArg =
 getExperimentRerunnableStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream (Bool))
 getExperimentRerunnableStream thisArg = requestStream $ getExperimentRerunnableStreamReq thisArg 
 
-{-
- - Containing information on the corresponding specific science result for the current conditions.
- - Returns null if experiment is unavailable.
+{-|
+Containing information on the corresponding specific science result for the current conditions.
+Returns null if experiment is unavailable.
  -}
 getExperimentScienceSubject :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCHS.SpaceCenter.ScienceSubject)
 getExperimentScienceSubject thisArg = do
@@ -6031,8 +6031,8 @@ getExperimentScienceSubjectStreamReq thisArg =
 getExperimentScienceSubjectStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ScienceSubject))
 getExperimentScienceSubjectStream thisArg = requestStream $ getExperimentScienceSubjectStreamReq thisArg 
 
-{-
- - Jettison the fairing. Has no effect if it has already been jettisoned.
+{-|
+Jettison the fairing. Has no effect if it has already been jettisoned.
  -}
 fairingJettison :: KRPCHS.SpaceCenter.Fairing -> RPCContext ()
 fairingJettison thisArg = do
@@ -6040,8 +6040,8 @@ fairingJettison thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Whether the fairing has been jettisoned.
+{-|
+Whether the fairing has been jettisoned.
  -}
 getFairingJettisoned :: KRPCHS.SpaceCenter.Fairing -> RPCContext (Bool)
 getFairingJettisoned thisArg = do
@@ -6057,8 +6057,8 @@ getFairingJettisonedStreamReq thisArg =
 getFairingJettisonedStream :: KRPCHS.SpaceCenter.Fairing -> RPCContext (KRPCStream (Bool))
 getFairingJettisonedStream thisArg = requestStream $ getFairingJettisonedStreamReq thisArg 
 
-{-
- - The part object for this fairing.
+{-|
+The part object for this fairing.
  -}
 getFairingPart :: KRPCHS.SpaceCenter.Fairing -> RPCContext (KRPCHS.SpaceCenter.Part)
 getFairingPart thisArg = do
@@ -6074,9 +6074,9 @@ getFairingPartStreamReq thisArg =
 getFairingPartStream :: KRPCHS.SpaceCenter.Fairing -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
 getFairingPartStream thisArg = requestStream $ getFairingPartStreamReq thisArg 
 
-{-
- - The total aerodynamic forces acting on the vessel, as a vector pointing in the direction of the force, with its
- - magnitude equal to the strength of the force in Newtons.
+{-|
+The total aerodynamic forces acting on the vessel, as a vector pointing in the direction of the force, with its
+magnitude equal to the strength of the force in Newtons.
  -}
 getFlightAerodynamicForce :: KRPCHS.SpaceCenter.Flight -> RPCContext ((Double, Double, Double))
 getFlightAerodynamicForce thisArg = do
@@ -6092,8 +6092,8 @@ getFlightAerodynamicForceStreamReq thisArg =
 getFlightAerodynamicForceStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
 getFlightAerodynamicForceStream thisArg = requestStream $ getFlightAerodynamicForceStreamReq thisArg 
 
-{-
- - Gets the pitch angle between the orientation of the vessel and its velocity vector, in degrees.
+{-|
+Gets the pitch angle between the orientation of the vessel and its velocity vector, in degrees.
  -}
 getFlightAngleOfAttack :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
 getFlightAngleOfAttack thisArg = do
@@ -6109,8 +6109,8 @@ getFlightAngleOfAttackStreamReq thisArg =
 getFlightAngleOfAttackStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
 getFlightAngleOfAttackStream thisArg = requestStream $ getFlightAngleOfAttackStreamReq thisArg 
 
-{-
- - The unit direction vector pointing in the anti-normal direction.
+{-|
+The unit direction vector pointing in the anti-normal direction.
  -}
 getFlightAntiNormal :: KRPCHS.SpaceCenter.Flight -> RPCContext ((Double, Double, Double))
 getFlightAntiNormal thisArg = do
@@ -6126,8 +6126,8 @@ getFlightAntiNormalStreamReq thisArg =
 getFlightAntiNormalStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
 getFlightAntiNormalStream thisArg = requestStream $ getFlightAntiNormalStreamReq thisArg 
 
-{-
- - The unit direction vector pointing in the anti-radial direction.
+{-|
+The unit direction vector pointing in the anti-radial direction.
  -}
 getFlightAntiRadial :: KRPCHS.SpaceCenter.Flight -> RPCContext ((Double, Double, Double))
 getFlightAntiRadial thisArg = do
@@ -6143,8 +6143,8 @@ getFlightAntiRadialStreamReq thisArg =
 getFlightAntiRadialStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
 getFlightAntiRadialStream thisArg = requestStream $ getFlightAntiRadialStreamReq thisArg 
 
-{-
- - The current density of the atmosphere around the vessel, inkg/m^3.
+{-|
+The current density of the atmosphere around the vessel, inkg/m^3.
  -}
 getFlightAtmosphereDensity :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
 getFlightAtmosphereDensity thisArg = do
@@ -6160,8 +6160,8 @@ getFlightAtmosphereDensityStreamReq thisArg =
 getFlightAtmosphereDensityStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
 getFlightAtmosphereDensityStream thisArg = requestStream $ getFlightAtmosphereDensityStreamReq thisArg 
 
-{-
- - Gets the <a href="https://en.wikipedia.org/wiki/Ballistic_coefficient">ballistic coefficient.Requires <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Research.
+{-|
+Gets the <a href="https://en.wikipedia.org/wiki/Ballistic_coefficient">ballistic coefficient.Requires <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Research.
  -}
 getFlightBallisticCoefficient :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
 getFlightBallisticCoefficient thisArg = do
@@ -6177,9 +6177,9 @@ getFlightBallisticCoefficientStreamReq thisArg =
 getFlightBallisticCoefficientStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
 getFlightBallisticCoefficientStream thisArg = requestStream $ getFlightBallisticCoefficientStreamReq thisArg 
 
-{-
- - The altitude above the surface of the body, in meters. When over water, this is the altitude above the sea floor.
- - Measured from the center of mass of the vessel.
+{-|
+The altitude above the surface of the body, in meters. When over water, this is the altitude above the sea floor.
+Measured from the center of mass of the vessel.
  -}
 getFlightBedrockAltitude :: KRPCHS.SpaceCenter.Flight -> RPCContext (Double)
 getFlightBedrockAltitude thisArg = do
@@ -6195,8 +6195,8 @@ getFlightBedrockAltitudeStreamReq thisArg =
 getFlightBedrockAltitudeStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Double))
 getFlightBedrockAltitudeStream thisArg = requestStream $ getFlightBedrockAltitudeStreamReq thisArg 
 
-{-
- - The position of the center of mass of the vessel.
+{-|
+The position of the center of mass of the vessel.
  -}
 getFlightCenterOfMass :: KRPCHS.SpaceCenter.Flight -> RPCContext ((Double, Double, Double))
 getFlightCenterOfMass thisArg = do
@@ -6212,8 +6212,8 @@ getFlightCenterOfMassStreamReq thisArg =
 getFlightCenterOfMassStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
 getFlightCenterOfMassStream thisArg = requestStream $ getFlightCenterOfMassStreamReq thisArg 
 
-{-
- - The direction vector that the vessel is pointing in.
+{-|
+The direction vector that the vessel is pointing in.
  -}
 getFlightDirection :: KRPCHS.SpaceCenter.Flight -> RPCContext ((Double, Double, Double))
 getFlightDirection thisArg = do
@@ -6229,9 +6229,9 @@ getFlightDirectionStreamReq thisArg =
 getFlightDirectionStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
 getFlightDirectionStream thisArg = requestStream $ getFlightDirectionStreamReq thisArg 
 
-{-
- - The <a href="https://en.wikipedia.org/wiki/Aerodynamic_force">aerodynamic dragcurrently acting on the vessel,
- - as a vector pointing in the direction of the force, with its magnitude equal to the strength of the force in Newtons.
+{-|
+The <a href="https://en.wikipedia.org/wiki/Aerodynamic_force">aerodynamic dragcurrently acting on the vessel,
+as a vector pointing in the direction of the force, with its magnitude equal to the strength of the force in Newtons.
  -}
 getFlightDrag :: KRPCHS.SpaceCenter.Flight -> RPCContext ((Double, Double, Double))
 getFlightDrag thisArg = do
@@ -6247,9 +6247,9 @@ getFlightDragStreamReq thisArg =
 getFlightDragStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
 getFlightDragStream thisArg = requestStream $ getFlightDragStreamReq thisArg 
 
-{-
- - Gets the coefficient of drag. This is the amount of drag produced by the vessel. It depends on air speed,
- - air density and wing area.Requires <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Research.
+{-|
+Gets the coefficient of drag. This is the amount of drag produced by the vessel. It depends on air speed,
+air density and wing area.Requires <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Research.
  -}
 getFlightDragCoefficient :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
 getFlightDragCoefficient thisArg = do
@@ -6265,10 +6265,10 @@ getFlightDragCoefficientStreamReq thisArg =
 getFlightDragCoefficientStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
 getFlightDragCoefficientStream thisArg = requestStream $ getFlightDragCoefficientStreamReq thisArg 
 
-{-
- - The dynamic pressure acting on the vessel, in Pascals. This is a measure of the strength of the
- - aerodynamic forces. It is equal to\frac{1}{2} . \mbox{air density} .  \mbox{velocity}^2.
- - It is commonly denotedQ.
+{-|
+The dynamic pressure acting on the vessel, in Pascals. This is a measure of the strength of the
+aerodynamic forces. It is equal to\frac{1}{2} . \mbox{air density} .  \mbox{velocity}^2.
+It is commonly denotedQ.
  -}
 getFlightDynamicPressure :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
 getFlightDynamicPressure thisArg = do
@@ -6284,9 +6284,9 @@ getFlightDynamicPressureStreamReq thisArg =
 getFlightDynamicPressureStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
 getFlightDynamicPressureStream thisArg = requestStream $ getFlightDynamicPressureStreamReq thisArg 
 
-{-
- - The elevation of the terrain under the vessel, in meters. This is the height of the terrain above sea level,
- - and is negative when the vessel is over the sea.
+{-|
+The elevation of the terrain under the vessel, in meters. This is the height of the terrain above sea level,
+and is negative when the vessel is over the sea.
  -}
 getFlightElevation :: KRPCHS.SpaceCenter.Flight -> RPCContext (Double)
 getFlightElevation thisArg = do
@@ -6302,8 +6302,8 @@ getFlightElevationStreamReq thisArg =
 getFlightElevationStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Double))
 getFlightElevationStream thisArg = requestStream $ getFlightElevationStreamReq thisArg 
 
-{-
- - The <a href="https://en.wikipedia.org/wiki/Equivalent_airspeed">equivalent air speedof the vessel, inm/s.
+{-|
+The <a href="https://en.wikipedia.org/wiki/Equivalent_airspeed">equivalent air speedof the vessel, inm/s.
  -}
 getFlightEquivalentAirSpeed :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
 getFlightEquivalentAirSpeed thisArg = do
@@ -6319,8 +6319,8 @@ getFlightEquivalentAirSpeedStreamReq thisArg =
 getFlightEquivalentAirSpeedStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
 getFlightEquivalentAirSpeedStream thisArg = requestStream $ getFlightEquivalentAirSpeedStreamReq thisArg 
 
-{-
- - The current G force acting on the vessel inm/s^2.
+{-|
+The current G force acting on the vessel inm/s^2.
  -}
 getFlightGForce :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
 getFlightGForce thisArg = do
@@ -6336,8 +6336,8 @@ getFlightGForceStreamReq thisArg =
 getFlightGForceStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
 getFlightGForceStream thisArg = requestStream $ getFlightGForceStreamReq thisArg 
 
-{-
- - The heading angle of the vessel relative to north, in degrees. A value between 0° and 360°.
+{-|
+The heading angle of the vessel relative to north, in degrees. A value between 0° and 360°.
  -}
 getFlightHeading :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
 getFlightHeading thisArg = do
@@ -6353,8 +6353,8 @@ getFlightHeadingStreamReq thisArg =
 getFlightHeadingStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
 getFlightHeadingStream thisArg = requestStream $ getFlightHeadingStreamReq thisArg 
 
-{-
- - The horizontal speed of the vessel in meters per second.
+{-|
+The horizontal speed of the vessel in meters per second.
  -}
 getFlightHorizontalSpeed :: KRPCHS.SpaceCenter.Flight -> RPCContext (Double)
 getFlightHorizontalSpeed thisArg = do
@@ -6370,8 +6370,8 @@ getFlightHorizontalSpeedStreamReq thisArg =
 getFlightHorizontalSpeedStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Double))
 getFlightHorizontalSpeedStream thisArg = requestStream $ getFlightHorizontalSpeedStreamReq thisArg 
 
-{-
- - The <a href="https://en.wikipedia.org/wiki/Latitude">latitudeof the vessel for the body being orbited, in degrees.
+{-|
+The <a href="https://en.wikipedia.org/wiki/Latitude">latitudeof the vessel for the body being orbited, in degrees.
  -}
 getFlightLatitude :: KRPCHS.SpaceCenter.Flight -> RPCContext (Double)
 getFlightLatitude thisArg = do
@@ -6387,9 +6387,9 @@ getFlightLatitudeStreamReq thisArg =
 getFlightLatitudeStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Double))
 getFlightLatitudeStream thisArg = requestStream $ getFlightLatitudeStreamReq thisArg 
 
-{-
- - The <a href="https://en.wikipedia.org/wiki/Aerodynamic_force">aerodynamic liftcurrently acting on the vessel,
- - as a vector pointing in the direction of the force, with its magnitude equal to the strength of the force in Newtons.
+{-|
+The <a href="https://en.wikipedia.org/wiki/Aerodynamic_force">aerodynamic liftcurrently acting on the vessel,
+as a vector pointing in the direction of the force, with its magnitude equal to the strength of the force in Newtons.
  -}
 getFlightLift :: KRPCHS.SpaceCenter.Flight -> RPCContext ((Double, Double, Double))
 getFlightLift thisArg = do
@@ -6405,8 +6405,8 @@ getFlightLiftStreamReq thisArg =
 getFlightLiftStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
 getFlightLiftStream thisArg = requestStream $ getFlightLiftStreamReq thisArg 
 
-{-
- - Gets the coefficient of lift. This is the amount of lift produced by the vessel, and depends on air speed, air density and wing area.Requires <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Research.
+{-|
+Gets the coefficient of lift. This is the amount of lift produced by the vessel, and depends on air speed, air density and wing area.Requires <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Research.
  -}
 getFlightLiftCoefficient :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
 getFlightLiftCoefficient thisArg = do
@@ -6422,8 +6422,8 @@ getFlightLiftCoefficientStreamReq thisArg =
 getFlightLiftCoefficientStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
 getFlightLiftCoefficientStream thisArg = requestStream $ getFlightLiftCoefficientStreamReq thisArg 
 
-{-
- - The <a href="https://en.wikipedia.org/wiki/Longitude">longitudeof the vessel for the body being orbited, in degrees.
+{-|
+The <a href="https://en.wikipedia.org/wiki/Longitude">longitudeof the vessel for the body being orbited, in degrees.
  -}
 getFlightLongitude :: KRPCHS.SpaceCenter.Flight -> RPCContext (Double)
 getFlightLongitude thisArg = do
@@ -6439,8 +6439,8 @@ getFlightLongitudeStreamReq thisArg =
 getFlightLongitudeStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Double))
 getFlightLongitudeStream thisArg = requestStream $ getFlightLongitudeStreamReq thisArg 
 
-{-
- - The speed of the vessel, in multiples of the speed of sound.
+{-|
+The speed of the vessel, in multiples of the speed of sound.
  -}
 getFlightMach :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
 getFlightMach thisArg = do
@@ -6456,9 +6456,9 @@ getFlightMachStreamReq thisArg =
 getFlightMachStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
 getFlightMachStream thisArg = requestStream $ getFlightMachStreamReq thisArg 
 
-{-
- - The altitude above sea level, in meters.
- - Measured from the center of mass of the vessel.
+{-|
+The altitude above sea level, in meters.
+Measured from the center of mass of the vessel.
  -}
 getFlightMeanAltitude :: KRPCHS.SpaceCenter.Flight -> RPCContext (Double)
 getFlightMeanAltitude thisArg = do
@@ -6474,8 +6474,8 @@ getFlightMeanAltitudeStreamReq thisArg =
 getFlightMeanAltitudeStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Double))
 getFlightMeanAltitudeStream thisArg = requestStream $ getFlightMeanAltitudeStreamReq thisArg 
 
-{-
- - The unit direction vector pointing in the normal direction.
+{-|
+The unit direction vector pointing in the normal direction.
  -}
 getFlightNormal :: KRPCHS.SpaceCenter.Flight -> RPCContext ((Double, Double, Double))
 getFlightNormal thisArg = do
@@ -6491,8 +6491,8 @@ getFlightNormalStreamReq thisArg =
 getFlightNormalStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
 getFlightNormalStream thisArg = requestStream $ getFlightNormalStreamReq thisArg 
 
-{-
- - The pitch angle of the vessel relative to the horizon, in degrees. A value between -90° and +90°.
+{-|
+The pitch angle of the vessel relative to the horizon, in degrees. A value between -90° and +90°.
  -}
 getFlightPitch :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
 getFlightPitch thisArg = do
@@ -6508,8 +6508,8 @@ getFlightPitchStreamReq thisArg =
 getFlightPitchStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
 getFlightPitchStream thisArg = requestStream $ getFlightPitchStreamReq thisArg 
 
-{-
- - The unit direction vector pointing in the prograde direction.
+{-|
+The unit direction vector pointing in the prograde direction.
  -}
 getFlightPrograde :: KRPCHS.SpaceCenter.Flight -> RPCContext ((Double, Double, Double))
 getFlightPrograde thisArg = do
@@ -6525,8 +6525,8 @@ getFlightProgradeStreamReq thisArg =
 getFlightProgradeStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
 getFlightProgradeStream thisArg = requestStream $ getFlightProgradeStreamReq thisArg 
 
-{-
- - The unit direction vector pointing in the radial direction.
+{-|
+The unit direction vector pointing in the radial direction.
  -}
 getFlightRadial :: KRPCHS.SpaceCenter.Flight -> RPCContext ((Double, Double, Double))
 getFlightRadial thisArg = do
@@ -6542,8 +6542,8 @@ getFlightRadialStreamReq thisArg =
 getFlightRadialStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
 getFlightRadialStream thisArg = requestStream $ getFlightRadialStreamReq thisArg 
 
-{-
- - The unit direction vector pointing in the retrograde direction.
+{-|
+The unit direction vector pointing in the retrograde direction.
  -}
 getFlightRetrograde :: KRPCHS.SpaceCenter.Flight -> RPCContext ((Double, Double, Double))
 getFlightRetrograde thisArg = do
@@ -6559,8 +6559,8 @@ getFlightRetrogradeStreamReq thisArg =
 getFlightRetrogradeStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
 getFlightRetrogradeStream thisArg = requestStream $ getFlightRetrogradeStreamReq thisArg 
 
-{-
- - The vessels Reynolds number.Requires <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Research.
+{-|
+The vessels Reynolds number.Requires <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Research.
  -}
 getFlightReynoldsNumber :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
 getFlightReynoldsNumber thisArg = do
@@ -6576,8 +6576,8 @@ getFlightReynoldsNumberStreamReq thisArg =
 getFlightReynoldsNumberStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
 getFlightReynoldsNumberStream thisArg = requestStream $ getFlightReynoldsNumberStreamReq thisArg 
 
-{-
- - The roll angle of the vessel relative to the horizon, in degrees. A value between -180° and +180°.
+{-|
+The roll angle of the vessel relative to the horizon, in degrees. A value between -180° and +180°.
  -}
 getFlightRoll :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
 getFlightRoll thisArg = do
@@ -6593,8 +6593,8 @@ getFlightRollStreamReq thisArg =
 getFlightRollStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
 getFlightRollStream thisArg = requestStream $ getFlightRollStreamReq thisArg 
 
-{-
- - The rotation of the vessel.
+{-|
+The rotation of the vessel.
  -}
 getFlightRotation :: KRPCHS.SpaceCenter.Flight -> RPCContext ((Double, Double, Double, Double))
 getFlightRotation thisArg = do
@@ -6610,8 +6610,8 @@ getFlightRotationStreamReq thisArg =
 getFlightRotationStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double, Double)))
 getFlightRotationStream thisArg = requestStream $ getFlightRotationStreamReq thisArg 
 
-{-
- - Gets the yaw angle between the orientation of the vessel and its velocity vector, in degrees.
+{-|
+Gets the yaw angle between the orientation of the vessel and its velocity vector, in degrees.
  -}
 getFlightSideslipAngle :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
 getFlightSideslipAngle thisArg = do
@@ -6627,8 +6627,8 @@ getFlightSideslipAngleStreamReq thisArg =
 getFlightSideslipAngleStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
 getFlightSideslipAngleStream thisArg = requestStream $ getFlightSideslipAngleStreamReq thisArg 
 
-{-
- - The speed of the vessel in meters per second.
+{-|
+The speed of the vessel in meters per second.
  -}
 getFlightSpeed :: KRPCHS.SpaceCenter.Flight -> RPCContext (Double)
 getFlightSpeed thisArg = do
@@ -6644,8 +6644,8 @@ getFlightSpeedStreamReq thisArg =
 getFlightSpeedStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Double))
 getFlightSpeedStream thisArg = requestStream $ getFlightSpeedStreamReq thisArg 
 
-{-
- - The speed of sound, in the atmosphere around the vessel, inm/s.
+{-|
+The speed of sound, in the atmosphere around the vessel, inm/s.
  -}
 getFlightSpeedOfSound :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
 getFlightSpeedOfSound thisArg = do
@@ -6661,9 +6661,9 @@ getFlightSpeedOfSoundStreamReq thisArg =
 getFlightSpeedOfSoundStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
 getFlightSpeedOfSoundStream thisArg = requestStream $ getFlightSpeedOfSoundStreamReq thisArg 
 
-{-
- - Gets the current amount of stall, between 0 and 1. A value greater than 0.005 indicates a minor stall
- - and a value greater than 0.5 indicates a large-scale stall.Requires <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Research.
+{-|
+Gets the current amount of stall, between 0 and 1. A value greater than 0.005 indicates a minor stall
+and a value greater than 0.5 indicates a large-scale stall.Requires <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Research.
  -}
 getFlightStallFraction :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
 getFlightStallFraction thisArg = do
@@ -6679,9 +6679,9 @@ getFlightStallFractionStreamReq thisArg =
 getFlightStallFractionStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
 getFlightStallFractionStream thisArg = requestStream $ getFlightStallFractionStreamReq thisArg 
 
-{-
- - The <a href="https://en.wikipedia.org/wiki/Total_air_temperature">static (ambient) temperatureof the
- - atmosphere around the vessel, in Kelvin.
+{-|
+The <a href="https://en.wikipedia.org/wiki/Total_air_temperature">static (ambient) temperatureof the
+atmosphere around the vessel, in Kelvin.
  -}
 getFlightStaticAirTemperature :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
 getFlightStaticAirTemperature thisArg = do
@@ -6697,8 +6697,8 @@ getFlightStaticAirTemperatureStreamReq thisArg =
 getFlightStaticAirTemperatureStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
 getFlightStaticAirTemperatureStream thisArg = requestStream $ getFlightStaticAirTemperatureStreamReq thisArg 
 
-{-
- - The static atmospheric pressure acting on the vessel, in Pascals.
+{-|
+The static atmospheric pressure acting on the vessel, in Pascals.
  -}
 getFlightStaticPressure :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
 getFlightStaticPressure thisArg = do
@@ -6714,8 +6714,8 @@ getFlightStaticPressureStreamReq thisArg =
 getFlightStaticPressureStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
 getFlightStaticPressureStream thisArg = requestStream $ getFlightStaticPressureStreamReq thisArg 
 
-{-
- - The static atmospheric pressure at mean sea level, in Pascals.
+{-|
+The static atmospheric pressure at mean sea level, in Pascals.
  -}
 getFlightStaticPressureAtMSL :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
 getFlightStaticPressureAtMSL thisArg = do
@@ -6731,9 +6731,9 @@ getFlightStaticPressureAtMSLStreamReq thisArg =
 getFlightStaticPressureAtMSLStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
 getFlightStaticPressureAtMSLStream thisArg = requestStream $ getFlightStaticPressureAtMSLStreamReq thisArg 
 
-{-
- - The altitude above the surface of the body or sea level, whichever is closer, in meters.
- - Measured from the center of mass of the vessel.
+{-|
+The altitude above the surface of the body or sea level, whichever is closer, in meters.
+Measured from the center of mass of the vessel.
  -}
 getFlightSurfaceAltitude :: KRPCHS.SpaceCenter.Flight -> RPCContext (Double)
 getFlightSurfaceAltitude thisArg = do
@@ -6749,9 +6749,9 @@ getFlightSurfaceAltitudeStreamReq thisArg =
 getFlightSurfaceAltitudeStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Double))
 getFlightSurfaceAltitudeStream thisArg = requestStream $ getFlightSurfaceAltitudeStreamReq thisArg 
 
-{-
- - An estimate of the current terminal velocity of the vessel, inm/s.
- - This is the speed at which the drag forces cancel out the force of gravity.
+{-|
+An estimate of the current terminal velocity of the vessel, inm/s.
+This is the speed at which the drag forces cancel out the force of gravity.
  -}
 getFlightTerminalVelocity :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
 getFlightTerminalVelocity thisArg = do
@@ -6767,10 +6767,10 @@ getFlightTerminalVelocityStreamReq thisArg =
 getFlightTerminalVelocityStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
 getFlightTerminalVelocityStream thisArg = requestStream $ getFlightTerminalVelocityStreamReq thisArg 
 
-{-
- - Gets the thrust specific fuel consumption for the jet engines on the vessel. This is a measure of the
- - efficiency of the engines, with a lower value indicating a more efficient vessel. This value is the
- - number of Newtons of fuel that are burned, per hour, to produce one newton of thrust.Requires <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Research.
+{-|
+Gets the thrust specific fuel consumption for the jet engines on the vessel. This is a measure of the
+efficiency of the engines, with a lower value indicating a more efficient vessel. This value is the
+number of Newtons of fuel that are burned, per hour, to produce one newton of thrust.Requires <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Research.
  -}
 getFlightThrustSpecificFuelConsumption :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
 getFlightThrustSpecificFuelConsumption thisArg = do
@@ -6786,9 +6786,9 @@ getFlightThrustSpecificFuelConsumptionStreamReq thisArg =
 getFlightThrustSpecificFuelConsumptionStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
 getFlightThrustSpecificFuelConsumptionStream thisArg = requestStream $ getFlightThrustSpecificFuelConsumptionStreamReq thisArg 
 
-{-
- - The <a href="https://en.wikipedia.org/wiki/Total_air_temperature">total air temperatureof the atmosphere
- - around the vessel, in Kelvin. This temperature includes the <see cref="M:SpaceCenter.Flight.StaticAirTemperature" /> and the vessel's kinetic energy.
+{-|
+The <a href="https://en.wikipedia.org/wiki/Total_air_temperature">total air temperatureof the atmosphere
+around the vessel, in Kelvin. This temperature includes the <see cref="M:SpaceCenter.Flight.StaticAirTemperature" /> and the vessel's kinetic energy.
  -}
 getFlightTotalAirTemperature :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
 getFlightTotalAirTemperature thisArg = do
@@ -6804,8 +6804,8 @@ getFlightTotalAirTemperatureStreamReq thisArg =
 getFlightTotalAirTemperatureStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
 getFlightTotalAirTemperatureStream thisArg = requestStream $ getFlightTotalAirTemperatureStreamReq thisArg 
 
-{-
- - The <a href="https://en.wikipedia.org/wiki/True_airspeed">true air speedof the vessel, inm/s.
+{-|
+The <a href="https://en.wikipedia.org/wiki/True_airspeed">true air speedof the vessel, inm/s.
  -}
 getFlightTrueAirSpeed :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
 getFlightTrueAirSpeed thisArg = do
@@ -6821,9 +6821,9 @@ getFlightTrueAirSpeedStreamReq thisArg =
 getFlightTrueAirSpeedStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
 getFlightTrueAirSpeedStream thisArg = requestStream $ getFlightTrueAirSpeedStreamReq thisArg 
 
-{-
- - The velocity vector of the vessel. The magnitude of the vector is the speed of the vessel in meters per second.
- - The direction of the vector is the direction of the vessels motion.
+{-|
+The velocity vector of the vessel. The magnitude of the vector is the speed of the vessel in meters per second.
+The direction of the vector is the direction of the vessels motion.
  -}
 getFlightVelocity :: KRPCHS.SpaceCenter.Flight -> RPCContext ((Double, Double, Double))
 getFlightVelocity thisArg = do
@@ -6839,8 +6839,8 @@ getFlightVelocityStreamReq thisArg =
 getFlightVelocityStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
 getFlightVelocityStream thisArg = requestStream $ getFlightVelocityStreamReq thisArg 
 
-{-
- - The vertical speed of the vessel in meters per second.
+{-|
+The vertical speed of the vessel in meters per second.
  -}
 getFlightVerticalSpeed :: KRPCHS.SpaceCenter.Flight -> RPCContext (Double)
 getFlightVerticalSpeed thisArg = do
@@ -6856,8 +6856,8 @@ getFlightVerticalSpeedStreamReq thisArg =
 getFlightVerticalSpeedStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Double))
 getFlightVerticalSpeedStream thisArg = requestStream $ getFlightVerticalSpeedStreamReq thisArg 
 
-{-
- - Remove the force.
+{-|
+Remove the force.
  -}
 forceRemove :: KRPCHS.SpaceCenter.Force -> RPCContext ()
 forceRemove thisArg = do
@@ -6865,8 +6865,8 @@ forceRemove thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The force vector. The magnitude of the vector is the strength of the force in Newtons.
+{-|
+The force vector. The magnitude of the vector is the strength of the force in Newtons.
  -}
 getForceForceVector :: KRPCHS.SpaceCenter.Force -> RPCContext ((Double, Double, Double))
 getForceForceVector thisArg = do
@@ -6882,8 +6882,8 @@ getForceForceVectorStreamReq thisArg =
 getForceForceVectorStream :: KRPCHS.SpaceCenter.Force -> RPCContext (KRPCStream ((Double, Double, Double)))
 getForceForceVectorStream thisArg = requestStream $ getForceForceVectorStreamReq thisArg 
 
-{-
- - The part that this force is applied to.
+{-|
+The part that this force is applied to.
  -}
 getForcePart :: KRPCHS.SpaceCenter.Force -> RPCContext (KRPCHS.SpaceCenter.Part)
 getForcePart thisArg = do
@@ -6899,8 +6899,8 @@ getForcePartStreamReq thisArg =
 getForcePartStream :: KRPCHS.SpaceCenter.Force -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
 getForcePartStream thisArg = requestStream $ getForcePartStreamReq thisArg 
 
-{-
- - The position at which the force acts.
+{-|
+The position at which the force acts.
  -}
 getForcePosition :: KRPCHS.SpaceCenter.Force -> RPCContext ((Double, Double, Double))
 getForcePosition thisArg = do
@@ -6916,8 +6916,8 @@ getForcePositionStreamReq thisArg =
 getForcePositionStream :: KRPCHS.SpaceCenter.Force -> RPCContext (KRPCStream ((Double, Double, Double)))
 getForcePositionStream thisArg = requestStream $ getForcePositionStreamReq thisArg 
 
-{-
- - The reference frame of the force vector and position.
+{-|
+The reference frame of the force vector and position.
  -}
 getForceReferenceFrame :: KRPCHS.SpaceCenter.Force -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
 getForceReferenceFrame thisArg = do
@@ -6933,8 +6933,8 @@ getForceReferenceFrameStreamReq thisArg =
 getForceReferenceFrameStream :: KRPCHS.SpaceCenter.Force -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 getForceReferenceFrameStream thisArg = requestStream $ getForceReferenceFrameStreamReq thisArg 
 
-{-
- - The force vector. The magnitude of the vector is the strength of the force in Newtons.
+{-|
+The force vector. The magnitude of the vector is the strength of the force in Newtons.
  -}
 setForceForceVector :: KRPCHS.SpaceCenter.Force -> (Double, Double, Double) -> RPCContext ()
 setForceForceVector thisArg valueArg = do
@@ -6942,8 +6942,8 @@ setForceForceVector thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The position at which the force acts.
+{-|
+The position at which the force acts.
  -}
 setForcePosition :: KRPCHS.SpaceCenter.Force -> (Double, Double, Double) -> RPCContext ()
 setForcePosition thisArg valueArg = do
@@ -6951,8 +6951,8 @@ setForcePosition thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The reference frame of the force vector and position.
+{-|
+The reference frame of the force vector and position.
  -}
 setForceReferenceFrame :: KRPCHS.SpaceCenter.Force -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ()
 setForceReferenceFrame thisArg valueArg = do
@@ -6960,8 +6960,8 @@ setForceReferenceFrame thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The area of the intake's opening, in square meters.
+{-|
+The area of the intake's opening, in square meters.
  -}
 getIntakeArea :: KRPCHS.SpaceCenter.Intake -> RPCContext (Float)
 getIntakeArea thisArg = do
@@ -6977,8 +6977,8 @@ getIntakeAreaStreamReq thisArg =
 getIntakeAreaStream :: KRPCHS.SpaceCenter.Intake -> RPCContext (KRPCStream (Float))
 getIntakeAreaStream thisArg = requestStream $ getIntakeAreaStreamReq thisArg 
 
-{-
- - The rate of flow into the intake, in units of resource per second.
+{-|
+The rate of flow into the intake, in units of resource per second.
  -}
 getIntakeFlow :: KRPCHS.SpaceCenter.Intake -> RPCContext (Float)
 getIntakeFlow thisArg = do
@@ -6994,8 +6994,8 @@ getIntakeFlowStreamReq thisArg =
 getIntakeFlowStream :: KRPCHS.SpaceCenter.Intake -> RPCContext (KRPCStream (Float))
 getIntakeFlowStream thisArg = requestStream $ getIntakeFlowStreamReq thisArg 
 
-{-
- - Whether the intake is open.
+{-|
+Whether the intake is open.
  -}
 getIntakeOpen :: KRPCHS.SpaceCenter.Intake -> RPCContext (Bool)
 getIntakeOpen thisArg = do
@@ -7011,8 +7011,8 @@ getIntakeOpenStreamReq thisArg =
 getIntakeOpenStream :: KRPCHS.SpaceCenter.Intake -> RPCContext (KRPCStream (Bool))
 getIntakeOpenStream thisArg = requestStream $ getIntakeOpenStreamReq thisArg 
 
-{-
- - The part object for this intake.
+{-|
+The part object for this intake.
  -}
 getIntakePart :: KRPCHS.SpaceCenter.Intake -> RPCContext (KRPCHS.SpaceCenter.Part)
 getIntakePart thisArg = do
@@ -7028,8 +7028,8 @@ getIntakePartStreamReq thisArg =
 getIntakePartStream :: KRPCHS.SpaceCenter.Intake -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
 getIntakePartStream thisArg = requestStream $ getIntakePartStreamReq thisArg 
 
-{-
- - Speed of the flow into the intake, inm/s.
+{-|
+Speed of the flow into the intake, inm/s.
  -}
 getIntakeSpeed :: KRPCHS.SpaceCenter.Intake -> RPCContext (Float)
 getIntakeSpeed thisArg = do
@@ -7045,8 +7045,8 @@ getIntakeSpeedStreamReq thisArg =
 getIntakeSpeedStream :: KRPCHS.SpaceCenter.Intake -> RPCContext (KRPCStream (Float))
 getIntakeSpeedStream thisArg = requestStream $ getIntakeSpeedStreamReq thisArg 
 
-{-
- - Whether the intake is open.
+{-|
+Whether the intake is open.
  -}
 setIntakeOpen :: KRPCHS.SpaceCenter.Intake -> Bool -> RPCContext ()
 setIntakeOpen thisArg valueArg = do
@@ -7054,8 +7054,8 @@ setIntakeOpen thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Whether the landing gear is deployable.
+{-|
+Whether the landing gear is deployable.
  -}
 getLandingGearDeployable :: KRPCHS.SpaceCenter.LandingGear -> RPCContext (Bool)
 getLandingGearDeployable thisArg = do
@@ -7071,9 +7071,9 @@ getLandingGearDeployableStreamReq thisArg =
 getLandingGearDeployableStream :: KRPCHS.SpaceCenter.LandingGear -> RPCContext (KRPCStream (Bool))
 getLandingGearDeployableStream thisArg = requestStream $ getLandingGearDeployableStreamReq thisArg 
 
-{-
- - Whether the landing gear is deployed.Fixed landing gear are always deployed.
- - Returns an error if you try to deploy fixed landing gear.
+{-|
+Whether the landing gear is deployed.Fixed landing gear are always deployed.
+Returns an error if you try to deploy fixed landing gear.
  -}
 getLandingGearDeployed :: KRPCHS.SpaceCenter.LandingGear -> RPCContext (Bool)
 getLandingGearDeployed thisArg = do
@@ -7089,8 +7089,8 @@ getLandingGearDeployedStreamReq thisArg =
 getLandingGearDeployedStream :: KRPCHS.SpaceCenter.LandingGear -> RPCContext (KRPCStream (Bool))
 getLandingGearDeployedStream thisArg = requestStream $ getLandingGearDeployedStreamReq thisArg 
 
-{-
- - The part object for this landing gear.
+{-|
+The part object for this landing gear.
  -}
 getLandingGearPart :: KRPCHS.SpaceCenter.LandingGear -> RPCContext (KRPCHS.SpaceCenter.Part)
 getLandingGearPart thisArg = do
@@ -7106,8 +7106,8 @@ getLandingGearPartStreamReq thisArg =
 getLandingGearPartStream :: KRPCHS.SpaceCenter.LandingGear -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
 getLandingGearPartStream thisArg = requestStream $ getLandingGearPartStreamReq thisArg 
 
-{-
- - Gets the current state of the landing gear.Fixed landing gear are always deployed.
+{-|
+Gets the current state of the landing gear.Fixed landing gear are always deployed.
  -}
 getLandingGearState :: KRPCHS.SpaceCenter.LandingGear -> RPCContext (KRPCHS.SpaceCenter.LandingGearState)
 getLandingGearState thisArg = do
@@ -7123,9 +7123,9 @@ getLandingGearStateStreamReq thisArg =
 getLandingGearStateStream :: KRPCHS.SpaceCenter.LandingGear -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.LandingGearState))
 getLandingGearStateStream thisArg = requestStream $ getLandingGearStateStreamReq thisArg 
 
-{-
- - Whether the landing gear is deployed.Fixed landing gear are always deployed.
- - Returns an error if you try to deploy fixed landing gear.
+{-|
+Whether the landing gear is deployed.Fixed landing gear are always deployed.
+Returns an error if you try to deploy fixed landing gear.
  -}
 setLandingGearDeployed :: KRPCHS.SpaceCenter.LandingGear -> Bool -> RPCContext ()
 setLandingGearDeployed thisArg valueArg = do
@@ -7133,9 +7133,9 @@ setLandingGearDeployed thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Whether the landing leg is deployed.Fixed landing legs are always deployed.
- - Returns an error if you try to deploy fixed landing gear.
+{-|
+Whether the landing leg is deployed.Fixed landing legs are always deployed.
+Returns an error if you try to deploy fixed landing gear.
  -}
 getLandingLegDeployed :: KRPCHS.SpaceCenter.LandingLeg -> RPCContext (Bool)
 getLandingLegDeployed thisArg = do
@@ -7151,8 +7151,8 @@ getLandingLegDeployedStreamReq thisArg =
 getLandingLegDeployedStream :: KRPCHS.SpaceCenter.LandingLeg -> RPCContext (KRPCStream (Bool))
 getLandingLegDeployedStream thisArg = requestStream $ getLandingLegDeployedStreamReq thisArg 
 
-{-
- - The part object for this landing leg.
+{-|
+The part object for this landing leg.
  -}
 getLandingLegPart :: KRPCHS.SpaceCenter.LandingLeg -> RPCContext (KRPCHS.SpaceCenter.Part)
 getLandingLegPart thisArg = do
@@ -7168,8 +7168,8 @@ getLandingLegPartStreamReq thisArg =
 getLandingLegPartStream :: KRPCHS.SpaceCenter.LandingLeg -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
 getLandingLegPartStream thisArg = requestStream $ getLandingLegPartStreamReq thisArg 
 
-{-
- - The current state of the landing leg.
+{-|
+The current state of the landing leg.
  -}
 getLandingLegState :: KRPCHS.SpaceCenter.LandingLeg -> RPCContext (KRPCHS.SpaceCenter.LandingLegState)
 getLandingLegState thisArg = do
@@ -7185,9 +7185,9 @@ getLandingLegStateStreamReq thisArg =
 getLandingLegStateStream :: KRPCHS.SpaceCenter.LandingLeg -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.LandingLegState))
 getLandingLegStateStream thisArg = requestStream $ getLandingLegStateStreamReq thisArg 
 
-{-
- - Whether the landing leg is deployed.Fixed landing legs are always deployed.
- - Returns an error if you try to deploy fixed landing gear.
+{-|
+Whether the landing leg is deployed.Fixed landing legs are always deployed.
+Returns an error if you try to deploy fixed landing gear.
  -}
 setLandingLegDeployed :: KRPCHS.SpaceCenter.LandingLeg -> Bool -> RPCContext ()
 setLandingLegDeployed thisArg valueArg = do
@@ -7195,8 +7195,8 @@ setLandingLegDeployed thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Releases the docking clamp. Has no effect if the clamp has already been released.
+{-|
+Releases the docking clamp. Has no effect if the clamp has already been released.
  -}
 launchClampRelease :: KRPCHS.SpaceCenter.LaunchClamp -> RPCContext ()
 launchClampRelease thisArg = do
@@ -7204,8 +7204,8 @@ launchClampRelease thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The part object for this launch clamp.
+{-|
+The part object for this launch clamp.
  -}
 getLaunchClampPart :: KRPCHS.SpaceCenter.LaunchClamp -> RPCContext (KRPCHS.SpaceCenter.Part)
 getLaunchClampPart thisArg = do
@@ -7221,8 +7221,8 @@ getLaunchClampPartStreamReq thisArg =
 getLaunchClampPartStream :: KRPCHS.SpaceCenter.LaunchClamp -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
 getLaunchClampPartStream thisArg = requestStream $ getLaunchClampPartStreamReq thisArg 
 
-{-
- - Launch a vessel.<param name="craftDirectory">Name of the directory in the current saves "Ships" directory, that contains the craft file. For example"VAB"or"SPH".<param name="name">Name of the vessel to launch. This is the name of the ".craft" file in the save directory, without the ".craft" file extension.<param name="launchSite">Name of the launch site. For example"LaunchPad"or"Runway".
+{-|
+Launch a vessel.<param name="craftDirectory">Name of the directory in the current saves "Ships" directory, that contains the craft file. For example"VAB"or"SPH".<param name="name">Name of the vessel to launch. This is the name of the ".craft" file in the save directory, without the ".craft" file extension.<param name="launchSite">Name of the launch site. For example"LaunchPad"or"Runway".
  -}
 launchVessel :: Data.Text.Text -> Data.Text.Text -> Data.Text.Text -> RPCContext ()
 launchVessel craftDirectoryArg nameArg launchSiteArg = do
@@ -7230,8 +7230,8 @@ launchVessel craftDirectoryArg nameArg launchSiteArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Launch a new vessel from the SPH onto the runway.<param name="name">Name of the vessel to launch.This is equivalent to calling <see cref="M:SpaceCenter.LaunchVessel" /> with the craft directory set to "SPH" and the launch site set to "Runway".
+{-|
+Launch a new vessel from the SPH onto the runway.<param name="name">Name of the vessel to launch.This is equivalent to calling <see cref="M:SpaceCenter.LaunchVessel" /> with the craft directory set to "SPH" and the launch site set to "Runway".
  -}
 launchVesselFromSPH :: Data.Text.Text -> RPCContext ()
 launchVesselFromSPH nameArg = do
@@ -7239,8 +7239,8 @@ launchVesselFromSPH nameArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Launch a new vessel from the VAB onto the launchpad.<param name="name">Name of the vessel to launch.This is equivalent to calling <see cref="M:SpaceCenter.LaunchVessel" /> with the craft directory set to "VAB" and the launch site set to "LaunchPad".
+{-|
+Launch a new vessel from the VAB onto the launchpad.<param name="name">Name of the vessel to launch.This is equivalent to calling <see cref="M:SpaceCenter.LaunchVessel" /> with the craft directory set to "VAB" and the launch site set to "LaunchPad".
  -}
 launchVesselFromVAB :: Data.Text.Text -> RPCContext ()
 launchVesselFromVAB nameArg = do
@@ -7248,8 +7248,8 @@ launchVesselFromVAB nameArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Returns a list of vessels from the given <paramref name="craftDirectory" /> that can be launched.<param name="craftDirectory">Name of the directory in the current saves "Ships" directory. For example"VAB"or"SPH".
+{-|
+Returns a list of vessels from the given <paramref name="craftDirectory" /> that can be launched.<param name="craftDirectory">Name of the directory in the current saves "Ships" directory. For example"VAB"or"SPH".
  -}
 launchableVessels :: Data.Text.Text -> RPCContext ([Data.Text.Text])
 launchableVessels craftDirectoryArg = do
@@ -7265,8 +7265,8 @@ launchableVesselsStreamReq craftDirectoryArg =
 launchableVesselsStream :: Data.Text.Text -> RPCContext (KRPCStream ([Data.Text.Text]))
 launchableVesselsStream craftDirectoryArg = requestStream $ launchableVesselsStreamReq craftDirectoryArg 
 
-{-
- - Whether the light is switched on.
+{-|
+Whether the light is switched on.
  -}
 getLightActive :: KRPCHS.SpaceCenter.Light -> RPCContext (Bool)
 getLightActive thisArg = do
@@ -7282,8 +7282,8 @@ getLightActiveStreamReq thisArg =
 getLightActiveStream :: KRPCHS.SpaceCenter.Light -> RPCContext (KRPCStream (Bool))
 getLightActiveStream thisArg = requestStream $ getLightActiveStreamReq thisArg 
 
-{-
- - The color of the light, as an RGB triple.
+{-|
+The color of the light, as an RGB triple.
  -}
 getLightColor :: KRPCHS.SpaceCenter.Light -> RPCContext ((Float, Float, Float))
 getLightColor thisArg = do
@@ -7299,8 +7299,8 @@ getLightColorStreamReq thisArg =
 getLightColorStream :: KRPCHS.SpaceCenter.Light -> RPCContext (KRPCStream ((Float, Float, Float)))
 getLightColorStream thisArg = requestStream $ getLightColorStreamReq thisArg 
 
-{-
- - The part object for this light.
+{-|
+The part object for this light.
  -}
 getLightPart :: KRPCHS.SpaceCenter.Light -> RPCContext (KRPCHS.SpaceCenter.Part)
 getLightPart thisArg = do
@@ -7316,8 +7316,8 @@ getLightPartStreamReq thisArg =
 getLightPartStream :: KRPCHS.SpaceCenter.Light -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
 getLightPartStream thisArg = requestStream $ getLightPartStreamReq thisArg 
 
-{-
- - The current power usage, in units of charge per second.
+{-|
+The current power usage, in units of charge per second.
  -}
 getLightPowerUsage :: KRPCHS.SpaceCenter.Light -> RPCContext (Float)
 getLightPowerUsage thisArg = do
@@ -7333,8 +7333,8 @@ getLightPowerUsageStreamReq thisArg =
 getLightPowerUsageStream :: KRPCHS.SpaceCenter.Light -> RPCContext (KRPCStream (Float))
 getLightPowerUsageStream thisArg = requestStream $ getLightPowerUsageStreamReq thisArg 
 
-{-
- - Whether the light is switched on.
+{-|
+Whether the light is switched on.
  -}
 setLightActive :: KRPCHS.SpaceCenter.Light -> Bool -> RPCContext ()
 setLightActive thisArg valueArg = do
@@ -7342,8 +7342,8 @@ setLightActive thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The color of the light, as an RGB triple.
+{-|
+The color of the light, as an RGB triple.
  -}
 setLightColor :: KRPCHS.SpaceCenter.Light -> (Float, Float, Float) -> RPCContext ()
 setLightColor thisArg valueArg = do
@@ -7351,9 +7351,9 @@ setLightColor thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Load the game with the given name.
- - This will create a load a save file calledname.sfsfrom the folder of the current save game.
+{-|
+Load the game with the given name.
+This will create a load a save file calledname.sfsfrom the folder of the current save game.
  -}
 load :: Data.Text.Text -> RPCContext ()
 load nameArg = do
@@ -7361,8 +7361,8 @@ load nameArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Returns the value of a field.<param name="name">Name of the field.
+{-|
+Returns the value of a field.<param name="name">Name of the field.
  -}
 moduleGetField :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> RPCContext (Data.Text.Text)
 moduleGetField thisArg nameArg = do
@@ -7378,8 +7378,8 @@ moduleGetFieldStreamReq thisArg nameArg =
 moduleGetFieldStream :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> RPCContext (KRPCStream (Data.Text.Text))
 moduleGetFieldStream thisArg nameArg = requestStream $ moduleGetFieldStreamReq thisArg nameArg 
 
-{-
- - trueif the part has an action with the given name.<param name="name">
+{-|
+trueif the part has an action with the given name.<param name="name">
  -}
 moduleHasAction :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> RPCContext (Bool)
 moduleHasAction thisArg nameArg = do
@@ -7395,8 +7395,8 @@ moduleHasActionStreamReq thisArg nameArg =
 moduleHasActionStream :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> RPCContext (KRPCStream (Bool))
 moduleHasActionStream thisArg nameArg = requestStream $ moduleHasActionStreamReq thisArg nameArg 
 
-{-
- - trueif the module has an event with the given name.<param name="name">
+{-|
+trueif the module has an event with the given name.<param name="name">
  -}
 moduleHasEvent :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> RPCContext (Bool)
 moduleHasEvent thisArg nameArg = do
@@ -7412,8 +7412,8 @@ moduleHasEventStreamReq thisArg nameArg =
 moduleHasEventStream :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> RPCContext (KRPCStream (Bool))
 moduleHasEventStream thisArg nameArg = requestStream $ moduleHasEventStreamReq thisArg nameArg 
 
-{-
- - Returnstrueif the module has a field with the given name.<param name="name">Name of the field.
+{-|
+Returnstrueif the module has a field with the given name.<param name="name">Name of the field.
  -}
 moduleHasField :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> RPCContext (Bool)
 moduleHasField thisArg nameArg = do
@@ -7429,8 +7429,8 @@ moduleHasFieldStreamReq thisArg nameArg =
 moduleHasFieldStream :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> RPCContext (KRPCStream (Bool))
 moduleHasFieldStream thisArg nameArg = requestStream $ moduleHasFieldStreamReq thisArg nameArg 
 
-{-
- - Set the value of a field to its original value.<param name="name">Name of the field.
+{-|
+Set the value of a field to its original value.<param name="name">Name of the field.
  -}
 moduleResetField :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> RPCContext ()
 moduleResetField thisArg nameArg = do
@@ -7438,8 +7438,8 @@ moduleResetField thisArg nameArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Set the value of an action with the given name.<param name="name"><param name="value">
+{-|
+Set the value of an action with the given name.<param name="name"><param name="value">
  -}
 moduleSetAction :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> Bool -> RPCContext ()
 moduleSetAction thisArg nameArg valueArg = do
@@ -7447,8 +7447,8 @@ moduleSetAction thisArg nameArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Set the value of a field to the given floating point number.<param name="name">Name of the field.<param name="value">Value to set.
+{-|
+Set the value of a field to the given floating point number.<param name="name">Name of the field.<param name="value">Value to set.
  -}
 moduleSetFieldFloat :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> Float -> RPCContext ()
 moduleSetFieldFloat thisArg nameArg valueArg = do
@@ -7456,8 +7456,8 @@ moduleSetFieldFloat thisArg nameArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Set the value of a field to the given integer number.<param name="name">Name of the field.<param name="value">Value to set.
+{-|
+Set the value of a field to the given integer number.<param name="name">Name of the field.<param name="value">Value to set.
  -}
 moduleSetFieldInt :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> Data.Int.Int32 -> RPCContext ()
 moduleSetFieldInt thisArg nameArg valueArg = do
@@ -7465,8 +7465,8 @@ moduleSetFieldInt thisArg nameArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Set the value of a field to the given string.<param name="name">Name of the field.<param name="value">Value to set.
+{-|
+Set the value of a field to the given string.<param name="name">Name of the field.<param name="value">Value to set.
  -}
 moduleSetFieldString :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> Data.Text.Text -> RPCContext ()
 moduleSetFieldString thisArg nameArg valueArg = do
@@ -7474,8 +7474,8 @@ moduleSetFieldString thisArg nameArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Trigger the named event. Equivalent to clicking the button in the right-click menu of the part.<param name="name">
+{-|
+Trigger the named event. Equivalent to clicking the button in the right-click menu of the part.<param name="name">
  -}
 moduleTriggerEvent :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> RPCContext ()
 moduleTriggerEvent thisArg nameArg = do
@@ -7483,9 +7483,9 @@ moduleTriggerEvent thisArg nameArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - A list of all the names of the modules actions. These are the parts actions that can be assigned
- - to action groups in the in-game editor.
+{-|
+A list of all the names of the modules actions. These are the parts actions that can be assigned
+to action groups in the in-game editor.
  -}
 getModuleActions :: KRPCHS.SpaceCenter.Module -> RPCContext ([Data.Text.Text])
 getModuleActions thisArg = do
@@ -7501,9 +7501,9 @@ getModuleActionsStreamReq thisArg =
 getModuleActionsStream :: KRPCHS.SpaceCenter.Module -> RPCContext (KRPCStream ([Data.Text.Text]))
 getModuleActionsStream thisArg = requestStream $ getModuleActionsStreamReq thisArg 
 
-{-
- - A list of the names of all of the modules events. Events are the clickable buttons
- - visible in the right-click menu of the part.
+{-|
+A list of the names of all of the modules events. Events are the clickable buttons
+visible in the right-click menu of the part.
  -}
 getModuleEvents :: KRPCHS.SpaceCenter.Module -> RPCContext ([Data.Text.Text])
 getModuleEvents thisArg = do
@@ -7519,9 +7519,9 @@ getModuleEventsStreamReq thisArg =
 getModuleEventsStream :: KRPCHS.SpaceCenter.Module -> RPCContext (KRPCStream ([Data.Text.Text]))
 getModuleEventsStream thisArg = requestStream $ getModuleEventsStreamReq thisArg 
 
-{-
- - The modules field names and their associated values, as a dictionary.
- - These are the values visible in the right-click menu of the part.
+{-|
+The modules field names and their associated values, as a dictionary.
+These are the values visible in the right-click menu of the part.
  -}
 getModuleFields :: KRPCHS.SpaceCenter.Module -> RPCContext (Data.Map.Map (Data.Text.Text) (Data.Text.Text))
 getModuleFields thisArg = do
@@ -7537,8 +7537,8 @@ getModuleFieldsStreamReq thisArg =
 getModuleFieldsStream :: KRPCHS.SpaceCenter.Module -> RPCContext (KRPCStream (Data.Map.Map (Data.Text.Text) (Data.Text.Text)))
 getModuleFieldsStream thisArg = requestStream $ getModuleFieldsStreamReq thisArg 
 
-{-
- - Name of the PartModule. For example, "ModuleEngines".
+{-|
+Name of the PartModule. For example, "ModuleEngines".
  -}
 getModuleName :: KRPCHS.SpaceCenter.Module -> RPCContext (Data.Text.Text)
 getModuleName thisArg = do
@@ -7554,8 +7554,8 @@ getModuleNameStreamReq thisArg =
 getModuleNameStream :: KRPCHS.SpaceCenter.Module -> RPCContext (KRPCStream (Data.Text.Text))
 getModuleNameStream thisArg = requestStream $ getModuleNameStreamReq thisArg 
 
-{-
- - The part that contains this module.
+{-|
+The part that contains this module.
  -}
 getModulePart :: KRPCHS.SpaceCenter.Module -> RPCContext (KRPCHS.SpaceCenter.Part)
 getModulePart thisArg = do
@@ -7571,9 +7571,9 @@ getModulePartStreamReq thisArg =
 getModulePartStream :: KRPCHS.SpaceCenter.Module -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
 getModulePartStream thisArg = requestStream $ getModulePartStreamReq thisArg 
 
-{-
- - Returns a vector whose direction the direction of the maneuver node burn, and whose magnitude
- - is the delta-v of the burn in m/s.<param name="referenceFrame">Does not change when executing the maneuver node. See <see cref="M:SpaceCenter.Node.RemainingBurnVector" />.
+{-|
+Returns a vector whose direction the direction of the maneuver node burn, and whose magnitude
+is the delta-v of the burn in m/s.<param name="referenceFrame">Does not change when executing the maneuver node. See <see cref="M:SpaceCenter.Node.RemainingBurnVector" />.
  -}
 nodeBurnVector :: KRPCHS.SpaceCenter.Node -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
 nodeBurnVector thisArg referenceFrameArg = do
@@ -7589,8 +7589,8 @@ nodeBurnVectorStreamReq thisArg referenceFrameArg =
 nodeBurnVectorStream :: KRPCHS.SpaceCenter.Node -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
 nodeBurnVectorStream thisArg referenceFrameArg = requestStream $ nodeBurnVectorStreamReq thisArg referenceFrameArg 
 
-{-
- - Returns the unit direction vector of the maneuver nodes burn in the given reference frame.<param name="referenceFrame">
+{-|
+Returns the unit direction vector of the maneuver nodes burn in the given reference frame.<param name="referenceFrame">
  -}
 nodeDirection :: KRPCHS.SpaceCenter.Node -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
 nodeDirection thisArg referenceFrameArg = do
@@ -7606,8 +7606,8 @@ nodeDirectionStreamReq thisArg referenceFrameArg =
 nodeDirectionStream :: KRPCHS.SpaceCenter.Node -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
 nodeDirectionStream thisArg referenceFrameArg = requestStream $ nodeDirectionStreamReq thisArg referenceFrameArg 
 
-{-
- - Returns the position vector of the maneuver node in the given reference frame.<param name="referenceFrame">
+{-|
+Returns the position vector of the maneuver node in the given reference frame.<param name="referenceFrame">
  -}
 nodePosition :: KRPCHS.SpaceCenter.Node -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
 nodePosition thisArg referenceFrameArg = do
@@ -7623,9 +7623,9 @@ nodePositionStreamReq thisArg referenceFrameArg =
 nodePositionStream :: KRPCHS.SpaceCenter.Node -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
 nodePositionStream thisArg referenceFrameArg = requestStream $ nodePositionStreamReq thisArg referenceFrameArg 
 
-{-
- - Returns a vector whose direction the direction of the maneuver node burn, and whose magnitude
- - is the delta-v of the burn in m/s. The direction and magnitude change as the burn is executed.<param name="referenceFrame">
+{-|
+Returns a vector whose direction the direction of the maneuver node burn, and whose magnitude
+is the delta-v of the burn in m/s. The direction and magnitude change as the burn is executed.<param name="referenceFrame">
  -}
 nodeRemainingBurnVector :: KRPCHS.SpaceCenter.Node -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
 nodeRemainingBurnVector thisArg referenceFrameArg = do
@@ -7641,8 +7641,8 @@ nodeRemainingBurnVectorStreamReq thisArg referenceFrameArg =
 nodeRemainingBurnVectorStream :: KRPCHS.SpaceCenter.Node -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
 nodeRemainingBurnVectorStream thisArg referenceFrameArg = requestStream $ nodeRemainingBurnVectorStreamReq thisArg referenceFrameArg 
 
-{-
- - Removes the maneuver node.
+{-|
+Removes the maneuver node.
  -}
 nodeRemove :: KRPCHS.SpaceCenter.Node -> RPCContext ()
 nodeRemove thisArg = do
@@ -7650,8 +7650,8 @@ nodeRemove thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The delta-v of the maneuver node, in meters per second.Does not change when executing the maneuver node. See <see cref="M:SpaceCenter.Node.RemainingDeltaV" />.
+{-|
+The delta-v of the maneuver node, in meters per second.Does not change when executing the maneuver node. See <see cref="M:SpaceCenter.Node.RemainingDeltaV" />.
  -}
 getNodeDeltaV :: KRPCHS.SpaceCenter.Node -> RPCContext (Float)
 getNodeDeltaV thisArg = do
@@ -7667,8 +7667,8 @@ getNodeDeltaVStreamReq thisArg =
 getNodeDeltaVStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (Float))
 getNodeDeltaVStream thisArg = requestStream $ getNodeDeltaVStreamReq thisArg 
 
-{-
- - The magnitude of the maneuver nodes delta-v in the normal direction, in meters per second.
+{-|
+The magnitude of the maneuver nodes delta-v in the normal direction, in meters per second.
  -}
 getNodeNormal :: KRPCHS.SpaceCenter.Node -> RPCContext (Float)
 getNodeNormal thisArg = do
@@ -7684,8 +7684,8 @@ getNodeNormalStreamReq thisArg =
 getNodeNormalStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (Float))
 getNodeNormalStream thisArg = requestStream $ getNodeNormalStreamReq thisArg 
 
-{-
- - The orbit that results from executing the maneuver node.
+{-|
+The orbit that results from executing the maneuver node.
  -}
 getNodeOrbit :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCHS.SpaceCenter.Orbit)
 getNodeOrbit thisArg = do
@@ -7701,14 +7701,14 @@ getNodeOrbitStreamReq thisArg =
 getNodeOrbitStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Orbit))
 getNodeOrbitStream thisArg = requestStream $ getNodeOrbitStreamReq thisArg 
 
-{-
- - Gets the reference frame that is fixed relative to the maneuver node, and
- - orientated with the orbital prograde/normal/radial directions of the
- - original orbit at the maneuver node's position.
- - <list type="bullet">The origin is at the position of the maneuver node.The x-axis points in the orbital anti-radial direction of the original
- - orbit, at the position of the maneuver node.The y-axis points in the orbital prograde direction of the original
- - orbit, at the position of the maneuver node.The z-axis points in the orbital normal direction of the original orbit,
- - at the position of the maneuver node.
+{-|
+Gets the reference frame that is fixed relative to the maneuver node, and
+orientated with the orbital prograde/normal/radial directions of the
+original orbit at the maneuver node's position.
+<list type="bullet">The origin is at the position of the maneuver node.The x-axis points in the orbital anti-radial direction of the original
+orbit, at the position of the maneuver node.The y-axis points in the orbital prograde direction of the original
+orbit, at the position of the maneuver node.The z-axis points in the orbital normal direction of the original orbit,
+at the position of the maneuver node.
  -}
 getNodeOrbitalReferenceFrame :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
 getNodeOrbitalReferenceFrame thisArg = do
@@ -7724,8 +7724,8 @@ getNodeOrbitalReferenceFrameStreamReq thisArg =
 getNodeOrbitalReferenceFrameStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 getNodeOrbitalReferenceFrameStream thisArg = requestStream $ getNodeOrbitalReferenceFrameStreamReq thisArg 
 
-{-
- - The magnitude of the maneuver nodes delta-v in the prograde direction, in meters per second.
+{-|
+The magnitude of the maneuver nodes delta-v in the prograde direction, in meters per second.
  -}
 getNodePrograde :: KRPCHS.SpaceCenter.Node -> RPCContext (Float)
 getNodePrograde thisArg = do
@@ -7741,8 +7741,8 @@ getNodeProgradeStreamReq thisArg =
 getNodeProgradeStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (Float))
 getNodeProgradeStream thisArg = requestStream $ getNodeProgradeStreamReq thisArg 
 
-{-
- - The magnitude of the maneuver nodes delta-v in the radial direction, in meters per second.
+{-|
+The magnitude of the maneuver nodes delta-v in the radial direction, in meters per second.
  -}
 getNodeRadial :: KRPCHS.SpaceCenter.Node -> RPCContext (Float)
 getNodeRadial thisArg = do
@@ -7758,9 +7758,9 @@ getNodeRadialStreamReq thisArg =
 getNodeRadialStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (Float))
 getNodeRadialStream thisArg = requestStream $ getNodeRadialStreamReq thisArg 
 
-{-
- - Gets the reference frame that is fixed relative to the maneuver node's burn.
- - <list type="bullet">The origin is at the position of the maneuver node.The y-axis points in the direction of the burn.The x-axis and z-axis point in arbitrary but fixed directions.
+{-|
+Gets the reference frame that is fixed relative to the maneuver node's burn.
+<list type="bullet">The origin is at the position of the maneuver node.The y-axis points in the direction of the burn.The x-axis and z-axis point in arbitrary but fixed directions.
  -}
 getNodeReferenceFrame :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
 getNodeReferenceFrame thisArg = do
@@ -7776,9 +7776,9 @@ getNodeReferenceFrameStreamReq thisArg =
 getNodeReferenceFrameStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 getNodeReferenceFrameStream thisArg = requestStream $ getNodeReferenceFrameStreamReq thisArg 
 
-{-
- - Gets the remaining delta-v of the maneuver node, in meters per second. Changes as the node
- - is executed. This is equivalent to the delta-v reported in-game.
+{-|
+Gets the remaining delta-v of the maneuver node, in meters per second. Changes as the node
+is executed. This is equivalent to the delta-v reported in-game.
  -}
 getNodeRemainingDeltaV :: KRPCHS.SpaceCenter.Node -> RPCContext (Float)
 getNodeRemainingDeltaV thisArg = do
@@ -7794,8 +7794,8 @@ getNodeRemainingDeltaVStreamReq thisArg =
 getNodeRemainingDeltaVStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (Float))
 getNodeRemainingDeltaVStream thisArg = requestStream $ getNodeRemainingDeltaVStreamReq thisArg 
 
-{-
- - The time until the maneuver node will be encountered, in seconds.
+{-|
+The time until the maneuver node will be encountered, in seconds.
  -}
 getNodeTimeTo :: KRPCHS.SpaceCenter.Node -> RPCContext (Double)
 getNodeTimeTo thisArg = do
@@ -7811,8 +7811,8 @@ getNodeTimeToStreamReq thisArg =
 getNodeTimeToStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (Double))
 getNodeTimeToStream thisArg = requestStream $ getNodeTimeToStreamReq thisArg 
 
-{-
- - The universal time at which the maneuver will occur, in seconds.
+{-|
+The universal time at which the maneuver will occur, in seconds.
  -}
 getNodeUT :: KRPCHS.SpaceCenter.Node -> RPCContext (Double)
 getNodeUT thisArg = do
@@ -7828,8 +7828,8 @@ getNodeUTStreamReq thisArg =
 getNodeUTStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (Double))
 getNodeUTStream thisArg = requestStream $ getNodeUTStreamReq thisArg 
 
-{-
- - The delta-v of the maneuver node, in meters per second.Does not change when executing the maneuver node. See <see cref="M:SpaceCenter.Node.RemainingDeltaV" />.
+{-|
+The delta-v of the maneuver node, in meters per second.Does not change when executing the maneuver node. See <see cref="M:SpaceCenter.Node.RemainingDeltaV" />.
  -}
 setNodeDeltaV :: KRPCHS.SpaceCenter.Node -> Float -> RPCContext ()
 setNodeDeltaV thisArg valueArg = do
@@ -7837,8 +7837,8 @@ setNodeDeltaV thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The magnitude of the maneuver nodes delta-v in the normal direction, in meters per second.
+{-|
+The magnitude of the maneuver nodes delta-v in the normal direction, in meters per second.
  -}
 setNodeNormal :: KRPCHS.SpaceCenter.Node -> Float -> RPCContext ()
 setNodeNormal thisArg valueArg = do
@@ -7846,8 +7846,8 @@ setNodeNormal thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The magnitude of the maneuver nodes delta-v in the prograde direction, in meters per second.
+{-|
+The magnitude of the maneuver nodes delta-v in the prograde direction, in meters per second.
  -}
 setNodePrograde :: KRPCHS.SpaceCenter.Node -> Float -> RPCContext ()
 setNodePrograde thisArg valueArg = do
@@ -7855,8 +7855,8 @@ setNodePrograde thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The magnitude of the maneuver nodes delta-v in the radial direction, in meters per second.
+{-|
+The magnitude of the maneuver nodes delta-v in the radial direction, in meters per second.
  -}
 setNodeRadial :: KRPCHS.SpaceCenter.Node -> Float -> RPCContext ()
 setNodeRadial thisArg valueArg = do
@@ -7864,8 +7864,8 @@ setNodeRadial thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The universal time at which the maneuver will occur, in seconds.
+{-|
+The universal time at which the maneuver will occur, in seconds.
  -}
 setNodeUT :: KRPCHS.SpaceCenter.Node -> Double -> RPCContext ()
 setNodeUT thisArg valueArg = do
@@ -7873,8 +7873,8 @@ setNodeUT thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The eccentric anomaly at the given universal time.<param name="ut">The universal time, in seconds.
+{-|
+The eccentric anomaly at the given universal time.<param name="ut">The universal time, in seconds.
  -}
 orbitEccentricAnomalyAtUT :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (Double)
 orbitEccentricAnomalyAtUT thisArg utArg = do
@@ -7890,8 +7890,8 @@ orbitEccentricAnomalyAtUTStreamReq thisArg utArg =
 orbitEccentricAnomalyAtUTStream :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (KRPCStream (Double))
 orbitEccentricAnomalyAtUTStream thisArg utArg = requestStream $ orbitEccentricAnomalyAtUTStreamReq thisArg utArg 
 
-{-
- - The orbital speed at the given time, in meters per second.<param name="time">Time from now, in seconds.
+{-|
+The orbital speed at the given time, in meters per second.<param name="time">Time from now, in seconds.
  -}
 orbitOrbitalSpeedAt :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (Double)
 orbitOrbitalSpeedAt thisArg timeArg = do
@@ -7907,8 +7907,8 @@ orbitOrbitalSpeedAtStreamReq thisArg timeArg =
 orbitOrbitalSpeedAtStream :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (KRPCStream (Double))
 orbitOrbitalSpeedAtStream thisArg timeArg = requestStream $ orbitOrbitalSpeedAtStreamReq thisArg timeArg 
 
-{-
- - The orbital radius at the point in the orbit given by the true anomaly.<param name="trueAnomaly">The true anomaly.
+{-|
+The orbital radius at the point in the orbit given by the true anomaly.<param name="trueAnomaly">The true anomaly.
  -}
 orbitRadiusAtTrueAnomaly :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (Double)
 orbitRadiusAtTrueAnomaly thisArg trueAnomalyArg = do
@@ -7924,44 +7924,8 @@ orbitRadiusAtTrueAnomalyStreamReq thisArg trueAnomalyArg =
 orbitRadiusAtTrueAnomalyStream :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (KRPCStream (Double))
 orbitRadiusAtTrueAnomalyStream thisArg trueAnomalyArg = requestStream $ orbitRadiusAtTrueAnomalyStreamReq thisArg trueAnomalyArg 
 
-{-
- - The unit direction vector from which the orbits longitude of ascending node is measured,
- - in the given reference frame.<param name="referenceFrame">
- -}
-orbitReferencePlaneDirection :: KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
-orbitReferencePlaneDirection referenceFrameArg = do
-    let r = makeRequest "SpaceCenter" "Orbit_ReferencePlaneDirection" [makeArgument 0 referenceFrameArg]
-    res <- sendRequest r
-    processResponse res
-
-orbitReferencePlaneDirectionStreamReq :: KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
-orbitReferencePlaneDirectionStreamReq referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "Orbit_ReferencePlaneDirection" [makeArgument 0 referenceFrameArg]
-    in  makeStream req
-
-orbitReferencePlaneDirectionStream :: KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
-orbitReferencePlaneDirectionStream referenceFrameArg = requestStream $ orbitReferencePlaneDirectionStreamReq referenceFrameArg 
-
-{-
- - The unit direction vector that is normal to the orbits reference plane, in the given
- - reference frame. The reference plane is the plane from which the orbits inclination is measured.<param name="referenceFrame">
- -}
-orbitReferencePlaneNormal :: KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
-orbitReferencePlaneNormal referenceFrameArg = do
-    let r = makeRequest "SpaceCenter" "Orbit_ReferencePlaneNormal" [makeArgument 0 referenceFrameArg]
-    res <- sendRequest r
-    processResponse res
-
-orbitReferencePlaneNormalStreamReq :: KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
-orbitReferencePlaneNormalStreamReq referenceFrameArg =
-    let req = makeRequest "SpaceCenter" "Orbit_ReferencePlaneNormal" [makeArgument 0 referenceFrameArg]
-    in  makeStream req
-
-orbitReferencePlaneNormalStream :: KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
-orbitReferencePlaneNormalStream referenceFrameArg = requestStream $ orbitReferencePlaneNormalStreamReq referenceFrameArg 
-
-{-
- - The true anomaly at the given orbital radius.<param name="radius">The orbital radius in meters.
+{-|
+The true anomaly at the given orbital radius.<param name="radius">The orbital radius in meters.
  -}
 orbitTrueAnomalyAtRadius :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (Double)
 orbitTrueAnomalyAtRadius thisArg radiusArg = do
@@ -7977,8 +7941,8 @@ orbitTrueAnomalyAtRadiusStreamReq thisArg radiusArg =
 orbitTrueAnomalyAtRadiusStream :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (KRPCStream (Double))
 orbitTrueAnomalyAtRadiusStream thisArg radiusArg = requestStream $ orbitTrueAnomalyAtRadiusStreamReq thisArg radiusArg 
 
-{-
- - The true anomaly at the given time.<param name="ut">The universal time in seconds.
+{-|
+The true anomaly at the given time.<param name="ut">The universal time in seconds.
  -}
 orbitTrueAnomalyAtUT :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (Double)
 orbitTrueAnomalyAtUT thisArg utArg = do
@@ -7994,8 +7958,8 @@ orbitTrueAnomalyAtUTStreamReq thisArg utArg =
 orbitTrueAnomalyAtUTStream :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (KRPCStream (Double))
 orbitTrueAnomalyAtUTStream thisArg utArg = requestStream $ orbitTrueAnomalyAtUTStreamReq thisArg utArg 
 
-{-
- - The universal time, in seconds, corresponding to the given true anomaly.<param name="trueAnomaly">True anomaly.
+{-|
+The universal time, in seconds, corresponding to the given true anomaly.<param name="trueAnomaly">True anomaly.
  -}
 orbitUTAtTrueAnomaly :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (Double)
 orbitUTAtTrueAnomaly thisArg trueAnomalyArg = do
@@ -8011,8 +7975,8 @@ orbitUTAtTrueAnomalyStreamReq thisArg trueAnomalyArg =
 orbitUTAtTrueAnomalyStream :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (KRPCStream (Double))
 orbitUTAtTrueAnomalyStream thisArg trueAnomalyArg = requestStream $ orbitUTAtTrueAnomalyStreamReq thisArg trueAnomalyArg 
 
-{-
- - Gets the apoapsis of the orbit, in meters, from the center of mass of the body being orbited.For the apoapsis altitude reported on the in-game map view, use <see cref="M:SpaceCenter.Orbit.ApoapsisAltitude" />.
+{-|
+Gets the apoapsis of the orbit, in meters, from the center of mass of the body being orbited.For the apoapsis altitude reported on the in-game map view, use <see cref="M:SpaceCenter.Orbit.ApoapsisAltitude" />.
  -}
 getOrbitApoapsis :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
 getOrbitApoapsis thisArg = do
@@ -8028,8 +7992,8 @@ getOrbitApoapsisStreamReq thisArg =
 getOrbitApoapsisStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
 getOrbitApoapsisStream thisArg = requestStream $ getOrbitApoapsisStreamReq thisArg 
 
-{-
- - The apoapsis of the orbit, in meters, above the sea level of the body being orbited.This is equal to <see cref="M:SpaceCenter.Orbit.Apoapsis" /> minus the equatorial radius of the body.
+{-|
+The apoapsis of the orbit, in meters, above the sea level of the body being orbited.This is equal to <see cref="M:SpaceCenter.Orbit.Apoapsis" /> minus the equatorial radius of the body.
  -}
 getOrbitApoapsisAltitude :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
 getOrbitApoapsisAltitude thisArg = do
@@ -8045,8 +8009,8 @@ getOrbitApoapsisAltitudeStreamReq thisArg =
 getOrbitApoapsisAltitudeStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
 getOrbitApoapsisAltitudeStream thisArg = requestStream $ getOrbitApoapsisAltitudeStreamReq thisArg 
 
-{-
- - The <a href="https://en.wikipedia.org/wiki/Argument_of_periapsis">argument of periapsis, in radians.
+{-|
+The <a href="https://en.wikipedia.org/wiki/Argument_of_periapsis">argument of periapsis, in radians.
  -}
 getOrbitArgumentOfPeriapsis :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
 getOrbitArgumentOfPeriapsis thisArg = do
@@ -8062,8 +8026,8 @@ getOrbitArgumentOfPeriapsisStreamReq thisArg =
 getOrbitArgumentOfPeriapsisStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
 getOrbitArgumentOfPeriapsisStream thisArg = requestStream $ getOrbitArgumentOfPeriapsisStreamReq thisArg 
 
-{-
- - The celestial body (e.g. planet or moon) around which the object is orbiting.
+{-|
+The celestial body (e.g. planet or moon) around which the object is orbiting.
  -}
 getOrbitBody :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCHS.SpaceCenter.CelestialBody)
 getOrbitBody thisArg = do
@@ -8079,8 +8043,8 @@ getOrbitBodyStreamReq thisArg =
 getOrbitBodyStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.CelestialBody))
 getOrbitBodyStream thisArg = requestStream $ getOrbitBodyStreamReq thisArg 
 
-{-
- - The <a href="https://en.wikipedia.org/wiki/Eccentric_anomaly">eccentric anomaly.
+{-|
+The <a href="https://en.wikipedia.org/wiki/Eccentric_anomaly">eccentric anomaly.
  -}
 getOrbitEccentricAnomaly :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
 getOrbitEccentricAnomaly thisArg = do
@@ -8096,8 +8060,8 @@ getOrbitEccentricAnomalyStreamReq thisArg =
 getOrbitEccentricAnomalyStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
 getOrbitEccentricAnomalyStream thisArg = requestStream $ getOrbitEccentricAnomalyStreamReq thisArg 
 
-{-
- - The <a href="https://en.wikipedia.org/wiki/Orbital_eccentricity">eccentricityof the orbit.
+{-|
+The <a href="https://en.wikipedia.org/wiki/Orbital_eccentricity">eccentricityof the orbit.
  -}
 getOrbitEccentricity :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
 getOrbitEccentricity thisArg = do
@@ -8113,9 +8077,9 @@ getOrbitEccentricityStreamReq thisArg =
 getOrbitEccentricityStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
 getOrbitEccentricityStream thisArg = requestStream $ getOrbitEccentricityStreamReq thisArg 
 
-{-
- - The time since the epoch (the point at which the
- - <a href="https://en.wikipedia.org/wiki/Mean_anomaly">mean anomaly at epochwas measured, in seconds.
+{-|
+The time since the epoch (the point at which the
+<a href="https://en.wikipedia.org/wiki/Mean_anomaly">mean anomaly at epochwas measured, in seconds.
  -}
 getOrbitEpoch :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
 getOrbitEpoch thisArg = do
@@ -8131,9 +8095,9 @@ getOrbitEpochStreamReq thisArg =
 getOrbitEpochStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
 getOrbitEpochStream thisArg = requestStream $ getOrbitEpochStreamReq thisArg 
 
-{-
- - The <a href="https://en.wikipedia.org/wiki/Orbital_inclination">inclinationof the orbit,
- - in radians.
+{-|
+The <a href="https://en.wikipedia.org/wiki/Orbital_inclination">inclinationof the orbit,
+in radians.
  -}
 getOrbitInclination :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
 getOrbitInclination thisArg = do
@@ -8149,9 +8113,9 @@ getOrbitInclinationStreamReq thisArg =
 getOrbitInclinationStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
 getOrbitInclinationStream thisArg = requestStream $ getOrbitInclinationStreamReq thisArg 
 
-{-
- - The <a href="https://en.wikipedia.org/wiki/Longitude_of_the_ascending_node">longitude of the
- - ascending node, in radians.
+{-|
+The <a href="https://en.wikipedia.org/wiki/Longitude_of_the_ascending_node">longitude of the
+ascending node, in radians.
  -}
 getOrbitLongitudeOfAscendingNode :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
 getOrbitLongitudeOfAscendingNode thisArg = do
@@ -8167,8 +8131,8 @@ getOrbitLongitudeOfAscendingNodeStreamReq thisArg =
 getOrbitLongitudeOfAscendingNodeStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
 getOrbitLongitudeOfAscendingNodeStream thisArg = requestStream $ getOrbitLongitudeOfAscendingNodeStreamReq thisArg 
 
-{-
- - The <a href="https://en.wikipedia.org/wiki/Mean_anomaly">mean anomaly.
+{-|
+The <a href="https://en.wikipedia.org/wiki/Mean_anomaly">mean anomaly.
  -}
 getOrbitMeanAnomaly :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
 getOrbitMeanAnomaly thisArg = do
@@ -8184,8 +8148,8 @@ getOrbitMeanAnomalyStreamReq thisArg =
 getOrbitMeanAnomalyStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
 getOrbitMeanAnomalyStream thisArg = requestStream $ getOrbitMeanAnomalyStreamReq thisArg 
 
-{-
- - The <a href="https://en.wikipedia.org/wiki/Mean_anomaly">mean anomaly at epoch.
+{-|
+The <a href="https://en.wikipedia.org/wiki/Mean_anomaly">mean anomaly at epoch.
  -}
 getOrbitMeanAnomalyAtEpoch :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
 getOrbitMeanAnomalyAtEpoch thisArg = do
@@ -8201,9 +8165,9 @@ getOrbitMeanAnomalyAtEpochStreamReq thisArg =
 getOrbitMeanAnomalyAtEpochStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
 getOrbitMeanAnomalyAtEpochStream thisArg = requestStream $ getOrbitMeanAnomalyAtEpochStreamReq thisArg 
 
-{-
- - If the object is going to change sphere of influence in the future, returns the new orbit
- - after the change. Otherwise returnsnull.
+{-|
+If the object is going to change sphere of influence in the future, returns the new orbit
+after the change. Otherwise returnsnull.
  -}
 getOrbitNextOrbit :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCHS.SpaceCenter.Orbit)
 getOrbitNextOrbit thisArg = do
@@ -8219,8 +8183,8 @@ getOrbitNextOrbitStreamReq thisArg =
 getOrbitNextOrbitStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Orbit))
 getOrbitNextOrbitStream thisArg = requestStream $ getOrbitNextOrbitStreamReq thisArg 
 
-{-
- - The current orbital speed in meters per second.
+{-|
+The current orbital speed in meters per second.
  -}
 getOrbitOrbitalSpeed :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
 getOrbitOrbitalSpeed thisArg = do
@@ -8236,8 +8200,8 @@ getOrbitOrbitalSpeedStreamReq thisArg =
 getOrbitOrbitalSpeedStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
 getOrbitOrbitalSpeedStream thisArg = requestStream $ getOrbitOrbitalSpeedStreamReq thisArg 
 
-{-
- - The periapsis of the orbit, in meters, from the center of mass of the body being orbited.For the periapsis altitude reported on the in-game map view, use <see cref="M:SpaceCenter.Orbit.PeriapsisAltitude" />.
+{-|
+The periapsis of the orbit, in meters, from the center of mass of the body being orbited.For the periapsis altitude reported on the in-game map view, use <see cref="M:SpaceCenter.Orbit.PeriapsisAltitude" />.
  -}
 getOrbitPeriapsis :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
 getOrbitPeriapsis thisArg = do
@@ -8253,8 +8217,8 @@ getOrbitPeriapsisStreamReq thisArg =
 getOrbitPeriapsisStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
 getOrbitPeriapsisStream thisArg = requestStream $ getOrbitPeriapsisStreamReq thisArg 
 
-{-
- - The periapsis of the orbit, in meters, above the sea level of the body being orbited.This is equal to <see cref="M:SpaceCenter.Orbit.Periapsis" /> minus the equatorial radius of the body.
+{-|
+The periapsis of the orbit, in meters, above the sea level of the body being orbited.This is equal to <see cref="M:SpaceCenter.Orbit.Periapsis" /> minus the equatorial radius of the body.
  -}
 getOrbitPeriapsisAltitude :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
 getOrbitPeriapsisAltitude thisArg = do
@@ -8270,8 +8234,8 @@ getOrbitPeriapsisAltitudeStreamReq thisArg =
 getOrbitPeriapsisAltitudeStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
 getOrbitPeriapsisAltitudeStream thisArg = requestStream $ getOrbitPeriapsisAltitudeStreamReq thisArg 
 
-{-
- - The orbital period, in seconds.
+{-|
+The orbital period, in seconds.
  -}
 getOrbitPeriod :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
 getOrbitPeriod thisArg = do
@@ -8287,9 +8251,9 @@ getOrbitPeriodStreamReq thisArg =
 getOrbitPeriodStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
 getOrbitPeriodStream thisArg = requestStream $ getOrbitPeriodStreamReq thisArg 
 
-{-
- - The current radius of the orbit, in meters. This is the distance between the center
- - of mass of the object in orbit, and the center of mass of the body around which it is orbiting.This value will change over time if the orbit is elliptical.
+{-|
+The current radius of the orbit, in meters. This is the distance between the center
+of mass of the object in orbit, and the center of mass of the body around which it is orbiting.This value will change over time if the orbit is elliptical.
  -}
 getOrbitRadius :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
 getOrbitRadius thisArg = do
@@ -8305,8 +8269,8 @@ getOrbitRadiusStreamReq thisArg =
 getOrbitRadiusStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
 getOrbitRadiusStream thisArg = requestStream $ getOrbitRadiusStreamReq thisArg 
 
-{-
- - The semi-major axis of the orbit, in meters.
+{-|
+The semi-major axis of the orbit, in meters.
  -}
 getOrbitSemiMajorAxis :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
 getOrbitSemiMajorAxis thisArg = do
@@ -8322,8 +8286,8 @@ getOrbitSemiMajorAxisStreamReq thisArg =
 getOrbitSemiMajorAxisStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
 getOrbitSemiMajorAxisStream thisArg = requestStream $ getOrbitSemiMajorAxisStreamReq thisArg 
 
-{-
- - The semi-minor axis of the orbit, in meters.
+{-|
+The semi-minor axis of the orbit, in meters.
  -}
 getOrbitSemiMinorAxis :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
 getOrbitSemiMinorAxis thisArg = do
@@ -8339,8 +8303,8 @@ getOrbitSemiMinorAxisStreamReq thisArg =
 getOrbitSemiMinorAxisStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
 getOrbitSemiMinorAxisStream thisArg = requestStream $ getOrbitSemiMinorAxisStreamReq thisArg 
 
-{-
- - The current orbital speed of the object in meters per second.This value will change over time if the orbit is elliptical.
+{-|
+The current orbital speed of the object in meters per second.This value will change over time if the orbit is elliptical.
  -}
 getOrbitSpeed :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
 getOrbitSpeed thisArg = do
@@ -8356,8 +8320,8 @@ getOrbitSpeedStreamReq thisArg =
 getOrbitSpeedStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
 getOrbitSpeedStream thisArg = requestStream $ getOrbitSpeedStreamReq thisArg 
 
-{-
- - The time until the object reaches apoapsis, in seconds.
+{-|
+The time until the object reaches apoapsis, in seconds.
  -}
 getOrbitTimeToApoapsis :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
 getOrbitTimeToApoapsis thisArg = do
@@ -8373,8 +8337,8 @@ getOrbitTimeToApoapsisStreamReq thisArg =
 getOrbitTimeToApoapsisStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
 getOrbitTimeToApoapsisStream thisArg = requestStream $ getOrbitTimeToApoapsisStreamReq thisArg 
 
-{-
- - The time until the object reaches periapsis, in seconds.
+{-|
+The time until the object reaches periapsis, in seconds.
  -}
 getOrbitTimeToPeriapsis :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
 getOrbitTimeToPeriapsis thisArg = do
@@ -8390,9 +8354,9 @@ getOrbitTimeToPeriapsisStreamReq thisArg =
 getOrbitTimeToPeriapsisStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
 getOrbitTimeToPeriapsisStream thisArg = requestStream $ getOrbitTimeToPeriapsisStreamReq thisArg 
 
-{-
- - The time until the object changes sphere of influence, in seconds. ReturnsNaNif the
- - object is not going to change sphere of influence.
+{-|
+The time until the object changes sphere of influence, in seconds. ReturnsNaNif the
+object is not going to change sphere of influence.
  -}
 getOrbitTimeToSOIChange :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
 getOrbitTimeToSOIChange thisArg = do
@@ -8408,8 +8372,8 @@ getOrbitTimeToSOIChangeStreamReq thisArg =
 getOrbitTimeToSOIChangeStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
 getOrbitTimeToSOIChangeStream thisArg = requestStream $ getOrbitTimeToSOIChangeStreamReq thisArg 
 
-{-
- - The <a href="https://en.wikipedia.org/wiki/True_anomaly">true anomaly.
+{-|
+The <a href="https://en.wikipedia.org/wiki/True_anomaly">true anomaly.
  -}
 getOrbitTrueAnomaly :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
 getOrbitTrueAnomaly thisArg = do
@@ -8425,9 +8389,45 @@ getOrbitTrueAnomalyStreamReq thisArg =
 getOrbitTrueAnomalyStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
 getOrbitTrueAnomalyStream thisArg = requestStream $ getOrbitTrueAnomalyStreamReq thisArg 
 
-{-
- - Deploys the parachute. This has no effect if the parachute has already
- - been deployed.
+{-|
+The unit direction vector from which the orbits longitude of ascending node is measured,
+in the given reference frame.<param name="referenceFrame">
+ -}
+orbitStaticReferencePlaneDirection :: KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
+orbitStaticReferencePlaneDirection referenceFrameArg = do
+    let r = makeRequest "SpaceCenter" "Orbit_static_ReferencePlaneDirection" [makeArgument 0 referenceFrameArg]
+    res <- sendRequest r
+    processResponse res
+
+orbitStaticReferencePlaneDirectionStreamReq :: KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
+orbitStaticReferencePlaneDirectionStreamReq referenceFrameArg =
+    let req = makeRequest "SpaceCenter" "Orbit_static_ReferencePlaneDirection" [makeArgument 0 referenceFrameArg]
+    in  makeStream req
+
+orbitStaticReferencePlaneDirectionStream :: KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
+orbitStaticReferencePlaneDirectionStream referenceFrameArg = requestStream $ orbitStaticReferencePlaneDirectionStreamReq referenceFrameArg 
+
+{-|
+The unit direction vector that is normal to the orbits reference plane, in the given
+reference frame. The reference plane is the plane from which the orbits inclination is measured.<param name="referenceFrame">
+ -}
+orbitStaticReferencePlaneNormal :: KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
+orbitStaticReferencePlaneNormal referenceFrameArg = do
+    let r = makeRequest "SpaceCenter" "Orbit_static_ReferencePlaneNormal" [makeArgument 0 referenceFrameArg]
+    res <- sendRequest r
+    processResponse res
+
+orbitStaticReferencePlaneNormalStreamReq :: KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq ((Double, Double, Double))
+orbitStaticReferencePlaneNormalStreamReq referenceFrameArg =
+    let req = makeRequest "SpaceCenter" "Orbit_static_ReferencePlaneNormal" [makeArgument 0 referenceFrameArg]
+    in  makeStream req
+
+orbitStaticReferencePlaneNormalStream :: KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
+orbitStaticReferencePlaneNormalStream referenceFrameArg = requestStream $ orbitStaticReferencePlaneNormalStreamReq referenceFrameArg 
+
+{-|
+Deploys the parachute. This has no effect if the parachute has already
+been deployed.
  -}
 parachuteDeploy :: KRPCHS.SpaceCenter.Parachute -> RPCContext ()
 parachuteDeploy thisArg = do
@@ -8435,8 +8435,8 @@ parachuteDeploy thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The altitude at which the parachute will full deploy, in meters.
+{-|
+The altitude at which the parachute will full deploy, in meters.
  -}
 getParachuteDeployAltitude :: KRPCHS.SpaceCenter.Parachute -> RPCContext (Float)
 getParachuteDeployAltitude thisArg = do
@@ -8452,8 +8452,8 @@ getParachuteDeployAltitudeStreamReq thisArg =
 getParachuteDeployAltitudeStream :: KRPCHS.SpaceCenter.Parachute -> RPCContext (KRPCStream (Float))
 getParachuteDeployAltitudeStream thisArg = requestStream $ getParachuteDeployAltitudeStreamReq thisArg 
 
-{-
- - The minimum pressure at which the parachute will semi-deploy, in atmospheres.
+{-|
+The minimum pressure at which the parachute will semi-deploy, in atmospheres.
  -}
 getParachuteDeployMinPressure :: KRPCHS.SpaceCenter.Parachute -> RPCContext (Float)
 getParachuteDeployMinPressure thisArg = do
@@ -8469,8 +8469,8 @@ getParachuteDeployMinPressureStreamReq thisArg =
 getParachuteDeployMinPressureStream :: KRPCHS.SpaceCenter.Parachute -> RPCContext (KRPCStream (Float))
 getParachuteDeployMinPressureStream thisArg = requestStream $ getParachuteDeployMinPressureStreamReq thisArg 
 
-{-
- - Whether the parachute has been deployed.
+{-|
+Whether the parachute has been deployed.
  -}
 getParachuteDeployed :: KRPCHS.SpaceCenter.Parachute -> RPCContext (Bool)
 getParachuteDeployed thisArg = do
@@ -8486,8 +8486,8 @@ getParachuteDeployedStreamReq thisArg =
 getParachuteDeployedStream :: KRPCHS.SpaceCenter.Parachute -> RPCContext (KRPCStream (Bool))
 getParachuteDeployedStream thisArg = requestStream $ getParachuteDeployedStreamReq thisArg 
 
-{-
- - The part object for this parachute.
+{-|
+The part object for this parachute.
  -}
 getParachutePart :: KRPCHS.SpaceCenter.Parachute -> RPCContext (KRPCHS.SpaceCenter.Part)
 getParachutePart thisArg = do
@@ -8503,8 +8503,8 @@ getParachutePartStreamReq thisArg =
 getParachutePartStream :: KRPCHS.SpaceCenter.Parachute -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
 getParachutePartStream thisArg = requestStream $ getParachutePartStreamReq thisArg 
 
-{-
- - The current state of the parachute.
+{-|
+The current state of the parachute.
  -}
 getParachuteState :: KRPCHS.SpaceCenter.Parachute -> RPCContext (KRPCHS.SpaceCenter.ParachuteState)
 getParachuteState thisArg = do
@@ -8520,8 +8520,8 @@ getParachuteStateStreamReq thisArg =
 getParachuteStateStream :: KRPCHS.SpaceCenter.Parachute -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ParachuteState))
 getParachuteStateStream thisArg = requestStream $ getParachuteStateStreamReq thisArg 
 
-{-
- - The altitude at which the parachute will full deploy, in meters.
+{-|
+The altitude at which the parachute will full deploy, in meters.
  -}
 setParachuteDeployAltitude :: KRPCHS.SpaceCenter.Parachute -> Float -> RPCContext ()
 setParachuteDeployAltitude thisArg valueArg = do
@@ -8529,8 +8529,8 @@ setParachuteDeployAltitude thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The minimum pressure at which the parachute will semi-deploy, in atmospheres.
+{-|
+The minimum pressure at which the parachute will semi-deploy, in atmospheres.
  -}
 setParachuteDeployMinPressure :: KRPCHS.SpaceCenter.Parachute -> Float -> RPCContext ()
 setParachuteDeployMinPressure thisArg valueArg = do
@@ -8538,9 +8538,9 @@ setParachuteDeployMinPressure thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Exert a constant force on the part, acting at the given position.
- - Returns an object that can be used to remove or modify the force.
+{-|
+Exert a constant force on the part, acting at the given position.
+Returns an object that can be used to remove or modify the force.
  -}
 partAddForce :: KRPCHS.SpaceCenter.Part -> (Double, Double, Double) -> (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCHS.SpaceCenter.Force)
 partAddForce thisArg forceArg positionArg referenceFrameArg = do
@@ -8556,9 +8556,9 @@ partAddForceStreamReq thisArg forceArg positionArg referenceFrameArg =
 partAddForceStream :: KRPCHS.SpaceCenter.Part -> (Double, Double, Double) -> (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Force))
 partAddForceStream thisArg forceArg positionArg referenceFrameArg = requestStream $ partAddForceStreamReq thisArg forceArg positionArg referenceFrameArg 
 
-{-
- - The position of the parts center of mass in the given reference frame.
- - If the part is physicsless, this is equivalent to <see cref="M:SpaceCenter.Part.Position" />.<param name="referenceFrame">
+{-|
+The position of the parts center of mass in the given reference frame.
+If the part is physicsless, this is equivalent to <see cref="M:SpaceCenter.Part.Position" />.<param name="referenceFrame">
  -}
 partCenterOfMass :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
 partCenterOfMass thisArg referenceFrameArg = do
@@ -8574,8 +8574,8 @@ partCenterOfMassStreamReq thisArg referenceFrameArg =
 partCenterOfMassStream :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
 partCenterOfMassStream thisArg referenceFrameArg = requestStream $ partCenterOfMassStreamReq thisArg referenceFrameArg 
 
-{-
- - The direction of the part in the given reference frame.<param name="referenceFrame">
+{-|
+The direction of the part in the given reference frame.<param name="referenceFrame">
  -}
 partDirection :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
 partDirection thisArg referenceFrameArg = do
@@ -8591,8 +8591,8 @@ partDirectionStreamReq thisArg referenceFrameArg =
 partDirectionStream :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
 partDirectionStream thisArg referenceFrameArg = requestStream $ partDirectionStreamReq thisArg referenceFrameArg 
 
-{-
- - Exert an instantaneous force on the part, acting at the given position.The force is applied instantaneously in a single physics update.
+{-|
+Exert an instantaneous force on the part, acting at the given position.The force is applied instantaneously in a single physics update.
  -}
 partInstantaneousForce :: KRPCHS.SpaceCenter.Part -> (Double, Double, Double) -> (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ()
 partInstantaneousForce thisArg forceArg positionArg referenceFrameArg = do
@@ -8600,10 +8600,10 @@ partInstantaneousForce thisArg forceArg positionArg referenceFrameArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The position of the part in the given reference frame.This is a fixed position in the part, defined by the parts model.
- - It s not necessarily the same as the parts center of mass.
- - Use <see cref="M:SpaceCenter.Part.CenterOfMass" /> to get the parts center of mass.<param name="referenceFrame">
+{-|
+The position of the part in the given reference frame.This is a fixed position in the part, defined by the parts model.
+It s not necessarily the same as the parts center of mass.
+Use <see cref="M:SpaceCenter.Part.CenterOfMass" /> to get the parts center of mass.<param name="referenceFrame">
  -}
 partPosition :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
 partPosition thisArg referenceFrameArg = do
@@ -8619,8 +8619,8 @@ partPositionStreamReq thisArg referenceFrameArg =
 partPositionStream :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
 partPositionStream thisArg referenceFrameArg = requestStream $ partPositionStreamReq thisArg referenceFrameArg 
 
-{-
- - The rotation of the part in the given reference frame.<param name="referenceFrame">
+{-|
+The rotation of the part in the given reference frame.<param name="referenceFrame">
  -}
 partRotation :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double, Double))
 partRotation thisArg referenceFrameArg = do
@@ -8636,8 +8636,8 @@ partRotationStreamReq thisArg referenceFrameArg =
 partRotationStream :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double, Double)))
 partRotationStream thisArg referenceFrameArg = requestStream $ partRotationStreamReq thisArg referenceFrameArg 
 
-{-
- - The velocity of the part in the given reference frame.<param name="referenceFrame">
+{-|
+The velocity of the part in the given reference frame.<param name="referenceFrame">
  -}
 partVelocity :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
 partVelocity thisArg referenceFrameArg = do
@@ -8653,9 +8653,9 @@ partVelocityStreamReq thisArg referenceFrameArg =
 partVelocityStream :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
 partVelocityStream thisArg referenceFrameArg = requestStream $ partVelocityStreamReq thisArg referenceFrameArg 
 
-{-
- - Whether the part is axially attached to its parent, i.e. on the top
- - or bottom of its parent. If the part has no parent, returnsfalse.
+{-|
+Whether the part is axially attached to its parent, i.e. on the top
+or bottom of its parent. If the part has no parent, returnsfalse.
  -}
 getPartAxiallyAttached :: KRPCHS.SpaceCenter.Part -> RPCContext (Bool)
 getPartAxiallyAttached thisArg = do
@@ -8671,8 +8671,8 @@ getPartAxiallyAttachedStreamReq thisArg =
 getPartAxiallyAttachedStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Bool))
 getPartAxiallyAttachedStream thisArg = requestStream $ getPartAxiallyAttachedStreamReq thisArg 
 
-{-
- - A <see cref="T:SpaceCenter.CargoBay" /> if the part is a cargo bay, otherwisenull.
+{-|
+A <see cref="T:SpaceCenter.CargoBay" /> if the part is a cargo bay, otherwisenull.
  -}
 getPartCargoBay :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.CargoBay)
 getPartCargoBay thisArg = do
@@ -8688,10 +8688,10 @@ getPartCargoBayStreamReq thisArg =
 getPartCargoBayStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.CargoBay))
 getPartCargoBayStream thisArg = requestStream $ getPartCargoBayStreamReq thisArg 
 
-{-
- - The reference frame that is fixed relative to this part, and centered on its center of mass.
- - <list type="bullet">The origin is at the center of mass of the part, as returned by <see cref="M:SpaceCenter.Part.CenterOfMass" />.The axes rotate with the part.The x, y and z axis directions depend on the design of the part.For docking port parts, this reference frame is not necessarily equivalent to the reference frame
- - for the docking port, returned by <see cref="M:SpaceCenter.DockingPort.ReferenceFrame" />.
+{-|
+The reference frame that is fixed relative to this part, and centered on its center of mass.
+<list type="bullet">The origin is at the center of mass of the part, as returned by <see cref="M:SpaceCenter.Part.CenterOfMass" />.The axes rotate with the part.The x, y and z axis directions depend on the design of the part.For docking port parts, this reference frame is not necessarily equivalent to the reference frame
+for the docking port, returned by <see cref="M:SpaceCenter.DockingPort.ReferenceFrame" />.
  -}
 getPartCenterOfMassReferenceFrame :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
 getPartCenterOfMassReferenceFrame thisArg = do
@@ -8707,9 +8707,9 @@ getPartCenterOfMassReferenceFrameStreamReq thisArg =
 getPartCenterOfMassReferenceFrameStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 getPartCenterOfMassReferenceFrameStream thisArg = requestStream $ getPartCenterOfMassReferenceFrameStreamReq thisArg 
 
-{-
- - The parts children. Returns an empty list if the part has no children.
- - This, in combination with <see cref="M:SpaceCenter.Part.Parent" />, can be used to traverse the vessels parts tree.
+{-|
+The parts children. Returns an empty list if the part has no children.
+This, in combination with <see cref="M:SpaceCenter.Part.Parent" />, can be used to traverse the vessels parts tree.
  -}
 getPartChildren :: KRPCHS.SpaceCenter.Part -> RPCContext ([KRPCHS.SpaceCenter.Part])
 getPartChildren thisArg = do
@@ -8725,8 +8725,8 @@ getPartChildrenStreamReq thisArg =
 getPartChildrenStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
 getPartChildrenStream thisArg = requestStream $ getPartChildrenStreamReq thisArg 
 
-{-
- - A <see cref="T:SpaceCenter.ControlSurface" /> if the part is an aerodynamic control surface, otherwisenull.
+{-|
+A <see cref="T:SpaceCenter.ControlSurface" /> if the part is an aerodynamic control surface, otherwisenull.
  -}
 getPartControlSurface :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.ControlSurface)
 getPartControlSurface thisArg = do
@@ -8742,8 +8742,8 @@ getPartControlSurfaceStreamReq thisArg =
 getPartControlSurfaceStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ControlSurface))
 getPartControlSurfaceStream thisArg = requestStream $ getPartControlSurfaceStreamReq thisArg 
 
-{-
- - The cost of the part, in units of funds.
+{-|
+The cost of the part, in units of funds.
  -}
 getPartCost :: KRPCHS.SpaceCenter.Part -> RPCContext (Double)
 getPartCost thisArg = do
@@ -8759,8 +8759,8 @@ getPartCostStreamReq thisArg =
 getPartCostStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Double))
 getPartCostStream thisArg = requestStream $ getPartCostStreamReq thisArg 
 
-{-
- - Whether this part is crossfeed capable.
+{-|
+Whether this part is crossfeed capable.
  -}
 getPartCrossfeed :: KRPCHS.SpaceCenter.Part -> RPCContext (Bool)
 getPartCrossfeed thisArg = do
@@ -8776,8 +8776,8 @@ getPartCrossfeedStreamReq thisArg =
 getPartCrossfeedStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Bool))
 getPartCrossfeedStream thisArg = requestStream $ getPartCrossfeedStreamReq thisArg 
 
-{-
- - The stage in which this part will be decoupled. Returns -1 if the part is never decoupled from the vessel.
+{-|
+The stage in which this part will be decoupled. Returns -1 if the part is never decoupled from the vessel.
  -}
 getPartDecoupleStage :: KRPCHS.SpaceCenter.Part -> RPCContext (Data.Int.Int32)
 getPartDecoupleStage thisArg = do
@@ -8793,8 +8793,8 @@ getPartDecoupleStageStreamReq thisArg =
 getPartDecoupleStageStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Data.Int.Int32))
 getPartDecoupleStageStream thisArg = requestStream $ getPartDecoupleStageStreamReq thisArg 
 
-{-
- - A <see cref="T:SpaceCenter.Decoupler" /> if the part is a decoupler, otherwisenull.
+{-|
+A <see cref="T:SpaceCenter.Decoupler" /> if the part is a decoupler, otherwisenull.
  -}
 getPartDecoupler :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.Decoupler)
 getPartDecoupler thisArg = do
@@ -8810,8 +8810,8 @@ getPartDecouplerStreamReq thisArg =
 getPartDecouplerStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Decoupler))
 getPartDecouplerStream thisArg = requestStream $ getPartDecouplerStreamReq thisArg 
 
-{-
- - A <see cref="T:SpaceCenter.DockingPort" /> if the part is a docking port, otherwisenull.
+{-|
+A <see cref="T:SpaceCenter.DockingPort" /> if the part is a docking port, otherwisenull.
  -}
 getPartDockingPort :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.DockingPort)
 getPartDockingPort thisArg = do
@@ -8827,8 +8827,8 @@ getPartDockingPortStreamReq thisArg =
 getPartDockingPortStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.DockingPort))
 getPartDockingPortStream thisArg = requestStream $ getPartDockingPortStreamReq thisArg 
 
-{-
- - The mass of the part, not including any resources it contains, in kilograms. Returns zero if the part is massless.
+{-|
+The mass of the part, not including any resources it contains, in kilograms. Returns zero if the part is massless.
  -}
 getPartDryMass :: KRPCHS.SpaceCenter.Part -> RPCContext (Double)
 getPartDryMass thisArg = do
@@ -8844,8 +8844,8 @@ getPartDryMassStreamReq thisArg =
 getPartDryMassStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Double))
 getPartDryMassStream thisArg = requestStream $ getPartDryMassStreamReq thisArg 
 
-{-
- - The dynamic pressure acting on the part, in Pascals.
+{-|
+The dynamic pressure acting on the part, in Pascals.
  -}
 getPartDynamicPressure :: KRPCHS.SpaceCenter.Part -> RPCContext (Float)
 getPartDynamicPressure thisArg = do
@@ -8861,8 +8861,8 @@ getPartDynamicPressureStreamReq thisArg =
 getPartDynamicPressureStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Float))
 getPartDynamicPressureStream thisArg = requestStream $ getPartDynamicPressureStreamReq thisArg 
 
-{-
- - An <see cref="T:SpaceCenter.Engine" /> if the part is an engine, otherwisenull.
+{-|
+An <see cref="T:SpaceCenter.Engine" /> if the part is an engine, otherwisenull.
  -}
 getPartEngine :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.Engine)
 getPartEngine thisArg = do
@@ -8878,8 +8878,8 @@ getPartEngineStreamReq thisArg =
 getPartEngineStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Engine))
 getPartEngineStream thisArg = requestStream $ getPartEngineStreamReq thisArg 
 
-{-
- - An <see cref="T:SpaceCenter.Experiment" /> if the part is a science experiment, otherwisenull.
+{-|
+An <see cref="T:SpaceCenter.Experiment" /> if the part is a science experiment, otherwisenull.
  -}
 getPartExperiment :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.Experiment)
 getPartExperiment thisArg = do
@@ -8895,8 +8895,8 @@ getPartExperimentStreamReq thisArg =
 getPartExperimentStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Experiment))
 getPartExperimentStream thisArg = requestStream $ getPartExperimentStreamReq thisArg 
 
-{-
- - A <see cref="T:SpaceCenter.Fairing" /> if the part is a fairing, otherwisenull.
+{-|
+A <see cref="T:SpaceCenter.Fairing" /> if the part is a fairing, otherwisenull.
  -}
 getPartFairing :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.Fairing)
 getPartFairing thisArg = do
@@ -8912,8 +8912,8 @@ getPartFairingStreamReq thisArg =
 getPartFairingStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Fairing))
 getPartFairingStream thisArg = requestStream $ getPartFairingStreamReq thisArg 
 
-{-
- - The parts that are connected to this part via fuel lines, where the direction of the fuel line is into this part.
+{-|
+The parts that are connected to this part via fuel lines, where the direction of the fuel line is into this part.
  -}
 getPartFuelLinesFrom :: KRPCHS.SpaceCenter.Part -> RPCContext ([KRPCHS.SpaceCenter.Part])
 getPartFuelLinesFrom thisArg = do
@@ -8929,8 +8929,8 @@ getPartFuelLinesFromStreamReq thisArg =
 getPartFuelLinesFromStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
 getPartFuelLinesFromStream thisArg = requestStream $ getPartFuelLinesFromStreamReq thisArg 
 
-{-
- - The parts that are connected to this part via fuel lines, where the direction of the fuel line is out of this part.
+{-|
+The parts that are connected to this part via fuel lines, where the direction of the fuel line is out of this part.
  -}
 getPartFuelLinesTo :: KRPCHS.SpaceCenter.Part -> RPCContext ([KRPCHS.SpaceCenter.Part])
 getPartFuelLinesTo thisArg = do
@@ -8946,8 +8946,8 @@ getPartFuelLinesToStreamReq thisArg =
 getPartFuelLinesToStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
 getPartFuelLinesToStream thisArg = requestStream $ getPartFuelLinesToStreamReq thisArg 
 
-{-
- - The impact tolerance of the part, in meters per second.
+{-|
+The impact tolerance of the part, in meters per second.
  -}
 getPartImpactTolerance :: KRPCHS.SpaceCenter.Part -> RPCContext (Double)
 getPartImpactTolerance thisArg = do
@@ -8963,9 +8963,9 @@ getPartImpactToleranceStreamReq thisArg =
 getPartImpactToleranceStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Double))
 getPartImpactToleranceStream thisArg = requestStream $ getPartImpactToleranceStreamReq thisArg 
 
-{-
- - The inertia tensor of the part in the parts reference frame (<see cref="T:SpaceCenter.ReferenceFrame" />).
- - Returns the 3x3 matrix as a list of elements, in row-major order.
+{-|
+The inertia tensor of the part in the parts reference frame (<see cref="T:SpaceCenter.ReferenceFrame" />).
+Returns the 3x3 matrix as a list of elements, in row-major order.
  -}
 getPartInertiaTensor :: KRPCHS.SpaceCenter.Part -> RPCContext ([Double])
 getPartInertiaTensor thisArg = do
@@ -8981,10 +8981,10 @@ getPartInertiaTensorStreamReq thisArg =
 getPartInertiaTensorStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream ([Double]))
 getPartInertiaTensorStream thisArg = requestStream $ getPartInertiaTensorStreamReq thisArg 
 
-{-
- - An <see cref="T:SpaceCenter.Intake" /> if the part is an intake, otherwisenull.This includes any part that generates thrust. This covers many different types of engine,
- - including liquid fuel rockets, solid rocket boosters and jet engines.
- - For RCS thrusters see <see cref="T:SpaceCenter.RCS" />.
+{-|
+An <see cref="T:SpaceCenter.Intake" /> if the part is an intake, otherwisenull.This includes any part that generates thrust. This covers many different types of engine,
+including liquid fuel rockets, solid rocket boosters and jet engines.
+For RCS thrusters see <see cref="T:SpaceCenter.RCS" />.
  -}
 getPartIntake :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.Intake)
 getPartIntake thisArg = do
@@ -9000,8 +9000,8 @@ getPartIntakeStreamReq thisArg =
 getPartIntakeStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Intake))
 getPartIntakeStream thisArg = requestStream $ getPartIntakeStreamReq thisArg 
 
-{-
- - Whether this part is a fuel line.
+{-|
+Whether this part is a fuel line.
  -}
 getPartIsFuelLine :: KRPCHS.SpaceCenter.Part -> RPCContext (Bool)
 getPartIsFuelLine thisArg = do
@@ -9017,8 +9017,8 @@ getPartIsFuelLineStreamReq thisArg =
 getPartIsFuelLineStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Bool))
 getPartIsFuelLineStream thisArg = requestStream $ getPartIsFuelLineStreamReq thisArg 
 
-{-
- - A <see cref="T:SpaceCenter.LandingGear" /> if the part is a landing gear, otherwisenull.
+{-|
+A <see cref="T:SpaceCenter.LandingGear" /> if the part is a landing gear, otherwisenull.
  -}
 getPartLandingGear :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.LandingGear)
 getPartLandingGear thisArg = do
@@ -9034,8 +9034,8 @@ getPartLandingGearStreamReq thisArg =
 getPartLandingGearStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.LandingGear))
 getPartLandingGearStream thisArg = requestStream $ getPartLandingGearStreamReq thisArg 
 
-{-
- - A <see cref="T:SpaceCenter.LandingLeg" /> if the part is a landing leg, otherwisenull.
+{-|
+A <see cref="T:SpaceCenter.LandingLeg" /> if the part is a landing leg, otherwisenull.
  -}
 getPartLandingLeg :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.LandingLeg)
 getPartLandingLeg thisArg = do
@@ -9051,8 +9051,8 @@ getPartLandingLegStreamReq thisArg =
 getPartLandingLegStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.LandingLeg))
 getPartLandingLegStream thisArg = requestStream $ getPartLandingLegStreamReq thisArg 
 
-{-
- - A <see cref="T:SpaceCenter.LaunchClamp" /> if the part is a launch clamp, otherwisenull.
+{-|
+A <see cref="T:SpaceCenter.LaunchClamp" /> if the part is a launch clamp, otherwisenull.
  -}
 getPartLaunchClamp :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.LaunchClamp)
 getPartLaunchClamp thisArg = do
@@ -9068,8 +9068,8 @@ getPartLaunchClampStreamReq thisArg =
 getPartLaunchClampStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.LaunchClamp))
 getPartLaunchClampStream thisArg = requestStream $ getPartLaunchClampStreamReq thisArg 
 
-{-
- - A <see cref="T:SpaceCenter.Light" /> if the part is a light, otherwisenull.
+{-|
+A <see cref="T:SpaceCenter.Light" /> if the part is a light, otherwisenull.
  -}
 getPartLight :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.Light)
 getPartLight thisArg = do
@@ -9085,9 +9085,9 @@ getPartLightStreamReq thisArg =
 getPartLightStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Light))
 getPartLightStream thisArg = requestStream $ getPartLightStreamReq thisArg 
 
-{-
- - The current mass of the part, including resources it contains, in kilograms.
- - Returns zero if the part is massless.
+{-|
+The current mass of the part, including resources it contains, in kilograms.
+Returns zero if the part is massless.
  -}
 getPartMass :: KRPCHS.SpaceCenter.Part -> RPCContext (Double)
 getPartMass thisArg = do
@@ -9103,8 +9103,8 @@ getPartMassStreamReq thisArg =
 getPartMassStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Double))
 getPartMassStream thisArg = requestStream $ getPartMassStreamReq thisArg 
 
-{-
- - Whether the part is <a href="http://wiki.kerbalspaceprogram.com/wiki/Massless_part">massless.
+{-|
+Whether the part is <a href="http://wiki.kerbalspaceprogram.com/wiki/Massless_part">massless.
  -}
 getPartMassless :: KRPCHS.SpaceCenter.Part -> RPCContext (Bool)
 getPartMassless thisArg = do
@@ -9120,8 +9120,8 @@ getPartMasslessStreamReq thisArg =
 getPartMasslessStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Bool))
 getPartMasslessStream thisArg = requestStream $ getPartMasslessStreamReq thisArg 
 
-{-
- - Maximum temperature that the skin of the part can survive, in Kelvin.
+{-|
+Maximum temperature that the skin of the part can survive, in Kelvin.
  -}
 getPartMaxSkinTemperature :: KRPCHS.SpaceCenter.Part -> RPCContext (Double)
 getPartMaxSkinTemperature thisArg = do
@@ -9137,8 +9137,8 @@ getPartMaxSkinTemperatureStreamReq thisArg =
 getPartMaxSkinTemperatureStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Double))
 getPartMaxSkinTemperatureStream thisArg = requestStream $ getPartMaxSkinTemperatureStreamReq thisArg 
 
-{-
- - Maximum temperature that the part can survive, in Kelvin.
+{-|
+Maximum temperature that the part can survive, in Kelvin.
  -}
 getPartMaxTemperature :: KRPCHS.SpaceCenter.Part -> RPCContext (Double)
 getPartMaxTemperature thisArg = do
@@ -9154,8 +9154,8 @@ getPartMaxTemperatureStreamReq thisArg =
 getPartMaxTemperatureStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Double))
 getPartMaxTemperatureStream thisArg = requestStream $ getPartMaxTemperatureStreamReq thisArg 
 
-{-
- - The modules for this part.
+{-|
+The modules for this part.
  -}
 getPartModules :: KRPCHS.SpaceCenter.Part -> RPCContext ([KRPCHS.SpaceCenter.Module])
 getPartModules thisArg = do
@@ -9171,9 +9171,9 @@ getPartModulesStreamReq thisArg =
 getPartModulesStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Module]))
 getPartModulesStream thisArg = requestStream $ getPartModulesStreamReq thisArg 
 
-{-
- - The moment of inertia of the part inkg.m^2around its center of mass
- - in the parts reference frame (<see cref="T:SpaceCenter.ReferenceFrame" />).
+{-|
+The moment of inertia of the part inkg.m^2around its center of mass
+in the parts reference frame (<see cref="T:SpaceCenter.ReferenceFrame" />).
  -}
 getPartMomentOfInertia :: KRPCHS.SpaceCenter.Part -> RPCContext ((Double, Double, Double))
 getPartMomentOfInertia thisArg = do
@@ -9189,10 +9189,10 @@ getPartMomentOfInertiaStreamReq thisArg =
 getPartMomentOfInertiaStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream ((Double, Double, Double)))
 getPartMomentOfInertiaStream thisArg = requestStream $ getPartMomentOfInertiaStreamReq thisArg 
 
-{-
- - Internal name of the part, as used in
- - <a href="http://wiki.kerbalspaceprogram.com/wiki/CFG_File_Documentation">part cfg files.
- - For example "Mark1-2Pod".
+{-|
+Internal name of the part, as used in
+<a href="http://wiki.kerbalspaceprogram.com/wiki/CFG_File_Documentation">part cfg files.
+For example "Mark1-2Pod".
  -}
 getPartName :: KRPCHS.SpaceCenter.Part -> RPCContext (Data.Text.Text)
 getPartName thisArg = do
@@ -9208,8 +9208,8 @@ getPartNameStreamReq thisArg =
 getPartNameStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Data.Text.Text))
 getPartNameStream thisArg = requestStream $ getPartNameStreamReq thisArg 
 
-{-
- - A <see cref="T:SpaceCenter.Parachute" /> if the part is a parachute, otherwisenull.
+{-|
+A <see cref="T:SpaceCenter.Parachute" /> if the part is a parachute, otherwisenull.
  -}
 getPartParachute :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.Parachute)
 getPartParachute thisArg = do
@@ -9225,9 +9225,9 @@ getPartParachuteStreamReq thisArg =
 getPartParachuteStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Parachute))
 getPartParachuteStream thisArg = requestStream $ getPartParachuteStreamReq thisArg 
 
-{-
- - The parts parent. Returnsnullif the part does not have a parent.
- - This, in combination with <see cref="M:SpaceCenter.Part.Children" />, can be used to traverse the vessels parts tree.
+{-|
+The parts parent. Returnsnullif the part does not have a parent.
+This, in combination with <see cref="M:SpaceCenter.Part.Children" />, can be used to traverse the vessels parts tree.
  -}
 getPartParent :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.Part)
 getPartParent thisArg = do
@@ -9243,8 +9243,8 @@ getPartParentStreamReq thisArg =
 getPartParentStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
 getPartParentStream thisArg = requestStream $ getPartParentStreamReq thisArg 
 
-{-
- - A <see cref="T:SpaceCenter.RCS" /> if the part is an RCS block/thruster, otherwisenull.
+{-|
+A <see cref="T:SpaceCenter.RCS" /> if the part is an RCS block/thruster, otherwisenull.
  -}
 getPartRCS :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.RCS)
 getPartRCS thisArg = do
@@ -9260,9 +9260,9 @@ getPartRCSStreamReq thisArg =
 getPartRCSStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.RCS))
 getPartRCSStream thisArg = requestStream $ getPartRCSStreamReq thisArg 
 
-{-
- - Whether the part is radially attached to its parent, i.e. on the side of its parent.
- - If the part has no parent, returnsfalse.
+{-|
+Whether the part is radially attached to its parent, i.e. on the side of its parent.
+If the part has no parent, returnsfalse.
  -}
 getPartRadiallyAttached :: KRPCHS.SpaceCenter.Part -> RPCContext (Bool)
 getPartRadiallyAttached thisArg = do
@@ -9278,8 +9278,8 @@ getPartRadiallyAttachedStreamReq thisArg =
 getPartRadiallyAttachedStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Bool))
 getPartRadiallyAttachedStream thisArg = requestStream $ getPartRadiallyAttachedStreamReq thisArg 
 
-{-
- - A <see cref="T:SpaceCenter.Radiator" /> if the part is a radiator, otherwisenull.
+{-|
+A <see cref="T:SpaceCenter.Radiator" /> if the part is a radiator, otherwisenull.
  -}
 getPartRadiator :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.Radiator)
 getPartRadiator thisArg = do
@@ -9295,8 +9295,8 @@ getPartRadiatorStreamReq thisArg =
 getPartRadiatorStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Radiator))
 getPartRadiatorStream thisArg = requestStream $ getPartRadiatorStreamReq thisArg 
 
-{-
- - A <see cref="T:SpaceCenter.ReactionWheel" /> if the part is a reaction wheel, otherwisenull.
+{-|
+A <see cref="T:SpaceCenter.ReactionWheel" /> if the part is a reaction wheel, otherwisenull.
  -}
 getPartReactionWheel :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.ReactionWheel)
 getPartReactionWheel thisArg = do
@@ -9312,10 +9312,10 @@ getPartReactionWheelStreamReq thisArg =
 getPartReactionWheelStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReactionWheel))
 getPartReactionWheelStream thisArg = requestStream $ getPartReactionWheelStreamReq thisArg 
 
-{-
- - The reference frame that is fixed relative to this part, and centered on a fixed position within the part, defined by the parts model.
- - <list type="bullet">The origin is at the position of the part, as returned by <see cref="M:SpaceCenter.Part.Position" />.The axes rotate with the part.The x, y and z axis directions depend on the design of the part.For docking port parts, this reference frame is not necessarily equivalent to the reference frame
- - for the docking port, returned by <see cref="M:SpaceCenter.DockingPort.ReferenceFrame" />.
+{-|
+The reference frame that is fixed relative to this part, and centered on a fixed position within the part, defined by the parts model.
+<list type="bullet">The origin is at the position of the part, as returned by <see cref="M:SpaceCenter.Part.Position" />.The axes rotate with the part.The x, y and z axis directions depend on the design of the part.For docking port parts, this reference frame is not necessarily equivalent to the reference frame
+for the docking port, returned by <see cref="M:SpaceCenter.DockingPort.ReferenceFrame" />.
  -}
 getPartReferenceFrame :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
 getPartReferenceFrame thisArg = do
@@ -9331,8 +9331,8 @@ getPartReferenceFrameStreamReq thisArg =
 getPartReferenceFrameStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 getPartReferenceFrameStream thisArg = requestStream $ getPartReferenceFrameStreamReq thisArg 
 
-{-
- - A <see cref="T:SpaceCenter.ResourceConverter" /> if the part is a resource converter, otherwisenull.
+{-|
+A <see cref="T:SpaceCenter.ResourceConverter" /> if the part is a resource converter, otherwisenull.
  -}
 getPartResourceConverter :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.ResourceConverter)
 getPartResourceConverter thisArg = do
@@ -9348,8 +9348,8 @@ getPartResourceConverterStreamReq thisArg =
 getPartResourceConverterStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ResourceConverter))
 getPartResourceConverterStream thisArg = requestStream $ getPartResourceConverterStreamReq thisArg 
 
-{-
- - A <see cref="T:SpaceCenter.ResourceHarvester" /> if the part is a resource harvester, otherwisenull.
+{-|
+A <see cref="T:SpaceCenter.ResourceHarvester" /> if the part is a resource harvester, otherwisenull.
  -}
 getPartResourceHarvester :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.ResourceHarvester)
 getPartResourceHarvester thisArg = do
@@ -9365,8 +9365,8 @@ getPartResourceHarvesterStreamReq thisArg =
 getPartResourceHarvesterStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ResourceHarvester))
 getPartResourceHarvesterStream thisArg = requestStream $ getPartResourceHarvesterStreamReq thisArg 
 
-{-
- - A <see cref="T:SpaceCenter.Resources" /> object for the part.
+{-|
+A <see cref="T:SpaceCenter.Resources" /> object for the part.
  -}
 getPartResources :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.Resources)
 getPartResources thisArg = do
@@ -9382,8 +9382,8 @@ getPartResourcesStreamReq thisArg =
 getPartResourcesStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Resources))
 getPartResourcesStream thisArg = requestStream $ getPartResourcesStreamReq thisArg 
 
-{-
- - A <see cref="T:SpaceCenter.Sensor" /> if the part is a sensor, otherwisenull.
+{-|
+A <see cref="T:SpaceCenter.Sensor" /> if the part is a sensor, otherwisenull.
  -}
 getPartSensor :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.Sensor)
 getPartSensor thisArg = do
@@ -9399,8 +9399,8 @@ getPartSensorStreamReq thisArg =
 getPartSensorStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Sensor))
 getPartSensorStream thisArg = requestStream $ getPartSensorStreamReq thisArg 
 
-{-
- - Whether the part is shielded from the exterior of the vessel, for example by a fairing.
+{-|
+Whether the part is shielded from the exterior of the vessel, for example by a fairing.
  -}
 getPartShielded :: KRPCHS.SpaceCenter.Part -> RPCContext (Bool)
 getPartShielded thisArg = do
@@ -9416,8 +9416,8 @@ getPartShieldedStreamReq thisArg =
 getPartShieldedStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Bool))
 getPartShieldedStream thisArg = requestStream $ getPartShieldedStreamReq thisArg 
 
-{-
- - Temperature of the skin of the part, in Kelvin.
+{-|
+Temperature of the skin of the part, in Kelvin.
  -}
 getPartSkinTemperature :: KRPCHS.SpaceCenter.Part -> RPCContext (Double)
 getPartSkinTemperature thisArg = do
@@ -9433,8 +9433,8 @@ getPartSkinTemperatureStreamReq thisArg =
 getPartSkinTemperatureStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Double))
 getPartSkinTemperatureStream thisArg = requestStream $ getPartSkinTemperatureStreamReq thisArg 
 
-{-
- - A <see cref="T:SpaceCenter.SolarPanel" /> if the part is a solar panel, otherwisenull.
+{-|
+A <see cref="T:SpaceCenter.SolarPanel" /> if the part is a solar panel, otherwisenull.
  -}
 getPartSolarPanel :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.SolarPanel)
 getPartSolarPanel thisArg = do
@@ -9450,8 +9450,8 @@ getPartSolarPanelStreamReq thisArg =
 getPartSolarPanelStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.SolarPanel))
 getPartSolarPanelStream thisArg = requestStream $ getPartSolarPanelStreamReq thisArg 
 
-{-
- - The stage in which this part will be activated. Returns -1 if the part is not activated by staging.
+{-|
+The stage in which this part will be activated. Returns -1 if the part is not activated by staging.
  -}
 getPartStage :: KRPCHS.SpaceCenter.Part -> RPCContext (Data.Int.Int32)
 getPartStage thisArg = do
@@ -9467,9 +9467,9 @@ getPartStageStreamReq thisArg =
 getPartStageStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Data.Int.Int32))
 getPartStageStream thisArg = requestStream $ getPartStageStreamReq thisArg 
 
-{-
- - The name tag for the part. Can be set to a custom string using the in-game user interface.This requires either the <a href="http://github.com/krpc/NameTag/releases/latest">NameTagor
- - <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/61827-/">kOSmods to be installed.
+{-|
+The name tag for the part. Can be set to a custom string using the in-game user interface.This requires either the <a href="http://github.com/krpc/NameTag/releases/latest">NameTagor
+<a href="http://forum.kerbalspaceprogram.com/index.php?/topic/61827-/">kOSmods to be installed.
  -}
 getPartTag :: KRPCHS.SpaceCenter.Part -> RPCContext (Data.Text.Text)
 getPartTag thisArg = do
@@ -9485,8 +9485,8 @@ getPartTagStreamReq thisArg =
 getPartTagStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Data.Text.Text))
 getPartTagStream thisArg = requestStream $ getPartTagStreamReq thisArg 
 
-{-
- - Temperature of the part, in Kelvin.
+{-|
+Temperature of the part, in Kelvin.
  -}
 getPartTemperature :: KRPCHS.SpaceCenter.Part -> RPCContext (Double)
 getPartTemperature thisArg = do
@@ -9502,10 +9502,10 @@ getPartTemperatureStreamReq thisArg =
 getPartTemperatureStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Double))
 getPartTemperatureStream thisArg = requestStream $ getPartTemperatureStreamReq thisArg 
 
-{-
- - The rate at which heat energy is conducting into or out of the part via contact with other parts.
- - Measured in energy per unit time, or power, in Watts.
- - A positive value means the part is gaining heat energy, and negative means it is losing heat energy.
+{-|
+The rate at which heat energy is conducting into or out of the part via contact with other parts.
+Measured in energy per unit time, or power, in Watts.
+A positive value means the part is gaining heat energy, and negative means it is losing heat energy.
  -}
 getPartThermalConductionFlux :: KRPCHS.SpaceCenter.Part -> RPCContext (Float)
 getPartThermalConductionFlux thisArg = do
@@ -9521,10 +9521,10 @@ getPartThermalConductionFluxStreamReq thisArg =
 getPartThermalConductionFluxStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Float))
 getPartThermalConductionFluxStream thisArg = requestStream $ getPartThermalConductionFluxStreamReq thisArg 
 
-{-
- - The rate at which heat energy is convecting into or out of the part from the surrounding atmosphere.
- - Measured in energy per unit time, or power, in Watts.
- - A positive value means the part is gaining heat energy, and negative means it is losing heat energy.
+{-|
+The rate at which heat energy is convecting into or out of the part from the surrounding atmosphere.
+Measured in energy per unit time, or power, in Watts.
+A positive value means the part is gaining heat energy, and negative means it is losing heat energy.
  -}
 getPartThermalConvectionFlux :: KRPCHS.SpaceCenter.Part -> RPCContext (Float)
 getPartThermalConvectionFlux thisArg = do
@@ -9540,11 +9540,11 @@ getPartThermalConvectionFluxStreamReq thisArg =
 getPartThermalConvectionFluxStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Float))
 getPartThermalConvectionFluxStream thisArg = requestStream $ getPartThermalConvectionFluxStreamReq thisArg 
 
-{-
- - The rate at which heat energy is begin generated by the part.
- - For example, some engines generate heat by combusting fuel.
- - Measured in energy per unit time, or power, in Watts.
- - A positive value means the part is gaining heat energy, and negative means it is losing heat energy.
+{-|
+The rate at which heat energy is begin generated by the part.
+For example, some engines generate heat by combusting fuel.
+Measured in energy per unit time, or power, in Watts.
+A positive value means the part is gaining heat energy, and negative means it is losing heat energy.
  -}
 getPartThermalInternalFlux :: KRPCHS.SpaceCenter.Part -> RPCContext (Float)
 getPartThermalInternalFlux thisArg = do
@@ -9560,8 +9560,8 @@ getPartThermalInternalFluxStreamReq thisArg =
 getPartThermalInternalFluxStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Float))
 getPartThermalInternalFluxStream thisArg = requestStream $ getPartThermalInternalFluxStreamReq thisArg 
 
-{-
- - A measure of how much energy it takes to increase the internal temperature of the part, in Joules per Kelvin.
+{-|
+A measure of how much energy it takes to increase the internal temperature of the part, in Joules per Kelvin.
  -}
 getPartThermalMass :: KRPCHS.SpaceCenter.Part -> RPCContext (Float)
 getPartThermalMass thisArg = do
@@ -9577,10 +9577,10 @@ getPartThermalMassStreamReq thisArg =
 getPartThermalMassStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Float))
 getPartThermalMassStream thisArg = requestStream $ getPartThermalMassStreamReq thisArg 
 
-{-
- - The rate at which heat energy is radiating into or out of the part from the surrounding environment.
- - Measured in energy per unit time, or power, in Watts.
- - A positive value means the part is gaining heat energy, and negative means it is losing heat energy.
+{-|
+The rate at which heat energy is radiating into or out of the part from the surrounding environment.
+Measured in energy per unit time, or power, in Watts.
+A positive value means the part is gaining heat energy, and negative means it is losing heat energy.
  -}
 getPartThermalRadiationFlux :: KRPCHS.SpaceCenter.Part -> RPCContext (Float)
 getPartThermalRadiationFlux thisArg = do
@@ -9596,8 +9596,8 @@ getPartThermalRadiationFluxStreamReq thisArg =
 getPartThermalRadiationFluxStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Float))
 getPartThermalRadiationFluxStream thisArg = requestStream $ getPartThermalRadiationFluxStreamReq thisArg 
 
-{-
- - A measure of how much energy it takes to increase the temperature of the resources contained in the part, in Joules per Kelvin.
+{-|
+A measure of how much energy it takes to increase the temperature of the resources contained in the part, in Joules per Kelvin.
  -}
 getPartThermalResourceMass :: KRPCHS.SpaceCenter.Part -> RPCContext (Float)
 getPartThermalResourceMass thisArg = do
@@ -9613,8 +9613,8 @@ getPartThermalResourceMassStreamReq thisArg =
 getPartThermalResourceMassStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Float))
 getPartThermalResourceMassStream thisArg = requestStream $ getPartThermalResourceMassStreamReq thisArg 
 
-{-
- - A measure of how much energy it takes to increase the skin temperature of the part, in Joules per Kelvin.
+{-|
+A measure of how much energy it takes to increase the skin temperature of the part, in Joules per Kelvin.
  -}
 getPartThermalSkinMass :: KRPCHS.SpaceCenter.Part -> RPCContext (Float)
 getPartThermalSkinMass thisArg = do
@@ -9630,11 +9630,11 @@ getPartThermalSkinMassStreamReq thisArg =
 getPartThermalSkinMassStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Float))
 getPartThermalSkinMassStream thisArg = requestStream $ getPartThermalSkinMassStreamReq thisArg 
 
-{-
- - The rate at which heat energy is transferring between the part's skin and its internals.
- - Measured in energy per unit time, or power, in Watts.
- - A positive value means the part's internals are gaining heat energy,
- - and negative means its skin is gaining heat energy.
+{-|
+The rate at which heat energy is transferring between the part's skin and its internals.
+Measured in energy per unit time, or power, in Watts.
+A positive value means the part's internals are gaining heat energy,
+and negative means its skin is gaining heat energy.
  -}
 getPartThermalSkinToInternalFlux :: KRPCHS.SpaceCenter.Part -> RPCContext (Float)
 getPartThermalSkinToInternalFlux thisArg = do
@@ -9650,8 +9650,8 @@ getPartThermalSkinToInternalFluxStreamReq thisArg =
 getPartThermalSkinToInternalFluxStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Float))
 getPartThermalSkinToInternalFluxStream thisArg = requestStream $ getPartThermalSkinToInternalFluxStreamReq thisArg 
 
-{-
- - Title of the part, as shown when the part is right clicked in-game. For example "Mk1-2 Command Pod".
+{-|
+Title of the part, as shown when the part is right clicked in-game. For example "Mk1-2 Command Pod".
  -}
 getPartTitle :: KRPCHS.SpaceCenter.Part -> RPCContext (Data.Text.Text)
 getPartTitle thisArg = do
@@ -9667,8 +9667,8 @@ getPartTitleStreamReq thisArg =
 getPartTitleStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Data.Text.Text))
 getPartTitleStream thisArg = requestStream $ getPartTitleStreamReq thisArg 
 
-{-
- - The vessel that contains this part.
+{-|
+The vessel that contains this part.
  -}
 getPartVessel :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.Vessel)
 getPartVessel thisArg = do
@@ -9684,9 +9684,9 @@ getPartVesselStreamReq thisArg =
 getPartVesselStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Vessel))
 getPartVesselStream thisArg = requestStream $ getPartVesselStreamReq thisArg 
 
-{-
- - The name tag for the part. Can be set to a custom string using the in-game user interface.This requires either the <a href="http://github.com/krpc/NameTag/releases/latest">NameTagor
- - <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/61827-/">kOSmods to be installed.
+{-|
+The name tag for the part. Can be set to a custom string using the in-game user interface.This requires either the <a href="http://github.com/krpc/NameTag/releases/latest">NameTagor
+<a href="http://forum.kerbalspaceprogram.com/index.php?/topic/61827-/">kOSmods to be installed.
  -}
 setPartTag :: KRPCHS.SpaceCenter.Part -> Data.Text.Text -> RPCContext ()
 setPartTag thisArg valueArg = do
@@ -9694,8 +9694,8 @@ setPartTag thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - A list of all parts that are decoupled in the given <paramref name="stage" />.<param name="stage">
+{-|
+A list of all parts that are decoupled in the given <paramref name="stage" />.<param name="stage">
  -}
 partsInDecoupleStage :: KRPCHS.SpaceCenter.Parts -> Data.Int.Int32 -> RPCContext ([KRPCHS.SpaceCenter.Part])
 partsInDecoupleStage thisArg stageArg = do
@@ -9711,8 +9711,8 @@ partsInDecoupleStageStreamReq thisArg stageArg =
 partsInDecoupleStageStream :: KRPCHS.SpaceCenter.Parts -> Data.Int.Int32 -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
 partsInDecoupleStageStream thisArg stageArg = requestStream $ partsInDecoupleStageStreamReq thisArg stageArg 
 
-{-
- - A list of all parts that are activated in the given <paramref name="stage" />.<param name="stage">
+{-|
+A list of all parts that are activated in the given <paramref name="stage" />.<param name="stage">
  -}
 partsInStage :: KRPCHS.SpaceCenter.Parts -> Data.Int.Int32 -> RPCContext ([KRPCHS.SpaceCenter.Part])
 partsInStage thisArg stageArg = do
@@ -9728,9 +9728,9 @@ partsInStageStreamReq thisArg stageArg =
 partsInStageStream :: KRPCHS.SpaceCenter.Parts -> Data.Int.Int32 -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
 partsInStageStream thisArg stageArg = requestStream $ partsInStageStreamReq thisArg stageArg 
 
-{-
- - A list of modules (combined across all parts in the vessel) whose
- - <see cref="M:SpaceCenter.Module.Name" /> is <paramref name="moduleName" />.<param name="moduleName">
+{-|
+A list of modules (combined across all parts in the vessel) whose
+<see cref="M:SpaceCenter.Module.Name" /> is <paramref name="moduleName" />.<param name="moduleName">
  -}
 partsModulesWithName :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> RPCContext ([KRPCHS.SpaceCenter.Module])
 partsModulesWithName thisArg moduleNameArg = do
@@ -9746,9 +9746,9 @@ partsModulesWithNameStreamReq thisArg moduleNameArg =
 partsModulesWithNameStream :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Module]))
 partsModulesWithNameStream thisArg moduleNameArg = requestStream $ partsModulesWithNameStreamReq thisArg moduleNameArg 
 
-{-
- - A list of all parts that contain a <see cref="T:SpaceCenter.Module" /> whose
- - <see cref="M:SpaceCenter.Module.Name" /> is <paramref name="moduleName" />.<param name="moduleName">
+{-|
+A list of all parts that contain a <see cref="T:SpaceCenter.Module" /> whose
+<see cref="M:SpaceCenter.Module.Name" /> is <paramref name="moduleName" />.<param name="moduleName">
  -}
 partsWithModule :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> RPCContext ([KRPCHS.SpaceCenter.Part])
 partsWithModule thisArg moduleNameArg = do
@@ -9764,8 +9764,8 @@ partsWithModuleStreamReq thisArg moduleNameArg =
 partsWithModuleStream :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
 partsWithModuleStream thisArg moduleNameArg = requestStream $ partsWithModuleStreamReq thisArg moduleNameArg 
 
-{-
- - A list of parts whose <see cref="M:SpaceCenter.Part.Name" /> is <paramref name="name" />.<param name="name">
+{-|
+A list of parts whose <see cref="M:SpaceCenter.Part.Name" /> is <paramref name="name" />.<param name="name">
  -}
 partsWithName :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> RPCContext ([KRPCHS.SpaceCenter.Part])
 partsWithName thisArg nameArg = do
@@ -9781,8 +9781,8 @@ partsWithNameStreamReq thisArg nameArg =
 partsWithNameStream :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
 partsWithNameStream thisArg nameArg = requestStream $ partsWithNameStreamReq thisArg nameArg 
 
-{-
- - A list of all parts whose <see cref="M:SpaceCenter.Part.Tag" /> is <paramref name="tag" />.<param name="tag">
+{-|
+A list of all parts whose <see cref="M:SpaceCenter.Part.Tag" /> is <paramref name="tag" />.<param name="tag">
  -}
 partsWithTag :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> RPCContext ([KRPCHS.SpaceCenter.Part])
 partsWithTag thisArg tagArg = do
@@ -9798,8 +9798,8 @@ partsWithTagStreamReq thisArg tagArg =
 partsWithTagStream :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
 partsWithTagStream thisArg tagArg = requestStream $ partsWithTagStreamReq thisArg tagArg 
 
-{-
- - A list of all parts whose <see cref="M:SpaceCenter.Part.Title" /> is <paramref name="title" />.<param name="title">
+{-|
+A list of all parts whose <see cref="M:SpaceCenter.Part.Title" /> is <paramref name="title" />.<param name="title">
  -}
 partsWithTitle :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> RPCContext ([KRPCHS.SpaceCenter.Part])
 partsWithTitle thisArg titleArg = do
@@ -9815,8 +9815,8 @@ partsWithTitleStreamReq thisArg titleArg =
 partsWithTitleStream :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
 partsWithTitleStream thisArg titleArg = requestStream $ partsWithTitleStreamReq thisArg titleArg 
 
-{-
- - A list of all of the vessels parts.
+{-|
+A list of all of the vessels parts.
  -}
 getPartsAll :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.Part])
 getPartsAll thisArg = do
@@ -9832,8 +9832,8 @@ getPartsAllStreamReq thisArg =
 getPartsAllStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
 getPartsAllStream thisArg = requestStream $ getPartsAllStreamReq thisArg 
 
-{-
- - A list of all cargo bays in the vessel.
+{-|
+A list of all cargo bays in the vessel.
  -}
 getPartsCargoBays :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.CargoBay])
 getPartsCargoBays thisArg = do
@@ -9849,8 +9849,8 @@ getPartsCargoBaysStreamReq thisArg =
 getPartsCargoBaysStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.CargoBay]))
 getPartsCargoBaysStream thisArg = requestStream $ getPartsCargoBaysStreamReq thisArg 
 
-{-
- - A list of all control surfaces in the vessel.
+{-|
+A list of all control surfaces in the vessel.
  -}
 getPartsControlSurfaces :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.ControlSurface])
 getPartsControlSurfaces thisArg = do
@@ -9866,8 +9866,8 @@ getPartsControlSurfacesStreamReq thisArg =
 getPartsControlSurfacesStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.ControlSurface]))
 getPartsControlSurfacesStream thisArg = requestStream $ getPartsControlSurfacesStreamReq thisArg 
 
-{-
- - The part from which the vessel is controlled.
+{-|
+The part from which the vessel is controlled.
  -}
 getPartsControlling :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCHS.SpaceCenter.Part)
 getPartsControlling thisArg = do
@@ -9883,8 +9883,8 @@ getPartsControllingStreamReq thisArg =
 getPartsControllingStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
 getPartsControllingStream thisArg = requestStream $ getPartsControllingStreamReq thisArg 
 
-{-
- - A list of all decouplers in the vessel.
+{-|
+A list of all decouplers in the vessel.
  -}
 getPartsDecouplers :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.Decoupler])
 getPartsDecouplers thisArg = do
@@ -9900,8 +9900,8 @@ getPartsDecouplersStreamReq thisArg =
 getPartsDecouplersStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Decoupler]))
 getPartsDecouplersStream thisArg = requestStream $ getPartsDecouplersStreamReq thisArg 
 
-{-
- - A list of all docking ports in the vessel.
+{-|
+A list of all docking ports in the vessel.
  -}
 getPartsDockingPorts :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.DockingPort])
 getPartsDockingPorts thisArg = do
@@ -9917,9 +9917,9 @@ getPartsDockingPortsStreamReq thisArg =
 getPartsDockingPortsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.DockingPort]))
 getPartsDockingPortsStream thisArg = requestStream $ getPartsDockingPortsStreamReq thisArg 
 
-{-
- - A list of all engines in the vessel.This includes any part that generates thrust. This covers many different types of engine,
- - including liquid fuel rockets, solid rocket boosters, jet engines and RCS thrusters.
+{-|
+A list of all engines in the vessel.This includes any part that generates thrust. This covers many different types of engine,
+including liquid fuel rockets, solid rocket boosters, jet engines and RCS thrusters.
  -}
 getPartsEngines :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.Engine])
 getPartsEngines thisArg = do
@@ -9935,8 +9935,8 @@ getPartsEnginesStreamReq thisArg =
 getPartsEnginesStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Engine]))
 getPartsEnginesStream thisArg = requestStream $ getPartsEnginesStreamReq thisArg 
 
-{-
- - A list of all science experiments in the vessel.
+{-|
+A list of all science experiments in the vessel.
  -}
 getPartsExperiments :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.Experiment])
 getPartsExperiments thisArg = do
@@ -9952,8 +9952,8 @@ getPartsExperimentsStreamReq thisArg =
 getPartsExperimentsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Experiment]))
 getPartsExperimentsStream thisArg = requestStream $ getPartsExperimentsStreamReq thisArg 
 
-{-
- - A list of all fairings in the vessel.
+{-|
+A list of all fairings in the vessel.
  -}
 getPartsFairings :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.Fairing])
 getPartsFairings thisArg = do
@@ -9969,8 +9969,8 @@ getPartsFairingsStreamReq thisArg =
 getPartsFairingsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Fairing]))
 getPartsFairingsStream thisArg = requestStream $ getPartsFairingsStreamReq thisArg 
 
-{-
- - A list of all intakes in the vessel.
+{-|
+A list of all intakes in the vessel.
  -}
 getPartsIntakes :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.Intake])
 getPartsIntakes thisArg = do
@@ -9986,8 +9986,8 @@ getPartsIntakesStreamReq thisArg =
 getPartsIntakesStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Intake]))
 getPartsIntakesStream thisArg = requestStream $ getPartsIntakesStreamReq thisArg 
 
-{-
- - A list of all landing gear attached to the vessel.
+{-|
+A list of all landing gear attached to the vessel.
  -}
 getPartsLandingGear :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.LandingGear])
 getPartsLandingGear thisArg = do
@@ -10003,8 +10003,8 @@ getPartsLandingGearStreamReq thisArg =
 getPartsLandingGearStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.LandingGear]))
 getPartsLandingGearStream thisArg = requestStream $ getPartsLandingGearStreamReq thisArg 
 
-{-
- - A list of all landing legs attached to the vessel.
+{-|
+A list of all landing legs attached to the vessel.
  -}
 getPartsLandingLegs :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.LandingLeg])
 getPartsLandingLegs thisArg = do
@@ -10020,8 +10020,8 @@ getPartsLandingLegsStreamReq thisArg =
 getPartsLandingLegsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.LandingLeg]))
 getPartsLandingLegsStream thisArg = requestStream $ getPartsLandingLegsStreamReq thisArg 
 
-{-
- - A list of all launch clamps attached to the vessel.
+{-|
+A list of all launch clamps attached to the vessel.
  -}
 getPartsLaunchClamps :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.LaunchClamp])
 getPartsLaunchClamps thisArg = do
@@ -10037,8 +10037,8 @@ getPartsLaunchClampsStreamReq thisArg =
 getPartsLaunchClampsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.LaunchClamp]))
 getPartsLaunchClampsStream thisArg = requestStream $ getPartsLaunchClampsStreamReq thisArg 
 
-{-
- - A list of all lights in the vessel.
+{-|
+A list of all lights in the vessel.
  -}
 getPartsLights :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.Light])
 getPartsLights thisArg = do
@@ -10054,8 +10054,8 @@ getPartsLightsStreamReq thisArg =
 getPartsLightsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Light]))
 getPartsLightsStream thisArg = requestStream $ getPartsLightsStreamReq thisArg 
 
-{-
- - A list of all parachutes in the vessel.
+{-|
+A list of all parachutes in the vessel.
  -}
 getPartsParachutes :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.Parachute])
 getPartsParachutes thisArg = do
@@ -10071,8 +10071,8 @@ getPartsParachutesStreamReq thisArg =
 getPartsParachutesStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Parachute]))
 getPartsParachutesStream thisArg = requestStream $ getPartsParachutesStreamReq thisArg 
 
-{-
- - A list of all RCS blocks/thrusters in the vessel.
+{-|
+A list of all RCS blocks/thrusters in the vessel.
  -}
 getPartsRCS :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.RCS])
 getPartsRCS thisArg = do
@@ -10088,8 +10088,8 @@ getPartsRCSStreamReq thisArg =
 getPartsRCSStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.RCS]))
 getPartsRCSStream thisArg = requestStream $ getPartsRCSStreamReq thisArg 
 
-{-
- - A list of all radiators in the vessel.
+{-|
+A list of all radiators in the vessel.
  -}
 getPartsRadiators :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.Radiator])
 getPartsRadiators thisArg = do
@@ -10105,8 +10105,8 @@ getPartsRadiatorsStreamReq thisArg =
 getPartsRadiatorsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Radiator]))
 getPartsRadiatorsStream thisArg = requestStream $ getPartsRadiatorsStreamReq thisArg 
 
-{-
- - A list of all reaction wheels in the vessel.
+{-|
+A list of all reaction wheels in the vessel.
  -}
 getPartsReactionWheels :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.ReactionWheel])
 getPartsReactionWheels thisArg = do
@@ -10122,8 +10122,8 @@ getPartsReactionWheelsStreamReq thisArg =
 getPartsReactionWheelsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.ReactionWheel]))
 getPartsReactionWheelsStream thisArg = requestStream $ getPartsReactionWheelsStreamReq thisArg 
 
-{-
- - A list of all resource converters in the vessel.
+{-|
+A list of all resource converters in the vessel.
  -}
 getPartsResourceConverters :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.ResourceConverter])
 getPartsResourceConverters thisArg = do
@@ -10139,8 +10139,8 @@ getPartsResourceConvertersStreamReq thisArg =
 getPartsResourceConvertersStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.ResourceConverter]))
 getPartsResourceConvertersStream thisArg = requestStream $ getPartsResourceConvertersStreamReq thisArg 
 
-{-
- - A list of all resource harvesters in the vessel.
+{-|
+A list of all resource harvesters in the vessel.
  -}
 getPartsResourceHarvesters :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.ResourceHarvester])
 getPartsResourceHarvesters thisArg = do
@@ -10156,8 +10156,8 @@ getPartsResourceHarvestersStreamReq thisArg =
 getPartsResourceHarvestersStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.ResourceHarvester]))
 getPartsResourceHarvestersStream thisArg = requestStream $ getPartsResourceHarvestersStreamReq thisArg 
 
-{-
- - The vessels root part.
+{-|
+The vessels root part.
  -}
 getPartsRoot :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCHS.SpaceCenter.Part)
 getPartsRoot thisArg = do
@@ -10173,8 +10173,8 @@ getPartsRootStreamReq thisArg =
 getPartsRootStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
 getPartsRootStream thisArg = requestStream $ getPartsRootStreamReq thisArg 
 
-{-
- - A list of all sensors in the vessel.
+{-|
+A list of all sensors in the vessel.
  -}
 getPartsSensors :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.Sensor])
 getPartsSensors thisArg = do
@@ -10190,8 +10190,8 @@ getPartsSensorsStreamReq thisArg =
 getPartsSensorsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Sensor]))
 getPartsSensorsStream thisArg = requestStream $ getPartsSensorsStreamReq thisArg 
 
-{-
- - A list of all solar panels in the vessel.
+{-|
+A list of all solar panels in the vessel.
  -}
 getPartsSolarPanels :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.SolarPanel])
 getPartsSolarPanels thisArg = do
@@ -10207,8 +10207,8 @@ getPartsSolarPanelsStreamReq thisArg =
 getPartsSolarPanelsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.SolarPanel]))
 getPartsSolarPanelsStream thisArg = requestStream $ getPartsSolarPanelsStreamReq thisArg 
 
-{-
- - The part from which the vessel is controlled.
+{-|
+The part from which the vessel is controlled.
  -}
 setPartsControlling :: KRPCHS.SpaceCenter.Parts -> KRPCHS.SpaceCenter.Part -> RPCContext ()
 setPartsControlling thisArg valueArg = do
@@ -10216,8 +10216,8 @@ setPartsControlling thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The reachable resources connected to this propellant.
+{-|
+The reachable resources connected to this propellant.
  -}
 getPropellantConnectedResources :: KRPCHS.SpaceCenter.Propellant -> RPCContext ([KRPCHS.SpaceCenter.Resource])
 getPropellantConnectedResources thisArg = do
@@ -10233,8 +10233,8 @@ getPropellantConnectedResourcesStreamReq thisArg =
 getPropellantConnectedResourcesStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Resource]))
 getPropellantConnectedResourcesStream thisArg = requestStream $ getPropellantConnectedResourcesStreamReq thisArg 
 
-{-
- - The current amount of propellant.
+{-|
+The current amount of propellant.
  -}
 getPropellantCurrentAmount :: KRPCHS.SpaceCenter.Propellant -> RPCContext (Double)
 getPropellantCurrentAmount thisArg = do
@@ -10250,8 +10250,8 @@ getPropellantCurrentAmountStreamReq thisArg =
 getPropellantCurrentAmountStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Double))
 getPropellantCurrentAmountStream thisArg = requestStream $ getPropellantCurrentAmountStreamReq thisArg 
 
-{-
- - The required amount of propellant.
+{-|
+The required amount of propellant.
  -}
 getPropellantCurrentRequirement :: KRPCHS.SpaceCenter.Propellant -> RPCContext (Double)
 getPropellantCurrentRequirement thisArg = do
@@ -10267,8 +10267,8 @@ getPropellantCurrentRequirementStreamReq thisArg =
 getPropellantCurrentRequirementStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Double))
 getPropellantCurrentRequirementStream thisArg = requestStream $ getPropellantCurrentRequirementStreamReq thisArg 
 
-{-
- - If this propellant has a stack gauge or not.
+{-|
+If this propellant has a stack gauge or not.
  -}
 getPropellantDrawStackGauge :: KRPCHS.SpaceCenter.Propellant -> RPCContext (Bool)
 getPropellantDrawStackGauge thisArg = do
@@ -10284,8 +10284,8 @@ getPropellantDrawStackGaugeStreamReq thisArg =
 getPropellantDrawStackGaugeStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Bool))
 getPropellantDrawStackGaugeStream thisArg = requestStream $ getPropellantDrawStackGaugeStreamReq thisArg 
 
-{-
- - If this propellant should be ignored when calculating required mass flow given specific impulse.
+{-|
+If this propellant should be ignored when calculating required mass flow given specific impulse.
  -}
 getPropellantIgnoreForIsp :: KRPCHS.SpaceCenter.Propellant -> RPCContext (Bool)
 getPropellantIgnoreForIsp thisArg = do
@@ -10301,8 +10301,8 @@ getPropellantIgnoreForIspStreamReq thisArg =
 getPropellantIgnoreForIspStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Bool))
 getPropellantIgnoreForIspStream thisArg = requestStream $ getPropellantIgnoreForIspStreamReq thisArg 
 
-{-
- - If this propellant should be ignored for thrust curve calculations.
+{-|
+If this propellant should be ignored for thrust curve calculations.
  -}
 getPropellantIgnoreForThrustCurve :: KRPCHS.SpaceCenter.Propellant -> RPCContext (Bool)
 getPropellantIgnoreForThrustCurve thisArg = do
@@ -10318,8 +10318,8 @@ getPropellantIgnoreForThrustCurveStreamReq thisArg =
 getPropellantIgnoreForThrustCurveStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Bool))
 getPropellantIgnoreForThrustCurveStream thisArg = requestStream $ getPropellantIgnoreForThrustCurveStreamReq thisArg 
 
-{-
- - If this propellant is deprived.
+{-|
+If this propellant is deprived.
  -}
 getPropellantIsDeprived :: KRPCHS.SpaceCenter.Propellant -> RPCContext (Bool)
 getPropellantIsDeprived thisArg = do
@@ -10335,8 +10335,8 @@ getPropellantIsDeprivedStreamReq thisArg =
 getPropellantIsDeprivedStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Bool))
 getPropellantIsDeprivedStream thisArg = requestStream $ getPropellantIsDeprivedStreamReq thisArg 
 
-{-
- - The name of the propellant.
+{-|
+The name of the propellant.
  -}
 getPropellantName :: KRPCHS.SpaceCenter.Propellant -> RPCContext (Data.Text.Text)
 getPropellantName thisArg = do
@@ -10352,8 +10352,8 @@ getPropellantNameStreamReq thisArg =
 getPropellantNameStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Data.Text.Text))
 getPropellantNameStream thisArg = requestStream $ getPropellantNameStreamReq thisArg 
 
-{-
- - The propellant ratio.
+{-|
+The propellant ratio.
  -}
 getPropellantRatio :: KRPCHS.SpaceCenter.Propellant -> RPCContext (Float)
 getPropellantRatio thisArg = do
@@ -10369,8 +10369,8 @@ getPropellantRatioStreamReq thisArg =
 getPropellantRatioStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Float))
 getPropellantRatioStream thisArg = requestStream $ getPropellantRatioStreamReq thisArg 
 
-{-
- - The total amount of the underlying resource currently reachable given resource flow rules.
+{-|
+The total amount of the underlying resource currently reachable given resource flow rules.
  -}
 getPropellantTotalResourceAvailable :: KRPCHS.SpaceCenter.Propellant -> RPCContext (Double)
 getPropellantTotalResourceAvailable thisArg = do
@@ -10386,8 +10386,8 @@ getPropellantTotalResourceAvailableStreamReq thisArg =
 getPropellantTotalResourceAvailableStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Double))
 getPropellantTotalResourceAvailableStream thisArg = requestStream $ getPropellantTotalResourceAvailableStreamReq thisArg 
 
-{-
- - The total vehicle capacity for the underlying propellant resource, restricted by resource flow rules.
+{-|
+The total vehicle capacity for the underlying propellant resource, restricted by resource flow rules.
  -}
 getPropellantTotalResourceCapacity :: KRPCHS.SpaceCenter.Propellant -> RPCContext (Double)
 getPropellantTotalResourceCapacity thisArg = do
@@ -10403,8 +10403,8 @@ getPropellantTotalResourceCapacityStreamReq thisArg =
 getPropellantTotalResourceCapacityStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Double))
 getPropellantTotalResourceCapacityStream thisArg = requestStream $ getPropellantTotalResourceCapacityStreamReq thisArg 
 
-{-
- - Load a quicksave.This is the same as calling <see cref="M:SpaceCenter.Load" /> with the name "quicksave".
+{-|
+Load a quicksave.This is the same as calling <see cref="M:SpaceCenter.Load" /> with the name "quicksave".
  -}
 quickload :: RPCContext ()
 quickload  = do
@@ -10412,8 +10412,8 @@ quickload  = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Save a quicksave.This is the same as calling <see cref="M:SpaceCenter.Save" /> with the name "quicksave".
+{-|
+Save a quicksave.This is the same as calling <see cref="M:SpaceCenter.Save" /> with the name "quicksave".
  -}
 quicksave :: RPCContext ()
 quicksave  = do
@@ -10421,11 +10421,11 @@ quicksave  = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Whether the RCS thrusters are active.
- - An RCS thruster is inactive if the RCS action group is disabled (<see cref="M:SpaceCenter.Control.RCS" />),
- - the RCS thruster itself is not enabled (<see cref="M:SpaceCenter.RCS.Enabled" />) or
- - it is covered by a fairing (<see cref="M:SpaceCenter.Part.Shielded" />).
+{-|
+Whether the RCS thrusters are active.
+An RCS thruster is inactive if the RCS action group is disabled (<see cref="M:SpaceCenter.Control.RCS" />),
+the RCS thruster itself is not enabled (<see cref="M:SpaceCenter.RCS.Enabled" />) or
+it is covered by a fairing (<see cref="M:SpaceCenter.Part.Shielded" />).
  -}
 getRCSActive :: KRPCHS.SpaceCenter.RCS -> RPCContext (Bool)
 getRCSActive thisArg = do
@@ -10441,10 +10441,10 @@ getRCSActiveStreamReq thisArg =
 getRCSActiveStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Bool))
 getRCSActiveStream thisArg = requestStream $ getRCSActiveStreamReq thisArg 
 
-{-
- - The available torque in the pitch, roll and yaw axes of the vessel, in Newton meters.
- - These axes correspond to the coordinate axes of the <see cref="M:SpaceCenter.Vessel.ReferenceFrame" />.
- - Returns zero if the RCS is inactive.
+{-|
+The available torque in the pitch, roll and yaw axes of the vessel, in Newton meters.
+These axes correspond to the coordinate axes of the <see cref="M:SpaceCenter.Vessel.ReferenceFrame" />.
+Returns zero if the RCS is inactive.
  -}
 getRCSAvailableTorque :: KRPCHS.SpaceCenter.RCS -> RPCContext ((Double, Double, Double))
 getRCSAvailableTorque thisArg = do
@@ -10460,8 +10460,8 @@ getRCSAvailableTorqueStreamReq thisArg =
 getRCSAvailableTorqueStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream ((Double, Double, Double)))
 getRCSAvailableTorqueStream thisArg = requestStream $ getRCSAvailableTorqueStreamReq thisArg 
 
-{-
- - Whether the RCS thrusters are enabled.
+{-|
+Whether the RCS thrusters are enabled.
  -}
 getRCSEnabled :: KRPCHS.SpaceCenter.RCS -> RPCContext (Bool)
 getRCSEnabled thisArg = do
@@ -10477,8 +10477,8 @@ getRCSEnabledStreamReq thisArg =
 getRCSEnabledStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Bool))
 getRCSEnabledStream thisArg = requestStream $ getRCSEnabledStreamReq thisArg 
 
-{-
- - Whether the RCS thruster will fire when pitch control input is given.
+{-|
+Whether the RCS thruster will fire when pitch control input is given.
  -}
 getRCSForwardEnabled :: KRPCHS.SpaceCenter.RCS -> RPCContext (Bool)
 getRCSForwardEnabled thisArg = do
@@ -10494,8 +10494,8 @@ getRCSForwardEnabledStreamReq thisArg =
 getRCSForwardEnabledStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Bool))
 getRCSForwardEnabledStream thisArg = requestStream $ getRCSForwardEnabledStreamReq thisArg 
 
-{-
- - Whether the RCS has fuel available.The RCS thruster must be activated for this property to update correctly.
+{-|
+Whether the RCS has fuel available.The RCS thruster must be activated for this property to update correctly.
  -}
 getRCSHasFuel :: KRPCHS.SpaceCenter.RCS -> RPCContext (Bool)
 getRCSHasFuel thisArg = do
@@ -10511,8 +10511,8 @@ getRCSHasFuelStreamReq thisArg =
 getRCSHasFuelStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Bool))
 getRCSHasFuelStream thisArg = requestStream $ getRCSHasFuelStreamReq thisArg 
 
-{-
- - The specific impulse of the RCS at sea level on Kerbin, in seconds.
+{-|
+The specific impulse of the RCS at sea level on Kerbin, in seconds.
  -}
 getRCSKerbinSeaLevelSpecificImpulse :: KRPCHS.SpaceCenter.RCS -> RPCContext (Float)
 getRCSKerbinSeaLevelSpecificImpulse thisArg = do
@@ -10528,8 +10528,8 @@ getRCSKerbinSeaLevelSpecificImpulseStreamReq thisArg =
 getRCSKerbinSeaLevelSpecificImpulseStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Float))
 getRCSKerbinSeaLevelSpecificImpulseStream thisArg = requestStream $ getRCSKerbinSeaLevelSpecificImpulseStreamReq thisArg 
 
-{-
- - The maximum amount of thrust that can be produced by the RCS thrusters when active, in Newtons.
+{-|
+The maximum amount of thrust that can be produced by the RCS thrusters when active, in Newtons.
  -}
 getRCSMaxThrust :: KRPCHS.SpaceCenter.RCS -> RPCContext (Float)
 getRCSMaxThrust thisArg = do
@@ -10545,8 +10545,8 @@ getRCSMaxThrustStreamReq thisArg =
 getRCSMaxThrustStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Float))
 getRCSMaxThrustStream thisArg = requestStream $ getRCSMaxThrustStreamReq thisArg 
 
-{-
- - The maximum amount of thrust that can be produced by the RCS thrusters when active in a vacuum, in Newtons.
+{-|
+The maximum amount of thrust that can be produced by the RCS thrusters when active in a vacuum, in Newtons.
  -}
 getRCSMaxVacuumThrust :: KRPCHS.SpaceCenter.RCS -> RPCContext (Float)
 getRCSMaxVacuumThrust thisArg = do
@@ -10562,8 +10562,8 @@ getRCSMaxVacuumThrustStreamReq thisArg =
 getRCSMaxVacuumThrustStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Float))
 getRCSMaxVacuumThrustStream thisArg = requestStream $ getRCSMaxVacuumThrustStreamReq thisArg 
 
-{-
- - The part object for this RCS.
+{-|
+The part object for this RCS.
  -}
 getRCSPart :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCHS.SpaceCenter.Part)
 getRCSPart thisArg = do
@@ -10579,8 +10579,8 @@ getRCSPartStreamReq thisArg =
 getRCSPartStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
 getRCSPartStream thisArg = requestStream $ getRCSPartStreamReq thisArg 
 
-{-
- - Whether the RCS thruster will fire when pitch control input is given.
+{-|
+Whether the RCS thruster will fire when pitch control input is given.
  -}
 getRCSPitchEnabled :: KRPCHS.SpaceCenter.RCS -> RPCContext (Bool)
 getRCSPitchEnabled thisArg = do
@@ -10596,9 +10596,9 @@ getRCSPitchEnabledStreamReq thisArg =
 getRCSPitchEnabledStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Bool))
 getRCSPitchEnabledStream thisArg = requestStream $ getRCSPitchEnabledStreamReq thisArg 
 
-{-
- - The ratios of resources that the RCS consumes. A dictionary mapping resource names
- - to the ratios at which they are consumed by the RCS.
+{-|
+The ratios of resources that the RCS consumes. A dictionary mapping resource names
+to the ratios at which they are consumed by the RCS.
  -}
 getRCSPropellantRatios :: KRPCHS.SpaceCenter.RCS -> RPCContext (Data.Map.Map (Data.Text.Text) (Float))
 getRCSPropellantRatios thisArg = do
@@ -10614,8 +10614,8 @@ getRCSPropellantRatiosStreamReq thisArg =
 getRCSPropellantRatiosStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Data.Map.Map (Data.Text.Text) (Float)))
 getRCSPropellantRatiosStream thisArg = requestStream $ getRCSPropellantRatiosStreamReq thisArg 
 
-{-
- - The names of resources that the RCS consumes.
+{-|
+The names of resources that the RCS consumes.
  -}
 getRCSPropellants :: KRPCHS.SpaceCenter.RCS -> RPCContext ([Data.Text.Text])
 getRCSPropellants thisArg = do
@@ -10631,8 +10631,8 @@ getRCSPropellantsStreamReq thisArg =
 getRCSPropellantsStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream ([Data.Text.Text]))
 getRCSPropellantsStream thisArg = requestStream $ getRCSPropellantsStreamReq thisArg 
 
-{-
- - Whether the RCS thruster will fire when roll control input is given.
+{-|
+Whether the RCS thruster will fire when roll control input is given.
  -}
 getRCSRightEnabled :: KRPCHS.SpaceCenter.RCS -> RPCContext (Bool)
 getRCSRightEnabled thisArg = do
@@ -10648,8 +10648,8 @@ getRCSRightEnabledStreamReq thisArg =
 getRCSRightEnabledStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Bool))
 getRCSRightEnabledStream thisArg = requestStream $ getRCSRightEnabledStreamReq thisArg 
 
-{-
- - Whether the RCS thruster will fire when roll control input is given.
+{-|
+Whether the RCS thruster will fire when roll control input is given.
  -}
 getRCSRollEnabled :: KRPCHS.SpaceCenter.RCS -> RPCContext (Bool)
 getRCSRollEnabled thisArg = do
@@ -10665,9 +10665,9 @@ getRCSRollEnabledStreamReq thisArg =
 getRCSRollEnabledStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Bool))
 getRCSRollEnabledStream thisArg = requestStream $ getRCSRollEnabledStreamReq thisArg 
 
-{-
- - The current specific impulse of the RCS, in seconds. Returns zero
- - if the RCS is not active.
+{-|
+The current specific impulse of the RCS, in seconds. Returns zero
+if the RCS is not active.
  -}
 getRCSSpecificImpulse :: KRPCHS.SpaceCenter.RCS -> RPCContext (Float)
 getRCSSpecificImpulse thisArg = do
@@ -10683,8 +10683,8 @@ getRCSSpecificImpulseStreamReq thisArg =
 getRCSSpecificImpulseStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Float))
 getRCSSpecificImpulseStream thisArg = requestStream $ getRCSSpecificImpulseStreamReq thisArg 
 
-{-
- - A list of thrusters, one of each nozzel in the RCS part.
+{-|
+A list of thrusters, one of each nozzel in the RCS part.
  -}
 getRCSThrusters :: KRPCHS.SpaceCenter.RCS -> RPCContext ([KRPCHS.SpaceCenter.Thruster])
 getRCSThrusters thisArg = do
@@ -10700,8 +10700,8 @@ getRCSThrustersStreamReq thisArg =
 getRCSThrustersStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Thruster]))
 getRCSThrustersStream thisArg = requestStream $ getRCSThrustersStreamReq thisArg 
 
-{-
- - Whether the RCS thruster will fire when yaw control input is given.
+{-|
+Whether the RCS thruster will fire when yaw control input is given.
  -}
 getRCSUpEnabled :: KRPCHS.SpaceCenter.RCS -> RPCContext (Bool)
 getRCSUpEnabled thisArg = do
@@ -10717,8 +10717,8 @@ getRCSUpEnabledStreamReq thisArg =
 getRCSUpEnabledStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Bool))
 getRCSUpEnabledStream thisArg = requestStream $ getRCSUpEnabledStreamReq thisArg 
 
-{-
- - The vacuum specific impulse of the RCS, in seconds.
+{-|
+The vacuum specific impulse of the RCS, in seconds.
  -}
 getRCSVacuumSpecificImpulse :: KRPCHS.SpaceCenter.RCS -> RPCContext (Float)
 getRCSVacuumSpecificImpulse thisArg = do
@@ -10734,8 +10734,8 @@ getRCSVacuumSpecificImpulseStreamReq thisArg =
 getRCSVacuumSpecificImpulseStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Float))
 getRCSVacuumSpecificImpulseStream thisArg = requestStream $ getRCSVacuumSpecificImpulseStreamReq thisArg 
 
-{-
- - Whether the RCS thruster will fire when yaw control input is given.
+{-|
+Whether the RCS thruster will fire when yaw control input is given.
  -}
 getRCSYawEnabled :: KRPCHS.SpaceCenter.RCS -> RPCContext (Bool)
 getRCSYawEnabled thisArg = do
@@ -10751,8 +10751,8 @@ getRCSYawEnabledStreamReq thisArg =
 getRCSYawEnabledStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Bool))
 getRCSYawEnabledStream thisArg = requestStream $ getRCSYawEnabledStreamReq thisArg 
 
-{-
- - Whether the RCS thrusters are enabled.
+{-|
+Whether the RCS thrusters are enabled.
  -}
 setRCSEnabled :: KRPCHS.SpaceCenter.RCS -> Bool -> RPCContext ()
 setRCSEnabled thisArg valueArg = do
@@ -10760,8 +10760,8 @@ setRCSEnabled thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Whether the RCS thruster will fire when pitch control input is given.
+{-|
+Whether the RCS thruster will fire when pitch control input is given.
  -}
 setRCSForwardEnabled :: KRPCHS.SpaceCenter.RCS -> Bool -> RPCContext ()
 setRCSForwardEnabled thisArg valueArg = do
@@ -10769,8 +10769,8 @@ setRCSForwardEnabled thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Whether the RCS thruster will fire when pitch control input is given.
+{-|
+Whether the RCS thruster will fire when pitch control input is given.
  -}
 setRCSPitchEnabled :: KRPCHS.SpaceCenter.RCS -> Bool -> RPCContext ()
 setRCSPitchEnabled thisArg valueArg = do
@@ -10778,8 +10778,8 @@ setRCSPitchEnabled thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Whether the RCS thruster will fire when roll control input is given.
+{-|
+Whether the RCS thruster will fire when roll control input is given.
  -}
 setRCSRightEnabled :: KRPCHS.SpaceCenter.RCS -> Bool -> RPCContext ()
 setRCSRightEnabled thisArg valueArg = do
@@ -10787,8 +10787,8 @@ setRCSRightEnabled thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Whether the RCS thruster will fire when roll control input is given.
+{-|
+Whether the RCS thruster will fire when roll control input is given.
  -}
 setRCSRollEnabled :: KRPCHS.SpaceCenter.RCS -> Bool -> RPCContext ()
 setRCSRollEnabled thisArg valueArg = do
@@ -10796,8 +10796,8 @@ setRCSRollEnabled thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Whether the RCS thruster will fire when yaw control input is given.
+{-|
+Whether the RCS thruster will fire when yaw control input is given.
  -}
 setRCSUpEnabled :: KRPCHS.SpaceCenter.RCS -> Bool -> RPCContext ()
 setRCSUpEnabled thisArg valueArg = do
@@ -10805,8 +10805,8 @@ setRCSUpEnabled thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Whether the RCS thruster will fire when yaw control input is given.
+{-|
+Whether the RCS thruster will fire when yaw control input is given.
  -}
 setRCSYawEnabled :: KRPCHS.SpaceCenter.RCS -> Bool -> RPCContext ()
 setRCSYawEnabled thisArg valueArg = do
@@ -10814,8 +10814,8 @@ setRCSYawEnabled thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Whether the radiator is deployable.
+{-|
+Whether the radiator is deployable.
  -}
 getRadiatorDeployable :: KRPCHS.SpaceCenter.Radiator -> RPCContext (Bool)
 getRadiatorDeployable thisArg = do
@@ -10831,9 +10831,9 @@ getRadiatorDeployableStreamReq thisArg =
 getRadiatorDeployableStream :: KRPCHS.SpaceCenter.Radiator -> RPCContext (KRPCStream (Bool))
 getRadiatorDeployableStream thisArg = requestStream $ getRadiatorDeployableStreamReq thisArg 
 
-{-
- - For a deployable radiator,trueif the radiator is extended.
- - If the radiator is not deployable, this is alwaystrue.
+{-|
+For a deployable radiator,trueif the radiator is extended.
+If the radiator is not deployable, this is alwaystrue.
  -}
 getRadiatorDeployed :: KRPCHS.SpaceCenter.Radiator -> RPCContext (Bool)
 getRadiatorDeployed thisArg = do
@@ -10849,8 +10849,8 @@ getRadiatorDeployedStreamReq thisArg =
 getRadiatorDeployedStream :: KRPCHS.SpaceCenter.Radiator -> RPCContext (KRPCStream (Bool))
 getRadiatorDeployedStream thisArg = requestStream $ getRadiatorDeployedStreamReq thisArg 
 
-{-
- - The part object for this radiator.
+{-|
+The part object for this radiator.
  -}
 getRadiatorPart :: KRPCHS.SpaceCenter.Radiator -> RPCContext (KRPCHS.SpaceCenter.Part)
 getRadiatorPart thisArg = do
@@ -10866,8 +10866,8 @@ getRadiatorPartStreamReq thisArg =
 getRadiatorPartStream :: KRPCHS.SpaceCenter.Radiator -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
 getRadiatorPartStream thisArg = requestStream $ getRadiatorPartStreamReq thisArg 
 
-{-
- - The current state of the radiator.A fixed radiator is always <see cref="M:SpaceCenter.RadiatorState.Extended" />.
+{-|
+The current state of the radiator.A fixed radiator is always <see cref="M:SpaceCenter.RadiatorState.Extended" />.
  -}
 getRadiatorState :: KRPCHS.SpaceCenter.Radiator -> RPCContext (KRPCHS.SpaceCenter.RadiatorState)
 getRadiatorState thisArg = do
@@ -10883,9 +10883,9 @@ getRadiatorStateStreamReq thisArg =
 getRadiatorStateStream :: KRPCHS.SpaceCenter.Radiator -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.RadiatorState))
 getRadiatorStateStream thisArg = requestStream $ getRadiatorStateStreamReq thisArg 
 
-{-
- - For a deployable radiator,trueif the radiator is extended.
- - If the radiator is not deployable, this is alwaystrue.
+{-|
+For a deployable radiator,trueif the radiator is extended.
+If the radiator is not deployable, this is alwaystrue.
  -}
 setRadiatorDeployed :: KRPCHS.SpaceCenter.Radiator -> Bool -> RPCContext ()
 setRadiatorDeployed thisArg valueArg = do
@@ -10893,8 +10893,8 @@ setRadiatorDeployed thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Whether the reaction wheel is active.
+{-|
+Whether the reaction wheel is active.
  -}
 getReactionWheelActive :: KRPCHS.SpaceCenter.ReactionWheel -> RPCContext (Bool)
 getReactionWheelActive thisArg = do
@@ -10910,10 +10910,10 @@ getReactionWheelActiveStreamReq thisArg =
 getReactionWheelActiveStream :: KRPCHS.SpaceCenter.ReactionWheel -> RPCContext (KRPCStream (Bool))
 getReactionWheelActiveStream thisArg = requestStream $ getReactionWheelActiveStreamReq thisArg 
 
-{-
- - The available torque in the pitch, roll and yaw axes of the vessel, in Newton meters.
- - These axes correspond to the coordinate axes of the <see cref="M:SpaceCenter.Vessel.ReferenceFrame" />.
- - Returns zero if the reaction wheel is inactive or broken.
+{-|
+The available torque in the pitch, roll and yaw axes of the vessel, in Newton meters.
+These axes correspond to the coordinate axes of the <see cref="M:SpaceCenter.Vessel.ReferenceFrame" />.
+Returns zero if the reaction wheel is inactive or broken.
  -}
 getReactionWheelAvailableTorque :: KRPCHS.SpaceCenter.ReactionWheel -> RPCContext ((Double, Double, Double))
 getReactionWheelAvailableTorque thisArg = do
@@ -10929,8 +10929,8 @@ getReactionWheelAvailableTorqueStreamReq thisArg =
 getReactionWheelAvailableTorqueStream :: KRPCHS.SpaceCenter.ReactionWheel -> RPCContext (KRPCStream ((Double, Double, Double)))
 getReactionWheelAvailableTorqueStream thisArg = requestStream $ getReactionWheelAvailableTorqueStreamReq thisArg 
 
-{-
- - Whether the reaction wheel is broken.
+{-|
+Whether the reaction wheel is broken.
  -}
 getReactionWheelBroken :: KRPCHS.SpaceCenter.ReactionWheel -> RPCContext (Bool)
 getReactionWheelBroken thisArg = do
@@ -10946,10 +10946,10 @@ getReactionWheelBrokenStreamReq thisArg =
 getReactionWheelBrokenStream :: KRPCHS.SpaceCenter.ReactionWheel -> RPCContext (KRPCStream (Bool))
 getReactionWheelBrokenStream thisArg = requestStream $ getReactionWheelBrokenStreamReq thisArg 
 
-{-
- - The maximum torque the reaction wheel can provide, is it active,
- - in the pitch, roll and yaw axes of the vessel, in Newton meters.
- - These axes correspond to the coordinate axes of the <see cref="M:SpaceCenter.Vessel.ReferenceFrame" />.
+{-|
+The maximum torque the reaction wheel can provide, is it active,
+in the pitch, roll and yaw axes of the vessel, in Newton meters.
+These axes correspond to the coordinate axes of the <see cref="M:SpaceCenter.Vessel.ReferenceFrame" />.
  -}
 getReactionWheelMaxTorque :: KRPCHS.SpaceCenter.ReactionWheel -> RPCContext ((Double, Double, Double))
 getReactionWheelMaxTorque thisArg = do
@@ -10965,8 +10965,8 @@ getReactionWheelMaxTorqueStreamReq thisArg =
 getReactionWheelMaxTorqueStream :: KRPCHS.SpaceCenter.ReactionWheel -> RPCContext (KRPCStream ((Double, Double, Double)))
 getReactionWheelMaxTorqueStream thisArg = requestStream $ getReactionWheelMaxTorqueStreamReq thisArg 
 
-{-
- - The part object for this reaction wheel.
+{-|
+The part object for this reaction wheel.
  -}
 getReactionWheelPart :: KRPCHS.SpaceCenter.ReactionWheel -> RPCContext (KRPCHS.SpaceCenter.Part)
 getReactionWheelPart thisArg = do
@@ -10982,8 +10982,8 @@ getReactionWheelPartStreamReq thisArg =
 getReactionWheelPartStream :: KRPCHS.SpaceCenter.ReactionWheel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
 getReactionWheelPartStream thisArg = requestStream $ getReactionWheelPartStreamReq thisArg 
 
-{-
- - Whether the reaction wheel is active.
+{-|
+Whether the reaction wheel is active.
  -}
 setReactionWheelActive :: KRPCHS.SpaceCenter.ReactionWheel -> Bool -> RPCContext ()
 setReactionWheelActive thisArg valueArg = do
@@ -10991,8 +10991,8 @@ setReactionWheelActive thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - True if the specified converter is active.<param name="index">Index of the converter.
+{-|
+True if the specified converter is active.<param name="index">Index of the converter.
  -}
 resourceConverterActive :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext (Bool)
 resourceConverterActive thisArg indexArg = do
@@ -11008,8 +11008,8 @@ resourceConverterActiveStreamReq thisArg indexArg =
 resourceConverterActiveStream :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext (KRPCStream (Bool))
 resourceConverterActiveStream thisArg indexArg = requestStream $ resourceConverterActiveStreamReq thisArg indexArg 
 
-{-
- - List of the names of resources consumed by the specified converter.<param name="index">Index of the converter.
+{-|
+List of the names of resources consumed by the specified converter.<param name="index">Index of the converter.
  -}
 resourceConverterInputs :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext ([Data.Text.Text])
 resourceConverterInputs thisArg indexArg = do
@@ -11025,8 +11025,8 @@ resourceConverterInputsStreamReq thisArg indexArg =
 resourceConverterInputsStream :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext (KRPCStream ([Data.Text.Text]))
 resourceConverterInputsStream thisArg indexArg = requestStream $ resourceConverterInputsStreamReq thisArg indexArg 
 
-{-
- - The name of the specified converter.<param name="index">Index of the converter.
+{-|
+The name of the specified converter.<param name="index">Index of the converter.
  -}
 resourceConverterName :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext (Data.Text.Text)
 resourceConverterName thisArg indexArg = do
@@ -11042,8 +11042,8 @@ resourceConverterNameStreamReq thisArg indexArg =
 resourceConverterNameStream :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext (KRPCStream (Data.Text.Text))
 resourceConverterNameStream thisArg indexArg = requestStream $ resourceConverterNameStreamReq thisArg indexArg 
 
-{-
- - List of the names of resources produced by the specified converter.<param name="index">Index of the converter.
+{-|
+List of the names of resources produced by the specified converter.<param name="index">Index of the converter.
  -}
 resourceConverterOutputs :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext ([Data.Text.Text])
 resourceConverterOutputs thisArg indexArg = do
@@ -11059,8 +11059,8 @@ resourceConverterOutputsStreamReq thisArg indexArg =
 resourceConverterOutputsStream :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext (KRPCStream ([Data.Text.Text]))
 resourceConverterOutputsStream thisArg indexArg = requestStream $ resourceConverterOutputsStreamReq thisArg indexArg 
 
-{-
- - Start the specified converter.<param name="index">Index of the converter.
+{-|
+Start the specified converter.<param name="index">Index of the converter.
  -}
 resourceConverterStart :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext ()
 resourceConverterStart thisArg indexArg = do
@@ -11068,8 +11068,8 @@ resourceConverterStart thisArg indexArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The state of the specified converter.<param name="index">Index of the converter.
+{-|
+The state of the specified converter.<param name="index">Index of the converter.
  -}
 resourceConverterState :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext (KRPCHS.SpaceCenter.ResourceConverterState)
 resourceConverterState thisArg indexArg = do
@@ -11085,9 +11085,9 @@ resourceConverterStateStreamReq thisArg indexArg =
 resourceConverterStateStream :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ResourceConverterState))
 resourceConverterStateStream thisArg indexArg = requestStream $ resourceConverterStateStreamReq thisArg indexArg 
 
-{-
- - Status information for the specified converter.
- - This is the full status message shown in the in-game UI.<param name="index">Index of the converter.
+{-|
+Status information for the specified converter.
+This is the full status message shown in the in-game UI.<param name="index">Index of the converter.
  -}
 resourceConverterStatusInfo :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext (Data.Text.Text)
 resourceConverterStatusInfo thisArg indexArg = do
@@ -11103,8 +11103,8 @@ resourceConverterStatusInfoStreamReq thisArg indexArg =
 resourceConverterStatusInfoStream :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext (KRPCStream (Data.Text.Text))
 resourceConverterStatusInfoStream thisArg indexArg = requestStream $ resourceConverterStatusInfoStreamReq thisArg indexArg 
 
-{-
- - Stop the specified converter.<param name="index">Index of the converter.
+{-|
+Stop the specified converter.<param name="index">Index of the converter.
  -}
 resourceConverterStop :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext ()
 resourceConverterStop thisArg indexArg = do
@@ -11112,8 +11112,8 @@ resourceConverterStop thisArg indexArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The number of converters in the part.
+{-|
+The number of converters in the part.
  -}
 getResourceConverterCount :: KRPCHS.SpaceCenter.ResourceConverter -> RPCContext (Data.Int.Int32)
 getResourceConverterCount thisArg = do
@@ -11129,8 +11129,8 @@ getResourceConverterCountStreamReq thisArg =
 getResourceConverterCountStream :: KRPCHS.SpaceCenter.ResourceConverter -> RPCContext (KRPCStream (Data.Int.Int32))
 getResourceConverterCountStream thisArg = requestStream $ getResourceConverterCountStreamReq thisArg 
 
-{-
- - The part object for this converter.
+{-|
+The part object for this converter.
  -}
 getResourceConverterPart :: KRPCHS.SpaceCenter.ResourceConverter -> RPCContext (KRPCHS.SpaceCenter.Part)
 getResourceConverterPart thisArg = do
@@ -11146,8 +11146,8 @@ getResourceConverterPartStreamReq thisArg =
 getResourceConverterPartStream :: KRPCHS.SpaceCenter.ResourceConverter -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
 getResourceConverterPartStream thisArg = requestStream $ getResourceConverterPartStreamReq thisArg 
 
-{-
- - Whether the harvester is actively drilling.
+{-|
+Whether the harvester is actively drilling.
  -}
 getResourceHarvesterActive :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (Bool)
 getResourceHarvesterActive thisArg = do
@@ -11163,8 +11163,8 @@ getResourceHarvesterActiveStreamReq thisArg =
 getResourceHarvesterActiveStream :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (KRPCStream (Bool))
 getResourceHarvesterActiveStream thisArg = requestStream $ getResourceHarvesterActiveStreamReq thisArg 
 
-{-
- - The core temperature of the drill, in Kelvin.
+{-|
+The core temperature of the drill, in Kelvin.
  -}
 getResourceHarvesterCoreTemperature :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (Float)
 getResourceHarvesterCoreTemperature thisArg = do
@@ -11180,8 +11180,8 @@ getResourceHarvesterCoreTemperatureStreamReq thisArg =
 getResourceHarvesterCoreTemperatureStream :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (KRPCStream (Float))
 getResourceHarvesterCoreTemperatureStream thisArg = requestStream $ getResourceHarvesterCoreTemperatureStreamReq thisArg 
 
-{-
- - Whether the harvester is deployed.
+{-|
+Whether the harvester is deployed.
  -}
 getResourceHarvesterDeployed :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (Bool)
 getResourceHarvesterDeployed thisArg = do
@@ -11197,8 +11197,8 @@ getResourceHarvesterDeployedStreamReq thisArg =
 getResourceHarvesterDeployedStream :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (KRPCStream (Bool))
 getResourceHarvesterDeployedStream thisArg = requestStream $ getResourceHarvesterDeployedStreamReq thisArg 
 
-{-
- - The rate at which the drill is extracting ore, in units per second.
+{-|
+The rate at which the drill is extracting ore, in units per second.
  -}
 getResourceHarvesterExtractionRate :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (Float)
 getResourceHarvesterExtractionRate thisArg = do
@@ -11214,8 +11214,8 @@ getResourceHarvesterExtractionRateStreamReq thisArg =
 getResourceHarvesterExtractionRateStream :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (KRPCStream (Float))
 getResourceHarvesterExtractionRateStream thisArg = requestStream $ getResourceHarvesterExtractionRateStreamReq thisArg 
 
-{-
- - The core temperature at which the drill will operate with peak efficiency, in Kelvin.
+{-|
+The core temperature at which the drill will operate with peak efficiency, in Kelvin.
  -}
 getResourceHarvesterOptimumCoreTemperature :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (Float)
 getResourceHarvesterOptimumCoreTemperature thisArg = do
@@ -11231,8 +11231,8 @@ getResourceHarvesterOptimumCoreTemperatureStreamReq thisArg =
 getResourceHarvesterOptimumCoreTemperatureStream :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (KRPCStream (Float))
 getResourceHarvesterOptimumCoreTemperatureStream thisArg = requestStream $ getResourceHarvesterOptimumCoreTemperatureStreamReq thisArg 
 
-{-
- - The part object for this harvester.
+{-|
+The part object for this harvester.
  -}
 getResourceHarvesterPart :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (KRPCHS.SpaceCenter.Part)
 getResourceHarvesterPart thisArg = do
@@ -11248,8 +11248,8 @@ getResourceHarvesterPartStreamReq thisArg =
 getResourceHarvesterPartStream :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
 getResourceHarvesterPartStream thisArg = requestStream $ getResourceHarvesterPartStreamReq thisArg 
 
-{-
- - The state of the harvester.
+{-|
+The state of the harvester.
  -}
 getResourceHarvesterState :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (KRPCHS.SpaceCenter.ResourceHarvesterState)
 getResourceHarvesterState thisArg = do
@@ -11265,8 +11265,8 @@ getResourceHarvesterStateStreamReq thisArg =
 getResourceHarvesterStateStream :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ResourceHarvesterState))
 getResourceHarvesterStateStream thisArg = requestStream $ getResourceHarvesterStateStreamReq thisArg 
 
-{-
- - The thermal efficiency of the drill, as a percentage of its maximum.
+{-|
+The thermal efficiency of the drill, as a percentage of its maximum.
  -}
 getResourceHarvesterThermalEfficiency :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (Float)
 getResourceHarvesterThermalEfficiency thisArg = do
@@ -11282,8 +11282,8 @@ getResourceHarvesterThermalEfficiencyStreamReq thisArg =
 getResourceHarvesterThermalEfficiencyStream :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (KRPCStream (Float))
 getResourceHarvesterThermalEfficiencyStream thisArg = requestStream $ getResourceHarvesterThermalEfficiencyStreamReq thisArg 
 
-{-
- - Whether the harvester is actively drilling.
+{-|
+Whether the harvester is actively drilling.
  -}
 setResourceHarvesterActive :: KRPCHS.SpaceCenter.ResourceHarvester -> Bool -> RPCContext ()
 setResourceHarvesterActive thisArg valueArg = do
@@ -11291,8 +11291,8 @@ setResourceHarvesterActive thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Whether the harvester is deployed.
+{-|
+Whether the harvester is deployed.
  -}
 setResourceHarvesterDeployed :: KRPCHS.SpaceCenter.ResourceHarvester -> Bool -> RPCContext ()
 setResourceHarvesterDeployed thisArg valueArg = do
@@ -11300,29 +11300,8 @@ setResourceHarvesterDeployed thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Start transferring a resource transfer between a pair of parts. The transfer will move at most
- - <paramref name="maxAmount" /> units of the resource, depending on how much of the resource is
- - available in the source part and how much storage is available in the destination part.
- - Use <see cref="M:SpaceCenter.ResourceTransfer.Complete" /> to check if the transfer is complete.
- - Use <see cref="M:SpaceCenter.ResourceTransfer.Amount" /> to see how much of the resource has been transferred.<param name="fromPart">The part to transfer to.<param name="toPart">The part to transfer from.<param name="resource">The name of the resource to transfer.<param name="maxAmount">The maximum amount of resource to transfer.
- -}
-resourceTransferStart :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.Part -> Data.Text.Text -> Float -> RPCContext (KRPCHS.SpaceCenter.ResourceTransfer)
-resourceTransferStart fromPartArg toPartArg resourceArg maxAmountArg = do
-    let r = makeRequest "SpaceCenter" "ResourceTransfer_Start" [makeArgument 0 fromPartArg, makeArgument 1 toPartArg, makeArgument 2 resourceArg, makeArgument 3 maxAmountArg]
-    res <- sendRequest r
-    processResponse res
-
-resourceTransferStartStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.Part -> Data.Text.Text -> Float -> KRPCStreamReq (KRPCHS.SpaceCenter.ResourceTransfer)
-resourceTransferStartStreamReq fromPartArg toPartArg resourceArg maxAmountArg =
-    let req = makeRequest "SpaceCenter" "ResourceTransfer_Start" [makeArgument 0 fromPartArg, makeArgument 1 toPartArg, makeArgument 2 resourceArg, makeArgument 3 maxAmountArg]
-    in  makeStream req
-
-resourceTransferStartStream :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.Part -> Data.Text.Text -> Float -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ResourceTransfer))
-resourceTransferStartStream fromPartArg toPartArg resourceArg maxAmountArg = requestStream $ resourceTransferStartStreamReq fromPartArg toPartArg resourceArg maxAmountArg 
-
-{-
- - The amount of the resource that has been transferred.
+{-|
+The amount of the resource that has been transferred.
  -}
 getResourceTransferAmount :: KRPCHS.SpaceCenter.ResourceTransfer -> RPCContext (Float)
 getResourceTransferAmount thisArg = do
@@ -11338,8 +11317,8 @@ getResourceTransferAmountStreamReq thisArg =
 getResourceTransferAmountStream :: KRPCHS.SpaceCenter.ResourceTransfer -> RPCContext (KRPCStream (Float))
 getResourceTransferAmountStream thisArg = requestStream $ getResourceTransferAmountStreamReq thisArg 
 
-{-
- - Whether the transfer has completed.
+{-|
+Whether the transfer has completed.
  -}
 getResourceTransferComplete :: KRPCHS.SpaceCenter.ResourceTransfer -> RPCContext (Bool)
 getResourceTransferComplete thisArg = do
@@ -11355,8 +11334,29 @@ getResourceTransferCompleteStreamReq thisArg =
 getResourceTransferCompleteStream :: KRPCHS.SpaceCenter.ResourceTransfer -> RPCContext (KRPCStream (Bool))
 getResourceTransferCompleteStream thisArg = requestStream $ getResourceTransferCompleteStreamReq thisArg 
 
-{-
- - The amount of the resource that is currently stored in the part.
+{-|
+Start transferring a resource transfer between a pair of parts. The transfer will move at most
+<paramref name="maxAmount" /> units of the resource, depending on how much of the resource is
+available in the source part and how much storage is available in the destination part.
+Use <see cref="M:SpaceCenter.ResourceTransfer.Complete" /> to check if the transfer is complete.
+Use <see cref="M:SpaceCenter.ResourceTransfer.Amount" /> to see how much of the resource has been transferred.<param name="fromPart">The part to transfer to.<param name="toPart">The part to transfer from.<param name="resource">The name of the resource to transfer.<param name="maxAmount">The maximum amount of resource to transfer.
+ -}
+resourceTransferStaticStart :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.Part -> Data.Text.Text -> Float -> RPCContext (KRPCHS.SpaceCenter.ResourceTransfer)
+resourceTransferStaticStart fromPartArg toPartArg resourceArg maxAmountArg = do
+    let r = makeRequest "SpaceCenter" "ResourceTransfer_static_Start" [makeArgument 0 fromPartArg, makeArgument 1 toPartArg, makeArgument 2 resourceArg, makeArgument 3 maxAmountArg]
+    res <- sendRequest r
+    processResponse res
+
+resourceTransferStaticStartStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.Part -> Data.Text.Text -> Float -> KRPCStreamReq (KRPCHS.SpaceCenter.ResourceTransfer)
+resourceTransferStaticStartStreamReq fromPartArg toPartArg resourceArg maxAmountArg =
+    let req = makeRequest "SpaceCenter" "ResourceTransfer_static_Start" [makeArgument 0 fromPartArg, makeArgument 1 toPartArg, makeArgument 2 resourceArg, makeArgument 3 maxAmountArg]
+    in  makeStream req
+
+resourceTransferStaticStartStream :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.Part -> Data.Text.Text -> Float -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ResourceTransfer))
+resourceTransferStaticStartStream fromPartArg toPartArg resourceArg maxAmountArg = requestStream $ resourceTransferStaticStartStreamReq fromPartArg toPartArg resourceArg maxAmountArg 
+
+{-|
+The amount of the resource that is currently stored in the part.
  -}
 getResourceAmount :: KRPCHS.SpaceCenter.Resource -> RPCContext (Float)
 getResourceAmount thisArg = do
@@ -11372,8 +11372,8 @@ getResourceAmountStreamReq thisArg =
 getResourceAmountStream :: KRPCHS.SpaceCenter.Resource -> RPCContext (KRPCStream (Float))
 getResourceAmountStream thisArg = requestStream $ getResourceAmountStreamReq thisArg 
 
-{-
- - The density of the resource, inkg/l.
+{-|
+The density of the resource, inkg/l.
  -}
 getResourceDensity :: KRPCHS.SpaceCenter.Resource -> RPCContext (Float)
 getResourceDensity thisArg = do
@@ -11389,8 +11389,8 @@ getResourceDensityStreamReq thisArg =
 getResourceDensityStream :: KRPCHS.SpaceCenter.Resource -> RPCContext (KRPCStream (Float))
 getResourceDensityStream thisArg = requestStream $ getResourceDensityStreamReq thisArg 
 
-{-
- - Whether use of this resource is enabled.
+{-|
+Whether use of this resource is enabled.
  -}
 getResourceEnabled :: KRPCHS.SpaceCenter.Resource -> RPCContext (Bool)
 getResourceEnabled thisArg = do
@@ -11406,8 +11406,8 @@ getResourceEnabledStreamReq thisArg =
 getResourceEnabledStream :: KRPCHS.SpaceCenter.Resource -> RPCContext (KRPCStream (Bool))
 getResourceEnabledStream thisArg = requestStream $ getResourceEnabledStreamReq thisArg 
 
-{-
- - The flow mode of the resource.
+{-|
+The flow mode of the resource.
  -}
 getResourceFlowMode :: KRPCHS.SpaceCenter.Resource -> RPCContext (KRPCHS.SpaceCenter.ResourceFlowMode)
 getResourceFlowMode thisArg = do
@@ -11423,8 +11423,8 @@ getResourceFlowModeStreamReq thisArg =
 getResourceFlowModeStream :: KRPCHS.SpaceCenter.Resource -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ResourceFlowMode))
 getResourceFlowModeStream thisArg = requestStream $ getResourceFlowModeStreamReq thisArg 
 
-{-
- - The total amount of the resource that can be stored in the part.
+{-|
+The total amount of the resource that can be stored in the part.
  -}
 getResourceMax :: KRPCHS.SpaceCenter.Resource -> RPCContext (Float)
 getResourceMax thisArg = do
@@ -11440,8 +11440,8 @@ getResourceMaxStreamReq thisArg =
 getResourceMaxStream :: KRPCHS.SpaceCenter.Resource -> RPCContext (KRPCStream (Float))
 getResourceMaxStream thisArg = requestStream $ getResourceMaxStreamReq thisArg 
 
-{-
- - The name of the resource.
+{-|
+The name of the resource.
  -}
 getResourceName :: KRPCHS.SpaceCenter.Resource -> RPCContext (Data.Text.Text)
 getResourceName thisArg = do
@@ -11457,8 +11457,8 @@ getResourceNameStreamReq thisArg =
 getResourceNameStream :: KRPCHS.SpaceCenter.Resource -> RPCContext (KRPCStream (Data.Text.Text))
 getResourceNameStream thisArg = requestStream $ getResourceNameStreamReq thisArg 
 
-{-
- - The part containing the resource.
+{-|
+The part containing the resource.
  -}
 getResourcePart :: KRPCHS.SpaceCenter.Resource -> RPCContext (KRPCHS.SpaceCenter.Part)
 getResourcePart thisArg = do
@@ -11474,8 +11474,8 @@ getResourcePartStreamReq thisArg =
 getResourcePartStream :: KRPCHS.SpaceCenter.Resource -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
 getResourcePartStream thisArg = requestStream $ getResourcePartStreamReq thisArg 
 
-{-
- - Whether use of this resource is enabled.
+{-|
+Whether use of this resource is enabled.
  -}
 setResourceEnabled :: KRPCHS.SpaceCenter.Resource -> Bool -> RPCContext ()
 setResourceEnabled thisArg valueArg = do
@@ -11483,8 +11483,8 @@ setResourceEnabled thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Returns the amount of a resource that is currently stored.<param name="name">The name of the resource.
+{-|
+Returns the amount of a resource that is currently stored.<param name="name">The name of the resource.
  -}
 resourcesAmount :: KRPCHS.SpaceCenter.Resources -> Data.Text.Text -> RPCContext (Float)
 resourcesAmount thisArg nameArg = do
@@ -11500,42 +11500,8 @@ resourcesAmountStreamReq thisArg nameArg =
 resourcesAmountStream :: KRPCHS.SpaceCenter.Resources -> Data.Text.Text -> RPCContext (KRPCStream (Float))
 resourcesAmountStream thisArg nameArg = requestStream $ resourcesAmountStreamReq thisArg nameArg 
 
-{-
- - Returns the density of a resource, in kg/l.<param name="name">The name of the resource.
- -}
-resourcesDensity :: Data.Text.Text -> RPCContext (Float)
-resourcesDensity nameArg = do
-    let r = makeRequest "SpaceCenter" "Resources_Density" [makeArgument 0 nameArg]
-    res <- sendRequest r
-    processResponse res
-
-resourcesDensityStreamReq :: Data.Text.Text -> KRPCStreamReq (Float)
-resourcesDensityStreamReq nameArg =
-    let req = makeRequest "SpaceCenter" "Resources_Density" [makeArgument 0 nameArg]
-    in  makeStream req
-
-resourcesDensityStream :: Data.Text.Text -> RPCContext (KRPCStream (Float))
-resourcesDensityStream nameArg = requestStream $ resourcesDensityStreamReq nameArg 
-
-{-
- - Returns the flow mode of a resource.<param name="name">The name of the resource.
- -}
-resourcesFlowMode :: Data.Text.Text -> RPCContext (KRPCHS.SpaceCenter.ResourceFlowMode)
-resourcesFlowMode nameArg = do
-    let r = makeRequest "SpaceCenter" "Resources_FlowMode" [makeArgument 0 nameArg]
-    res <- sendRequest r
-    processResponse res
-
-resourcesFlowModeStreamReq :: Data.Text.Text -> KRPCStreamReq (KRPCHS.SpaceCenter.ResourceFlowMode)
-resourcesFlowModeStreamReq nameArg =
-    let req = makeRequest "SpaceCenter" "Resources_FlowMode" [makeArgument 0 nameArg]
-    in  makeStream req
-
-resourcesFlowModeStream :: Data.Text.Text -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ResourceFlowMode))
-resourcesFlowModeStream nameArg = requestStream $ resourcesFlowModeStreamReq nameArg 
-
-{-
- - Check whether the named resource can be stored.<param name="name">The name of the resource.
+{-|
+Check whether the named resource can be stored.<param name="name">The name of the resource.
  -}
 resourcesHasResource :: KRPCHS.SpaceCenter.Resources -> Data.Text.Text -> RPCContext (Bool)
 resourcesHasResource thisArg nameArg = do
@@ -11551,8 +11517,8 @@ resourcesHasResourceStreamReq thisArg nameArg =
 resourcesHasResourceStream :: KRPCHS.SpaceCenter.Resources -> Data.Text.Text -> RPCContext (KRPCStream (Bool))
 resourcesHasResourceStream thisArg nameArg = requestStream $ resourcesHasResourceStreamReq thisArg nameArg 
 
-{-
- - Returns the amount of a resource that can be stored.<param name="name">The name of the resource.
+{-|
+Returns the amount of a resource that can be stored.<param name="name">The name of the resource.
  -}
 resourcesMax :: KRPCHS.SpaceCenter.Resources -> Data.Text.Text -> RPCContext (Float)
 resourcesMax thisArg nameArg = do
@@ -11568,8 +11534,8 @@ resourcesMaxStreamReq thisArg nameArg =
 resourcesMaxStream :: KRPCHS.SpaceCenter.Resources -> Data.Text.Text -> RPCContext (KRPCStream (Float))
 resourcesMaxStream thisArg nameArg = requestStream $ resourcesMaxStreamReq thisArg nameArg 
 
-{-
- - All the individual resources with the given name that can be stored.
+{-|
+All the individual resources with the given name that can be stored.
  -}
 resourcesWithResource :: KRPCHS.SpaceCenter.Resources -> Data.Text.Text -> RPCContext ([KRPCHS.SpaceCenter.Resource])
 resourcesWithResource thisArg nameArg = do
@@ -11585,8 +11551,8 @@ resourcesWithResourceStreamReq thisArg nameArg =
 resourcesWithResourceStream :: KRPCHS.SpaceCenter.Resources -> Data.Text.Text -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Resource]))
 resourcesWithResourceStream thisArg nameArg = requestStream $ resourcesWithResourceStreamReq thisArg nameArg 
 
-{-
- - All the individual resources that can be stored.
+{-|
+All the individual resources that can be stored.
  -}
 getResourcesAll :: KRPCHS.SpaceCenter.Resources -> RPCContext ([KRPCHS.SpaceCenter.Resource])
 getResourcesAll thisArg = do
@@ -11602,8 +11568,8 @@ getResourcesAllStreamReq thisArg =
 getResourcesAllStream :: KRPCHS.SpaceCenter.Resources -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Resource]))
 getResourcesAllStream thisArg = requestStream $ getResourcesAllStreamReq thisArg 
 
-{-
- - Whether use of all the resources are enabled.This is true if all of the resources are enabled. If any of the resources are not enabled, this is false.
+{-|
+Whether use of all the resources are enabled.This is true if all of the resources are enabled. If any of the resources are not enabled, this is false.
  -}
 getResourcesEnabled :: KRPCHS.SpaceCenter.Resources -> RPCContext (Bool)
 getResourcesEnabled thisArg = do
@@ -11619,8 +11585,8 @@ getResourcesEnabledStreamReq thisArg =
 getResourcesEnabledStream :: KRPCHS.SpaceCenter.Resources -> RPCContext (KRPCStream (Bool))
 getResourcesEnabledStream thisArg = requestStream $ getResourcesEnabledStreamReq thisArg 
 
-{-
- - A list of resource names that can be stored.
+{-|
+A list of resource names that can be stored.
  -}
 getResourcesNames :: KRPCHS.SpaceCenter.Resources -> RPCContext ([Data.Text.Text])
 getResourcesNames thisArg = do
@@ -11636,8 +11602,8 @@ getResourcesNamesStreamReq thisArg =
 getResourcesNamesStream :: KRPCHS.SpaceCenter.Resources -> RPCContext (KRPCStream ([Data.Text.Text]))
 getResourcesNamesStream thisArg = requestStream $ getResourcesNamesStreamReq thisArg 
 
-{-
- - Whether use of all the resources are enabled.This is true if all of the resources are enabled. If any of the resources are not enabled, this is false.
+{-|
+Whether use of all the resources are enabled.This is true if all of the resources are enabled. If any of the resources are not enabled, this is false.
  -}
 setResourcesEnabled :: KRPCHS.SpaceCenter.Resources -> Bool -> RPCContext ()
 setResourcesEnabled thisArg valueArg = do
@@ -11645,9 +11611,43 @@ setResourcesEnabled thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Save the game with a given name.
- - This will create a save file calledname.sfsin the folder of the current save game.
+{-|
+Returns the density of a resource, in kg/l.<param name="name">The name of the resource.
+ -}
+resourcesStaticDensity :: Data.Text.Text -> RPCContext (Float)
+resourcesStaticDensity nameArg = do
+    let r = makeRequest "SpaceCenter" "Resources_static_Density" [makeArgument 0 nameArg]
+    res <- sendRequest r
+    processResponse res
+
+resourcesStaticDensityStreamReq :: Data.Text.Text -> KRPCStreamReq (Float)
+resourcesStaticDensityStreamReq nameArg =
+    let req = makeRequest "SpaceCenter" "Resources_static_Density" [makeArgument 0 nameArg]
+    in  makeStream req
+
+resourcesStaticDensityStream :: Data.Text.Text -> RPCContext (KRPCStream (Float))
+resourcesStaticDensityStream nameArg = requestStream $ resourcesStaticDensityStreamReq nameArg 
+
+{-|
+Returns the flow mode of a resource.<param name="name">The name of the resource.
+ -}
+resourcesStaticFlowMode :: Data.Text.Text -> RPCContext (KRPCHS.SpaceCenter.ResourceFlowMode)
+resourcesStaticFlowMode nameArg = do
+    let r = makeRequest "SpaceCenter" "Resources_static_FlowMode" [makeArgument 0 nameArg]
+    res <- sendRequest r
+    processResponse res
+
+resourcesStaticFlowModeStreamReq :: Data.Text.Text -> KRPCStreamReq (KRPCHS.SpaceCenter.ResourceFlowMode)
+resourcesStaticFlowModeStreamReq nameArg =
+    let req = makeRequest "SpaceCenter" "Resources_static_FlowMode" [makeArgument 0 nameArg]
+    in  makeStream req
+
+resourcesStaticFlowModeStream :: Data.Text.Text -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ResourceFlowMode))
+resourcesStaticFlowModeStream nameArg = requestStream $ resourcesStaticFlowModeStreamReq nameArg 
+
+{-|
+Save the game with a given name.
+This will create a save file calledname.sfsin the folder of the current save game.
  -}
 save :: Data.Text.Text -> RPCContext ()
 save nameArg = do
@@ -11655,8 +11655,8 @@ save nameArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Data amount.
+{-|
+Data amount.
  -}
 getScienceDataDataAmount :: KRPCHS.SpaceCenter.ScienceData -> RPCContext (Float)
 getScienceDataDataAmount thisArg = do
@@ -11672,8 +11672,8 @@ getScienceDataDataAmountStreamReq thisArg =
 getScienceDataDataAmountStream :: KRPCHS.SpaceCenter.ScienceData -> RPCContext (KRPCStream (Float))
 getScienceDataDataAmountStream thisArg = requestStream $ getScienceDataDataAmountStreamReq thisArg 
 
-{-
- - Science value.
+{-|
+Science value.
  -}
 getScienceDataScienceValue :: KRPCHS.SpaceCenter.ScienceData -> RPCContext (Float)
 getScienceDataScienceValue thisArg = do
@@ -11689,8 +11689,8 @@ getScienceDataScienceValueStreamReq thisArg =
 getScienceDataScienceValueStream :: KRPCHS.SpaceCenter.ScienceData -> RPCContext (KRPCStream (Float))
 getScienceDataScienceValueStream thisArg = requestStream $ getScienceDataScienceValueStreamReq thisArg 
 
-{-
- - Transmit value.
+{-|
+Transmit value.
  -}
 getScienceDataTransmitValue :: KRPCHS.SpaceCenter.ScienceData -> RPCContext (Float)
 getScienceDataTransmitValue thisArg = do
@@ -11706,8 +11706,8 @@ getScienceDataTransmitValueStreamReq thisArg =
 getScienceDataTransmitValueStream :: KRPCHS.SpaceCenter.ScienceData -> RPCContext (KRPCStream (Float))
 getScienceDataTransmitValueStream thisArg = requestStream $ getScienceDataTransmitValueStreamReq thisArg 
 
-{-
- - Multiply science value by this to determine data amount in mits.
+{-|
+Multiply science value by this to determine data amount in mits.
  -}
 getScienceSubjectDataScale :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (Float)
 getScienceSubjectDataScale thisArg = do
@@ -11723,8 +11723,8 @@ getScienceSubjectDataScaleStreamReq thisArg =
 getScienceSubjectDataScaleStream :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (KRPCStream (Float))
 getScienceSubjectDataScaleStream thisArg = requestStream $ getScienceSubjectDataScaleStreamReq thisArg 
 
-{-
- - Whether the experiment has been completed.
+{-|
+Whether the experiment has been completed.
  -}
 getScienceSubjectIsComplete :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (Bool)
 getScienceSubjectIsComplete thisArg = do
@@ -11740,8 +11740,8 @@ getScienceSubjectIsCompleteStreamReq thisArg =
 getScienceSubjectIsCompleteStream :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (KRPCStream (Bool))
 getScienceSubjectIsCompleteStream thisArg = requestStream $ getScienceSubjectIsCompleteStreamReq thisArg 
 
-{-
- - Amount of science already earned from this subject, not updated until after transmission/recovery.
+{-|
+Amount of science already earned from this subject, not updated until after transmission/recovery.
  -}
 getScienceSubjectScience :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (Float)
 getScienceSubjectScience thisArg = do
@@ -11757,8 +11757,8 @@ getScienceSubjectScienceStreamReq thisArg =
 getScienceSubjectScienceStream :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (KRPCStream (Float))
 getScienceSubjectScienceStream thisArg = requestStream $ getScienceSubjectScienceStreamReq thisArg 
 
-{-
- - Total science allowable for this subject.
+{-|
+Total science allowable for this subject.
  -}
 getScienceSubjectScienceCap :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (Float)
 getScienceSubjectScienceCap thisArg = do
@@ -11774,8 +11774,8 @@ getScienceSubjectScienceCapStreamReq thisArg =
 getScienceSubjectScienceCapStream :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (KRPCStream (Float))
 getScienceSubjectScienceCapStream thisArg = requestStream $ getScienceSubjectScienceCapStreamReq thisArg 
 
-{-
- - Diminishing value multiplier for decreasing the science value returned from repeated experiments.
+{-|
+Diminishing value multiplier for decreasing the science value returned from repeated experiments.
  -}
 getScienceSubjectScientificValue :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (Float)
 getScienceSubjectScientificValue thisArg = do
@@ -11791,8 +11791,8 @@ getScienceSubjectScientificValueStreamReq thisArg =
 getScienceSubjectScientificValueStream :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (KRPCStream (Float))
 getScienceSubjectScientificValueStream thisArg = requestStream $ getScienceSubjectScientificValueStreamReq thisArg 
 
-{-
- - Multiplier for specific Celestial Body/Experiment Situation combination.
+{-|
+Multiplier for specific Celestial Body/Experiment Situation combination.
  -}
 getScienceSubjectSubjectValue :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (Float)
 getScienceSubjectSubjectValue thisArg = do
@@ -11808,8 +11808,8 @@ getScienceSubjectSubjectValueStreamReq thisArg =
 getScienceSubjectSubjectValueStream :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (KRPCStream (Float))
 getScienceSubjectSubjectValueStream thisArg = requestStream $ getScienceSubjectSubjectValueStreamReq thisArg 
 
-{-
- - Title of science subject, displayed in science archives
+{-|
+Title of science subject, displayed in science archives
  -}
 getScienceSubjectTitle :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (Data.Text.Text)
 getScienceSubjectTitle thisArg = do
@@ -11825,8 +11825,8 @@ getScienceSubjectTitleStreamReq thisArg =
 getScienceSubjectTitleStream :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (KRPCStream (Data.Text.Text))
 getScienceSubjectTitleStream thisArg = requestStream $ getScienceSubjectTitleStreamReq thisArg 
 
-{-
- - Whether the sensor is active.
+{-|
+Whether the sensor is active.
  -}
 getSensorActive :: KRPCHS.SpaceCenter.Sensor -> RPCContext (Bool)
 getSensorActive thisArg = do
@@ -11842,8 +11842,8 @@ getSensorActiveStreamReq thisArg =
 getSensorActiveStream :: KRPCHS.SpaceCenter.Sensor -> RPCContext (KRPCStream (Bool))
 getSensorActiveStream thisArg = requestStream $ getSensorActiveStreamReq thisArg 
 
-{-
- - The part object for this sensor.
+{-|
+The part object for this sensor.
  -}
 getSensorPart :: KRPCHS.SpaceCenter.Sensor -> RPCContext (KRPCHS.SpaceCenter.Part)
 getSensorPart thisArg = do
@@ -11859,8 +11859,8 @@ getSensorPartStreamReq thisArg =
 getSensorPartStream :: KRPCHS.SpaceCenter.Sensor -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
 getSensorPartStream thisArg = requestStream $ getSensorPartStreamReq thisArg 
 
-{-
- - The current power usage of the sensor, in units of charge per second.
+{-|
+The current power usage of the sensor, in units of charge per second.
  -}
 getSensorPowerUsage :: KRPCHS.SpaceCenter.Sensor -> RPCContext (Float)
 getSensorPowerUsage thisArg = do
@@ -11876,8 +11876,8 @@ getSensorPowerUsageStreamReq thisArg =
 getSensorPowerUsageStream :: KRPCHS.SpaceCenter.Sensor -> RPCContext (KRPCStream (Float))
 getSensorPowerUsageStream thisArg = requestStream $ getSensorPowerUsageStreamReq thisArg 
 
-{-
- - The current value of the sensor.
+{-|
+The current value of the sensor.
  -}
 getSensorValue :: KRPCHS.SpaceCenter.Sensor -> RPCContext (Data.Text.Text)
 getSensorValue thisArg = do
@@ -11893,8 +11893,8 @@ getSensorValueStreamReq thisArg =
 getSensorValueStream :: KRPCHS.SpaceCenter.Sensor -> RPCContext (KRPCStream (Data.Text.Text))
 getSensorValueStream thisArg = requestStream $ getSensorValueStreamReq thisArg 
 
-{-
- - Whether the sensor is active.
+{-|
+Whether the sensor is active.
  -}
 setSensorActive :: KRPCHS.SpaceCenter.Sensor -> Bool -> RPCContext ()
 setSensorActive thisArg valueArg = do
@@ -11902,8 +11902,8 @@ setSensorActive thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Whether the solar panel is extended.
+{-|
+Whether the solar panel is extended.
  -}
 getSolarPanelDeployed :: KRPCHS.SpaceCenter.SolarPanel -> RPCContext (Bool)
 getSolarPanelDeployed thisArg = do
@@ -11919,9 +11919,9 @@ getSolarPanelDeployedStreamReq thisArg =
 getSolarPanelDeployedStream :: KRPCHS.SpaceCenter.SolarPanel -> RPCContext (KRPCStream (Bool))
 getSolarPanelDeployedStream thisArg = requestStream $ getSolarPanelDeployedStreamReq thisArg 
 
-{-
- - The current amount of energy being generated by the solar panel, in
- - units of charge per second.
+{-|
+The current amount of energy being generated by the solar panel, in
+units of charge per second.
  -}
 getSolarPanelEnergyFlow :: KRPCHS.SpaceCenter.SolarPanel -> RPCContext (Float)
 getSolarPanelEnergyFlow thisArg = do
@@ -11937,8 +11937,8 @@ getSolarPanelEnergyFlowStreamReq thisArg =
 getSolarPanelEnergyFlowStream :: KRPCHS.SpaceCenter.SolarPanel -> RPCContext (KRPCStream (Float))
 getSolarPanelEnergyFlowStream thisArg = requestStream $ getSolarPanelEnergyFlowStreamReq thisArg 
 
-{-
- - The part object for this solar panel.
+{-|
+The part object for this solar panel.
  -}
 getSolarPanelPart :: KRPCHS.SpaceCenter.SolarPanel -> RPCContext (KRPCHS.SpaceCenter.Part)
 getSolarPanelPart thisArg = do
@@ -11954,8 +11954,8 @@ getSolarPanelPartStreamReq thisArg =
 getSolarPanelPartStream :: KRPCHS.SpaceCenter.SolarPanel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
 getSolarPanelPartStream thisArg = requestStream $ getSolarPanelPartStreamReq thisArg 
 
-{-
- - The current state of the solar panel.
+{-|
+The current state of the solar panel.
  -}
 getSolarPanelState :: KRPCHS.SpaceCenter.SolarPanel -> RPCContext (KRPCHS.SpaceCenter.SolarPanelState)
 getSolarPanelState thisArg = do
@@ -11971,9 +11971,9 @@ getSolarPanelStateStreamReq thisArg =
 getSolarPanelStateStream :: KRPCHS.SpaceCenter.SolarPanel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.SolarPanelState))
 getSolarPanelStateStream thisArg = requestStream $ getSolarPanelStateStreamReq thisArg 
 
-{-
- - The current amount of sunlight that is incident on the solar panel,
- - as a percentage. A value between 0 and 1.
+{-|
+The current amount of sunlight that is incident on the solar panel,
+as a percentage. A value between 0 and 1.
  -}
 getSolarPanelSunExposure :: KRPCHS.SpaceCenter.SolarPanel -> RPCContext (Float)
 getSolarPanelSunExposure thisArg = do
@@ -11989,8 +11989,8 @@ getSolarPanelSunExposureStreamReq thisArg =
 getSolarPanelSunExposureStream :: KRPCHS.SpaceCenter.SolarPanel -> RPCContext (KRPCStream (Float))
 getSolarPanelSunExposureStream thisArg = requestStream $ getSolarPanelSunExposureStreamReq thisArg 
 
-{-
- - Whether the solar panel is extended.
+{-|
+Whether the solar panel is extended.
  -}
 setSolarPanelDeployed :: KRPCHS.SpaceCenter.SolarPanel -> Bool -> RPCContext ()
 setSolarPanelDeployed thisArg valueArg = do
@@ -11998,8 +11998,8 @@ setSolarPanelDeployed thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Position around which the gimbal pivots.
+{-|
+Position around which the gimbal pivots.
  -}
 thrusterGimbalPosition :: KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
 thrusterGimbalPosition thisArg referenceFrameArg = do
@@ -12015,10 +12015,10 @@ thrusterGimbalPositionStreamReq thisArg referenceFrameArg =
 thrusterGimbalPositionStream :: KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
 thrusterGimbalPositionStream thisArg referenceFrameArg = requestStream $ thrusterGimbalPositionStreamReq thisArg referenceFrameArg 
 
-{-
- - The direction of the force generated by the thruster, when the engine is in its
- - initial position (no gimballing), in the given reference frame.
- - This is opposite to the direction in which the thruster expels propellant.<param name="referenceFrame">
+{-|
+The direction of the force generated by the thruster, when the engine is in its
+initial position (no gimballing), in the given reference frame.
+This is opposite to the direction in which the thruster expels propellant.<param name="referenceFrame">
  -}
 thrusterInitialThrustDirection :: KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
 thrusterInitialThrustDirection thisArg referenceFrameArg = do
@@ -12034,10 +12034,10 @@ thrusterInitialThrustDirectionStreamReq thisArg referenceFrameArg =
 thrusterInitialThrustDirectionStream :: KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
 thrusterInitialThrustDirectionStream thisArg referenceFrameArg = requestStream $ thrusterInitialThrustDirectionStreamReq thisArg referenceFrameArg 
 
-{-
- - The position at which the thruster generates thrust, when the engine is in its
- - initial position (no gimballing), in the given reference frame.<param name="referenceFrame">This position can move when the gimbal rotates. This is because the thrust position and
- - gimbal position are not necessarily the same.
+{-|
+The position at which the thruster generates thrust, when the engine is in its
+initial position (no gimballing), in the given reference frame.<param name="referenceFrame">This position can move when the gimbal rotates. This is because the thrust position and
+gimbal position are not necessarily the same.
  -}
 thrusterInitialThrustPosition :: KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
 thrusterInitialThrustPosition thisArg referenceFrameArg = do
@@ -12053,10 +12053,10 @@ thrusterInitialThrustPositionStreamReq thisArg referenceFrameArg =
 thrusterInitialThrustPositionStream :: KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
 thrusterInitialThrustPositionStream thisArg referenceFrameArg = requestStream $ thrusterInitialThrustPositionStreamReq thisArg referenceFrameArg 
 
-{-
- - The direction of the force generated by the thruster, in the given reference frame.
- - This is opposite to the direction in which the thruster expels propellant.
- - For gimballed engines, this takes into account the current rotation of the gimbal.<param name="referenceFrame">
+{-|
+The direction of the force generated by the thruster, in the given reference frame.
+This is opposite to the direction in which the thruster expels propellant.
+For gimballed engines, this takes into account the current rotation of the gimbal.<param name="referenceFrame">
  -}
 thrusterThrustDirection :: KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
 thrusterThrustDirection thisArg referenceFrameArg = do
@@ -12072,9 +12072,9 @@ thrusterThrustDirectionStreamReq thisArg referenceFrameArg =
 thrusterThrustDirectionStream :: KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
 thrusterThrustDirectionStream thisArg referenceFrameArg = requestStream $ thrusterThrustDirectionStreamReq thisArg referenceFrameArg 
 
-{-
- - The position at which the thruster generates thrust, in the given reference frame.
- - For gimballed engines, this takes into account the current rotation of the gimbal.<param name="referenceFrame">
+{-|
+The position at which the thruster generates thrust, in the given reference frame.
+For gimballed engines, this takes into account the current rotation of the gimbal.<param name="referenceFrame">
  -}
 thrusterThrustPosition :: KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
 thrusterThrustPosition thisArg referenceFrameArg = do
@@ -12090,8 +12090,8 @@ thrusterThrustPositionStreamReq thisArg referenceFrameArg =
 thrusterThrustPositionStream :: KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
 thrusterThrustPositionStream thisArg referenceFrameArg = requestStream $ thrusterThrustPositionStreamReq thisArg referenceFrameArg 
 
-{-
- - The current gimbal angle in the pitch, roll and yaw axes.
+{-|
+The current gimbal angle in the pitch, roll and yaw axes.
  -}
 getThrusterGimbalAngle :: KRPCHS.SpaceCenter.Thruster -> RPCContext ((Double, Double, Double))
 getThrusterGimbalAngle thisArg = do
@@ -12107,8 +12107,8 @@ getThrusterGimbalAngleStreamReq thisArg =
 getThrusterGimbalAngleStream :: KRPCHS.SpaceCenter.Thruster -> RPCContext (KRPCStream ((Double, Double, Double)))
 getThrusterGimbalAngleStream thisArg = requestStream $ getThrusterGimbalAngleStreamReq thisArg 
 
-{-
- - Whether the thruster is gimballed.
+{-|
+Whether the thruster is gimballed.
  -}
 getThrusterGimballed :: KRPCHS.SpaceCenter.Thruster -> RPCContext (Bool)
 getThrusterGimballed thisArg = do
@@ -12124,8 +12124,8 @@ getThrusterGimballedStreamReq thisArg =
 getThrusterGimballedStream :: KRPCHS.SpaceCenter.Thruster -> RPCContext (KRPCStream (Bool))
 getThrusterGimballedStream thisArg = requestStream $ getThrusterGimballedStreamReq thisArg 
 
-{-
- - The <see cref="T:SpaceCenter.Part" /> that contains this thruster.
+{-|
+The <see cref="T:SpaceCenter.Part" /> that contains this thruster.
  -}
 getThrusterPart :: KRPCHS.SpaceCenter.Thruster -> RPCContext (KRPCHS.SpaceCenter.Part)
 getThrusterPart thisArg = do
@@ -12141,12 +12141,12 @@ getThrusterPartStreamReq thisArg =
 getThrusterPartStream :: KRPCHS.SpaceCenter.Thruster -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
 getThrusterPartStream thisArg = requestStream $ getThrusterPartStreamReq thisArg 
 
-{-
- - A reference frame that is fixed relative to the thruster and orientated with
- - its thrust direction (<see cref="M:SpaceCenter.Thruster.ThrustDirection" />).
- - For gimballed engines, this takes into account the current rotation of the gimbal.
- - <list type="bullet">The origin is at the position of thrust for this thruster (<see cref="M:SpaceCenter.Thruster.ThrustPosition" />).The axes rotate with the thrust direction.
- - This is the direction in which the thruster expels propellant, including any gimballing.The y-axis points along the thrust direction.The x-axis and z-axis are perpendicular to the thrust direction.
+{-|
+A reference frame that is fixed relative to the thruster and orientated with
+its thrust direction (<see cref="M:SpaceCenter.Thruster.ThrustDirection" />).
+For gimballed engines, this takes into account the current rotation of the gimbal.
+<list type="bullet">The origin is at the position of thrust for this thruster (<see cref="M:SpaceCenter.Thruster.ThrustPosition" />).The axes rotate with the thrust direction.
+This is the direction in which the thruster expels propellant, including any gimballing.The y-axis points along the thrust direction.The x-axis and z-axis are perpendicular to the thrust direction.
  -}
 getThrusterThrustReferenceFrame :: KRPCHS.SpaceCenter.Thruster -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
 getThrusterThrustReferenceFrame thisArg = do
@@ -12162,8 +12162,8 @@ getThrusterThrustReferenceFrameStreamReq thisArg =
 getThrusterThrustReferenceFrameStream :: KRPCHS.SpaceCenter.Thruster -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 getThrusterThrustReferenceFrameStream thisArg = requestStream $ getThrusterThrustReferenceFrameStreamReq thisArg 
 
-{-
- - Converts a direction vector from one reference frame to another.<param name="direction">Direction vector in reference frame <paramref name="from" />.<param name="from">The reference frame that the direction vector is in.<param name="to">The reference frame to covert the direction vector to.The corresponding direction vector in reference frame <paramref name="to" />.
+{-|
+Converts a direction vector from one reference frame to another.<param name="direction">Direction vector in reference frame <paramref name="from" />.<param name="from">The reference frame that the direction vector is in.<param name="to">The reference frame to covert the direction vector to.The corresponding direction vector in reference frame <paramref name="to" />.
  -}
 transformDirection :: (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
 transformDirection directionArg fromArg toArg = do
@@ -12179,8 +12179,8 @@ transformDirectionStreamReq directionArg fromArg toArg =
 transformDirectionStream :: (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
 transformDirectionStream directionArg fromArg toArg = requestStream $ transformDirectionStreamReq directionArg fromArg toArg 
 
-{-
- - Converts a position vector from one reference frame to another.<param name="position">Position vector in reference frame <paramref name="from" />.<param name="from">The reference frame that the position vector is in.<param name="to">The reference frame to covert the position vector to.The corresponding position vector in reference frame <paramref name="to" />.
+{-|
+Converts a position vector from one reference frame to another.<param name="position">Position vector in reference frame <paramref name="from" />.<param name="from">The reference frame that the position vector is in.<param name="to">The reference frame to covert the position vector to.The corresponding position vector in reference frame <paramref name="to" />.
  -}
 transformPosition :: (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
 transformPosition positionArg fromArg toArg = do
@@ -12196,8 +12196,8 @@ transformPositionStreamReq positionArg fromArg toArg =
 transformPositionStream :: (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
 transformPositionStream positionArg fromArg toArg = requestStream $ transformPositionStreamReq positionArg fromArg toArg 
 
-{-
- - Converts a rotation from one reference frame to another.<param name="rotation">Rotation in reference frame <paramref name="from" />.<param name="from">The reference frame that the rotation is in.<param name="to">The corresponding rotation in reference frame <paramref name="to" />.The corresponding rotation in reference frame <paramref name="to" />.
+{-|
+Converts a rotation from one reference frame to another.<param name="rotation">Rotation in reference frame <paramref name="from" />.<param name="from">The reference frame that the rotation is in.<param name="to">The corresponding rotation in reference frame <paramref name="to" />.The corresponding rotation in reference frame <paramref name="to" />.
  -}
 transformRotation :: (Double, Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double, Double))
 transformRotation rotationArg fromArg toArg = do
@@ -12213,10 +12213,10 @@ transformRotationStreamReq rotationArg fromArg toArg =
 transformRotationStream :: (Double, Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double, Double)))
 transformRotationStream rotationArg fromArg toArg = requestStream $ transformRotationStreamReq rotationArg fromArg toArg 
 
-{-
- - Converts a velocity vector (acting at the specified position vector) from one
- - reference frame to another. The position vector is required to take the
- - relative angular velocity of the reference frames into account.<param name="position">Position vector in reference frame <paramref name="from" />.<param name="velocity">Velocity vector in reference frame <paramref name="from" />.<param name="from">The reference frame that the position and velocity vectors are in.<param name="to">The reference frame to covert the velocity vector to.The corresponding velocity in reference frame <paramref name="to" />.
+{-|
+Converts a velocity vector (acting at the specified position vector) from one
+reference frame to another. The position vector is required to take the
+relative angular velocity of the reference frames into account.<param name="position">Position vector in reference frame <paramref name="from" />.<param name="velocity">Velocity vector in reference frame <paramref name="from" />.<param name="from">The reference frame that the position and velocity vectors are in.<param name="to">The reference frame to covert the velocity vector to.The corresponding velocity in reference frame <paramref name="to" />.
  -}
 transformVelocity :: (Double, Double, Double) -> (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
 transformVelocity positionArg velocityArg fromArg toArg = do
@@ -12232,10 +12232,10 @@ transformVelocityStreamReq positionArg velocityArg fromArg toArg =
 transformVelocityStream :: (Double, Double, Double) -> (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
 transformVelocityStream positionArg velocityArg fromArg toArg = requestStream $ transformVelocityStreamReq positionArg velocityArg fromArg toArg 
 
-{-
- - Returns the angular velocity of the vessel in the given reference frame. The magnitude of the returned
- - vector is the rotational speed in radians per second, and the direction of the vector indicates the
- - axis of rotation (using the right hand rule).<param name="referenceFrame">
+{-|
+Returns the angular velocity of the vessel in the given reference frame. The magnitude of the returned
+vector is the rotational speed in radians per second, and the direction of the vector indicates the
+axis of rotation (using the right hand rule).<param name="referenceFrame">
  -}
 vesselAngularVelocity :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
 vesselAngularVelocity thisArg referenceFrameArg = do
@@ -12251,8 +12251,8 @@ vesselAngularVelocityStreamReq thisArg referenceFrameArg =
 vesselAngularVelocityStream :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
 vesselAngularVelocityStream thisArg referenceFrameArg = requestStream $ vesselAngularVelocityStreamReq thisArg referenceFrameArg 
 
-{-
- - Returns the direction in which the vessel is pointing, as a unit vector, in the given reference frame.<param name="referenceFrame">
+{-|
+Returns the direction in which the vessel is pointing, as a unit vector, in the given reference frame.<param name="referenceFrame">
  -}
 vesselDirection :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
 vesselDirection thisArg referenceFrameArg = do
@@ -12268,10 +12268,10 @@ vesselDirectionStreamReq thisArg referenceFrameArg =
 vesselDirectionStream :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
 vesselDirectionStream thisArg referenceFrameArg = requestStream $ vesselDirectionStreamReq thisArg referenceFrameArg 
 
-{-
- - Returns a <see cref="T:SpaceCenter.Flight" /> object that can be used to get flight
- - telemetry for the vessel, in the specified reference frame.<param name="referenceFrame">
- - Reference frame. Defaults to the vessel's surface reference frame (<see cref="M:SpaceCenter.Vessel.SurfaceReferenceFrame" />).
+{-|
+Returns a <see cref="T:SpaceCenter.Flight" /> object that can be used to get flight
+telemetry for the vessel, in the specified reference frame.<param name="referenceFrame">
+Reference frame. Defaults to the vessel's surface reference frame (<see cref="M:SpaceCenter.Vessel.SurfaceReferenceFrame" />).
  -}
 vesselFlight :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCHS.SpaceCenter.Flight)
 vesselFlight thisArg referenceFrameArg = do
@@ -12287,8 +12287,8 @@ vesselFlightStreamReq thisArg referenceFrameArg =
 vesselFlightStream :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Flight))
 vesselFlightStream thisArg referenceFrameArg = requestStream $ vesselFlightStreamReq thisArg referenceFrameArg 
 
-{-
- - Returns the position vector of the center of mass of the vessel in the given reference frame.<param name="referenceFrame">
+{-|
+Returns the position vector of the center of mass of the vessel in the given reference frame.<param name="referenceFrame">
  -}
 vesselPosition :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
 vesselPosition thisArg referenceFrameArg = do
@@ -12304,8 +12304,8 @@ vesselPositionStreamReq thisArg referenceFrameArg =
 vesselPositionStream :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
 vesselPositionStream thisArg referenceFrameArg = requestStream $ vesselPositionStreamReq thisArg referenceFrameArg 
 
-{-
- - Recover the vessel.
+{-|
+Recover the vessel.
  -}
 vesselRecover :: KRPCHS.SpaceCenter.Vessel -> RPCContext ()
 vesselRecover thisArg = do
@@ -12313,11 +12313,11 @@ vesselRecover thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Returns a <see cref="T:SpaceCenter.Resources" /> object, that can used to get
- - information about resources stored in a given <paramref name="stage" />.<param name="stage">Get resources for parts that are decoupled in this stage.<param name="cumulative">Whenfalse, returns the resources for parts
- - decoupled in just the given stage. Whentruereturns the resources decoupled in
- - the given stage and all subsequent stages combined.
+{-|
+Returns a <see cref="T:SpaceCenter.Resources" /> object, that can used to get
+information about resources stored in a given <paramref name="stage" />.<param name="stage">Get resources for parts that are decoupled in this stage.<param name="cumulative">Whenfalse, returns the resources for parts
+decoupled in just the given stage. Whentruereturns the resources decoupled in
+the given stage and all subsequent stages combined.
  -}
 vesselResourcesInDecoupleStage :: KRPCHS.SpaceCenter.Vessel -> Data.Int.Int32 -> Bool -> RPCContext (KRPCHS.SpaceCenter.Resources)
 vesselResourcesInDecoupleStage thisArg stageArg cumulativeArg = do
@@ -12333,8 +12333,8 @@ vesselResourcesInDecoupleStageStreamReq thisArg stageArg cumulativeArg =
 vesselResourcesInDecoupleStageStream :: KRPCHS.SpaceCenter.Vessel -> Data.Int.Int32 -> Bool -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Resources))
 vesselResourcesInDecoupleStageStream thisArg stageArg cumulativeArg = requestStream $ vesselResourcesInDecoupleStageStreamReq thisArg stageArg cumulativeArg 
 
-{-
- - Returns the rotation of the center of mass of the vessel in the given reference frame.<param name="referenceFrame">
+{-|
+Returns the rotation of the center of mass of the vessel in the given reference frame.<param name="referenceFrame">
  -}
 vesselRotation :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double, Double))
 vesselRotation thisArg referenceFrameArg = do
@@ -12350,8 +12350,8 @@ vesselRotationStreamReq thisArg referenceFrameArg =
 vesselRotationStream :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double, Double)))
 vesselRotationStream thisArg referenceFrameArg = requestStream $ vesselRotationStreamReq thisArg referenceFrameArg 
 
-{-
- - Returns the velocity vector of the center of mass of the vessel in the given reference frame.<param name="referenceFrame">
+{-|
+Returns the velocity vector of the center of mass of the vessel in the given reference frame.<param name="referenceFrame">
  -}
 vesselVelocity :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
 vesselVelocity thisArg referenceFrameArg = do
@@ -12367,9 +12367,9 @@ vesselVelocityStreamReq thisArg referenceFrameArg =
 vesselVelocityStream :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
 vesselVelocityStream thisArg referenceFrameArg = requestStream $ vesselVelocityStreamReq thisArg referenceFrameArg 
 
-{-
- - An <see cref="T:SpaceCenter.AutoPilot" /> object, that can be used to perform
- - simple auto-piloting of the vessel.
+{-|
+An <see cref="T:SpaceCenter.AutoPilot" /> object, that can be used to perform
+simple auto-piloting of the vessel.
  -}
 getVesselAutoPilot :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCHS.SpaceCenter.AutoPilot)
 getVesselAutoPilot thisArg = do
@@ -12385,11 +12385,11 @@ getVesselAutoPilotStreamReq thisArg =
 getVesselAutoPilotStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.AutoPilot))
 getVesselAutoPilotStream thisArg = requestStream $ getVesselAutoPilotStreamReq thisArg 
 
-{-
- - The maximum torque that the aerodynamic control surfaces can generate.
- - Returns the torques inN.maround each of the coordinate axes of the
- - vessels reference frame (<see cref="M:SpaceCenter.Vessel.ReferenceFrame" />).
- - These axes are equivalent to the pitch, roll and yaw axes of the vessel.
+{-|
+The maximum torque that the aerodynamic control surfaces can generate.
+Returns the torques inN.maround each of the coordinate axes of the
+vessels reference frame (<see cref="M:SpaceCenter.Vessel.ReferenceFrame" />).
+These axes are equivalent to the pitch, roll and yaw axes of the vessel.
  -}
 getVesselAvailableControlSurfaceTorque :: KRPCHS.SpaceCenter.Vessel -> RPCContext ((Double, Double, Double))
 getVesselAvailableControlSurfaceTorque thisArg = do
@@ -12405,11 +12405,11 @@ getVesselAvailableControlSurfaceTorqueStreamReq thisArg =
 getVesselAvailableControlSurfaceTorqueStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream ((Double, Double, Double)))
 getVesselAvailableControlSurfaceTorqueStream thisArg = requestStream $ getVesselAvailableControlSurfaceTorqueStreamReq thisArg 
 
-{-
- - The maximum torque that the currently active and gimballed engines can generate.
- - Returns the torques inN.maround each of the coordinate axes of the
- - vessels reference frame (<see cref="M:SpaceCenter.Vessel.ReferenceFrame" />).
- - These axes are equivalent to the pitch, roll and yaw axes of the vessel.
+{-|
+The maximum torque that the currently active and gimballed engines can generate.
+Returns the torques inN.maround each of the coordinate axes of the
+vessels reference frame (<see cref="M:SpaceCenter.Vessel.ReferenceFrame" />).
+These axes are equivalent to the pitch, roll and yaw axes of the vessel.
  -}
 getVesselAvailableEngineTorque :: KRPCHS.SpaceCenter.Vessel -> RPCContext ((Double, Double, Double))
 getVesselAvailableEngineTorque thisArg = do
@@ -12425,11 +12425,11 @@ getVesselAvailableEngineTorqueStreamReq thisArg =
 getVesselAvailableEngineTorqueStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream ((Double, Double, Double)))
 getVesselAvailableEngineTorqueStream thisArg = requestStream $ getVesselAvailableEngineTorqueStreamReq thisArg 
 
-{-
- - The maximum torque that the currently active RCS thrusters can generate.
- - Returns the torques inN.maround each of the coordinate axes of the
- - vessels reference frame (<see cref="M:SpaceCenter.Vessel.ReferenceFrame" />).
- - These axes are equivalent to the pitch, roll and yaw axes of the vessel.
+{-|
+The maximum torque that the currently active RCS thrusters can generate.
+Returns the torques inN.maround each of the coordinate axes of the
+vessels reference frame (<see cref="M:SpaceCenter.Vessel.ReferenceFrame" />).
+These axes are equivalent to the pitch, roll and yaw axes of the vessel.
  -}
 getVesselAvailableRCSTorque :: KRPCHS.SpaceCenter.Vessel -> RPCContext ((Double, Double, Double))
 getVesselAvailableRCSTorque thisArg = do
@@ -12445,11 +12445,11 @@ getVesselAvailableRCSTorqueStreamReq thisArg =
 getVesselAvailableRCSTorqueStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream ((Double, Double, Double)))
 getVesselAvailableRCSTorqueStream thisArg = requestStream $ getVesselAvailableRCSTorqueStreamReq thisArg 
 
-{-
- - The maximum torque that the currently active and powered reaction wheels can generate.
- - Returns the torques inN.maround each of the coordinate axes of the
- - vessels reference frame (<see cref="M:SpaceCenter.Vessel.ReferenceFrame" />).
- - These axes are equivalent to the pitch, roll and yaw axes of the vessel.
+{-|
+The maximum torque that the currently active and powered reaction wheels can generate.
+Returns the torques inN.maround each of the coordinate axes of the
+vessels reference frame (<see cref="M:SpaceCenter.Vessel.ReferenceFrame" />).
+These axes are equivalent to the pitch, roll and yaw axes of the vessel.
  -}
 getVesselAvailableReactionWheelTorque :: KRPCHS.SpaceCenter.Vessel -> RPCContext ((Double, Double, Double))
 getVesselAvailableReactionWheelTorque thisArg = do
@@ -12465,10 +12465,10 @@ getVesselAvailableReactionWheelTorqueStreamReq thisArg =
 getVesselAvailableReactionWheelTorqueStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream ((Double, Double, Double)))
 getVesselAvailableReactionWheelTorqueStream thisArg = requestStream $ getVesselAvailableReactionWheelTorqueStreamReq thisArg 
 
-{-
- - Gets the total available thrust that can be produced by the vessel's
- - active engines, in Newtons. This is computed by summing
- - <see cref="M:SpaceCenter.Engine.AvailableThrust" /> for every active engine in the vessel.
+{-|
+Gets the total available thrust that can be produced by the vessel's
+active engines, in Newtons. This is computed by summing
+<see cref="M:SpaceCenter.Engine.AvailableThrust" /> for every active engine in the vessel.
  -}
 getVesselAvailableThrust :: KRPCHS.SpaceCenter.Vessel -> RPCContext (Float)
 getVesselAvailableThrust thisArg = do
@@ -12484,12 +12484,12 @@ getVesselAvailableThrustStreamReq thisArg =
 getVesselAvailableThrustStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Float))
 getVesselAvailableThrustStream thisArg = requestStream $ getVesselAvailableThrustStreamReq thisArg 
 
-{-
- - The maximum torque that the vessel generate. Includes contributions from reaction wheels,
- - RCS, gimballed engines and aerodynamic control surfaces.
- - Returns the torques inN.maround each of the coordinate axes of the
- - vessels reference frame (<see cref="M:SpaceCenter.Vessel.ReferenceFrame" />).
- - These axes are equivalent to the pitch, roll and yaw axes of the vessel.
+{-|
+The maximum torque that the vessel generate. Includes contributions from reaction wheels,
+RCS, gimballed engines and aerodynamic control surfaces.
+Returns the torques inN.maround each of the coordinate axes of the
+vessels reference frame (<see cref="M:SpaceCenter.Vessel.ReferenceFrame" />).
+These axes are equivalent to the pitch, roll and yaw axes of the vessel.
  -}
 getVesselAvailableTorque :: KRPCHS.SpaceCenter.Vessel -> RPCContext ((Double, Double, Double))
 getVesselAvailableTorque thisArg = do
@@ -12505,8 +12505,8 @@ getVesselAvailableTorqueStreamReq thisArg =
 getVesselAvailableTorqueStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream ((Double, Double, Double)))
 getVesselAvailableTorqueStream thisArg = requestStream $ getVesselAvailableTorqueStreamReq thisArg 
 
-{-
- - The name of the biome the vessel is currently in.
+{-|
+The name of the biome the vessel is currently in.
  -}
 getVesselBiome :: KRPCHS.SpaceCenter.Vessel -> RPCContext (Data.Text.Text)
 getVesselBiome thisArg = do
@@ -12522,10 +12522,10 @@ getVesselBiomeStreamReq thisArg =
 getVesselBiomeStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Data.Text.Text))
 getVesselBiomeStream thisArg = requestStream $ getVesselBiomeStreamReq thisArg 
 
-{-
- - Returns a <see cref="T:SpaceCenter.Control" /> object that can be used to manipulate
- - the vessel's control inputs. For example, its pitch/yaw/roll controls,
- - RCS and thrust.
+{-|
+Returns a <see cref="T:SpaceCenter.Control" /> object that can be used to manipulate
+the vessel's control inputs. For example, its pitch/yaw/roll controls,
+RCS and thrust.
  -}
 getVesselControl :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCHS.SpaceCenter.Control)
 getVesselControl thisArg = do
@@ -12541,8 +12541,8 @@ getVesselControlStreamReq thisArg =
 getVesselControlStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Control))
 getVesselControlStream thisArg = requestStream $ getVesselControlStreamReq thisArg 
 
-{-
- - The total mass of the vessel, excluding resources, in kg.
+{-|
+The total mass of the vessel, excluding resources, in kg.
  -}
 getVesselDryMass :: KRPCHS.SpaceCenter.Vessel -> RPCContext (Float)
 getVesselDryMass thisArg = do
@@ -12558,9 +12558,9 @@ getVesselDryMassStreamReq thisArg =
 getVesselDryMassStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Float))
 getVesselDryMassStream thisArg = requestStream $ getVesselDryMassStreamReq thisArg 
 
-{-
- - The inertia tensor of the vessel around its center of mass, in the vessels reference frame (<see cref="M:SpaceCenter.Vessel.ReferenceFrame" />).
- - Returns the 3x3 matrix as a list of elements, in row-major order.
+{-|
+The inertia tensor of the vessel around its center of mass, in the vessels reference frame (<see cref="M:SpaceCenter.Vessel.ReferenceFrame" />).
+Returns the 3x3 matrix as a list of elements, in row-major order.
  -}
 getVesselInertiaTensor :: KRPCHS.SpaceCenter.Vessel -> RPCContext ([Double])
 getVesselInertiaTensor thisArg = do
@@ -12576,10 +12576,10 @@ getVesselInertiaTensorStreamReq thisArg =
 getVesselInertiaTensorStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream ([Double]))
 getVesselInertiaTensorStream thisArg = requestStream $ getVesselInertiaTensorStreamReq thisArg 
 
-{-
- - The combined specific impulse of all active engines at sea level on Kerbin, in seconds.
- - This is computed using the formula
- - <a href="http://wiki.kerbalspaceprogram.com/wiki/Specific_impulse#Multiple_engines">described here.
+{-|
+The combined specific impulse of all active engines at sea level on Kerbin, in seconds.
+This is computed using the formula
+<a href="http://wiki.kerbalspaceprogram.com/wiki/Specific_impulse#Multiple_engines">described here.
  -}
 getVesselKerbinSeaLevelSpecificImpulse :: KRPCHS.SpaceCenter.Vessel -> RPCContext (Float)
 getVesselKerbinSeaLevelSpecificImpulse thisArg = do
@@ -12595,8 +12595,8 @@ getVesselKerbinSeaLevelSpecificImpulseStreamReq thisArg =
 getVesselKerbinSeaLevelSpecificImpulseStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Float))
 getVesselKerbinSeaLevelSpecificImpulseStream thisArg = requestStream $ getVesselKerbinSeaLevelSpecificImpulseStreamReq thisArg 
 
-{-
- - The mission elapsed time in seconds.
+{-|
+The mission elapsed time in seconds.
  -}
 getVesselMET :: KRPCHS.SpaceCenter.Vessel -> RPCContext (Double)
 getVesselMET thisArg = do
@@ -12612,8 +12612,8 @@ getVesselMETStreamReq thisArg =
 getVesselMETStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Double))
 getVesselMETStream thisArg = requestStream $ getVesselMETStreamReq thisArg 
 
-{-
- - The total mass of the vessel, including resources, in kg.
+{-|
+The total mass of the vessel, including resources, in kg.
  -}
 getVesselMass :: KRPCHS.SpaceCenter.Vessel -> RPCContext (Float)
 getVesselMass thisArg = do
@@ -12629,10 +12629,10 @@ getVesselMassStreamReq thisArg =
 getVesselMassStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Float))
 getVesselMassStream thisArg = requestStream $ getVesselMassStreamReq thisArg 
 
-{-
- - The total maximum thrust that can be produced by the vessel's active
- - engines, in Newtons. This is computed by summing
- - <see cref="M:SpaceCenter.Engine.MaxThrust" /> for every active engine.
+{-|
+The total maximum thrust that can be produced by the vessel's active
+engines, in Newtons. This is computed by summing
+<see cref="M:SpaceCenter.Engine.MaxThrust" /> for every active engine.
  -}
 getVesselMaxThrust :: KRPCHS.SpaceCenter.Vessel -> RPCContext (Float)
 getVesselMaxThrust thisArg = do
@@ -12648,10 +12648,10 @@ getVesselMaxThrustStreamReq thisArg =
 getVesselMaxThrustStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Float))
 getVesselMaxThrustStream thisArg = requestStream $ getVesselMaxThrustStreamReq thisArg 
 
-{-
- - The total maximum thrust that can be produced by the vessel's active
- - engines when the vessel is in a vacuum, in Newtons. This is computed by
- - summing <see cref="M:SpaceCenter.Engine.MaxVacuumThrust" /> for every active engine.
+{-|
+The total maximum thrust that can be produced by the vessel's active
+engines when the vessel is in a vacuum, in Newtons. This is computed by
+summing <see cref="M:SpaceCenter.Engine.MaxVacuumThrust" /> for every active engine.
  -}
 getVesselMaxVacuumThrust :: KRPCHS.SpaceCenter.Vessel -> RPCContext (Float)
 getVesselMaxVacuumThrust thisArg = do
@@ -12667,10 +12667,10 @@ getVesselMaxVacuumThrustStreamReq thisArg =
 getVesselMaxVacuumThrustStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Float))
 getVesselMaxVacuumThrustStream thisArg = requestStream $ getVesselMaxVacuumThrustStreamReq thisArg 
 
-{-
- - The moment of inertia of the vessel around its center of mass inkg.m^2.
- - The inertia values are around the pitch, roll and yaw directions respectively.
- - This corresponds to the vessels reference frame (<see cref="M:SpaceCenter.Vessel.ReferenceFrame" />).
+{-|
+The moment of inertia of the vessel around its center of mass inkg.m^2.
+The inertia values are around the pitch, roll and yaw directions respectively.
+This corresponds to the vessels reference frame (<see cref="M:SpaceCenter.Vessel.ReferenceFrame" />).
  -}
 getVesselMomentOfInertia :: KRPCHS.SpaceCenter.Vessel -> RPCContext ((Double, Double, Double))
 getVesselMomentOfInertia thisArg = do
@@ -12686,8 +12686,8 @@ getVesselMomentOfInertiaStreamReq thisArg =
 getVesselMomentOfInertiaStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream ((Double, Double, Double)))
 getVesselMomentOfInertiaStream thisArg = requestStream $ getVesselMomentOfInertiaStreamReq thisArg 
 
-{-
- - The name of the vessel.
+{-|
+The name of the vessel.
  -}
 getVesselName :: KRPCHS.SpaceCenter.Vessel -> RPCContext (Data.Text.Text)
 getVesselName thisArg = do
@@ -12703,8 +12703,8 @@ getVesselNameStreamReq thisArg =
 getVesselNameStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Data.Text.Text))
 getVesselNameStream thisArg = requestStream $ getVesselNameStreamReq thisArg 
 
-{-
- - The current orbit of the vessel.
+{-|
+The current orbit of the vessel.
  -}
 getVesselOrbit :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCHS.SpaceCenter.Orbit)
 getVesselOrbit thisArg = do
@@ -12720,10 +12720,10 @@ getVesselOrbitStreamReq thisArg =
 getVesselOrbitStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Orbit))
 getVesselOrbitStream thisArg = requestStream $ getVesselOrbitStreamReq thisArg 
 
-{-
- - The reference frame that is fixed relative to the vessel, and orientated with the vessels
- - orbital prograde/normal/radial directions.
- - <list type="bullet">The origin is at the center of mass of the vessel.The axes rotate with the orbital prograde/normal/radial directions.The x-axis points in the orbital anti-radial direction.The y-axis points in the orbital prograde direction.The z-axis points in the orbital normal direction.Be careful not to confuse this with 'orbit' mode on the navball.
+{-|
+The reference frame that is fixed relative to the vessel, and orientated with the vessels
+orbital prograde/normal/radial directions.
+<list type="bullet">The origin is at the center of mass of the vessel.The axes rotate with the orbital prograde/normal/radial directions.The x-axis points in the orbital anti-radial direction.The y-axis points in the orbital prograde direction.The z-axis points in the orbital normal direction.Be careful not to confuse this with 'orbit' mode on the navball.
  -}
 getVesselOrbitalReferenceFrame :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
 getVesselOrbitalReferenceFrame thisArg = do
@@ -12739,8 +12739,8 @@ getVesselOrbitalReferenceFrameStreamReq thisArg =
 getVesselOrbitalReferenceFrameStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 getVesselOrbitalReferenceFrameStream thisArg = requestStream $ getVesselOrbitalReferenceFrameStreamReq thisArg 
 
-{-
- - A <see cref="T:SpaceCenter.Parts" /> object, that can used to interact with the parts that make up this vessel.
+{-|
+A <see cref="T:SpaceCenter.Parts" /> object, that can used to interact with the parts that make up this vessel.
  -}
 getVesselParts :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCHS.SpaceCenter.Parts)
 getVesselParts thisArg = do
@@ -12756,8 +12756,8 @@ getVesselPartsStreamReq thisArg =
 getVesselPartsStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Parts))
 getVesselPartsStream thisArg = requestStream $ getVesselPartsStreamReq thisArg 
 
-{-
- - Whether the vessel is recoverable.
+{-|
+Whether the vessel is recoverable.
  -}
 getVesselRecoverable :: KRPCHS.SpaceCenter.Vessel -> RPCContext (Bool)
 getVesselRecoverable thisArg = do
@@ -12773,9 +12773,9 @@ getVesselRecoverableStreamReq thisArg =
 getVesselRecoverableStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Bool))
 getVesselRecoverableStream thisArg = requestStream $ getVesselRecoverableStreamReq thisArg 
 
-{-
- - The reference frame that is fixed relative to the vessel, and orientated with the vessel.
- - <list type="bullet">The origin is at the center of mass of the vessel.The axes rotate with the vessel.The x-axis points out to the right of the vessel.The y-axis points in the forward direction of the vessel.The z-axis points out of the bottom off the vessel.
+{-|
+The reference frame that is fixed relative to the vessel, and orientated with the vessel.
+<list type="bullet">The origin is at the center of mass of the vessel.The axes rotate with the vessel.The x-axis points out to the right of the vessel.The y-axis points in the forward direction of the vessel.The z-axis points out of the bottom off the vessel.
  -}
 getVesselReferenceFrame :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
 getVesselReferenceFrame thisArg = do
@@ -12791,9 +12791,9 @@ getVesselReferenceFrameStreamReq thisArg =
 getVesselReferenceFrameStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 getVesselReferenceFrameStream thisArg = requestStream $ getVesselReferenceFrameStreamReq thisArg 
 
-{-
- - A <see cref="T:SpaceCenter.Resources" /> object, that can used to get information
- - about resources stored in the vessel.
+{-|
+A <see cref="T:SpaceCenter.Resources" /> object, that can used to get information
+about resources stored in the vessel.
  -}
 getVesselResources :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCHS.SpaceCenter.Resources)
 getVesselResources thisArg = do
@@ -12809,8 +12809,8 @@ getVesselResourcesStreamReq thisArg =
 getVesselResourcesStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Resources))
 getVesselResourcesStream thisArg = requestStream $ getVesselResourcesStreamReq thisArg 
 
-{-
- - The situation the vessel is in.
+{-|
+The situation the vessel is in.
  -}
 getVesselSituation :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCHS.SpaceCenter.VesselSituation)
 getVesselSituation thisArg = do
@@ -12826,9 +12826,9 @@ getVesselSituationStreamReq thisArg =
 getVesselSituationStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.VesselSituation))
 getVesselSituationStream thisArg = requestStream $ getVesselSituationStreamReq thisArg 
 
-{-
- - The combined specific impulse of all active engines, in seconds. This is computed using the formula
- - <a href="http://wiki.kerbalspaceprogram.com/wiki/Specific_impulse#Multiple_engines">described here.
+{-|
+The combined specific impulse of all active engines, in seconds. This is computed using the formula
+<a href="http://wiki.kerbalspaceprogram.com/wiki/Specific_impulse#Multiple_engines">described here.
  -}
 getVesselSpecificImpulse :: KRPCHS.SpaceCenter.Vessel -> RPCContext (Float)
 getVesselSpecificImpulse thisArg = do
@@ -12844,15 +12844,15 @@ getVesselSpecificImpulseStreamReq thisArg =
 getVesselSpecificImpulseStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Float))
 getVesselSpecificImpulseStream thisArg = requestStream $ getVesselSpecificImpulseStreamReq thisArg 
 
-{-
- - The reference frame that is fixed relative to the vessel, and orientated with the surface
- - of the body being orbited.
- - <list type="bullet">The origin is at the center of mass of the vessel.The axes rotate with the north and up directions on the surface of the body.The x-axis points in the <a href="https://en.wikipedia.org/wiki/Zenith">zenithdirection (upwards, normal to the body being orbited, from the center of the body towards the center of
- - mass of the vessel).The y-axis points northwards towards the
- - <a href="https://en.wikipedia.org/wiki/Horizon">astronomical horizon(north, and tangential to the
- - surface of the body -- the direction in which a compass would point when on the surface).The z-axis points eastwards towards the
- - <a href="https://en.wikipedia.org/wiki/Horizon">astronomical horizon(east, and tangential to the
- - surface of the body -- east on a compass when on the surface).Be careful not to confuse this with 'surface' mode on the navball.
+{-|
+The reference frame that is fixed relative to the vessel, and orientated with the surface
+of the body being orbited.
+<list type="bullet">The origin is at the center of mass of the vessel.The axes rotate with the north and up directions on the surface of the body.The x-axis points in the <a href="https://en.wikipedia.org/wiki/Zenith">zenithdirection (upwards, normal to the body being orbited, from the center of the body towards the center of
+mass of the vessel).The y-axis points northwards towards the
+<a href="https://en.wikipedia.org/wiki/Horizon">astronomical horizon(north, and tangential to the
+surface of the body -- the direction in which a compass would point when on the surface).The z-axis points eastwards towards the
+<a href="https://en.wikipedia.org/wiki/Horizon">astronomical horizon(east, and tangential to the
+surface of the body -- east on a compass when on the surface).Be careful not to confuse this with 'surface' mode on the navball.
  -}
 getVesselSurfaceReferenceFrame :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
 getVesselSurfaceReferenceFrame thisArg = do
@@ -12868,12 +12868,12 @@ getVesselSurfaceReferenceFrameStreamReq thisArg =
 getVesselSurfaceReferenceFrameStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 getVesselSurfaceReferenceFrameStream thisArg = requestStream $ getVesselSurfaceReferenceFrameStreamReq thisArg 
 
-{-
- - The reference frame that is fixed relative to the vessel, and orientated with the velocity
- - vector of the vessel relative to the surface of the body being orbited.
- - <list type="bullet">The origin is at the center of mass of the vessel.The axes rotate with the vessel's velocity vector.The y-axis points in the direction of the vessel's velocity vector,
- - relative to the surface of the body being orbited.The z-axis is in the plane of the
- - <a href="https://en.wikipedia.org/wiki/Horizon">astronomical horizon.The x-axis is orthogonal to the other two axes.
+{-|
+The reference frame that is fixed relative to the vessel, and orientated with the velocity
+vector of the vessel relative to the surface of the body being orbited.
+<list type="bullet">The origin is at the center of mass of the vessel.The axes rotate with the vessel's velocity vector.The y-axis points in the direction of the vessel's velocity vector,
+relative to the surface of the body being orbited.The z-axis is in the plane of the
+<a href="https://en.wikipedia.org/wiki/Horizon">astronomical horizon.The x-axis is orthogonal to the other two axes.
  -}
 getVesselSurfaceVelocityReferenceFrame :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
 getVesselSurfaceVelocityReferenceFrame thisArg = do
@@ -12889,10 +12889,10 @@ getVesselSurfaceVelocityReferenceFrameStreamReq thisArg =
 getVesselSurfaceVelocityReferenceFrameStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 getVesselSurfaceVelocityReferenceFrameStream thisArg = requestStream $ getVesselSurfaceVelocityReferenceFrameStreamReq thisArg 
 
-{-
- - The total thrust currently being produced by the vessel's engines, in
- - Newtons. This is computed by summing <see cref="M:SpaceCenter.Engine.Thrust" /> for
- - every engine in the vessel.
+{-|
+The total thrust currently being produced by the vessel's engines, in
+Newtons. This is computed by summing <see cref="M:SpaceCenter.Engine.Thrust" /> for
+every engine in the vessel.
  -}
 getVesselThrust :: KRPCHS.SpaceCenter.Vessel -> RPCContext (Float)
 getVesselThrust thisArg = do
@@ -12908,8 +12908,8 @@ getVesselThrustStreamReq thisArg =
 getVesselThrustStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Float))
 getVesselThrustStream thisArg = requestStream $ getVesselThrustStreamReq thisArg 
 
-{-
- - The type of the vessel.
+{-|
+The type of the vessel.
  -}
 getVesselType :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCHS.SpaceCenter.VesselType)
 getVesselType thisArg = do
@@ -12925,9 +12925,9 @@ getVesselTypeStreamReq thisArg =
 getVesselTypeStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.VesselType))
 getVesselTypeStream thisArg = requestStream $ getVesselTypeStreamReq thisArg 
 
-{-
- - The combined vacuum specific impulse of all active engines, in seconds. This is computed using the formula
- - <a href="http://wiki.kerbalspaceprogram.com/wiki/Specific_impulse#Multiple_engines">described here.
+{-|
+The combined vacuum specific impulse of all active engines, in seconds. This is computed using the formula
+<a href="http://wiki.kerbalspaceprogram.com/wiki/Specific_impulse#Multiple_engines">described here.
  -}
 getVesselVacuumSpecificImpulse :: KRPCHS.SpaceCenter.Vessel -> RPCContext (Float)
 getVesselVacuumSpecificImpulse thisArg = do
@@ -12943,8 +12943,8 @@ getVesselVacuumSpecificImpulseStreamReq thisArg =
 getVesselVacuumSpecificImpulseStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Float))
 getVesselVacuumSpecificImpulseStream thisArg = requestStream $ getVesselVacuumSpecificImpulseStreamReq thisArg 
 
-{-
- - The name of the vessel.
+{-|
+The name of the vessel.
  -}
 setVesselName :: KRPCHS.SpaceCenter.Vessel -> Data.Text.Text -> RPCContext ()
 setVesselName thisArg valueArg = do
@@ -12952,8 +12952,8 @@ setVesselName thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The type of the vessel.
+{-|
+The type of the vessel.
  -}
 setVesselType :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.VesselType -> RPCContext ()
 setVesselType thisArg valueArg = do
@@ -12961,14 +12961,14 @@ setVesselType thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Uses time acceleration to warp forward to a time in the future, specified
- - by universal time <paramref name="ut" />. This call blocks until the desired
- - time is reached. Uses regular "on-rails" or physical time warp as appropriate.
- - For example, physical time warp is used when the active vessel is traveling
- - through an atmosphere. When using regular "on-rails" time warp, the warp
- - rate is limited by <paramref name="maxRailsRate" />, and when using physical
- - time warp, the warp rate is limited by <paramref name="maxPhysicsRate" />.<param name="ut">The universal time to warp to, in seconds.<param name="maxRailsRate">The maximum warp rate in regular "on-rails" time warp.<param name="maxPhysicsRate">The maximum warp rate in physical time warp.When the time warp is complete.
+{-|
+Uses time acceleration to warp forward to a time in the future, specified
+by universal time <paramref name="ut" />. This call blocks until the desired
+time is reached. Uses regular "on-rails" or physical time warp as appropriate.
+For example, physical time warp is used when the active vessel is traveling
+through an atmosphere. When using regular "on-rails" time warp, the warp
+rate is limited by <paramref name="maxRailsRate" />, and when using physical
+time warp, the warp rate is limited by <paramref name="maxPhysicsRate" />.<param name="ut">The universal time to warp to, in seconds.<param name="maxRailsRate">The maximum warp rate in regular "on-rails" time warp.<param name="maxPhysicsRate">The maximum warp rate in physical time warp.When the time warp is complete.
  -}
 warpTo :: Double -> Float -> Float -> RPCContext ()
 warpTo utArg maxRailsRateArg maxPhysicsRateArg = do
@@ -12976,9 +12976,9 @@ warpTo utArg maxRailsRateArg maxPhysicsRateArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Creates a waypoint at the given position at ground level, and returns a
- - <see cref="T:SpaceCenter.Waypoint" /> object that can be used to modify it.<param name="latitude">Latitude of the waypoint.<param name="longitude">Longitude of the waypoint.<param name="body">Celestial body the waypoint is attached to.<param name="name">Name of the waypoint.
+{-|
+Creates a waypoint at the given position at ground level, and returns a
+<see cref="T:SpaceCenter.Waypoint" /> object that can be used to modify it.<param name="latitude">Latitude of the waypoint.<param name="longitude">Longitude of the waypoint.<param name="body">Celestial body the waypoint is attached to.<param name="name">Name of the waypoint.
  -}
 waypointManagerAddWaypoint :: KRPCHS.SpaceCenter.WaypointManager -> Double -> Double -> KRPCHS.SpaceCenter.CelestialBody -> Data.Text.Text -> RPCContext (KRPCHS.SpaceCenter.Waypoint)
 waypointManagerAddWaypoint thisArg latitudeArg longitudeArg bodyArg nameArg = do
@@ -12994,9 +12994,9 @@ waypointManagerAddWaypointStreamReq thisArg latitudeArg longitudeArg bodyArg nam
 waypointManagerAddWaypointStream :: KRPCHS.SpaceCenter.WaypointManager -> Double -> Double -> KRPCHS.SpaceCenter.CelestialBody -> Data.Text.Text -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Waypoint))
 waypointManagerAddWaypointStream thisArg latitudeArg longitudeArg bodyArg nameArg = requestStream $ waypointManagerAddWaypointStreamReq thisArg latitudeArg longitudeArg bodyArg nameArg 
 
-{-
- - An example map of known color - seed pairs. 
- - Any other integers may be used as seed.
+{-|
+An example map of known color - seed pairs. 
+Any other integers may be used as seed.
  -}
 getWaypointManagerColors :: KRPCHS.SpaceCenter.WaypointManager -> RPCContext (Data.Map.Map (Data.Text.Text) (Data.Int.Int32))
 getWaypointManagerColors thisArg = do
@@ -13012,8 +13012,8 @@ getWaypointManagerColorsStreamReq thisArg =
 getWaypointManagerColorsStream :: KRPCHS.SpaceCenter.WaypointManager -> RPCContext (KRPCStream (Data.Map.Map (Data.Text.Text) (Data.Int.Int32)))
 getWaypointManagerColorsStream thisArg = requestStream $ getWaypointManagerColorsStreamReq thisArg 
 
-{-
- - Returns all available icons (from "GameData/Squad/Contracts/Icons/").
+{-|
+Returns all available icons (from "GameData/Squad/Contracts/Icons/").
  -}
 getWaypointManagerIcons :: KRPCHS.SpaceCenter.WaypointManager -> RPCContext ([Data.Text.Text])
 getWaypointManagerIcons thisArg = do
@@ -13029,8 +13029,8 @@ getWaypointManagerIconsStreamReq thisArg =
 getWaypointManagerIconsStream :: KRPCHS.SpaceCenter.WaypointManager -> RPCContext (KRPCStream ([Data.Text.Text]))
 getWaypointManagerIconsStream thisArg = requestStream $ getWaypointManagerIconsStreamReq thisArg 
 
-{-
- - A list of all existing waypoints.
+{-|
+A list of all existing waypoints.
  -}
 getWaypointManagerWaypoints :: KRPCHS.SpaceCenter.WaypointManager -> RPCContext ([KRPCHS.SpaceCenter.Waypoint])
 getWaypointManagerWaypoints thisArg = do
@@ -13046,8 +13046,8 @@ getWaypointManagerWaypointsStreamReq thisArg =
 getWaypointManagerWaypointsStream :: KRPCHS.SpaceCenter.WaypointManager -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Waypoint]))
 getWaypointManagerWaypointsStream thisArg = requestStream $ getWaypointManagerWaypointsStreamReq thisArg 
 
-{-
- - Removes the waypoint.
+{-|
+Removes the waypoint.
  -}
 waypointRemove :: KRPCHS.SpaceCenter.Waypoint -> RPCContext ()
 waypointRemove thisArg = do
@@ -13055,8 +13055,8 @@ waypointRemove thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The altitude of the waypoint above the surface of the body, in meters. When over water, this is the altitude above the sea floor.
+{-|
+The altitude of the waypoint above the surface of the body, in meters. When over water, this is the altitude above the sea floor.
  -}
 getWaypointBedrockAltitude :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Double)
 getWaypointBedrockAltitude thisArg = do
@@ -13072,8 +13072,8 @@ getWaypointBedrockAltitudeStreamReq thisArg =
 getWaypointBedrockAltitudeStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Double))
 getWaypointBedrockAltitudeStream thisArg = requestStream $ getWaypointBedrockAltitudeStreamReq thisArg 
 
-{-
- - Celestial body the waypoint is attached to.
+{-|
+Celestial body the waypoint is attached to.
  -}
 getWaypointBody :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCHS.SpaceCenter.CelestialBody)
 getWaypointBody thisArg = do
@@ -13089,9 +13089,9 @@ getWaypointBodyStreamReq thisArg =
 getWaypointBodyStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.CelestialBody))
 getWaypointBodyStream thisArg = requestStream $ getWaypointBodyStreamReq thisArg 
 
-{-
- - True if this waypoint is part of a set of clustered waypoints with greek letter names appended (Alpha, Beta, Gamma, etc). 
- - If true, there is a one-to-one correspondence with the greek letter name and the <see cref="M:SpaceCenter.Waypoint.Index" />.
+{-|
+True if this waypoint is part of a set of clustered waypoints with greek letter names appended (Alpha, Beta, Gamma, etc). 
+If true, there is a one-to-one correspondence with the greek letter name and the <see cref="M:SpaceCenter.Waypoint.Index" />.
  -}
 getWaypointClustered :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Bool)
 getWaypointClustered thisArg = do
@@ -13107,8 +13107,8 @@ getWaypointClusteredStreamReq thisArg =
 getWaypointClusteredStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Bool))
 getWaypointClusteredStream thisArg = requestStream $ getWaypointClusteredStreamReq thisArg 
 
-{-
- - The seed of the icon color. See <see cref="M:SpaceCenter.WaypointManager.Colors" /> for example colors.
+{-|
+The seed of the icon color. See <see cref="M:SpaceCenter.WaypointManager.Colors" /> for example colors.
  -}
 getWaypointColor :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Data.Int.Int32)
 getWaypointColor thisArg = do
@@ -13124,9 +13124,9 @@ getWaypointColorStreamReq thisArg =
 getWaypointColorStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Data.Int.Int32))
 getWaypointColorStream thisArg = requestStream $ getWaypointColorStreamReq thisArg 
 
-{-
- - The id of the associated contract.
- - Returns 0 if the waypoint does not belong to a contract.
+{-|
+The id of the associated contract.
+Returns 0 if the waypoint does not belong to a contract.
  -}
 getWaypointContractId :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Data.Int.Int64)
 getWaypointContractId thisArg = do
@@ -13142,8 +13142,8 @@ getWaypointContractIdStreamReq thisArg =
 getWaypointContractIdStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Data.Int.Int64))
 getWaypointContractIdStream thisArg = requestStream $ getWaypointContractIdStreamReq thisArg 
 
-{-
- - True if waypoint is actually glued to the ground.
+{-|
+True if waypoint is actually glued to the ground.
  -}
 getWaypointGrounded :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Bool)
 getWaypointGrounded thisArg = do
@@ -13159,8 +13159,8 @@ getWaypointGroundedStreamReq thisArg =
 getWaypointGroundedStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Bool))
 getWaypointGroundedStream thisArg = requestStream $ getWaypointGroundedStreamReq thisArg 
 
-{-
- - Whether the waypoint belongs to a contract.
+{-|
+Whether the waypoint belongs to a contract.
  -}
 getWaypointHasContract :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Bool)
 getWaypointHasContract thisArg = do
@@ -13176,8 +13176,8 @@ getWaypointHasContractStreamReq thisArg =
 getWaypointHasContractStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Bool))
 getWaypointHasContractStream thisArg = requestStream $ getWaypointHasContractStreamReq thisArg 
 
-{-
- - The icon of the waypoint.
+{-|
+The icon of the waypoint.
  -}
 getWaypointIcon :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Data.Text.Text)
 getWaypointIcon thisArg = do
@@ -13193,11 +13193,11 @@ getWaypointIconStreamReq thisArg =
 getWaypointIconStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Data.Text.Text))
 getWaypointIconStream thisArg = requestStream $ getWaypointIconStreamReq thisArg 
 
-{-
- - The integer index of this waypoint amongst its cluster of sibling waypoints. 
- - In other words, when you have a cluster of waypoints called "Somewhere Alpha", "Somewhere Beta", and "Somewhere Gamma", 
- - then the alpha site has index 0, the beta site has index 1 and the gamma site has index 2. 
- - When <see cref="M:SpaceCenter.Waypoint.Clustered" /> is false, this value is zero but meaningless.
+{-|
+The integer index of this waypoint amongst its cluster of sibling waypoints. 
+In other words, when you have a cluster of waypoints called "Somewhere Alpha", "Somewhere Beta", and "Somewhere Gamma", 
+then the alpha site has index 0, the beta site has index 1 and the gamma site has index 2. 
+When <see cref="M:SpaceCenter.Waypoint.Clustered" /> is false, this value is zero but meaningless.
  -}
 getWaypointIndex :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Data.Int.Int32)
 getWaypointIndex thisArg = do
@@ -13213,8 +13213,8 @@ getWaypointIndexStreamReq thisArg =
 getWaypointIndexStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Data.Int.Int32))
 getWaypointIndexStream thisArg = requestStream $ getWaypointIndexStreamReq thisArg 
 
-{-
- - The latitude of the waypoint.
+{-|
+The latitude of the waypoint.
  -}
 getWaypointLatitude :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Double)
 getWaypointLatitude thisArg = do
@@ -13230,8 +13230,8 @@ getWaypointLatitudeStreamReq thisArg =
 getWaypointLatitudeStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Double))
 getWaypointLatitudeStream thisArg = requestStream $ getWaypointLatitudeStreamReq thisArg 
 
-{-
- - The longitude of the waypoint.
+{-|
+The longitude of the waypoint.
  -}
 getWaypointLongitude :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Double)
 getWaypointLongitude thisArg = do
@@ -13247,8 +13247,8 @@ getWaypointLongitudeStreamReq thisArg =
 getWaypointLongitudeStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Double))
 getWaypointLongitudeStream thisArg = requestStream $ getWaypointLongitudeStreamReq thisArg 
 
-{-
- - The altitude of the waypoint above sea level, in meters.
+{-|
+The altitude of the waypoint above sea level, in meters.
  -}
 getWaypointMeanAltitude :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Double)
 getWaypointMeanAltitude thisArg = do
@@ -13264,8 +13264,8 @@ getWaypointMeanAltitudeStreamReq thisArg =
 getWaypointMeanAltitudeStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Double))
 getWaypointMeanAltitudeStream thisArg = requestStream $ getWaypointMeanAltitudeStreamReq thisArg 
 
-{-
- - Name of the waypoint as it appears on the map and the contract.
+{-|
+Name of the waypoint as it appears on the map and the contract.
  -}
 getWaypointName :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Data.Text.Text)
 getWaypointName thisArg = do
@@ -13281,8 +13281,8 @@ getWaypointNameStreamReq thisArg =
 getWaypointNameStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Data.Text.Text))
 getWaypointNameStream thisArg = requestStream $ getWaypointNameStreamReq thisArg 
 
-{-
- - True if waypoint is a point near or on the body rather than high in orbit.
+{-|
+True if waypoint is a point near or on the body rather than high in orbit.
  -}
 getWaypointNearSurface :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Bool)
 getWaypointNearSurface thisArg = do
@@ -13298,8 +13298,8 @@ getWaypointNearSurfaceStreamReq thisArg =
 getWaypointNearSurfaceStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Bool))
 getWaypointNearSurfaceStream thisArg = requestStream $ getWaypointNearSurfaceStreamReq thisArg 
 
-{-
- - The altitude of the waypoint above the surface of the body or sea level, whichever is closer, in meters.
+{-|
+The altitude of the waypoint above the surface of the body or sea level, whichever is closer, in meters.
  -}
 getWaypointSurfaceAltitude :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Double)
 getWaypointSurfaceAltitude thisArg = do
@@ -13315,8 +13315,8 @@ getWaypointSurfaceAltitudeStreamReq thisArg =
 getWaypointSurfaceAltitudeStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Double))
 getWaypointSurfaceAltitudeStream thisArg = requestStream $ getWaypointSurfaceAltitudeStreamReq thisArg 
 
-{-
- - The altitude of the waypoint above the surface of the body, in meters. When over water, this is the altitude above the sea floor.
+{-|
+The altitude of the waypoint above the surface of the body, in meters. When over water, this is the altitude above the sea floor.
  -}
 setWaypointBedrockAltitude :: KRPCHS.SpaceCenter.Waypoint -> Double -> RPCContext ()
 setWaypointBedrockAltitude thisArg valueArg = do
@@ -13324,8 +13324,8 @@ setWaypointBedrockAltitude thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Celestial body the waypoint is attached to.
+{-|
+Celestial body the waypoint is attached to.
  -}
 setWaypointBody :: KRPCHS.SpaceCenter.Waypoint -> KRPCHS.SpaceCenter.CelestialBody -> RPCContext ()
 setWaypointBody thisArg valueArg = do
@@ -13333,8 +13333,8 @@ setWaypointBody thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The seed of the icon color. See <see cref="M:SpaceCenter.WaypointManager.Colors" /> for example colors.
+{-|
+The seed of the icon color. See <see cref="M:SpaceCenter.WaypointManager.Colors" /> for example colors.
  -}
 setWaypointColor :: KRPCHS.SpaceCenter.Waypoint -> Data.Int.Int32 -> RPCContext ()
 setWaypointColor thisArg valueArg = do
@@ -13342,8 +13342,8 @@ setWaypointColor thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The icon of the waypoint.
+{-|
+The icon of the waypoint.
  -}
 setWaypointIcon :: KRPCHS.SpaceCenter.Waypoint -> Data.Text.Text -> RPCContext ()
 setWaypointIcon thisArg valueArg = do
@@ -13351,8 +13351,8 @@ setWaypointIcon thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The latitude of the waypoint.
+{-|
+The latitude of the waypoint.
  -}
 setWaypointLatitude :: KRPCHS.SpaceCenter.Waypoint -> Double -> RPCContext ()
 setWaypointLatitude thisArg valueArg = do
@@ -13360,8 +13360,8 @@ setWaypointLatitude thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The longitude of the waypoint.
+{-|
+The longitude of the waypoint.
  -}
 setWaypointLongitude :: KRPCHS.SpaceCenter.Waypoint -> Double -> RPCContext ()
 setWaypointLongitude thisArg valueArg = do
@@ -13369,8 +13369,8 @@ setWaypointLongitude thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The altitude of the waypoint above sea level, in meters.
+{-|
+The altitude of the waypoint above sea level, in meters.
  -}
 setWaypointMeanAltitude :: KRPCHS.SpaceCenter.Waypoint -> Double -> RPCContext ()
 setWaypointMeanAltitude thisArg valueArg = do
@@ -13378,8 +13378,8 @@ setWaypointMeanAltitude thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Name of the waypoint as it appears on the map and the contract.
+{-|
+Name of the waypoint as it appears on the map and the contract.
  -}
 setWaypointName :: KRPCHS.SpaceCenter.Waypoint -> Data.Text.Text -> RPCContext ()
 setWaypointName thisArg valueArg = do
@@ -13387,8 +13387,8 @@ setWaypointName thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The altitude of the waypoint above the surface of the body or sea level, whichever is closer, in meters.
+{-|
+The altitude of the waypoint above the surface of the body or sea level, whichever is closer, in meters.
  -}
 setWaypointSurfaceAltitude :: KRPCHS.SpaceCenter.Waypoint -> Double -> RPCContext ()
 setWaypointSurfaceAltitude thisArg valueArg = do
@@ -13396,8 +13396,8 @@ setWaypointSurfaceAltitude thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The currently active vessel.
+{-|
+The currently active vessel.
  -}
 getActiveVessel :: RPCContext (KRPCHS.SpaceCenter.Vessel)
 getActiveVessel  = do
@@ -13413,9 +13413,9 @@ getActiveVesselStreamReq  =
 getActiveVesselStream :: RPCContext (KRPCStream (KRPCHS.SpaceCenter.Vessel))
 getActiveVesselStream  = requestStream $ getActiveVesselStreamReq  
 
-{-
- - A dictionary of all celestial bodies (planets, moons, etc.) in the game,
- - keyed by the name of the body.
+{-|
+A dictionary of all celestial bodies (planets, moons, etc.) in the game,
+keyed by the name of the body.
  -}
 getBodies :: RPCContext (Data.Map.Map (Data.Text.Text) (KRPCHS.SpaceCenter.CelestialBody))
 getBodies  = do
@@ -13431,8 +13431,8 @@ getBodiesStreamReq  =
 getBodiesStream :: RPCContext (KRPCStream (Data.Map.Map (Data.Text.Text) (KRPCHS.SpaceCenter.CelestialBody)))
 getBodiesStream  = requestStream $ getBodiesStreamReq  
 
-{-
- - An object that can be used to control the camera.
+{-|
+An object that can be used to control the camera.
  -}
 getCamera :: RPCContext (KRPCHS.SpaceCenter.Camera)
 getCamera  = do
@@ -13448,8 +13448,8 @@ getCameraStreamReq  =
 getCameraStream :: RPCContext (KRPCStream (KRPCHS.SpaceCenter.Camera))
 getCameraStream  = requestStream $ getCameraStreamReq  
 
-{-
- - Whether <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Researchis installed.
+{-|
+Whether <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Researchis installed.
  -}
 getFARAvailable :: RPCContext (Bool)
 getFARAvailable  = do
@@ -13465,8 +13465,8 @@ getFARAvailableStreamReq  =
 getFARAvailableStream :: RPCContext (KRPCStream (Bool))
 getFARAvailableStream  = requestStream $ getFARAvailableStreamReq  
 
-{-
- - The value of the <a href="https://en.wikipedia.org/wiki/Gravitational_constant">gravitational constantG inN(m/kg)^2.
+{-|
+The value of the <a href="https://en.wikipedia.org/wiki/Gravitational_constant">gravitational constantG inN(m/kg)^2.
  -}
 getG :: RPCContext (Float)
 getG  = do
@@ -13482,10 +13482,10 @@ getGStreamReq  =
 getGStream :: RPCContext (KRPCStream (Float))
 getGStream  = requestStream $ getGStreamReq  
 
-{-
- - The current maximum regular "on-rails" warp factor that can be set.
- - A value between 0 and 7 inclusive.  See
- - <a href="http://wiki.kerbalspaceprogram.com/wiki/Time_warp">the KSP wikifor details.
+{-|
+The current maximum regular "on-rails" warp factor that can be set.
+A value between 0 and 7 inclusive.  See
+<a href="http://wiki.kerbalspaceprogram.com/wiki/Time_warp">the KSP wikifor details.
  -}
 getMaximumRailsWarpFactor :: RPCContext (Data.Int.Int32)
 getMaximumRailsWarpFactor  = do
@@ -13501,9 +13501,9 @@ getMaximumRailsWarpFactorStreamReq  =
 getMaximumRailsWarpFactorStream :: RPCContext (KRPCStream (Data.Int.Int32))
 getMaximumRailsWarpFactorStream  = requestStream $ getMaximumRailsWarpFactorStreamReq  
 
-{-
- - The physical time warp rate. A value between 0 and 3 inclusive. 0 means
- - no time warp. Returns 0 if regular "on-rails" time warp is active.
+{-|
+The physical time warp rate. A value between 0 and 3 inclusive. 0 means
+no time warp. Returns 0 if regular "on-rails" time warp is active.
  -}
 getPhysicsWarpFactor :: RPCContext (Data.Int.Int32)
 getPhysicsWarpFactor  = do
@@ -13519,15 +13519,15 @@ getPhysicsWarpFactorStreamReq  =
 getPhysicsWarpFactorStream :: RPCContext (KRPCStream (Data.Int.Int32))
 getPhysicsWarpFactorStream  = requestStream $ getPhysicsWarpFactorStreamReq  
 
-{-
- - The time warp rate, using regular "on-rails" time warp. A value between
- - 0 and 7 inclusive. 0 means no time warp. Returns 0 if physical time warp
- - is active.
- - 
- - If requested time warp factor cannot be set, it will be set to the next
- - lowest possible value. For example, if the vessel is too close to a
- - planet. See <a href="http://wiki.kerbalspaceprogram.com/wiki/Time_warp">
- - the KSP wikifor details.
+{-|
+The time warp rate, using regular "on-rails" time warp. A value between
+0 and 7 inclusive. 0 means no time warp. Returns 0 if physical time warp
+is active.
+
+If requested time warp factor cannot be set, it will be set to the next
+lowest possible value. For example, if the vessel is too close to a
+planet. See <a href="http://wiki.kerbalspaceprogram.com/wiki/Time_warp">
+the KSP wikifor details.
  -}
 getRailsWarpFactor :: RPCContext (Data.Int.Int32)
 getRailsWarpFactor  = do
@@ -13543,8 +13543,8 @@ getRailsWarpFactorStreamReq  =
 getRailsWarpFactorStream :: RPCContext (KRPCStream (Data.Int.Int32))
 getRailsWarpFactorStream  = requestStream $ getRailsWarpFactorStreamReq  
 
-{-
- - The currently targeted celestial body.
+{-|
+The currently targeted celestial body.
  -}
 getTargetBody :: RPCContext (KRPCHS.SpaceCenter.CelestialBody)
 getTargetBody  = do
@@ -13560,8 +13560,8 @@ getTargetBodyStreamReq  =
 getTargetBodyStream :: RPCContext (KRPCStream (KRPCHS.SpaceCenter.CelestialBody))
 getTargetBodyStream  = requestStream $ getTargetBodyStreamReq  
 
-{-
- - The currently targeted docking port.
+{-|
+The currently targeted docking port.
  -}
 getTargetDockingPort :: RPCContext (KRPCHS.SpaceCenter.DockingPort)
 getTargetDockingPort  = do
@@ -13577,8 +13577,8 @@ getTargetDockingPortStreamReq  =
 getTargetDockingPortStream :: RPCContext (KRPCStream (KRPCHS.SpaceCenter.DockingPort))
 getTargetDockingPortStream  = requestStream $ getTargetDockingPortStreamReq  
 
-{-
- - The currently targeted vessel.
+{-|
+The currently targeted vessel.
  -}
 getTargetVessel :: RPCContext (KRPCHS.SpaceCenter.Vessel)
 getTargetVessel  = do
@@ -13594,8 +13594,8 @@ getTargetVesselStreamReq  =
 getTargetVesselStream :: RPCContext (KRPCStream (KRPCHS.SpaceCenter.Vessel))
 getTargetVesselStream  = requestStream $ getTargetVesselStreamReq  
 
-{-
- - The current universal time in seconds.
+{-|
+The current universal time in seconds.
  -}
 getUT :: RPCContext (Double)
 getUT  = do
@@ -13611,8 +13611,8 @@ getUTStreamReq  =
 getUTStream :: RPCContext (KRPCStream (Double))
 getUTStream  = requestStream $ getUTStreamReq  
 
-{-
- - A list of all the vessels in the game.
+{-|
+A list of all the vessels in the game.
  -}
 getVessels :: RPCContext ([KRPCHS.SpaceCenter.Vessel])
 getVessels  = do
@@ -13628,12 +13628,12 @@ getVesselsStreamReq  =
 getVesselsStream :: RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Vessel]))
 getVesselsStream  = requestStream $ getVesselsStreamReq  
 
-{-
- - The current warp factor. This is the index of the rate at which time
- - is passing for either regular "on-rails" or physical time warp. Returns 0
- - if time warp is not active. When in on-rails time warp, this is equal to
- - <see cref="M:SpaceCenter.RailsWarpFactor" />, and in physics time warp, this is equal to
- - <see cref="M:SpaceCenter.PhysicsWarpFactor" />.
+{-|
+The current warp factor. This is the index of the rate at which time
+is passing for either regular "on-rails" or physical time warp. Returns 0
+if time warp is not active. When in on-rails time warp, this is equal to
+<see cref="M:SpaceCenter.RailsWarpFactor" />, and in physics time warp, this is equal to
+<see cref="M:SpaceCenter.PhysicsWarpFactor" />.
  -}
 getWarpFactor :: RPCContext (Float)
 getWarpFactor  = do
@@ -13649,10 +13649,10 @@ getWarpFactorStreamReq  =
 getWarpFactorStream :: RPCContext (KRPCStream (Float))
 getWarpFactorStream  = requestStream $ getWarpFactorStreamReq  
 
-{-
- - The current time warp mode. Returns <see cref="M:SpaceCenter.WarpMode.None" /> if time
- - warp is not active, <see cref="M:SpaceCenter.WarpMode.Rails" /> if regular "on-rails" time warp
- - is active, or <see cref="M:SpaceCenter.WarpMode.Physics" /> if physical time warp is active.
+{-|
+The current time warp mode. Returns <see cref="M:SpaceCenter.WarpMode.None" /> if time
+warp is not active, <see cref="M:SpaceCenter.WarpMode.Rails" /> if regular "on-rails" time warp
+is active, or <see cref="M:SpaceCenter.WarpMode.Physics" /> if physical time warp is active.
  -}
 getWarpMode :: RPCContext (KRPCHS.SpaceCenter.WarpMode)
 getWarpMode  = do
@@ -13668,11 +13668,11 @@ getWarpModeStreamReq  =
 getWarpModeStream :: RPCContext (KRPCStream (KRPCHS.SpaceCenter.WarpMode))
 getWarpModeStream  = requestStream $ getWarpModeStreamReq  
 
-{-
- - The current warp rate. This is the rate at which time is passing for
- - either on-rails or physical time warp. For example, a value of 10 means
- - time is passing 10x faster than normal. Returns 1 if time warp is not
- - active.
+{-|
+The current warp rate. This is the rate at which time is passing for
+either on-rails or physical time warp. For example, a value of 10 means
+time is passing 10x faster than normal. Returns 1 if time warp is not
+active.
  -}
 getWarpRate :: RPCContext (Float)
 getWarpRate  = do
@@ -13688,8 +13688,8 @@ getWarpRateStreamReq  =
 getWarpRateStream :: RPCContext (KRPCStream (Float))
 getWarpRateStream  = requestStream $ getWarpRateStreamReq  
 
-{-
- - The waypoint manager.
+{-|
+The waypoint manager.
  -}
 getWaypointManager :: RPCContext (KRPCHS.SpaceCenter.WaypointManager)
 getWaypointManager  = do
@@ -13705,8 +13705,8 @@ getWaypointManagerStreamReq  =
 getWaypointManagerStream :: RPCContext (KRPCStream (KRPCHS.SpaceCenter.WaypointManager))
 getWaypointManagerStream  = requestStream $ getWaypointManagerStreamReq  
 
-{-
- - The currently active vessel.
+{-|
+The currently active vessel.
  -}
 setActiveVessel :: KRPCHS.SpaceCenter.Vessel -> RPCContext ()
 setActiveVessel valueArg = do
@@ -13714,9 +13714,9 @@ setActiveVessel valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The physical time warp rate. A value between 0 and 3 inclusive. 0 means
- - no time warp. Returns 0 if regular "on-rails" time warp is active.
+{-|
+The physical time warp rate. A value between 0 and 3 inclusive. 0 means
+no time warp. Returns 0 if regular "on-rails" time warp is active.
  -}
 setPhysicsWarpFactor :: Data.Int.Int32 -> RPCContext ()
 setPhysicsWarpFactor valueArg = do
@@ -13724,15 +13724,15 @@ setPhysicsWarpFactor valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The time warp rate, using regular "on-rails" time warp. A value between
- - 0 and 7 inclusive. 0 means no time warp. Returns 0 if physical time warp
- - is active.
- - 
- - If requested time warp factor cannot be set, it will be set to the next
- - lowest possible value. For example, if the vessel is too close to a
- - planet. See <a href="http://wiki.kerbalspaceprogram.com/wiki/Time_warp">
- - the KSP wikifor details.
+{-|
+The time warp rate, using regular "on-rails" time warp. A value between
+0 and 7 inclusive. 0 means no time warp. Returns 0 if physical time warp
+is active.
+
+If requested time warp factor cannot be set, it will be set to the next
+lowest possible value. For example, if the vessel is too close to a
+planet. See <a href="http://wiki.kerbalspaceprogram.com/wiki/Time_warp">
+the KSP wikifor details.
  -}
 setRailsWarpFactor :: Data.Int.Int32 -> RPCContext ()
 setRailsWarpFactor valueArg = do
@@ -13740,8 +13740,8 @@ setRailsWarpFactor valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The currently targeted celestial body.
+{-|
+The currently targeted celestial body.
  -}
 setTargetBody :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext ()
 setTargetBody valueArg = do
@@ -13749,8 +13749,8 @@ setTargetBody valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The currently targeted docking port.
+{-|
+The currently targeted docking port.
  -}
 setTargetDockingPort :: KRPCHS.SpaceCenter.DockingPort -> RPCContext ()
 setTargetDockingPort valueArg = do
@@ -13758,8 +13758,8 @@ setTargetDockingPort valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The currently targeted vessel.
+{-|
+The currently targeted vessel.
  -}
 setTargetVessel :: KRPCHS.SpaceCenter.Vessel -> RPCContext ()
 setTargetVessel valueArg = do

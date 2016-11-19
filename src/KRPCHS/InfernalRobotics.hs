@@ -115,11 +115,11 @@ import KRPCHS.Internal.Requests
 import KRPCHS.Internal.SerializeUtils
 
 
-{-
- - Represents a servo. Obtained using
- - <see cref="M:InfernalRobotics.ServoGroup.Servos" />,
- - <see cref="M:InfernalRobotics.ServoGroup.ServoWithName" />
- - or <see cref="M:InfernalRobotics.ServoWithName" />.
+{-|
+Represents a servo. Obtained using
+<see cref="M:InfernalRobotics.ServoGroup.Servos" />,
+<see cref="M:InfernalRobotics.ServoGroup.ServoWithName" />
+or <see cref="M:InfernalRobotics.ServoWithName" />.
  -}
 newtype Servo = Servo { servoId :: Int }
     deriving (Show, Eq, Ord)
@@ -130,10 +130,10 @@ instance PbSerializable Servo where
 
 instance KRPCResponseExtractable Servo
 
-{-
- - A group of servos, obtained by calling <see cref="M:InfernalRobotics.ServoGroups" />
- - or <see cref="M:InfernalRobotics.ServoGroupWithName" />. Represents the "Servo Groups"
- - in the InfernalRobotics UI.
+{-|
+A group of servos, obtained by calling <see cref="M:InfernalRobotics.ServoGroups" />
+or <see cref="M:InfernalRobotics.ServoGroupWithName" />. Represents the "Servo Groups"
+in the InfernalRobotics UI.
  -}
 newtype ServoGroup = ServoGroup { servoGroupId :: Int }
     deriving (Show, Eq, Ord)
@@ -146,9 +146,9 @@ instance KRPCResponseExtractable ServoGroup
 
 
 
-{-
- - Returns the servo group in the given <paramref name="vessel" /> with the given <paramref name="name" />,
- - ornullif none exists. If multiple servo groups have the same name, only one of them is returned.<param name="vessel">Vessel to check.<param name="name">Name of servo group to find.
+{-|
+Returns the servo group in the given <paramref name="vessel" /> with the given <paramref name="name" />,
+ornullif none exists. If multiple servo groups have the same name, only one of them is returned.<param name="vessel">Vessel to check.<param name="name">Name of servo group to find.
  -}
 servoGroupWithName :: KRPCHS.SpaceCenter.Vessel -> Data.Text.Text -> RPCContext (KRPCHS.InfernalRobotics.ServoGroup)
 servoGroupWithName vesselArg nameArg = do
@@ -164,8 +164,8 @@ servoGroupWithNameStreamReq vesselArg nameArg =
 servoGroupWithNameStream :: KRPCHS.SpaceCenter.Vessel -> Data.Text.Text -> RPCContext (KRPCStream (KRPCHS.InfernalRobotics.ServoGroup))
 servoGroupWithNameStream vesselArg nameArg = requestStream $ servoGroupWithNameStreamReq vesselArg nameArg 
 
-{-
- - Moves all of the servos in the group to the center.
+{-|
+Moves all of the servos in the group to the center.
  -}
 servoGroupMoveCenter :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext ()
 servoGroupMoveCenter thisArg = do
@@ -173,8 +173,8 @@ servoGroupMoveCenter thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Moves all of the servos in the group to the left.
+{-|
+Moves all of the servos in the group to the left.
  -}
 servoGroupMoveLeft :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext ()
 servoGroupMoveLeft thisArg = do
@@ -182,8 +182,8 @@ servoGroupMoveLeft thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Moves all of the servos in the group to the next preset.
+{-|
+Moves all of the servos in the group to the next preset.
  -}
 servoGroupMoveNextPreset :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext ()
 servoGroupMoveNextPreset thisArg = do
@@ -191,8 +191,8 @@ servoGroupMoveNextPreset thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Moves all of the servos in the group to the previous preset.
+{-|
+Moves all of the servos in the group to the previous preset.
  -}
 servoGroupMovePrevPreset :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext ()
 servoGroupMovePrevPreset thisArg = do
@@ -200,8 +200,8 @@ servoGroupMovePrevPreset thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Moves all of the servos in the group to the right.
+{-|
+Moves all of the servos in the group to the right.
  -}
 servoGroupMoveRight :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext ()
 servoGroupMoveRight thisArg = do
@@ -209,9 +209,9 @@ servoGroupMoveRight thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Returns the servo with the given <paramref name="name" /> from this group,
- - ornullif none exists.<param name="name">Name of servo to find.
+{-|
+Returns the servo with the given <paramref name="name" /> from this group,
+ornullif none exists.<param name="name">Name of servo to find.
  -}
 servoGroupServoWithName :: KRPCHS.InfernalRobotics.ServoGroup -> Data.Text.Text -> RPCContext (KRPCHS.InfernalRobotics.Servo)
 servoGroupServoWithName thisArg nameArg = do
@@ -227,8 +227,8 @@ servoGroupServoWithNameStreamReq thisArg nameArg =
 servoGroupServoWithNameStream :: KRPCHS.InfernalRobotics.ServoGroup -> Data.Text.Text -> RPCContext (KRPCStream (KRPCHS.InfernalRobotics.Servo))
 servoGroupServoWithNameStream thisArg nameArg = requestStream $ servoGroupServoWithNameStreamReq thisArg nameArg 
 
-{-
- - Stops the servos in the group.
+{-|
+Stops the servos in the group.
  -}
 servoGroupStop :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext ()
 servoGroupStop thisArg = do
@@ -236,8 +236,8 @@ servoGroupStop thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Whether the group is expanded in the InfernalRobotics UI.
+{-|
+Whether the group is expanded in the InfernalRobotics UI.
  -}
 getServoGroupExpanded :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext (Bool)
 getServoGroupExpanded thisArg = do
@@ -253,8 +253,8 @@ getServoGroupExpandedStreamReq thisArg =
 getServoGroupExpandedStream :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext (KRPCStream (Bool))
 getServoGroupExpandedStream thisArg = requestStream $ getServoGroupExpandedStreamReq thisArg 
 
-{-
- - The key assigned to be the "forward" key for the group.
+{-|
+The key assigned to be the "forward" key for the group.
  -}
 getServoGroupForwardKey :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext (Data.Text.Text)
 getServoGroupForwardKey thisArg = do
@@ -270,8 +270,8 @@ getServoGroupForwardKeyStreamReq thisArg =
 getServoGroupForwardKeyStream :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext (KRPCStream (Data.Text.Text))
 getServoGroupForwardKeyStream thisArg = requestStream $ getServoGroupForwardKeyStreamReq thisArg 
 
-{-
- - The name of the group.
+{-|
+The name of the group.
  -}
 getServoGroupName :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext (Data.Text.Text)
 getServoGroupName thisArg = do
@@ -287,8 +287,8 @@ getServoGroupNameStreamReq thisArg =
 getServoGroupNameStream :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext (KRPCStream (Data.Text.Text))
 getServoGroupNameStream thisArg = requestStream $ getServoGroupNameStreamReq thisArg 
 
-{-
- - The parts containing the servos in the group.
+{-|
+The parts containing the servos in the group.
  -}
 getServoGroupParts :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext ([KRPCHS.SpaceCenter.Part])
 getServoGroupParts thisArg = do
@@ -304,8 +304,8 @@ getServoGroupPartsStreamReq thisArg =
 getServoGroupPartsStream :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
 getServoGroupPartsStream thisArg = requestStream $ getServoGroupPartsStreamReq thisArg 
 
-{-
- - The key assigned to be the "reverse" key for the group.
+{-|
+The key assigned to be the "reverse" key for the group.
  -}
 getServoGroupReverseKey :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext (Data.Text.Text)
 getServoGroupReverseKey thisArg = do
@@ -321,8 +321,8 @@ getServoGroupReverseKeyStreamReq thisArg =
 getServoGroupReverseKeyStream :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext (KRPCStream (Data.Text.Text))
 getServoGroupReverseKeyStream thisArg = requestStream $ getServoGroupReverseKeyStreamReq thisArg 
 
-{-
- - The servos that are in the group.
+{-|
+The servos that are in the group.
  -}
 getServoGroupServos :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext ([KRPCHS.InfernalRobotics.Servo])
 getServoGroupServos thisArg = do
@@ -338,8 +338,8 @@ getServoGroupServosStreamReq thisArg =
 getServoGroupServosStream :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext (KRPCStream ([KRPCHS.InfernalRobotics.Servo]))
 getServoGroupServosStream thisArg = requestStream $ getServoGroupServosStreamReq thisArg 
 
-{-
- - The speed multiplier for the group.
+{-|
+The speed multiplier for the group.
  -}
 getServoGroupSpeed :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext (Float)
 getServoGroupSpeed thisArg = do
@@ -355,8 +355,8 @@ getServoGroupSpeedStreamReq thisArg =
 getServoGroupSpeedStream :: KRPCHS.InfernalRobotics.ServoGroup -> RPCContext (KRPCStream (Float))
 getServoGroupSpeedStream thisArg = requestStream $ getServoGroupSpeedStreamReq thisArg 
 
-{-
- - Whether the group is expanded in the InfernalRobotics UI.
+{-|
+Whether the group is expanded in the InfernalRobotics UI.
  -}
 setServoGroupExpanded :: KRPCHS.InfernalRobotics.ServoGroup -> Bool -> RPCContext ()
 setServoGroupExpanded thisArg valueArg = do
@@ -364,8 +364,8 @@ setServoGroupExpanded thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The key assigned to be the "forward" key for the group.
+{-|
+The key assigned to be the "forward" key for the group.
  -}
 setServoGroupForwardKey :: KRPCHS.InfernalRobotics.ServoGroup -> Data.Text.Text -> RPCContext ()
 setServoGroupForwardKey thisArg valueArg = do
@@ -373,8 +373,8 @@ setServoGroupForwardKey thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The name of the group.
+{-|
+The name of the group.
  -}
 setServoGroupName :: KRPCHS.InfernalRobotics.ServoGroup -> Data.Text.Text -> RPCContext ()
 setServoGroupName thisArg valueArg = do
@@ -382,8 +382,8 @@ setServoGroupName thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The key assigned to be the "reverse" key for the group.
+{-|
+The key assigned to be the "reverse" key for the group.
  -}
 setServoGroupReverseKey :: KRPCHS.InfernalRobotics.ServoGroup -> Data.Text.Text -> RPCContext ()
 setServoGroupReverseKey thisArg valueArg = do
@@ -391,8 +391,8 @@ setServoGroupReverseKey thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The speed multiplier for the group.
+{-|
+The speed multiplier for the group.
  -}
 setServoGroupSpeed :: KRPCHS.InfernalRobotics.ServoGroup -> Float -> RPCContext ()
 setServoGroupSpeed thisArg valueArg = do
@@ -400,8 +400,8 @@ setServoGroupSpeed thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - A list of all the servo groups in the given <paramref name="vessel" />.
+{-|
+A list of all the servo groups in the given <paramref name="vessel" />.
  -}
 servoGroups :: KRPCHS.SpaceCenter.Vessel -> RPCContext ([KRPCHS.InfernalRobotics.ServoGroup])
 servoGroups vesselArg = do
@@ -417,8 +417,8 @@ servoGroupsStreamReq vesselArg =
 servoGroupsStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream ([KRPCHS.InfernalRobotics.ServoGroup]))
 servoGroupsStream vesselArg = requestStream $ servoGroupsStreamReq vesselArg 
 
-{-
- - Returns the servo in the given <paramref name="vessel" /> with the given <paramref name="name" /> ornullif none exists. If multiple servos have the same name, only one of them is returned.<param name="vessel">Vessel to check.<param name="name">Name of the servo to find.
+{-|
+Returns the servo in the given <paramref name="vessel" /> with the given <paramref name="name" /> ornullif none exists. If multiple servos have the same name, only one of them is returned.<param name="vessel">Vessel to check.<param name="name">Name of the servo to find.
  -}
 servoWithName :: KRPCHS.SpaceCenter.Vessel -> Data.Text.Text -> RPCContext (KRPCHS.InfernalRobotics.Servo)
 servoWithName vesselArg nameArg = do
@@ -434,8 +434,8 @@ servoWithNameStreamReq vesselArg nameArg =
 servoWithNameStream :: KRPCHS.SpaceCenter.Vessel -> Data.Text.Text -> RPCContext (KRPCStream (KRPCHS.InfernalRobotics.Servo))
 servoWithNameStream vesselArg nameArg = requestStream $ servoWithNameStreamReq vesselArg nameArg 
 
-{-
- - Moves the servo to the center.
+{-|
+Moves the servo to the center.
  -}
 servoMoveCenter :: KRPCHS.InfernalRobotics.Servo -> RPCContext ()
 servoMoveCenter thisArg = do
@@ -443,8 +443,8 @@ servoMoveCenter thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Moves the servo to the left.
+{-|
+Moves the servo to the left.
  -}
 servoMoveLeft :: KRPCHS.InfernalRobotics.Servo -> RPCContext ()
 servoMoveLeft thisArg = do
@@ -452,8 +452,8 @@ servoMoveLeft thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Moves the servo to the next preset.
+{-|
+Moves the servo to the next preset.
  -}
 servoMoveNextPreset :: KRPCHS.InfernalRobotics.Servo -> RPCContext ()
 servoMoveNextPreset thisArg = do
@@ -461,8 +461,8 @@ servoMoveNextPreset thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Moves the servo to the previous preset.
+{-|
+Moves the servo to the previous preset.
  -}
 servoMovePrevPreset :: KRPCHS.InfernalRobotics.Servo -> RPCContext ()
 servoMovePrevPreset thisArg = do
@@ -470,8 +470,8 @@ servoMovePrevPreset thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Moves the servo to the right.
+{-|
+Moves the servo to the right.
  -}
 servoMoveRight :: KRPCHS.InfernalRobotics.Servo -> RPCContext ()
 servoMoveRight thisArg = do
@@ -479,9 +479,9 @@ servoMoveRight thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Moves the servo to <paramref name="position" /> and sets the
- - speed multiplier to <paramref name="speed" />.<param name="position">The position to move the servo to.<param name="speed">Speed multiplier for the movement.
+{-|
+Moves the servo to <paramref name="position" /> and sets the
+speed multiplier to <paramref name="speed" />.<param name="position">The position to move the servo to.<param name="speed">Speed multiplier for the movement.
  -}
 servoMoveTo :: KRPCHS.InfernalRobotics.Servo -> Float -> Float -> RPCContext ()
 servoMoveTo thisArg positionArg speedArg = do
@@ -489,8 +489,8 @@ servoMoveTo thisArg positionArg speedArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Stops the servo.
+{-|
+Stops the servo.
  -}
 servoStop :: KRPCHS.InfernalRobotics.Servo -> RPCContext ()
 servoStop thisArg = do
@@ -498,8 +498,8 @@ servoStop thisArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The current speed multiplier set in the UI.
+{-|
+The current speed multiplier set in the UI.
  -}
 getServoAcceleration :: KRPCHS.InfernalRobotics.Servo -> RPCContext (Float)
 getServoAcceleration thisArg = do
@@ -515,8 +515,8 @@ getServoAccelerationStreamReq thisArg =
 getServoAccelerationStream :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStream (Float))
 getServoAccelerationStream thisArg = requestStream $ getServoAccelerationStreamReq thisArg 
 
-{-
- - The speed multiplier of the servo, specified by the part configuration.
+{-|
+The speed multiplier of the servo, specified by the part configuration.
  -}
 getServoConfigSpeed :: KRPCHS.InfernalRobotics.Servo -> RPCContext (Float)
 getServoConfigSpeed thisArg = do
@@ -532,8 +532,8 @@ getServoConfigSpeedStreamReq thisArg =
 getServoConfigSpeedStream :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStream (Float))
 getServoConfigSpeedStream thisArg = requestStream $ getServoConfigSpeedStreamReq thisArg 
 
-{-
- - The current speed at which the servo is moving.
+{-|
+The current speed at which the servo is moving.
  -}
 getServoCurrentSpeed :: KRPCHS.InfernalRobotics.Servo -> RPCContext (Float)
 getServoCurrentSpeed thisArg = do
@@ -549,8 +549,8 @@ getServoCurrentSpeedStreamReq thisArg =
 getServoCurrentSpeedStream :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStream (Float))
 getServoCurrentSpeedStream thisArg = requestStream $ getServoCurrentSpeedStreamReq thisArg 
 
-{-
- - Whether the servos axis is inverted.
+{-|
+Whether the servos axis is inverted.
  -}
 getServoIsAxisInverted :: KRPCHS.InfernalRobotics.Servo -> RPCContext (Bool)
 getServoIsAxisInverted thisArg = do
@@ -566,8 +566,8 @@ getServoIsAxisInvertedStreamReq thisArg =
 getServoIsAxisInvertedStream :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStream (Bool))
 getServoIsAxisInvertedStream thisArg = requestStream $ getServoIsAxisInvertedStreamReq thisArg 
 
-{-
- - Whether the servo is freely moving.
+{-|
+Whether the servo is freely moving.
  -}
 getServoIsFreeMoving :: KRPCHS.InfernalRobotics.Servo -> RPCContext (Bool)
 getServoIsFreeMoving thisArg = do
@@ -583,8 +583,8 @@ getServoIsFreeMovingStreamReq thisArg =
 getServoIsFreeMovingStream :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStream (Bool))
 getServoIsFreeMovingStream thisArg = requestStream $ getServoIsFreeMovingStreamReq thisArg 
 
-{-
- - Whether the servo is locked.
+{-|
+Whether the servo is locked.
  -}
 getServoIsLocked :: KRPCHS.InfernalRobotics.Servo -> RPCContext (Bool)
 getServoIsLocked thisArg = do
@@ -600,8 +600,8 @@ getServoIsLockedStreamReq thisArg =
 getServoIsLockedStream :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStream (Bool))
 getServoIsLockedStream thisArg = requestStream $ getServoIsLockedStreamReq thisArg 
 
-{-
- - Whether the servo is moving.
+{-|
+Whether the servo is moving.
  -}
 getServoIsMoving :: KRPCHS.InfernalRobotics.Servo -> RPCContext (Bool)
 getServoIsMoving thisArg = do
@@ -617,8 +617,8 @@ getServoIsMovingStreamReq thisArg =
 getServoIsMovingStream :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStream (Bool))
 getServoIsMovingStream thisArg = requestStream $ getServoIsMovingStreamReq thisArg 
 
-{-
- - The maximum position of the servo, specified by the part configuration.
+{-|
+The maximum position of the servo, specified by the part configuration.
  -}
 getServoMaxConfigPosition :: KRPCHS.InfernalRobotics.Servo -> RPCContext (Float)
 getServoMaxConfigPosition thisArg = do
@@ -634,8 +634,8 @@ getServoMaxConfigPositionStreamReq thisArg =
 getServoMaxConfigPositionStream :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStream (Float))
 getServoMaxConfigPositionStream thisArg = requestStream $ getServoMaxConfigPositionStreamReq thisArg 
 
-{-
- - The maximum position of the servo, specified by the in-game tweak menu.
+{-|
+The maximum position of the servo, specified by the in-game tweak menu.
  -}
 getServoMaxPosition :: KRPCHS.InfernalRobotics.Servo -> RPCContext (Float)
 getServoMaxPosition thisArg = do
@@ -651,8 +651,8 @@ getServoMaxPositionStreamReq thisArg =
 getServoMaxPositionStream :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStream (Float))
 getServoMaxPositionStream thisArg = requestStream $ getServoMaxPositionStreamReq thisArg 
 
-{-
- - The minimum position of the servo, specified by the part configuration.
+{-|
+The minimum position of the servo, specified by the part configuration.
  -}
 getServoMinConfigPosition :: KRPCHS.InfernalRobotics.Servo -> RPCContext (Float)
 getServoMinConfigPosition thisArg = do
@@ -668,8 +668,8 @@ getServoMinConfigPositionStreamReq thisArg =
 getServoMinConfigPositionStream :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStream (Float))
 getServoMinConfigPositionStream thisArg = requestStream $ getServoMinConfigPositionStreamReq thisArg 
 
-{-
- - The minimum position of the servo, specified by the in-game tweak menu.
+{-|
+The minimum position of the servo, specified by the in-game tweak menu.
  -}
 getServoMinPosition :: KRPCHS.InfernalRobotics.Servo -> RPCContext (Float)
 getServoMinPosition thisArg = do
@@ -685,8 +685,8 @@ getServoMinPositionStreamReq thisArg =
 getServoMinPositionStream :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStream (Float))
 getServoMinPositionStream thisArg = requestStream $ getServoMinPositionStreamReq thisArg 
 
-{-
- - The name of the servo.
+{-|
+The name of the servo.
  -}
 getServoName :: KRPCHS.InfernalRobotics.Servo -> RPCContext (Data.Text.Text)
 getServoName thisArg = do
@@ -702,8 +702,8 @@ getServoNameStreamReq thisArg =
 getServoNameStream :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStream (Data.Text.Text))
 getServoNameStream thisArg = requestStream $ getServoNameStreamReq thisArg 
 
-{-
- - The part containing the servo.
+{-|
+The part containing the servo.
  -}
 getServoPart :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCHS.SpaceCenter.Part)
 getServoPart thisArg = do
@@ -719,8 +719,8 @@ getServoPartStreamReq thisArg =
 getServoPartStream :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
 getServoPartStream thisArg = requestStream $ getServoPartStreamReq thisArg 
 
-{-
- - The position of the servo.
+{-|
+The position of the servo.
  -}
 getServoPosition :: KRPCHS.InfernalRobotics.Servo -> RPCContext (Float)
 getServoPosition thisArg = do
@@ -736,8 +736,8 @@ getServoPositionStreamReq thisArg =
 getServoPositionStream :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStream (Float))
 getServoPositionStream thisArg = requestStream $ getServoPositionStreamReq thisArg 
 
-{-
- - The speed multiplier of the servo, specified by the in-game tweak menu.
+{-|
+The speed multiplier of the servo, specified by the in-game tweak menu.
  -}
 getServoSpeed :: KRPCHS.InfernalRobotics.Servo -> RPCContext (Float)
 getServoSpeed thisArg = do
@@ -753,8 +753,8 @@ getServoSpeedStreamReq thisArg =
 getServoSpeedStream :: KRPCHS.InfernalRobotics.Servo -> RPCContext (KRPCStream (Float))
 getServoSpeedStream thisArg = requestStream $ getServoSpeedStreamReq thisArg 
 
-{-
- - The current speed multiplier set in the UI.
+{-|
+The current speed multiplier set in the UI.
  -}
 setServoAcceleration :: KRPCHS.InfernalRobotics.Servo -> Float -> RPCContext ()
 setServoAcceleration thisArg valueArg = do
@@ -762,8 +762,8 @@ setServoAcceleration thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The current speed at which the servo is moving.
+{-|
+The current speed at which the servo is moving.
  -}
 setServoCurrentSpeed :: KRPCHS.InfernalRobotics.Servo -> Float -> RPCContext ()
 setServoCurrentSpeed thisArg valueArg = do
@@ -771,8 +771,8 @@ setServoCurrentSpeed thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Whether the servo should be highlighted in-game.
+{-|
+Whether the servo should be highlighted in-game.
  -}
 setServoHighlight :: KRPCHS.InfernalRobotics.Servo -> Bool -> RPCContext ()
 setServoHighlight thisArg valueArg = do
@@ -780,8 +780,8 @@ setServoHighlight thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Whether the servos axis is inverted.
+{-|
+Whether the servos axis is inverted.
  -}
 setServoIsAxisInverted :: KRPCHS.InfernalRobotics.Servo -> Bool -> RPCContext ()
 setServoIsAxisInverted thisArg valueArg = do
@@ -789,8 +789,8 @@ setServoIsAxisInverted thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Whether the servo is locked.
+{-|
+Whether the servo is locked.
  -}
 setServoIsLocked :: KRPCHS.InfernalRobotics.Servo -> Bool -> RPCContext ()
 setServoIsLocked thisArg valueArg = do
@@ -798,8 +798,8 @@ setServoIsLocked thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The maximum position of the servo, specified by the in-game tweak menu.
+{-|
+The maximum position of the servo, specified by the in-game tweak menu.
  -}
 setServoMaxPosition :: KRPCHS.InfernalRobotics.Servo -> Float -> RPCContext ()
 setServoMaxPosition thisArg valueArg = do
@@ -807,8 +807,8 @@ setServoMaxPosition thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The minimum position of the servo, specified by the in-game tweak menu.
+{-|
+The minimum position of the servo, specified by the in-game tweak menu.
  -}
 setServoMinPosition :: KRPCHS.InfernalRobotics.Servo -> Float -> RPCContext ()
 setServoMinPosition thisArg valueArg = do
@@ -816,8 +816,8 @@ setServoMinPosition thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The name of the servo.
+{-|
+The name of the servo.
  -}
 setServoName :: KRPCHS.InfernalRobotics.Servo -> Data.Text.Text -> RPCContext ()
 setServoName thisArg valueArg = do
@@ -825,8 +825,8 @@ setServoName thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The speed multiplier of the servo, specified by the in-game tweak menu.
+{-|
+The speed multiplier of the servo, specified by the in-game tweak menu.
  -}
 setServoSpeed :: KRPCHS.InfernalRobotics.Servo -> Float -> RPCContext ()
 setServoSpeed thisArg valueArg = do

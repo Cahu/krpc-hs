@@ -69,8 +69,8 @@ import KRPCHS.Internal.Requests
 import KRPCHS.Internal.SerializeUtils
 
 
-{-
- - A RemoteTech antenna. Obtained by calling <see cref="M:RemoteTech.Comms.Antennas" /> or  <see cref="M:RemoteTech.Antenna" />.
+{-|
+A RemoteTech antenna. Obtained by calling <see cref="M:RemoteTech.Comms.Antennas" /> or  <see cref="M:RemoteTech.Antenna" />.
  -}
 newtype Antenna = Antenna { antennaId :: Int }
     deriving (Show, Eq, Ord)
@@ -81,8 +81,8 @@ instance PbSerializable Antenna where
 
 instance KRPCResponseExtractable Antenna
 
-{-
- - Communications for a vessel.
+{-|
+Communications for a vessel.
  -}
 newtype Comms = Comms { commsId :: Int }
     deriving (Show, Eq, Ord)
@@ -94,9 +94,9 @@ instance PbSerializable Comms where
 instance KRPCResponseExtractable Comms
 
 
-{-
- - The type of object an antenna is targetting.
- - See <see cref="M:RemoteTech.Antenna.Target" />.
+{-|
+The type of object an antenna is targetting.
+See <see cref="M:RemoteTech.Antenna.Target" />.
  -}
 data Target
     = Target'ActiveVessel
@@ -113,8 +113,8 @@ instance PbSerializable Target where
 instance KRPCResponseExtractable Target
 
 
-{-
- - Get the antenna object for a particular part.
+{-|
+Get the antenna object for a particular part.
  -}
 antenna :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.RemoteTech.Antenna)
 antenna partArg = do
@@ -130,8 +130,8 @@ antennaStreamReq partArg =
 antennaStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.RemoteTech.Antenna))
 antennaStream partArg = requestStream $ antennaStreamReq partArg 
 
-{-
- - Whether the antenna has a connection.
+{-|
+Whether the antenna has a connection.
  -}
 getAntennaHasConnection :: KRPCHS.RemoteTech.Antenna -> RPCContext (Bool)
 getAntennaHasConnection thisArg = do
@@ -147,8 +147,8 @@ getAntennaHasConnectionStreamReq thisArg =
 getAntennaHasConnectionStream :: KRPCHS.RemoteTech.Antenna -> RPCContext (KRPCStream (Bool))
 getAntennaHasConnectionStream thisArg = requestStream $ getAntennaHasConnectionStreamReq thisArg 
 
-{-
- - Get the part containing this antenna.
+{-|
+Get the part containing this antenna.
  -}
 getAntennaPart :: KRPCHS.RemoteTech.Antenna -> RPCContext (KRPCHS.SpaceCenter.Part)
 getAntennaPart thisArg = do
@@ -164,11 +164,11 @@ getAntennaPartStreamReq thisArg =
 getAntennaPartStream :: KRPCHS.RemoteTech.Antenna -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
 getAntennaPartStream thisArg = requestStream $ getAntennaPartStreamReq thisArg 
 
-{-
- - The object that the antenna is targetting.
- - This property can be used to set the target to <see cref="M:RemoteTech.Target.None" /> or <see cref="M:RemoteTech.Target.ActiveVessel" />.
- - To set the target to a celestial body, ground station or vessel see <see cref="M:RemoteTech.Antenna.TargetBody" />,
- - <see cref="M:RemoteTech.Antenna.TargetGroundStation" /> and <see cref="M:RemoteTech.Antenna.TargetVessel" />.
+{-|
+The object that the antenna is targetting.
+This property can be used to set the target to <see cref="M:RemoteTech.Target.None" /> or <see cref="M:RemoteTech.Target.ActiveVessel" />.
+To set the target to a celestial body, ground station or vessel see <see cref="M:RemoteTech.Antenna.TargetBody" />,
+<see cref="M:RemoteTech.Antenna.TargetGroundStation" /> and <see cref="M:RemoteTech.Antenna.TargetVessel" />.
  -}
 getAntennaTarget :: KRPCHS.RemoteTech.Antenna -> RPCContext (KRPCHS.RemoteTech.Target)
 getAntennaTarget thisArg = do
@@ -184,8 +184,8 @@ getAntennaTargetStreamReq thisArg =
 getAntennaTargetStream :: KRPCHS.RemoteTech.Antenna -> RPCContext (KRPCStream (KRPCHS.RemoteTech.Target))
 getAntennaTargetStream thisArg = requestStream $ getAntennaTargetStreamReq thisArg 
 
-{-
- - The celestial body the antenna is targetting.
+{-|
+The celestial body the antenna is targetting.
  -}
 getAntennaTargetBody :: KRPCHS.RemoteTech.Antenna -> RPCContext (KRPCHS.SpaceCenter.CelestialBody)
 getAntennaTargetBody thisArg = do
@@ -201,8 +201,8 @@ getAntennaTargetBodyStreamReq thisArg =
 getAntennaTargetBodyStream :: KRPCHS.RemoteTech.Antenna -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.CelestialBody))
 getAntennaTargetBodyStream thisArg = requestStream $ getAntennaTargetBodyStreamReq thisArg 
 
-{-
- - The ground station the antenna is targetting.
+{-|
+The ground station the antenna is targetting.
  -}
 getAntennaTargetGroundStation :: KRPCHS.RemoteTech.Antenna -> RPCContext (Data.Text.Text)
 getAntennaTargetGroundStation thisArg = do
@@ -218,8 +218,8 @@ getAntennaTargetGroundStationStreamReq thisArg =
 getAntennaTargetGroundStationStream :: KRPCHS.RemoteTech.Antenna -> RPCContext (KRPCStream (Data.Text.Text))
 getAntennaTargetGroundStationStream thisArg = requestStream $ getAntennaTargetGroundStationStreamReq thisArg 
 
-{-
- - The vessel the antenna is targetting.
+{-|
+The vessel the antenna is targetting.
  -}
 getAntennaTargetVessel :: KRPCHS.RemoteTech.Antenna -> RPCContext (KRPCHS.SpaceCenter.Vessel)
 getAntennaTargetVessel thisArg = do
@@ -235,11 +235,11 @@ getAntennaTargetVesselStreamReq thisArg =
 getAntennaTargetVesselStream :: KRPCHS.RemoteTech.Antenna -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Vessel))
 getAntennaTargetVesselStream thisArg = requestStream $ getAntennaTargetVesselStreamReq thisArg 
 
-{-
- - The object that the antenna is targetting.
- - This property can be used to set the target to <see cref="M:RemoteTech.Target.None" /> or <see cref="M:RemoteTech.Target.ActiveVessel" />.
- - To set the target to a celestial body, ground station or vessel see <see cref="M:RemoteTech.Antenna.TargetBody" />,
- - <see cref="M:RemoteTech.Antenna.TargetGroundStation" /> and <see cref="M:RemoteTech.Antenna.TargetVessel" />.
+{-|
+The object that the antenna is targetting.
+This property can be used to set the target to <see cref="M:RemoteTech.Target.None" /> or <see cref="M:RemoteTech.Target.ActiveVessel" />.
+To set the target to a celestial body, ground station or vessel see <see cref="M:RemoteTech.Antenna.TargetBody" />,
+<see cref="M:RemoteTech.Antenna.TargetGroundStation" /> and <see cref="M:RemoteTech.Antenna.TargetVessel" />.
  -}
 setAntennaTarget :: KRPCHS.RemoteTech.Antenna -> KRPCHS.RemoteTech.Target -> RPCContext ()
 setAntennaTarget thisArg valueArg = do
@@ -247,8 +247,8 @@ setAntennaTarget thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The celestial body the antenna is targetting.
+{-|
+The celestial body the antenna is targetting.
  -}
 setAntennaTargetBody :: KRPCHS.RemoteTech.Antenna -> KRPCHS.SpaceCenter.CelestialBody -> RPCContext ()
 setAntennaTargetBody thisArg valueArg = do
@@ -256,8 +256,8 @@ setAntennaTargetBody thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The ground station the antenna is targetting.
+{-|
+The ground station the antenna is targetting.
  -}
 setAntennaTargetGroundStation :: KRPCHS.RemoteTech.Antenna -> Data.Text.Text -> RPCContext ()
 setAntennaTargetGroundStation thisArg valueArg = do
@@ -265,8 +265,8 @@ setAntennaTargetGroundStation thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - The vessel the antenna is targetting.
+{-|
+The vessel the antenna is targetting.
  -}
 setAntennaTargetVessel :: KRPCHS.RemoteTech.Antenna -> KRPCHS.SpaceCenter.Vessel -> RPCContext ()
 setAntennaTargetVessel thisArg valueArg = do
@@ -274,8 +274,8 @@ setAntennaTargetVessel thisArg valueArg = do
     res <- sendRequest r
     processResponse res 
 
-{-
- - Get a communications object, representing the communication capability of a particular vessel.
+{-|
+Get a communications object, representing the communication capability of a particular vessel.
  -}
 comms :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCHS.RemoteTech.Comms)
 comms vesselArg = do
@@ -291,8 +291,8 @@ commsStreamReq vesselArg =
 commsStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.RemoteTech.Comms))
 commsStream vesselArg = requestStream $ commsStreamReq vesselArg 
 
-{-
- - The signal delay between the this vessel and another vessel, in seconds.<param name="other">
+{-|
+The signal delay between the this vessel and another vessel, in seconds.<param name="other">
  -}
 commsSignalDelayToVessel :: KRPCHS.RemoteTech.Comms -> KRPCHS.SpaceCenter.Vessel -> RPCContext (Double)
 commsSignalDelayToVessel thisArg otherArg = do
@@ -308,8 +308,8 @@ commsSignalDelayToVesselStreamReq thisArg otherArg =
 commsSignalDelayToVesselStream :: KRPCHS.RemoteTech.Comms -> KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Double))
 commsSignalDelayToVesselStream thisArg otherArg = requestStream $ commsSignalDelayToVesselStreamReq thisArg otherArg 
 
-{-
- - The antennas for this vessel.
+{-|
+The antennas for this vessel.
  -}
 getCommsAntennas :: KRPCHS.RemoteTech.Comms -> RPCContext ([KRPCHS.RemoteTech.Antenna])
 getCommsAntennas thisArg = do
@@ -325,8 +325,8 @@ getCommsAntennasStreamReq thisArg =
 getCommsAntennasStream :: KRPCHS.RemoteTech.Comms -> RPCContext (KRPCStream ([KRPCHS.RemoteTech.Antenna]))
 getCommsAntennasStream thisArg = requestStream $ getCommsAntennasStreamReq thisArg 
 
-{-
- - Whether the vessel has any connection.
+{-|
+Whether the vessel has any connection.
  -}
 getCommsHasConnection :: KRPCHS.RemoteTech.Comms -> RPCContext (Bool)
 getCommsHasConnection thisArg = do
@@ -342,8 +342,8 @@ getCommsHasConnectionStreamReq thisArg =
 getCommsHasConnectionStream :: KRPCHS.RemoteTech.Comms -> RPCContext (KRPCStream (Bool))
 getCommsHasConnectionStream thisArg = requestStream $ getCommsHasConnectionStreamReq thisArg 
 
-{-
- - Whether the vessel has a connection to a ground station.
+{-|
+Whether the vessel has a connection to a ground station.
  -}
 getCommsHasConnectionToGroundStation :: KRPCHS.RemoteTech.Comms -> RPCContext (Bool)
 getCommsHasConnectionToGroundStation thisArg = do
@@ -359,8 +359,8 @@ getCommsHasConnectionToGroundStationStreamReq thisArg =
 getCommsHasConnectionToGroundStationStream :: KRPCHS.RemoteTech.Comms -> RPCContext (KRPCStream (Bool))
 getCommsHasConnectionToGroundStationStream thisArg = requestStream $ getCommsHasConnectionToGroundStationStreamReq thisArg 
 
-{-
- - Whether the vessel has a flight computer on board.
+{-|
+Whether the vessel has a flight computer on board.
  -}
 getCommsHasFlightComputer :: KRPCHS.RemoteTech.Comms -> RPCContext (Bool)
 getCommsHasFlightComputer thisArg = do
@@ -376,8 +376,8 @@ getCommsHasFlightComputerStreamReq thisArg =
 getCommsHasFlightComputerStream :: KRPCHS.RemoteTech.Comms -> RPCContext (KRPCStream (Bool))
 getCommsHasFlightComputerStream thisArg = requestStream $ getCommsHasFlightComputerStreamReq thisArg 
 
-{-
- - Whether the vessel can be controlled locally.
+{-|
+Whether the vessel can be controlled locally.
  -}
 getCommsHasLocalControl :: KRPCHS.RemoteTech.Comms -> RPCContext (Bool)
 getCommsHasLocalControl thisArg = do
@@ -393,8 +393,8 @@ getCommsHasLocalControlStreamReq thisArg =
 getCommsHasLocalControlStream :: KRPCHS.RemoteTech.Comms -> RPCContext (KRPCStream (Bool))
 getCommsHasLocalControlStream thisArg = requestStream $ getCommsHasLocalControlStreamReq thisArg 
 
-{-
- - The shortest signal delay to the vessel, in seconds.
+{-|
+The shortest signal delay to the vessel, in seconds.
  -}
 getCommsSignalDelay :: KRPCHS.RemoteTech.Comms -> RPCContext (Double)
 getCommsSignalDelay thisArg = do
@@ -410,8 +410,8 @@ getCommsSignalDelayStreamReq thisArg =
 getCommsSignalDelayStream :: KRPCHS.RemoteTech.Comms -> RPCContext (KRPCStream (Double))
 getCommsSignalDelayStream thisArg = requestStream $ getCommsSignalDelayStreamReq thisArg 
 
-{-
- - The signal delay between the vessel and the closest ground station, in seconds.
+{-|
+The signal delay between the vessel and the closest ground station, in seconds.
  -}
 getCommsSignalDelayToGroundStation :: KRPCHS.RemoteTech.Comms -> RPCContext (Double)
 getCommsSignalDelayToGroundStation thisArg = do
@@ -427,8 +427,8 @@ getCommsSignalDelayToGroundStationStreamReq thisArg =
 getCommsSignalDelayToGroundStationStream :: KRPCHS.RemoteTech.Comms -> RPCContext (KRPCStream (Double))
 getCommsSignalDelayToGroundStationStream thisArg = requestStream $ getCommsSignalDelayToGroundStationStreamReq thisArg 
 
-{-
- - Get the vessel.
+{-|
+Get the vessel.
  -}
 getCommsVessel :: KRPCHS.RemoteTech.Comms -> RPCContext (KRPCHS.SpaceCenter.Vessel)
 getCommsVessel thisArg = do
@@ -444,8 +444,8 @@ getCommsVesselStreamReq thisArg =
 getCommsVesselStream :: KRPCHS.RemoteTech.Comms -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Vessel))
 getCommsVesselStream thisArg = requestStream $ getCommsVesselStreamReq thisArg 
 
-{-
- - The names of the ground stations.
+{-|
+The names of the ground stations.
  -}
 getGroundStations :: RPCContext ([Data.Text.Text])
 getGroundStations  = do
