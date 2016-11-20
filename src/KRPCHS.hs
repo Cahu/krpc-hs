@@ -1,30 +1,42 @@
 {-# LANGUAGE RecordWildCards #-}
 
 module KRPCHS
-( RPCClient
+(
+-- * Clients
+  RPCClient
+, withRPCClient
 , StreamClient
-, RPCContext
+, withStreamClient
 
+-- * RPC context
+, RPCContext
+, runRPCProg
+
+-- * Streams
 , KRPCStream
 , KRPCStreamReq
 , KRPCStreamMsg
-, KRPCResponseExtractable
-, emptyKRPCStreamMsg
-, getStreamMessage
-, getStreamMessageIO
-, messageResultsCount
-, messageHasResultFor
+-- ** Creating streams
 , addStream
 , removeStream
 , withStream
+-- ** Retrieving results
+-- | To retrieve stream results, you first need to call 'getStreamMessage' to
+-- extract the next 'KRPCStreamMsg' from the 'StreamClient'. You can then use
+-- 'KRPCStream' handles with 'getStreamResult' to extract the corresponding
+-- value from the message.
+, getStreamMessage
+, getStreamMessageIO
+, messageHasResultFor
 , getStreamResult
+, messageResultsCount
+, emptyKRPCStreamMsg
 
-, withRPCClient
-, withStreamClient
-, runRPCProg
+-- * Classes
+-- | When building abstractions, you may need to know about these classes.
+, KRPCResponseExtractable
 
-, KRPC.Status(..)
-
+-- * Exceptions
 , ProtocolError(..)
 ) where
 
@@ -35,7 +47,6 @@ import KRPCHS.Internal.ProtocolError
 import KRPCHS.Internal.NetworkUtils
 import KRPCHS.Internal.SerializeUtils
 
-import qualified PB.KRPC.Status                    as KRPC
 import qualified PB.KRPC.ConnectionResponse        as KRPC
 import qualified PB.KRPC.ConnectionResponse.Status as KRPC.Status
 
@@ -64,11 +75,10 @@ rpcHandshake sock name = do
     resp <- recvMsg sock
     either (fail . show) (extractId) resp
   where
-    extractId KRPC.ConnectionResponse{..} = do
-        case status of
-            Just KRPC.Status.OK -> return $ fromJust client_identifier
-            Just err            -> fail   $ show err ++ " - details: '" ++ show (unpackUtf8String <$> message) ++ "'"
-            Nothing             -> fail   $ "Could not make sense of the server's response"
+    extractId KRPC.ConnectionResponse{..} = case status of
+        Just KRPC.Status.OK -> return $ fromJust client_identifier
+        Just err            -> fail   $ show err ++ " - details: '" ++ show (unpackUtf8String <$> message) ++ "'"
+        Nothing             -> fail   $ "Could not make sense of the server's response"
 
 
 streamHandshake :: Socket -> BS.ByteString -> IO ()

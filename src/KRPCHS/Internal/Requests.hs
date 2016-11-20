@@ -58,10 +58,10 @@ import qualified Data.ByteString.Lazy  as BS
 import qualified Text.ProtocolBuffers  as P
 
 
--- | An RPC client bound to a KRPC server
+-- | An RPC client bound to a KRPC server.
 data RPCClient = RPCClient { rpcSocket :: Socket, clientId :: BS.ByteString }
 
--- | A stream client bound to a KRPC Stream server
+-- | A stream client bound to a KRPC Stream server.
 data StreamClient = StreamClient { streamSocket :: Socket }
 
 
@@ -71,12 +71,16 @@ type StreamID = Word64
 newtype RPCContext a = RPCContext { runRPCContext :: ReaderT RPCClient IO a }
     deriving (Functor, Applicative, Monad, MonadIO, MonadReader RPCClient, MonadThrow, MonadCatch, MonadMask)
 
+-- | A handle to retrieve a result from a 'KRPCStreamMsg'.
 newtype KRPCStream a = KRPCStream { streamId :: StreamID }
     deriving (Show)
 
+-- | A prepared request for a stream.
 newtype KRPCStreamReq a = KRPCStreamReq { streamReq :: KReq.Request }
     deriving (Show)
 
+-- | A message sent by the KRPC Stream server. It holds results of active
+-- streams that can be extracted using a 'KRPCStream' handle.
 newtype KRPCStreamMsg = KRPCStreamMsg { streamMsg :: M.Map StreamID KPRes.ProcedureResult }
     deriving (Show)
 
@@ -84,6 +88,8 @@ emptyKRPCStreamMsg :: KRPCStreamMsg
 emptyKRPCStreamMsg = KRPCStreamMsg M.empty
 
 
+-- | Class of things that can be deserialized from the body of a
+-- ProcedureResult message.
 class (PbSerializable a) => KRPCResponseExtractable a where
     extract :: (PbSerializable a) => KPRes.ProcedureResult -> Either ProtocolError a
     extract r = do
