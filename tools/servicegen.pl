@@ -273,6 +273,8 @@ import qualified [% i %]
 [%- END %]
 
 import KRPCHS.Internal.Requests
+import KRPCHS.Internal.Requests.Call
+import KRPCHS.Internal.Requests.Stream
 import KRPCHS.Internal.SerializeUtils
 
 
@@ -284,8 +286,10 @@ import KRPCHS.Internal.SerializeUtils
 newtype [% proxy.name %] = [% proxy.name %] { [% accessor %] :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable [% proxy.name %] where
-    encodePb   = encodePb . [% accessor %]
+instance PbEncodable [% proxy.name %] where
+    encodePb = encodePb . [% accessor %]
+
+instance PbDecodable [% proxy.name %] where
     decodePb b = [% proxy.name %] <$> decodePb b
 
 instance KRPCResponseExtractable [% proxy.name %]
@@ -300,8 +304,10 @@ data [% enum.name %]
     = [% enum.values.join("\n    | ") %]
     deriving (Show, Eq, Ord, Enum)
 
-instance PbSerializable [% enum.name %] where
-    encodePb   = encodePb . fromEnum
+instance PbEncodable [% enum.name %] where
+    encodePb = encodePb . fromEnum
+
+instance PbDecodable [% enum.name %] where
     decodePb b = toEnum <$> decodePb b
 
 instance KRPCResponseExtractable [% enum.name %]

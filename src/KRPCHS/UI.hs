@@ -177,6 +177,8 @@ import qualified Data.Int
 import qualified Data.Text
 
 import KRPCHS.Internal.Requests
+import KRPCHS.Internal.Requests.Call
+import KRPCHS.Internal.Requests.Stream
 import KRPCHS.Internal.SerializeUtils
 
 
@@ -186,8 +188,10 @@ A text label. See <see cref="M:UI.Panel.AddButton" />.
 newtype Button = Button { buttonId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Button where
-    encodePb   = encodePb . buttonId
+instance PbEncodable Button where
+    encodePb = encodePb . buttonId
+
+instance PbDecodable Button where
     decodePb b = Button <$> decodePb b
 
 instance KRPCResponseExtractable Button
@@ -198,8 +202,10 @@ A canvas for user interface elements. See <see cref="M:UI.StockCanvas" /> and <s
 newtype Canvas = Canvas { canvasId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Canvas where
-    encodePb   = encodePb . canvasId
+instance PbEncodable Canvas where
+    encodePb = encodePb . canvasId
+
+instance PbDecodable Canvas where
     decodePb b = Canvas <$> decodePb b
 
 instance KRPCResponseExtractable Canvas
@@ -210,8 +216,10 @@ An input field. See <see cref="M:UI.Panel.AddInputField" />.
 newtype InputField = InputField { inputFieldId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable InputField where
-    encodePb   = encodePb . inputFieldId
+instance PbEncodable InputField where
+    encodePb = encodePb . inputFieldId
+
+instance PbDecodable InputField where
     decodePb b = InputField <$> decodePb b
 
 instance KRPCResponseExtractable InputField
@@ -222,8 +230,10 @@ A container for user interface elements. See <see cref="M:UI.Canvas.AddPanel" />
 newtype Panel = Panel { panelId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Panel where
-    encodePb   = encodePb . panelId
+instance PbEncodable Panel where
+    encodePb = encodePb . panelId
+
+instance PbDecodable Panel where
     decodePb b = Panel <$> decodePb b
 
 instance KRPCResponseExtractable Panel
@@ -235,8 +245,10 @@ See the <a href="http://docs.unity3d.com/Manual/class-RectTransform.html">Unity 
 newtype RectTransform = RectTransform { rectTransformId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable RectTransform where
-    encodePb   = encodePb . rectTransformId
+instance PbEncodable RectTransform where
+    encodePb = encodePb . rectTransformId
+
+instance PbDecodable RectTransform where
     decodePb b = RectTransform <$> decodePb b
 
 instance KRPCResponseExtractable RectTransform
@@ -247,8 +259,10 @@ A text label. See <see cref="M:UI.Panel.AddText" />.
 newtype Text = Text { textId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Text where
-    encodePb   = encodePb . textId
+instance PbEncodable Text where
+    encodePb = encodePb . textId
+
+instance PbDecodable Text where
     decodePb b = Text <$> decodePb b
 
 instance KRPCResponseExtractable Text
@@ -264,8 +278,10 @@ data FontStyle
     | FontStyle'BoldAndItalic
     deriving (Show, Eq, Ord, Enum)
 
-instance PbSerializable FontStyle where
-    encodePb   = encodePb . fromEnum
+instance PbEncodable FontStyle where
+    encodePb = encodePb . fromEnum
+
+instance PbDecodable FontStyle where
     decodePb b = toEnum <$> decodePb b
 
 instance KRPCResponseExtractable FontStyle
@@ -280,8 +296,10 @@ data MessagePosition
     | MessagePosition'TopRight
     deriving (Show, Eq, Ord, Enum)
 
-instance PbSerializable MessagePosition where
-    encodePb   = encodePb . fromEnum
+instance PbEncodable MessagePosition where
+    encodePb = encodePb . fromEnum
+
+instance PbDecodable MessagePosition where
     decodePb b = toEnum <$> decodePb b
 
 instance KRPCResponseExtractable MessagePosition
@@ -295,8 +313,10 @@ data TextAlignment
     | TextAlignment'Center
     deriving (Show, Eq, Ord, Enum)
 
-instance PbSerializable TextAlignment where
-    encodePb   = encodePb . fromEnum
+instance PbEncodable TextAlignment where
+    encodePb = encodePb . fromEnum
+
+instance PbDecodable TextAlignment where
     decodePb b = toEnum <$> decodePb b
 
 instance KRPCResponseExtractable TextAlignment
@@ -316,8 +336,10 @@ data TextAnchor
     | TextAnchor'UpperRight
     deriving (Show, Eq, Ord, Enum)
 
-instance PbSerializable TextAnchor where
-    encodePb   = encodePb . fromEnum
+instance PbEncodable TextAnchor where
+    encodePb = encodePb . fromEnum
+
+instance PbDecodable TextAnchor where
     decodePb b = toEnum <$> decodePb b
 
 instance KRPCResponseExtractable TextAnchor

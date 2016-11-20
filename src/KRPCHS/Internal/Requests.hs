@@ -1,4 +1,3 @@
-{-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
 module KRPCHS.Internal.Requests
@@ -8,23 +7,21 @@ module KRPCHS.Internal.Requests
 
 , KRPCStream(..)
 , KRPCStreamReq(..)
-, KRPCStreamMsg(..)
-, StreamID
+, KRPCStreamMsg()
 , emptyKRPCStreamMsg
+, getStreamMessage
+, getStreamMessageIO
 
-, KRPCResponseExtractable
-, extract
+-- re-export from Requests.Stream
+, messageHasResultFor
+, messageResultsCount
+, getStreamResult
 
-, makeArgument
-, processResult
 , processResponse
-, makeCallRequest
 , makeRequest
 , sendRequest
-, makeStream
 , requestStream
-, extractStreamMessage
-, extractStreamResponse
+, requestRemoveStream
 ) where
 
 
@@ -33,26 +30,20 @@ import Control.Monad.Catch
 import Control.Monad.Reader
 
 import KRPCHS.Internal.ProtocolError
-import KRPCHS.Internal.NetworkUtils
 import KRPCHS.Internal.SerializeUtils
+import KRPCHS.Internal.NetworkUtils
+import KRPCHS.Internal.Requests.Call
+import KRPCHS.Internal.Requests.Batch
+import KRPCHS.Internal.Requests.Stream
 
 import qualified PB.KRPC.Argument        as KArg
-import qualified PB.KRPC.Request         as KReq
 import qualified PB.KRPC.Response        as KRes
 import qualified PB.KRPC.Stream          as KStr
-import qualified PB.KRPC.ProcedureCall   as KPReq
 import qualified PB.KRPC.ProcedureResult as KPRes
-import qualified PB.KRPC.StreamUpdate    as KStreamMsg
-import qualified PB.KRPC.StreamResult    as KStreamRes
 
-import Data.Int
-import Data.Word
 import Data.Maybe
-import qualified Data.Text as T
-import qualified Data.Map  as M
-import qualified Data.Foldable
+import Data.Sequence (ViewL((:<)))
 import qualified Data.Sequence as Seq
-import           Data.Sequence (ViewL((:<)))
 
 import qualified Data.ByteString.Lazy  as BS
 import qualified Text.ProtocolBuffers  as P
@@ -65,135 +56,65 @@ data RPCClient = RPCClient { rpcSocket :: Socket, clientId :: BS.ByteString }
 data StreamClient = StreamClient { streamSocket :: Socket }
 
 
-type StreamID = Word64
-
-
+-- | The context for RPC calls.
 newtype RPCContext a = RPCContext { runRPCContext :: ReaderT RPCClient IO a }
     deriving (Functor, Applicative, Monad, MonadIO, MonadReader RPCClient, MonadThrow, MonadCatch, MonadMask)
 
--- | A handle to retrieve a result from a 'KRPCStreamMsg'.
-newtype KRPCStream a = KRPCStream { streamId :: StreamID }
-    deriving (Show)
 
--- | A prepared request for a stream.
-newtype KRPCStreamReq a = KRPCStreamReq { streamReq :: KReq.Request }
-    deriving (Show)
-
--- | A message sent by the KRPC Stream server. It holds results of active
--- streams that can be extracted using a 'KRPCStream' handle.
-newtype KRPCStreamMsg = KRPCStreamMsg { streamMsg :: M.Map StreamID KPRes.ProcedureResult }
-    deriving (Show)
-
-emptyKRPCStreamMsg :: KRPCStreamMsg
-emptyKRPCStreamMsg = KRPCStreamMsg M.empty
+processProcedureResult :: (KRPCResponseExtractable a) => KPRes.ProcedureResult -> RPCContext a
+processProcedureResult res = either (throwM) (return) (extract res)
 
 
--- | Class of things that can be deserialized from the body of a
--- ProcedureResult message.
-class (PbSerializable a) => KRPCResponseExtractable a where
-    extract :: (PbSerializable a) => KPRes.ProcedureResult -> Either ProtocolError a
-    extract r = do
-        checkError r
-        maybe (Left ResponseEmpty) (decodePb) (KPRes.value r)
-
-
-instance KRPCResponseExtractable Bool
-instance KRPCResponseExtractable Float
-instance KRPCResponseExtractable Double
-instance KRPCResponseExtractable Int
-instance KRPCResponseExtractable Int32
-instance KRPCResponseExtractable Int64
-instance KRPCResponseExtractable Word32
-instance KRPCResponseExtractable Word64
-instance KRPCResponseExtractable T.Text
-instance (PbSerializable a, PbSerializable b)                                     => KRPCResponseExtractable (a, b)
-instance (PbSerializable a, PbSerializable b, PbSerializable c)                   => KRPCResponseExtractable (a, b, c)
-instance (PbSerializable a, PbSerializable b, PbSerializable c, PbSerializable d) => KRPCResponseExtractable (a, b, c, d)
-
--- as of krpc 0.4, stream ids are encapsulated in a message
-instance KRPCResponseExtractable KStr.Stream
-
-
-instance KRPCResponseExtractable () where
-    extract = checkError
-
-
-instance (PbSerializable a) => KRPCResponseExtractable [a] where
-    extract r = do
-        checkError r
-        case (KPRes.value r) of
-            Nothing    -> Right []
-            Just bytes -> decodePb bytes
-
-instance (Ord k, PbSerializable k, PbSerializable v) => KRPCResponseExtractable (M.Map k v) where
-    extract r = do
-        checkError r
-        case (KPRes.value r) of
-            Nothing    -> Right M.empty
-            Just bytes -> decodePb bytes
-
-
-checkError :: KPRes.ProcedureResult -> Either ProtocolError ()
-checkError r = case (KPRes.error r) of
-    Just err -> Left $ KRPCError (P.toString err)
-    Nothing  -> return ()
-
-
-processResult :: (KRPCResponseExtractable a) => KPRes.ProcedureResult -> RPCContext a
-processResult res = either (throwM) (return) (extract res)
-
-
-processResponse :: (KRPCResponseExtractable a) => KRes.Response -> RPCContext a
-processResponse r = case (KRes.error r) of
+-- TODO: make a unpackBatchReply in Requests.Batch to replace this function
+processResponse :: (KRPCResponseExtractable a) => KRPCCallBatchReply -> RPCContext a
+processResponse (KRPCCallBatchReply r) = case (KRes.error r) of
     Just err -> throwM $ KRPCError (P.toString err)
-    Nothing  -> let (result :< _) = Seq.viewl (KRes.results r) in  processResult result
+    Nothing  -> let (result :< _) = Seq.viewl (KRes.results r) in processProcedureResult result
 
 
-sendRequest :: KReq.Request -> RPCContext KRes.Response
-sendRequest r = do
+sendRequest :: KRPCCallBatch -> RPCContext KRPCCallBatchReply
+sendRequest (KRPCCallBatch req) = do
     sock <- asks rpcSocket
-    liftIO $ sendMsg sock r
+    liftIO $ sendMsg sock req
     msg  <- liftIO $ recvMsg sock
-    either (throwM) (return) msg
+    either (throwM) (return . KRPCCallBatchReply) msg
 
 
-makeArgument :: (PbSerializable a) => P.Word32 -> a -> KArg.Argument
-makeArgument position arg = KArg.Argument (Just position) (Just $ encodePb arg)
-
-
-makeCallRequest :: String -> String -> [KArg.Argument] -> KPReq.ProcedureCall
-makeCallRequest serviceName procName params =
-    KPReq.ProcedureCall
-    { service   = Just $ P.fromString serviceName
-    , procedure = Just $ P.fromString procName
-    , arguments = Seq.fromList params }
-
-
-makeRequest :: String -> String -> [KArg.Argument] -> KReq.Request
-makeRequest serviceName procName params = KReq.Request . Seq.singleton $ makeCallRequest serviceName procName params
-
-
-makeStream :: KPReq.ProcedureCall -> KRPCStreamReq a
-makeStream r = KRPCStreamReq $
-    makeRequest "KRPC" "AddStream" [KArg.Argument (Just 0) (Just $ messagePut r)]
+makeRequest :: String -> String -> [KArg.Argument] -> KRPCCallBatch
+makeRequest serviceName procName params = makeBatch [req]
+    where req = makeCallRequest serviceName procName params
 
 
 requestStream :: KRPCResponseExtractable a => KRPCStreamReq a -> RPCContext (KRPCStream a)
-requestStream KRPCStreamReq{..} = do
-    res <- sendRequest streamReq
+requestStream strReq = do
+    res <- sendRequest (makeBatch [streamCall strReq])
     str <- processResponse res
     let sid = fromJust (KStr.id str)
     return (KRPCStream sid)
 
 
-extractStreamResponse :: KStreamRes.StreamResult -> Maybe (StreamID, KPRes.ProcedureResult)
-extractStreamResponse streamRes = do
-    sid <- KStreamRes.id     streamRes
-    res <- KStreamRes.result streamRes
-    return (sid, res)
+requestRemoveStream :: KRPCStream a -> RPCContext ()
+requestRemoveStream str = do
+    resp <- sendRequest (makeRequest "KRPC" "RemoveStream" [ makeArgument 0 (streamId str) ])
+    processResponse resp
 
 
-extractStreamMessage :: KStreamMsg.StreamUpdate -> [(StreamID, KPRes.ProcedureResult)]
-extractStreamMessage msg = mapMaybe extractStreamResponse responseList
-    where responseList = Data.Foldable.toList (KStreamMsg.results msg)
+-- | @'getStreamMessage' client@ extracts the next 'KRPCStreamMsg' received by
+-- the provided 'StreamClient'.
+getStreamMessage :: StreamClient -> RPCContext KRPCStreamMsg
+getStreamMessage client = getStreamMessageIO client >>= either throwM return
 
+
+-- | A generalized version of 'getStreamMessage' to be used in any 'MonadIO'.
+getStreamMessageIO :: MonadIO m => StreamClient -> m (Either ProtocolError KRPCStreamMsg)
+getStreamMessageIO (StreamClient s) = (fmap unpackStreamMsg) <$> liftIO (recvMsg s)
+
+
+-- | @'getStreamResult' s m@ extracts the result of a 'KRPCStream' @s@ from the
+-- 'KRPCStreamMsg' @m@. If no such result exist, an exception is thrown. You
+-- can check whether it is safe to call this function with 'messageHasResultFor'.
+getStreamResult :: (KRPCResponseExtractable a) => KRPCStream a -> KRPCStreamMsg -> RPCContext a
+getStreamResult (KRPCStream i) msg =
+    maybe (throwM NoSuchStream)
+          (processProcedureResult)
+          (messageLookupResult i msg)

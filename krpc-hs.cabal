@@ -20,6 +20,9 @@ library
                      , KRPCHS.RemoteTech
                      , KRPCHS.UI
                      , KRPCHS.Internal.Requests
+                     , KRPCHS.Internal.Requests.Call
+                     , KRPCHS.Internal.Requests.Batch
+                     , KRPCHS.Internal.Requests.Stream
                      , KRPCHS.Internal.ProtocolError
                      , KRPCHS.Internal.NetworkUtils
                      , KRPCHS.Internal.SerializeUtils

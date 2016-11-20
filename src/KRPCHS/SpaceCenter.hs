@@ -1867,6 +1867,8 @@ import qualified Data.Text
 import qualified Data.Word
 
 import KRPCHS.Internal.Requests
+import KRPCHS.Internal.Requests.Call
+import KRPCHS.Internal.Requests.Stream
 import KRPCHS.Internal.SerializeUtils
 
 
@@ -1878,8 +1880,10 @@ the auto-pilot will be disengaged and its target reference frame, direction and 
 newtype AutoPilot = AutoPilot { autoPilotId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable AutoPilot where
-    encodePb   = encodePb . autoPilotId
+instance PbEncodable AutoPilot where
+    encodePb = encodePb . autoPilotId
+
+instance PbDecodable AutoPilot where
     decodePb b = AutoPilot <$> decodePb b
 
 instance KRPCResponseExtractable AutoPilot
@@ -1891,8 +1895,10 @@ Obtained by calling <see cref="M:SpaceCenter.Camera" />.
 newtype Camera = Camera { cameraId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Camera where
-    encodePb   = encodePb . cameraId
+instance PbEncodable Camera where
+    encodePb = encodePb . cameraId
+
+instance PbDecodable Camera where
     decodePb b = Camera <$> decodePb b
 
 instance KRPCResponseExtractable Camera
@@ -1903,8 +1909,10 @@ A cargo bay. Obtained by calling <see cref="M:SpaceCenter.Part.CargoBay" />.
 newtype CargoBay = CargoBay { cargoBayId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable CargoBay where
-    encodePb   = encodePb . cargoBayId
+instance PbEncodable CargoBay where
+    encodePb = encodePb . cargoBayId
+
+instance PbDecodable CargoBay where
     decodePb b = CargoBay <$> decodePb b
 
 instance KRPCResponseExtractable CargoBay
@@ -1916,8 +1924,10 @@ See <see cref="M:SpaceCenter.Bodies" />.
 newtype CelestialBody = CelestialBody { celestialBodyId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable CelestialBody where
-    encodePb   = encodePb . celestialBodyId
+instance PbEncodable CelestialBody where
+    encodePb = encodePb . celestialBodyId
+
+instance PbDecodable CelestialBody where
     decodePb b = CelestialBody <$> decodePb b
 
 instance KRPCResponseExtractable CelestialBody
@@ -1932,8 +1942,10 @@ that have set one or more of these inputs are no longer connected.
 newtype Control = Control { controlId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Control where
-    encodePb   = encodePb . controlId
+instance PbEncodable Control where
+    encodePb = encodePb . controlId
+
+instance PbDecodable Control where
     decodePb b = Control <$> decodePb b
 
 instance KRPCResponseExtractable Control
@@ -1944,8 +1956,10 @@ An aerodynamic control surface. Obtained by calling <see cref="M:SpaceCenter.Par
 newtype ControlSurface = ControlSurface { controlSurfaceId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable ControlSurface where
-    encodePb   = encodePb . controlSurfaceId
+instance PbEncodable ControlSurface where
+    encodePb = encodePb . controlSurfaceId
+
+instance PbDecodable ControlSurface where
     decodePb b = ControlSurface <$> decodePb b
 
 instance KRPCResponseExtractable ControlSurface
@@ -1956,8 +1970,10 @@ A decoupler. Obtained by calling <see cref="M:SpaceCenter.Part.Decoupler" />
 newtype Decoupler = Decoupler { decouplerId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Decoupler where
-    encodePb   = encodePb . decouplerId
+instance PbEncodable Decoupler where
+    encodePb = encodePb . decouplerId
+
+instance PbDecodable Decoupler where
     decodePb b = Decoupler <$> decodePb b
 
 instance KRPCResponseExtractable Decoupler
@@ -1968,8 +1984,10 @@ A docking port. Obtained by calling <see cref="M:SpaceCenter.Part.DockingPort" /
 newtype DockingPort = DockingPort { dockingPortId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable DockingPort where
-    encodePb   = encodePb . dockingPortId
+instance PbEncodable DockingPort where
+    encodePb = encodePb . dockingPortId
+
+instance PbDecodable DockingPort where
     decodePb b = DockingPort <$> decodePb b
 
 instance KRPCResponseExtractable DockingPort
@@ -1982,8 +2000,10 @@ Obtained by calling <see cref="M:SpaceCenter.Part.Engine" />.For RCS thrusters <
 newtype Engine = Engine { engineId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Engine where
-    encodePb   = encodePb . engineId
+instance PbEncodable Engine where
+    encodePb = encodePb . engineId
+
+instance PbDecodable Engine where
     decodePb b = Engine <$> decodePb b
 
 instance KRPCResponseExtractable Engine
@@ -1994,8 +2014,10 @@ Obtained by calling <see cref="M:SpaceCenter.Part.Experiment" />.
 newtype Experiment = Experiment { experimentId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Experiment where
-    encodePb   = encodePb . experimentId
+instance PbEncodable Experiment where
+    encodePb = encodePb . experimentId
+
+instance PbDecodable Experiment where
     decodePb b = Experiment <$> decodePb b
 
 instance KRPCResponseExtractable Experiment
@@ -2006,8 +2028,10 @@ A fairing. Obtained by calling <see cref="M:SpaceCenter.Part.Fairing" />.
 newtype Fairing = Fairing { fairingId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Fairing where
-    encodePb   = encodePb . fairingId
+instance PbEncodable Fairing where
+    encodePb = encodePb . fairingId
+
+instance PbDecodable Fairing where
     decodePb b = Fairing <$> decodePb b
 
 instance KRPCResponseExtractable Fairing
@@ -2021,8 +2045,10 @@ Obtained by calling <see cref="M:SpaceCenter.Vessel.Flight" />.To get orbital in
 newtype Flight = Flight { flightId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Flight where
-    encodePb   = encodePb . flightId
+instance PbEncodable Flight where
+    encodePb = encodePb . flightId
+
+instance PbDecodable Flight where
     decodePb b = Flight <$> decodePb b
 
 instance KRPCResponseExtractable Flight
@@ -2033,8 +2059,10 @@ Obtained by calling <see cref="M:SpaceCenter.Part.AddForce" />.
 newtype Force = Force { forceId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Force where
-    encodePb   = encodePb . forceId
+instance PbEncodable Force where
+    encodePb = encodePb . forceId
+
+instance PbDecodable Force where
     decodePb b = Force <$> decodePb b
 
 instance KRPCResponseExtractable Force
@@ -2045,8 +2073,10 @@ An air intake. Obtained by calling <see cref="M:SpaceCenter.Part.Intake" />.
 newtype Intake = Intake { intakeId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Intake where
-    encodePb   = encodePb . intakeId
+instance PbEncodable Intake where
+    encodePb = encodePb . intakeId
+
+instance PbDecodable Intake where
     decodePb b = Intake <$> decodePb b
 
 instance KRPCResponseExtractable Intake
@@ -2057,8 +2087,10 @@ Landing gear with wheels. Obtained by calling <see cref="M:SpaceCenter.Part.Land
 newtype LandingGear = LandingGear { landingGearId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable LandingGear where
-    encodePb   = encodePb . landingGearId
+instance PbEncodable LandingGear where
+    encodePb = encodePb . landingGearId
+
+instance PbDecodable LandingGear where
     decodePb b = LandingGear <$> decodePb b
 
 instance KRPCResponseExtractable LandingGear
@@ -2069,8 +2101,10 @@ A landing leg. Obtained by calling <see cref="M:SpaceCenter.Part.LandingLeg" />.
 newtype LandingLeg = LandingLeg { landingLegId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable LandingLeg where
-    encodePb   = encodePb . landingLegId
+instance PbEncodable LandingLeg where
+    encodePb = encodePb . landingLegId
+
+instance PbDecodable LandingLeg where
     decodePb b = LandingLeg <$> decodePb b
 
 instance KRPCResponseExtractable LandingLeg
@@ -2081,8 +2115,10 @@ A launch clamp. Obtained by calling <see cref="M:SpaceCenter.Part.LaunchClamp" /
 newtype LaunchClamp = LaunchClamp { launchClampId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable LaunchClamp where
-    encodePb   = encodePb . launchClampId
+instance PbEncodable LaunchClamp where
+    encodePb = encodePb . launchClampId
+
+instance PbDecodable LaunchClamp where
     decodePb b = LaunchClamp <$> decodePb b
 
 instance KRPCResponseExtractable LaunchClamp
@@ -2093,8 +2129,10 @@ A light. Obtained by calling <see cref="M:SpaceCenter.Part.Light" />.
 newtype Light = Light { lightId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Light where
-    encodePb   = encodePb . lightId
+instance PbEncodable Light where
+    encodePb = encodePb . lightId
+
+instance PbDecodable Light where
     decodePb b = Light <$> decodePb b
 
 instance KRPCResponseExtractable Light
@@ -2111,8 +2149,10 @@ functionality of an engine.
 newtype Module = Module { moduleId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Module where
-    encodePb   = encodePb . moduleId
+instance PbEncodable Module where
+    encodePb = encodePb . moduleId
+
+instance PbDecodable Module where
     decodePb b = Module <$> decodePb b
 
 instance KRPCResponseExtractable Module
@@ -2123,8 +2163,10 @@ Represents a maneuver node. Can be created using <see cref="M:SpaceCenter.Contro
 newtype Node = Node { nodeId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Node where
-    encodePb   = encodePb . nodeId
+instance PbEncodable Node where
+    encodePb = encodePb . nodeId
+
+instance PbDecodable Node where
     decodePb b = Node <$> decodePb b
 
 instance KRPCResponseExtractable Node
@@ -2137,8 +2179,10 @@ Describes an orbit. For example, the orbit of a vessel, obtained by calling
 newtype Orbit = Orbit { orbitId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Orbit where
-    encodePb   = encodePb . orbitId
+instance PbEncodable Orbit where
+    encodePb = encodePb . orbitId
+
+instance PbDecodable Orbit where
     decodePb b = Orbit <$> decodePb b
 
 instance KRPCResponseExtractable Orbit
@@ -2149,8 +2193,10 @@ A parachute. Obtained by calling <see cref="M:SpaceCenter.Part.Parachute" />.
 newtype Parachute = Parachute { parachuteId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Parachute where
-    encodePb   = encodePb . parachuteId
+instance PbEncodable Parachute where
+    encodePb = encodePb . parachuteId
+
+instance PbDecodable Parachute where
     decodePb b = Parachute <$> decodePb b
 
 instance KRPCResponseExtractable Parachute
@@ -2162,8 +2208,10 @@ Instances of this class can be obtained by several methods in <see cref="T:Space
 newtype Part = Part { partId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Part where
-    encodePb   = encodePb . partId
+instance PbEncodable Part where
+    encodePb = encodePb . partId
+
+instance PbDecodable Part where
     decodePb b = Part <$> decodePb b
 
 instance KRPCResponseExtractable Part
@@ -2175,8 +2223,10 @@ An instance can be obtained by calling <see cref="M:SpaceCenter.Vessel.Parts" />
 newtype Parts = Parts { partsId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Parts where
-    encodePb   = encodePb . partsId
+instance PbEncodable Parts where
+    encodePb = encodePb . partsId
+
+instance PbDecodable Parts where
     decodePb b = Parts <$> decodePb b
 
 instance KRPCResponseExtractable Parts
@@ -2187,8 +2237,10 @@ A propellant for an engine. Obtains by calling <see cref="M:SpaceCenter.Engine.P
 newtype Propellant = Propellant { propellantId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Propellant where
-    encodePb   = encodePb . propellantId
+instance PbEncodable Propellant where
+    encodePb = encodePb . propellantId
+
+instance PbDecodable Propellant where
     decodePb b = Propellant <$> decodePb b
 
 instance KRPCResponseExtractable Propellant
@@ -2199,8 +2251,10 @@ An RCS block or thruster. Obtained by calling <see cref="M:SpaceCenter.Part.RCS"
 newtype RCS = RCS { rCSId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable RCS where
-    encodePb   = encodePb . rCSId
+instance PbEncodable RCS where
+    encodePb = encodePb . rCSId
+
+instance PbDecodable RCS where
     decodePb b = RCS <$> decodePb b
 
 instance KRPCResponseExtractable RCS
@@ -2211,8 +2265,10 @@ A radiator. Obtained by calling <see cref="M:SpaceCenter.Part.Radiator" />.
 newtype Radiator = Radiator { radiatorId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Radiator where
-    encodePb   = encodePb . radiatorId
+instance PbEncodable Radiator where
+    encodePb = encodePb . radiatorId
+
+instance PbDecodable Radiator where
     decodePb b = Radiator <$> decodePb b
 
 instance KRPCResponseExtractable Radiator
@@ -2223,8 +2279,10 @@ A reaction wheel. Obtained by calling <see cref="M:SpaceCenter.Part.ReactionWhee
 newtype ReactionWheel = ReactionWheel { reactionWheelId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable ReactionWheel where
-    encodePb   = encodePb . reactionWheelId
+instance PbEncodable ReactionWheel where
+    encodePb = encodePb . reactionWheelId
+
+instance PbDecodable ReactionWheel where
     decodePb b = ReactionWheel <$> decodePb b
 
 instance KRPCResponseExtractable ReactionWheel
@@ -2238,8 +2296,10 @@ used as a parameter to other functions.
 newtype ReferenceFrame = ReferenceFrame { referenceFrameId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable ReferenceFrame where
-    encodePb   = encodePb . referenceFrameId
+instance PbEncodable ReferenceFrame where
+    encodePb = encodePb . referenceFrameId
+
+instance PbDecodable ReferenceFrame where
     decodePb b = ReferenceFrame <$> decodePb b
 
 instance KRPCResponseExtractable ReferenceFrame
@@ -2251,8 +2311,10 @@ Created using methods in the <see cref="T:SpaceCenter.Resources" /> class.
 newtype Resource = Resource { resourceId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Resource where
-    encodePb   = encodePb . resourceId
+instance PbEncodable Resource where
+    encodePb = encodePb . resourceId
+
+instance PbDecodable Resource where
     decodePb b = Resource <$> decodePb b
 
 instance KRPCResponseExtractable Resource
@@ -2263,8 +2325,10 @@ A resource converter. Obtained by calling <see cref="M:SpaceCenter.Part.Resource
 newtype ResourceConverter = ResourceConverter { resourceConverterId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable ResourceConverter where
-    encodePb   = encodePb . resourceConverterId
+instance PbEncodable ResourceConverter where
+    encodePb = encodePb . resourceConverterId
+
+instance PbDecodable ResourceConverter where
     decodePb b = ResourceConverter <$> decodePb b
 
 instance KRPCResponseExtractable ResourceConverter
@@ -2275,8 +2339,10 @@ A resource harvester (drill). Obtained by calling <see cref="M:SpaceCenter.Part.
 newtype ResourceHarvester = ResourceHarvester { resourceHarvesterId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable ResourceHarvester where
-    encodePb   = encodePb . resourceHarvesterId
+instance PbEncodable ResourceHarvester where
+    encodePb = encodePb . resourceHarvesterId
+
+instance PbDecodable ResourceHarvester where
     decodePb b = ResourceHarvester <$> decodePb b
 
 instance KRPCResponseExtractable ResourceHarvester
@@ -2287,8 +2353,10 @@ Transfer resources between parts.
 newtype ResourceTransfer = ResourceTransfer { resourceTransferId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable ResourceTransfer where
-    encodePb   = encodePb . resourceTransferId
+instance PbEncodable ResourceTransfer where
+    encodePb = encodePb . resourceTransferId
+
+instance PbDecodable ResourceTransfer where
     decodePb b = ResourceTransfer <$> decodePb b
 
 instance KRPCResponseExtractable ResourceTransfer
@@ -2302,8 +2370,10 @@ Created by calling <see cref="M:SpaceCenter.Vessel.Resources" />,
 newtype Resources = Resources { resourcesId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Resources where
-    encodePb   = encodePb . resourcesId
+instance PbEncodable Resources where
+    encodePb = encodePb . resourcesId
+
+instance PbDecodable Resources where
     decodePb b = Resources <$> decodePb b
 
 instance KRPCResponseExtractable Resources
@@ -2314,8 +2384,10 @@ Obtained by calling <see cref="M:SpaceCenter.Experiment.Data" />.
 newtype ScienceData = ScienceData { scienceDataId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable ScienceData where
-    encodePb   = encodePb . scienceDataId
+instance PbEncodable ScienceData where
+    encodePb = encodePb . scienceDataId
+
+instance PbDecodable ScienceData where
     decodePb b = ScienceData <$> decodePb b
 
 instance KRPCResponseExtractable ScienceData
@@ -2326,8 +2398,10 @@ Obtained by calling <see cref="M:SpaceCenter.Experiment.ScienceSubject" />.
 newtype ScienceSubject = ScienceSubject { scienceSubjectId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable ScienceSubject where
-    encodePb   = encodePb . scienceSubjectId
+instance PbEncodable ScienceSubject where
+    encodePb = encodePb . scienceSubjectId
+
+instance PbDecodable ScienceSubject where
     decodePb b = ScienceSubject <$> decodePb b
 
 instance KRPCResponseExtractable ScienceSubject
@@ -2338,8 +2412,10 @@ A sensor, such as a thermometer. Obtained by calling <see cref="M:SpaceCenter.Pa
 newtype Sensor = Sensor { sensorId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Sensor where
-    encodePb   = encodePb . sensorId
+instance PbEncodable Sensor where
+    encodePb = encodePb . sensorId
+
+instance PbDecodable Sensor where
     decodePb b = Sensor <$> decodePb b
 
 instance KRPCResponseExtractable Sensor
@@ -2350,8 +2426,10 @@ A solar panel. Obtained by calling <see cref="M:SpaceCenter.Part.SolarPanel" />.
 newtype SolarPanel = SolarPanel { solarPanelId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable SolarPanel where
-    encodePb   = encodePb . solarPanelId
+instance PbEncodable SolarPanel where
+    encodePb = encodePb . solarPanelId
+
+instance PbDecodable SolarPanel where
     decodePb b = SolarPanel <$> decodePb b
 
 instance KRPCResponseExtractable SolarPanel
@@ -2364,8 +2442,10 @@ For example, the S3 KS-25x4 "Mammoth" has four rocket nozzels, and so consists o
 newtype Thruster = Thruster { thrusterId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Thruster where
-    encodePb   = encodePb . thrusterId
+instance PbEncodable Thruster where
+    encodePb = encodePb . thrusterId
+
+instance PbDecodable Thruster where
     decodePb b = Thruster <$> decodePb b
 
 instance KRPCResponseExtractable Thruster
@@ -2378,8 +2458,10 @@ Created using <see cref="M:SpaceCenter.ActiveVessel" /> or <see cref="M:SpaceCen
 newtype Vessel = Vessel { vesselId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Vessel where
-    encodePb   = encodePb . vesselId
+instance PbEncodable Vessel where
+    encodePb = encodePb . vesselId
+
+instance PbDecodable Vessel where
     decodePb b = Vessel <$> decodePb b
 
 instance KRPCResponseExtractable Vessel
@@ -2390,8 +2472,10 @@ Represents a waypoint. Can be created using <see cref="M:SpaceCenter.WaypointMan
 newtype Waypoint = Waypoint { waypointId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Waypoint where
-    encodePb   = encodePb . waypointId
+instance PbEncodable Waypoint where
+    encodePb = encodePb . waypointId
+
+instance PbDecodable Waypoint where
     decodePb b = Waypoint <$> decodePb b
 
 instance KRPCResponseExtractable Waypoint
@@ -2404,8 +2488,10 @@ Obtained by calling <see cref="M:SpaceCenter.WaypointManager" />.
 newtype WaypointManager = WaypointManager { waypointManagerId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable WaypointManager where
-    encodePb   = encodePb . waypointManagerId
+instance PbEncodable WaypointManager where
+    encodePb = encodePb . waypointManagerId
+
+instance PbDecodable WaypointManager where
     decodePb b = WaypointManager <$> decodePb b
 
 instance KRPCResponseExtractable WaypointManager
@@ -2424,8 +2510,10 @@ data CameraMode
     | CameraMode'Map
     deriving (Show, Eq, Ord, Enum)
 
-instance PbSerializable CameraMode where
-    encodePb   = encodePb . fromEnum
+instance PbEncodable CameraMode where
+    encodePb = encodePb . fromEnum
+
+instance PbDecodable CameraMode where
     decodePb b = toEnum <$> decodePb b
 
 instance KRPCResponseExtractable CameraMode
@@ -2440,8 +2528,10 @@ data CargoBayState
     | CargoBayState'Closing
     deriving (Show, Eq, Ord, Enum)
 
-instance PbSerializable CargoBayState where
-    encodePb   = encodePb . fromEnum
+instance PbEncodable CargoBayState where
+    encodePb = encodePb . fromEnum
+
+instance PbDecodable CargoBayState where
     decodePb b = toEnum <$> decodePb b
 
 instance KRPCResponseExtractable CargoBayState
@@ -2458,8 +2548,10 @@ data DockingPortState
     | DockingPortState'Moving
     deriving (Show, Eq, Ord, Enum)
 
-instance PbSerializable DockingPortState where
-    encodePb   = encodePb . fromEnum
+instance PbEncodable DockingPortState where
+    encodePb = encodePb . fromEnum
+
+instance PbDecodable DockingPortState where
     decodePb b = toEnum <$> decodePb b
 
 instance KRPCResponseExtractable DockingPortState
@@ -2475,8 +2567,10 @@ data LandingGearState
     | LandingGearState'Broken
     deriving (Show, Eq, Ord, Enum)
 
-instance PbSerializable LandingGearState where
-    encodePb   = encodePb . fromEnum
+instance PbEncodable LandingGearState where
+    encodePb = encodePb . fromEnum
+
+instance PbDecodable LandingGearState where
     decodePb b = toEnum <$> decodePb b
 
 instance KRPCResponseExtractable LandingGearState
@@ -2492,8 +2586,10 @@ data LandingLegState
     | LandingLegState'Broken
     deriving (Show, Eq, Ord, Enum)
 
-instance PbSerializable LandingLegState where
-    encodePb   = encodePb . fromEnum
+instance PbEncodable LandingLegState where
+    encodePb = encodePb . fromEnum
+
+instance PbDecodable LandingLegState where
     decodePb b = toEnum <$> decodePb b
 
 instance KRPCResponseExtractable LandingLegState
@@ -2509,8 +2605,10 @@ data ParachuteState
     | ParachuteState'Stowed
     deriving (Show, Eq, Ord, Enum)
 
-instance PbSerializable ParachuteState where
-    encodePb   = encodePb . fromEnum
+instance PbEncodable ParachuteState where
+    encodePb = encodePb . fromEnum
+
+instance PbDecodable ParachuteState where
     decodePb b = toEnum <$> decodePb b
 
 instance KRPCResponseExtractable ParachuteState
@@ -2526,8 +2624,10 @@ data RadiatorState
     | RadiatorState'Broken
     deriving (Show, Eq, Ord, Enum)
 
-instance PbSerializable RadiatorState where
-    encodePb   = encodePb . fromEnum
+instance PbEncodable RadiatorState where
+    encodePb = encodePb . fromEnum
+
+instance PbDecodable RadiatorState where
     decodePb b = toEnum <$> decodePb b
 
 instance KRPCResponseExtractable RadiatorState
@@ -2544,8 +2644,10 @@ data ResourceConverterState
     | ResourceConverterState'Unknown
     deriving (Show, Eq, Ord, Enum)
 
-instance PbSerializable ResourceConverterState where
-    encodePb   = encodePb . fromEnum
+instance PbEncodable ResourceConverterState where
+    encodePb = encodePb . fromEnum
+
+instance PbDecodable ResourceConverterState where
     decodePb b = toEnum <$> decodePb b
 
 instance KRPCResponseExtractable ResourceConverterState
@@ -2560,8 +2662,10 @@ data ResourceFlowMode
     | ResourceFlowMode'None
     deriving (Show, Eq, Ord, Enum)
 
-instance PbSerializable ResourceFlowMode where
-    encodePb   = encodePb . fromEnum
+instance PbEncodable ResourceFlowMode where
+    encodePb = encodePb . fromEnum
+
+instance PbDecodable ResourceFlowMode where
     decodePb b = toEnum <$> decodePb b
 
 instance KRPCResponseExtractable ResourceFlowMode
@@ -2577,8 +2681,10 @@ data ResourceHarvesterState
     | ResourceHarvesterState'Active
     deriving (Show, Eq, Ord, Enum)
 
-instance PbSerializable ResourceHarvesterState where
-    encodePb   = encodePb . fromEnum
+instance PbEncodable ResourceHarvesterState where
+    encodePb = encodePb . fromEnum
+
+instance PbDecodable ResourceHarvesterState where
     decodePb b = toEnum <$> decodePb b
 
 instance KRPCResponseExtractable ResourceHarvesterState
@@ -2599,8 +2705,10 @@ data SASMode
     | SASMode'AntiTarget
     deriving (Show, Eq, Ord, Enum)
 
-instance PbSerializable SASMode where
-    encodePb   = encodePb . fromEnum
+instance PbEncodable SASMode where
+    encodePb = encodePb . fromEnum
+
+instance PbDecodable SASMode where
     decodePb b = toEnum <$> decodePb b
 
 instance KRPCResponseExtractable SASMode
@@ -2616,8 +2724,10 @@ data SolarPanelState
     | SolarPanelState'Broken
     deriving (Show, Eq, Ord, Enum)
 
-instance PbSerializable SolarPanelState where
-    encodePb   = encodePb . fromEnum
+instance PbEncodable SolarPanelState where
+    encodePb = encodePb . fromEnum
+
+instance PbDecodable SolarPanelState where
     decodePb b = toEnum <$> decodePb b
 
 instance KRPCResponseExtractable SolarPanelState
@@ -2632,8 +2742,10 @@ data SpeedMode
     | SpeedMode'Target
     deriving (Show, Eq, Ord, Enum)
 
-instance PbSerializable SpeedMode where
-    encodePb   = encodePb . fromEnum
+instance PbEncodable SpeedMode where
+    encodePb = encodePb . fromEnum
+
+instance PbDecodable SpeedMode where
     decodePb b = toEnum <$> decodePb b
 
 instance KRPCResponseExtractable SpeedMode
@@ -2653,8 +2765,10 @@ data VesselSituation
     | VesselSituation'Docked
     deriving (Show, Eq, Ord, Enum)
 
-instance PbSerializable VesselSituation where
-    encodePb   = encodePb . fromEnum
+instance PbEncodable VesselSituation where
+    encodePb = encodePb . fromEnum
+
+instance PbDecodable VesselSituation where
     decodePb b = toEnum <$> decodePb b
 
 instance KRPCResponseExtractable VesselSituation
@@ -2673,8 +2787,10 @@ data VesselType
     | VesselType'Debris
     deriving (Show, Eq, Ord, Enum)
 
-instance PbSerializable VesselType where
-    encodePb   = encodePb . fromEnum
+instance PbEncodable VesselType where
+    encodePb = encodePb . fromEnum
+
+instance PbDecodable VesselType where
     decodePb b = toEnum <$> decodePb b
 
 instance KRPCResponseExtractable VesselType
@@ -2689,8 +2805,10 @@ data WarpMode
     | WarpMode'None
     deriving (Show, Eq, Ord, Enum)
 
-instance PbSerializable WarpMode where
-    encodePb   = encodePb . fromEnum
+instance PbEncodable WarpMode where
+    encodePb = encodePb . fromEnum
+
+instance PbDecodable WarpMode where
     decodePb b = toEnum <$> decodePb b
 
 instance KRPCResponseExtractable WarpMode

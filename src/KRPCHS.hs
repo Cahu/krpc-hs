@@ -55,8 +55,6 @@ import Control.Monad.Catch
 import Control.Monad.Reader
 
 import Data.Maybe
-
-import qualified Data.Map as M
 import qualified Data.ByteString.Lazy.Char8 as BS
 
 
@@ -125,44 +123,6 @@ runRPCProg :: RPCClient -> RPCContext a -> IO a
 runRPCProg client ctx = runReaderT (runRPCContext ctx) client
 
 
--- | @'getStreamMessage' client@ extracts the next 'KRPCStreamMsg' received by
--- the provided 'StreamClient'.
-getStreamMessage :: StreamClient -> RPCContext KRPCStreamMsg
-getStreamMessage client = getStreamMessageIO client >>= either throwM return
-
-
--- | A generalized version of 'getStreamMessage' to be used in any 'MonadIO'.
-getStreamMessageIO :: MonadIO m => StreamClient -> m (Either ProtocolError KRPCStreamMsg)
-getStreamMessageIO StreamClient{..} = (fmap unpackStreamMsg) <$> liftIO (recvMsg streamSocket)
-  where
-    unpackStreamMsg res = KRPCStreamMsg $ M.fromList (extractStreamMessage res)
-
-
--- | @'messageResultsCount' m@ returns the number of messages contained in the
--- 'KRPCStreamMsg' m.
-messageResultsCount :: KRPCStreamMsg -> Int
-messageResultsCount = M.size . streamMsg
-
-
--- | @'messageHasResultFor' s m@ returns true if the @KRPCStreamMsg@ contains a
--- result for the 'KRPCStream' @s@. It is then safe to call @'getStreamResult'
--- s m@.
-messageHasResultFor :: KRPCStream a -> KRPCStreamMsg -> Bool
-messageHasResultFor KRPCStream{..} KRPCStreamMsg{..} =
-    M.member streamId streamMsg
-
-
--- | @'getStreamResult' s m@ extracts the result of a 'KRPCStream' @s@ from the
--- 'KRPCStreamMsg' @m@. If no such result exist, an exception is thrown. You
--- can check whether it is safe to call this function wiht
--- ''messageHasResultFor'.
-getStreamResult :: (KRPCResponseExtractable a) => KRPCStream a -> KRPCStreamMsg -> RPCContext a
-getStreamResult KRPCStream{..} KRPCStreamMsg{..} =
-    maybe (throwM NoSuchStream)
-          (processResult)
-          (M.lookup streamId streamMsg)
-
-
 -- | Requests the creation of a new 'KRPCStream' using the provided 'KRPCStreamReq'.
 addStream :: (KRPCResponseExtractable a) => KRPCStreamReq a -> RPCContext (KRPCStream a)
 addStream = requestStream
@@ -170,9 +130,7 @@ addStream = requestStream
 
 -- | Requests the removal of a stream.
 removeStream :: KRPCStream a -> RPCContext ()
-removeStream KRPCStream{..} = do
-    resp <- sendRequest (makeRequest "KRPC" "RemoveStream" [ makeArgument 0 streamId ])
-    processResponse resp
+removeStream = requestRemoveStream
 
 
 -- | @'withStream' r f@ requests the creation of a new stream using the

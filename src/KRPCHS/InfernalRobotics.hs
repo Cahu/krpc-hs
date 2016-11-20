@@ -112,6 +112,8 @@ import qualified Data.Text
 import qualified KRPCHS.SpaceCenter
 
 import KRPCHS.Internal.Requests
+import KRPCHS.Internal.Requests.Call
+import KRPCHS.Internal.Requests.Stream
 import KRPCHS.Internal.SerializeUtils
 
 
@@ -124,8 +126,10 @@ or <see cref="M:InfernalRobotics.ServoWithName" />.
 newtype Servo = Servo { servoId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Servo where
-    encodePb   = encodePb . servoId
+instance PbEncodable Servo where
+    encodePb = encodePb . servoId
+
+instance PbDecodable Servo where
     decodePb b = Servo <$> decodePb b
 
 instance KRPCResponseExtractable Servo
@@ -138,8 +142,10 @@ in the InfernalRobotics UI.
 newtype ServoGroup = ServoGroup { servoGroupId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable ServoGroup where
-    encodePb   = encodePb . servoGroupId
+instance PbEncodable ServoGroup where
+    encodePb = encodePb . servoGroupId
+
+instance PbDecodable ServoGroup where
     decodePb b = ServoGroup <$> decodePb b
 
 instance KRPCResponseExtractable ServoGroup

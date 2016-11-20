@@ -66,6 +66,8 @@ import qualified Data.Text
 import qualified KRPCHS.SpaceCenter
 
 import KRPCHS.Internal.Requests
+import KRPCHS.Internal.Requests.Call
+import KRPCHS.Internal.Requests.Stream
 import KRPCHS.Internal.SerializeUtils
 
 
@@ -75,8 +77,10 @@ A RemoteTech antenna. Obtained by calling <see cref="M:RemoteTech.Comms.Antennas
 newtype Antenna = Antenna { antennaId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Antenna where
-    encodePb   = encodePb . antennaId
+instance PbEncodable Antenna where
+    encodePb = encodePb . antennaId
+
+instance PbDecodable Antenna where
     decodePb b = Antenna <$> decodePb b
 
 instance KRPCResponseExtractable Antenna
@@ -87,8 +91,10 @@ Communications for a vessel.
 newtype Comms = Comms { commsId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Comms where
-    encodePb   = encodePb . commsId
+instance PbEncodable Comms where
+    encodePb = encodePb . commsId
+
+instance PbDecodable Comms where
     decodePb b = Comms <$> decodePb b
 
 instance KRPCResponseExtractable Comms
@@ -106,8 +112,10 @@ data Target
     | Target'None
     deriving (Show, Eq, Ord, Enum)
 
-instance PbSerializable Target where
-    encodePb   = encodePb . fromEnum
+instance PbEncodable Target where
+    encodePb = encodePb . fromEnum
+
+instance PbDecodable Target where
     decodePb b = toEnum <$> decodePb b
 
 instance KRPCResponseExtractable Target

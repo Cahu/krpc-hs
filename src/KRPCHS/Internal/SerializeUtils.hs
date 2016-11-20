@@ -1,9 +1,8 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 
 module KRPCHS.Internal.SerializeUtils
-( PbSerializable
-, decodePb
-, encodePb
+( PbEncodable(..)
+, PbDecodable(..)
 , messagePut
 , messageGet
 
@@ -11,12 +10,14 @@ module KRPCHS.Internal.SerializeUtils
 , packUtf8String
 , unpackUtf8String
 
+, KRPCResponseExtractable(..)
 ) where
 
 
 import Data.Int
 import Data.Word
 import qualified Data.Text as T
+import qualified Data.ByteString.Lazy as BL
 
 import qualified Data.Foldable
 import qualified Data.Sequence as Seq
@@ -30,6 +31,7 @@ import qualified Text.ProtocolBuffers.Basic       as B
 import qualified Text.ProtocolBuffers.WireMessage as W
 
 import qualified PB.KRPC.Stream          as KStr
+import qualified PB.KRPC.ProcedureResult as KPRes
 import qualified PB.KRPC.List            as KList
 import qualified PB.KRPC.Tuple           as KTuple
 import qualified PB.KRPC.Dictionary      as KDict
@@ -92,76 +94,94 @@ decodePb_ pbType bytes =
         G.Failed   _ s   -> Left $ DecodeFailure s
         _                -> Left $ DecodeFailure "partial"
 
-
-class PbSerializable a where
+class PbDecodable a where
     decodePb :: B.ByteString -> Either ProtocolError a
+
+class PbEncodable a where
     encodePb :: a -> B.ByteString
 
 
-instance PbSerializable () where
-    decodePb _ = Right ()
-    encodePb _ = undefined
+instance PbDecodable () where decodePb _ = Right ()
+instance PbEncodable () where encodePb _ = BL.empty
 
 
-instance PbSerializable KStr.Stream where
-    decodePb = messageGet
-    encodePb = messagePut
+instance PbDecodable KStr.Stream where decodePb = messageGet
+instance PbEncodable KStr.Stream where encodePb = messagePut
 
 
-instance PbSerializable Double where
+instance PbDecodable Double where
     decodePb bytes = realToFrac <$> (decodePb_ 1 bytes :: Either ProtocolError B.Double)
-    encodePb f     = W.runPut (W.wirePut 1 (realToFrac f :: B.Double))
+
+instance PbEncodable Double where
+    encodePb f = W.runPut (W.wirePut 1 (realToFrac f :: B.Double))
 
 
-instance PbSerializable Float where
+instance PbDecodable Float where
     decodePb bytes = realToFrac <$> (decodePb_ 2 bytes :: Either ProtocolError B.Float)
-    encodePb f     = W.runPut (W.wirePut 2 (realToFrac f :: B.Float))
+
+instance PbEncodable Float where
+    encodePb f = W.runPut (W.wirePut 2 (realToFrac f :: B.Float))
 
 
-instance PbSerializable Int where
+instance PbDecodable Int where
     decodePb bytes = fromIntegral <$> (decodePb_ 4 bytes :: Either ProtocolError B.Word64)
-    encodePb i     = W.runPut (W.wirePut 4 (fromIntegral i :: B.Word64))
+
+instance PbEncodable Int where
+    encodePb i = W.runPut (W.wirePut 4 (fromIntegral i :: B.Word64))
 
 
-instance PbSerializable Int32 where
+instance PbDecodable Int32 where
     decodePb bytes = fromIntegral <$> (decodePb_ 5 bytes :: Either ProtocolError B.Int32)
-    encodePb i     = W.runPut (W.wirePut 5 (fromIntegral i :: B.Int32))
+
+instance PbEncodable Int32 where
+    encodePb i = W.runPut (W.wirePut 5 (fromIntegral i :: B.Int32))
 
 
-instance PbSerializable Int64 where
+instance PbDecodable Int64 where
     decodePb bytes = fromIntegral <$> (decodePb_ 3 bytes :: Either ProtocolError B.Int64)
-    encodePb i     = W.runPut (W.wirePut 3 (fromIntegral i :: B.Int64))
+
+instance PbEncodable Int64 where
+    encodePb i = W.runPut (W.wirePut 3 (fromIntegral i :: B.Int64))
 
 
-instance PbSerializable Word32 where
+instance PbDecodable Word32 where
     decodePb bytes = fromIntegral <$> (decodePb_ 13 bytes :: Either ProtocolError B.Word32)
-    encodePb i     = W.runPut (W.wirePut 13 (fromIntegral i :: B.Word32))
+
+instance PbEncodable Word32 where
+    encodePb i = W.runPut (W.wirePut 13 (fromIntegral i :: B.Word32))
 
 
-instance PbSerializable Word64 where
+instance PbDecodable Word64 where
     decodePb bytes = fromIntegral <$> (decodePb_ 4 bytes :: Either ProtocolError B.Word64)
-    encodePb i     = W.runPut (W.wirePut 4 (fromIntegral i :: B.Word64))
+
+instance PbEncodable Word64 where
+    encodePb i = W.runPut (W.wirePut 4 (fromIntegral i :: B.Word64))
 
 
-instance PbSerializable Bool where
-    decodePb   = decodePb_ 8
+instance PbDecodable Bool where
+    decodePb = decodePb_ 8
+
+instance PbEncodable Bool where
     encodePb b = W.runPut (W.wirePut 8 b)
 
 
-instance PbSerializable T.Text where
+instance PbDecodable T.Text where
     decodePb bytes = (T.pack . unpackUtf8String) <$> (decodePb_ 9 bytes :: Either ProtocolError B.Utf8)
-    encodePb t     = W.runPut (W.wirePut 9 (packUtf8String $ T.unpack t))
+
+instance PbEncodable T.Text where
+    encodePb t = W.runPut (W.wirePut 9 (packUtf8String $ T.unpack t))
 
 
-instance (PbSerializable a) => PbSerializable [a] where
+instance (PbEncodable a) => PbEncodable [a] where
     encodePb = messagePut . KList.List . Seq.fromList . map encodePb
+
+instance (PbDecodable a) => PbDecodable [a] where
     decodePb bytes = do
         l <- messageGet bytes
         mapM decodePb $ Data.Foldable.toList (KList.items l)
 
 
-instance (Ord k, PbSerializable k, PbSerializable v) => PbSerializable (M.Map k v) where
-    encodePb = undefined
+instance (Ord k, PbDecodable k, PbDecodable v) => PbDecodable (M.Map k v) where
     decodePb bytes = do
         m <- messageGet bytes
         M.fromList <$> mapM extractKeyVal (Data.Foldable.toList $ KDict.entries m)
@@ -172,7 +192,7 @@ instance (Ord k, PbSerializable k, PbSerializable v) => PbSerializable (M.Map k 
                 return (k, v)
 
 
-instance (PbSerializable a, PbSerializable b) => PbSerializable (a, b) where
+instance (PbEncodable a, PbEncodable b) => PbEncodable (a, b) where
     encodePb (a, b) =
         let a' = encodePb a
             b' = encodePb b
@@ -180,6 +200,7 @@ instance (PbSerializable a, PbSerializable b) => PbSerializable (a, b) where
         in
             messagePut tuple
 
+instance (PbDecodable a, PbDecodable b) => PbDecodable (a, b) where
     decodePb bytes = do
         s <- messageGet bytes
         let (a:b:_) = Data.Foldable.toList $ KTuple.items s
@@ -188,7 +209,7 @@ instance (PbSerializable a, PbSerializable b) => PbSerializable (a, b) where
         return (a', b')
 
 
-instance (PbSerializable a, PbSerializable b, PbSerializable c) => PbSerializable (a, b, c) where
+instance (PbEncodable a, PbEncodable b, PbEncodable c) => PbEncodable (a, b, c) where
     encodePb (a, b, c) =
         let a' = encodePb a
             b' = encodePb b
@@ -197,6 +218,7 @@ instance (PbSerializable a, PbSerializable b, PbSerializable c) => PbSerializabl
         in
             messagePut tuple
 
+instance (PbDecodable a, PbDecodable b, PbDecodable c) => PbDecodable (a, b, c) where
     decodePb bytes = do
         s <- messageGet bytes
         let (a:b:c:_) = Data.Foldable.toList $ KTuple.items s
@@ -206,7 +228,7 @@ instance (PbSerializable a, PbSerializable b, PbSerializable c) => PbSerializabl
         return (a', b', c')
 
 
-instance (PbSerializable a, PbSerializable b, PbSerializable c, PbSerializable d) => PbSerializable (a, b, c, d) where
+instance (PbEncodable a, PbEncodable b, PbEncodable c, PbEncodable d) => PbEncodable (a, b, c, d) where
     encodePb (a, b, c, d) = 
         let a' = encodePb a
             b' = encodePb b
@@ -216,6 +238,7 @@ instance (PbSerializable a, PbSerializable b, PbSerializable c, PbSerializable d
         in
             messagePut tuple
 
+instance (PbDecodable a, PbDecodable b, PbDecodable c, PbDecodable d) => PbDecodable (a, b, c, d) where
     decodePb bytes = do
         s <- messageGet bytes
         let (a:b:c:d:_) = Data.Foldable.toList $ KTuple.items s
@@ -224,3 +247,55 @@ instance (PbSerializable a, PbSerializable b, PbSerializable c, PbSerializable d
         c' <- decodePb c
         d' <- decodePb d
         return (a', b', c', d')
+
+
+checkProcedureResultError :: KPRes.ProcedureResult -> Either ProtocolError ()
+checkProcedureResultError r = case (KPRes.error r) of
+    Just err -> Left $ KRPCError (P.toString err)
+    Nothing  -> return ()
+
+
+-- | Class of things that can be deserialized from the body of a
+-- ProcedureResult message.
+class (PbDecodable a) => KRPCResponseExtractable a where
+    extract :: KPRes.ProcedureResult -> Either ProtocolError a
+    extract r = do
+        checkProcedureResultError r
+        maybe (Left ResponseEmpty) (decodePb) (KPRes.value r)
+
+
+instance KRPCResponseExtractable Bool
+instance KRPCResponseExtractable Float
+instance KRPCResponseExtractable Double
+instance KRPCResponseExtractable Int
+instance KRPCResponseExtractable Int32
+instance KRPCResponseExtractable Int64
+instance KRPCResponseExtractable Word32
+instance KRPCResponseExtractable Word64
+instance KRPCResponseExtractable T.Text
+instance (PbDecodable a, PbDecodable b)                               => KRPCResponseExtractable (a, b)
+instance (PbDecodable a, PbDecodable b, PbDecodable c)                => KRPCResponseExtractable (a, b, c)
+instance (PbDecodable a, PbDecodable b, PbDecodable c, PbDecodable d) => KRPCResponseExtractable (a, b, c, d)
+
+-- as of krpc 0.4, stream ids are encapsulated in a message
+instance KRPCResponseExtractable KStr.Stream
+
+
+instance KRPCResponseExtractable () where
+    extract = checkProcedureResultError
+
+
+instance (PbDecodable a) => KRPCResponseExtractable [a] where
+    extract r = do
+        checkProcedureResultError r
+        case (KPRes.value r) of
+            Nothing    -> Right []
+            Just bytes -> decodePb bytes
+
+
+instance (Ord k, PbDecodable k, PbDecodable v) => KRPCResponseExtractable (M.Map k v) where
+    extract r = do
+        checkProcedureResultError r
+        case (KPRes.value r) of
+            Nothing    -> Right M.empty
+            Just bytes -> decodePb bytes

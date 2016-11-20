@@ -137,6 +137,8 @@ import qualified KRPCHS.SpaceCenter
 import qualified KRPCHS.UI
 
 import KRPCHS.Internal.Requests
+import KRPCHS.Internal.Requests.Call
+import KRPCHS.Internal.Requests.Stream
 import KRPCHS.Internal.SerializeUtils
 
 
@@ -146,8 +148,10 @@ A line. Created using <see cref="M:Drawing.AddLine" />.
 newtype Line = Line { lineId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Line where
-    encodePb   = encodePb . lineId
+instance PbEncodable Line where
+    encodePb = encodePb . lineId
+
+instance PbDecodable Line where
     decodePb b = Line <$> decodePb b
 
 instance KRPCResponseExtractable Line
@@ -158,8 +162,10 @@ A polygon. Created using <see cref="M:Drawing.AddPolygon" />.
 newtype Polygon = Polygon { polygonId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Polygon where
-    encodePb   = encodePb . polygonId
+instance PbEncodable Polygon where
+    encodePb = encodePb . polygonId
+
+instance PbDecodable Polygon where
     decodePb b = Polygon <$> decodePb b
 
 instance KRPCResponseExtractable Polygon
@@ -170,8 +176,10 @@ Text. Created using <see cref="M:Drawing.AddText" />.
 newtype Text = Text { textId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Text where
-    encodePb   = encodePb . textId
+instance PbEncodable Text where
+    encodePb = encodePb . textId
+
+instance PbDecodable Text where
     decodePb b = Text <$> decodePb b
 
 instance KRPCResponseExtractable Text

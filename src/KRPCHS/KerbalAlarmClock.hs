@@ -70,6 +70,8 @@ import qualified Data.Text
 import qualified KRPCHS.SpaceCenter
 
 import KRPCHS.Internal.Requests
+import KRPCHS.Internal.Requests.Call
+import KRPCHS.Internal.Requests.Stream
 import KRPCHS.Internal.SerializeUtils
 
 
@@ -82,8 +84,10 @@ Represents an alarm. Obtained by calling
 newtype Alarm = Alarm { alarmId :: Int }
     deriving (Show, Eq, Ord)
 
-instance PbSerializable Alarm where
-    encodePb   = encodePb . alarmId
+instance PbEncodable Alarm where
+    encodePb = encodePb . alarmId
+
+instance PbDecodable Alarm where
     decodePb b = Alarm <$> decodePb b
 
 instance KRPCResponseExtractable Alarm
@@ -101,8 +105,10 @@ data AlarmAction
     | AlarmAction'PauseGame
     deriving (Show, Eq, Ord, Enum)
 
-instance PbSerializable AlarmAction where
-    encodePb   = encodePb . fromEnum
+instance PbEncodable AlarmAction where
+    encodePb = encodePb . fromEnum
+
+instance PbDecodable AlarmAction where
     decodePb b = toEnum <$> decodePb b
 
 instance KRPCResponseExtractable AlarmAction
@@ -131,8 +137,10 @@ data AlarmType
     | AlarmType'ContractAuto
     deriving (Show, Eq, Ord, Enum)
 
-instance PbSerializable AlarmType where
-    encodePb   = encodePb . fromEnum
+instance PbEncodable AlarmType where
+    encodePb = encodePb . fromEnum
+
+instance PbDecodable AlarmType where
     decodePb b = toEnum <$> decodePb b
 
 instance KRPCResponseExtractable AlarmType
