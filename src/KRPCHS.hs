@@ -13,6 +13,10 @@ module KRPCHS
 , runRPCProg
 
 -- * Batches
+, KRPCCallHandle
+, KRPCCallBatch
+, KRPCCallBatchReply
+, KRPCCallBatchBuilder
 , emptyBatch
 , rpcCall
 , buildBatch

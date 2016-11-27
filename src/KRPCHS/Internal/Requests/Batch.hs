@@ -1,9 +1,10 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
 module KRPCHS.Internal.Requests.Batch
-( KRPCCallBatch(..)
+( KRPCCallHandle(..)
+, KRPCCallBatch(..)
 , KRPCCallBatchReply(..)
-, KRPCCall(..)
+, KRPCCallBatchBuilder(..)
 , emptyBatch
 , rpcCall
 , buildBatch
@@ -30,7 +31,7 @@ newtype KRPCCallBatch = KRPCCallBatch { batch :: KReq.Request }
     deriving (Show)
 
 -- | A handle to retrieve a result from an RPC batch.
-newtype KRPCCall a = KRPCCall { batchId :: Int }
+newtype KRPCCallHandle a = KRPCCallHandle { batchId :: Int }
     deriving (Show)
 
 -- | Reply to a batch of requests from the RPC server.
@@ -42,12 +43,12 @@ newtype KRPCCallBatchBuilder a = KRPCCallBatchBuilder { batchBuilder :: State KR
     deriving (Functor, Applicative, Monad, MonadState KRPCCallBatch)
 
 
--- | Same as 'batchAddCall' but for use in a KRPCCallBatchBuilder.
-rpcCall :: KRPCCallReq a -> KRPCCallBatchBuilder (KRPCCall a)
+-- | Same as 'batchAddCall' but for use in a 'KRPCCallBatchBuilder'.
+rpcCall :: KRPCCallReq a -> KRPCCallBatchBuilder (KRPCCallHandle a)
 rpcCall r = state (batchAddCall r)
 
 
--- | Makes a batch using the given KRPCCallBatchBuilder.
+-- | Makes a batch using the given 'KRPCCallBatchBuilder'.
 buildBatch :: KRPCCallBatchBuilder a -> KRPCCallBatch -> (a, KRPCCallBatch)
 buildBatch = runState . batchBuilder
 
@@ -60,16 +61,17 @@ unpackBatchReply :: KRes.Response -> KRPCCallBatchReply
 unpackBatchReply r = KRPCCallBatchReply $ KRes.results r
 
 
-batchAddCall :: KRPCCallReq a -> KRPCCallBatch -> (KRPCCall a, KRPCCallBatch)
+-- | Append a request to the given batch.
+batchAddCall :: KRPCCallReq a -> KRPCCallBatch -> (KRPCCallHandle a, KRPCCallBatch)
 batchAddCall (KRPCCallReq call) (KRPCCallBatch req) = (h, b)
   where
     b = KRPCCallBatch $ KReq.Request $ s |> call
-    h = KRPCCall $ Seq.length s
+    h = KRPCCallHandle $ Seq.length s
     s = KReq.calls req
 
 
-batchLookupResult :: KRPCCall a -> KRPCCallBatchReply -> Maybe KPRes.ProcedureResult
-batchLookupResult (KRPCCall i) (KRPCCallBatchReply r)
+batchLookupResult :: KRPCCallHandle a -> KRPCCallBatchReply -> Maybe KPRes.ProcedureResult
+batchLookupResult (KRPCCallHandle i) (KRPCCallBatchReply r)
 -- = Seq.lookup i r (available in later versions of 'containers')
     | i >= 0 && i < Seq.length r = Just $ r `Seq.index` i
     | otherwise                  = Nothing

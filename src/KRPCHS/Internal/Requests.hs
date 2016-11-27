@@ -18,6 +18,10 @@ module KRPCHS.Internal.Requests
 , getStreamResult
 
 -- re-export from Requests.Batch
+, KRPCCallHandle
+, KRPCCallBatch
+, KRPCCallBatchReply
+, KRPCCallBatchBuilder
 , emptyBatch
 , rpcCall
 , buildBatch
@@ -84,7 +88,7 @@ performBatchRequest (KRPCCallBatch req) = do
 
 
 -- | Retrieve the result of a procedure call from the reply of a batch request.
-batchGetResult :: (KRPCResponseExtractable a) => KRPCCall a -> KRPCCallBatchReply -> RPCContext a
+batchGetResult :: (KRPCResponseExtractable a) => KRPCCallHandle a -> KRPCCallBatchReply -> RPCContext a
 batchGetResult c r = case batchLookupResult c r of
     Nothing  -> throwM NotInBatch
     Just res -> processProcedureResult res
