@@ -1,5 +1,3 @@
-{-# LANGUAGE ExistentialQuantification #-}
-
 module KRPCHS.Internal.Requests.Batch
 ( KRPCCallBatch(..)
 , KRPCCallBatchReply(..)
