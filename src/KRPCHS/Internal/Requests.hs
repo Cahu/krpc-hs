@@ -12,12 +12,19 @@ module KRPCHS.Internal.Requests
 , getStreamMessage
 , getStreamMessageIO
 
--- re-export from Requests.Stream
+-- Streams
 , messageHasResultFor
 , messageResultsCount
 , getStreamResult
 
-, sendRequest
+-- re-export from Requests.Batch
+, emptyBatch
+, rpcCall
+, buildBatch
+, batchAddCall
+, batchGetResult
+
+, performBatchRequest
 , simpleRequest
 , simpleCallRequest
 , requestAddStream
@@ -61,8 +68,11 @@ processProcedureResult :: (KRPCResponseExtractable a) => KPRes.ProcedureResult -
 processProcedureResult res = either (throwM) (return) (extract res)
 
 
-sendRequest :: KRPCCallBatch -> RPCContext KRPCCallBatchReply
-sendRequest (KRPCCallBatch req) = do
+-- | Performs a batch request and returns the server's reply as a
+-- 'KRPCCallBatchReply'. The reply may be exploited with handles created when
+-- building the batch using 'batchGetResult'.
+performBatchRequest :: KRPCCallBatch -> RPCContext KRPCCallBatchReply
+performBatchRequest (KRPCCallBatch req) = do
     sock <- asks rpcSocket
     liftIO $ sendMsg sock req
     msg <- liftIO $ recvMsg sock
@@ -73,14 +83,16 @@ sendRequest (KRPCCallBatch req) = do
             Nothing   -> return (unpackBatchReply m)
 
 
+-- | Retrieve the result of a procedure call from the reply of a batch request.
+batchGetResult :: (KRPCResponseExtractable a) => KRPCCall a -> KRPCCallBatchReply -> RPCContext a
+batchGetResult c r = case batchLookupResult c r of
+    Nothing  -> throwM NotInBatch
+    Just res -> processProcedureResult res
+
+
 simpleRequest :: (KRPCResponseExtractable a) => KRPCCallReq a -> RPCContext a
-simpleRequest c = do
-    reply <- sendRequest b
-    case batchLookupResult hdl reply of
-        Nothing -> throwM ResponseEmpty
-        Just r  -> processProcedureResult r
-  where
-    (hdl, b) = batchAddCall c emptyBatch
+simpleRequest c = performBatchRequest b >>= batchGetResult hdl
+  where (hdl, b) = batchAddCall c emptyBatch
 
 
 simpleCallRequest :: (KRPCResponseExtractable a) => String -> String -> [KArg.Argument] -> RPCContext a

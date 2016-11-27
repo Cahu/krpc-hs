@@ -12,6 +12,14 @@ module KRPCHS
 , RPCContext
 , runRPCProg
 
+-- * Batches
+, emptyBatch
+, rpcCall
+, buildBatch
+, batchAddCall
+, batchGetResult
+, performBatchRequest
+
 -- * Streams
 , KRPCStream
 , KRPCStreamReq

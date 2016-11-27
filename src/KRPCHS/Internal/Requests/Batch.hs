@@ -1,8 +1,12 @@
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+
 module KRPCHS.Internal.Requests.Batch
 ( KRPCCallBatch(..)
 , KRPCCallBatchReply(..)
 , KRPCCall(..)
 , emptyBatch
+, rpcCall
+, buildBatch
 , batchAddCall
 , batchLookupResult
 , unpackBatchReply
@@ -18,18 +22,34 @@ import qualified PB.KRPC.ProcedureResult as KPRes
 import Data.Sequence (Seq, (|>))
 import qualified Data.Sequence as Seq
 
+import Control.Monad.State
+
 
 -- | A batch of prepared RPC calls.
 newtype KRPCCallBatch = KRPCCallBatch { batch :: KReq.Request }
     deriving (Show)
 
--- | A handle to retrieve a result from an RPC batch
+-- | A handle to retrieve a result from an RPC batch.
 newtype KRPCCall a = KRPCCall { batchId :: Int }
     deriving (Show)
 
 -- | Reply to a batch of requests from the RPC server.
 newtype KRPCCallBatchReply = KRPCCallBatchReply { batchReply :: Seq KPRes.ProcedureResult }
     deriving (Show)
+
+-- | A state monad to simplify RPC batch building.
+newtype KRPCCallBatchBuilder a = KRPCCallBatchBuilder { batchBuilder :: State KRPCCallBatch a }
+    deriving (Functor, Applicative, Monad, MonadState KRPCCallBatch)
+
+
+-- | Same as 'batchAddCall' but for use in a KRPCCallBatchBuilder.
+rpcCall :: KRPCCallReq a -> KRPCCallBatchBuilder (KRPCCall a)
+rpcCall r = state (batchAddCall r)
+
+
+-- | Makes a batch using the given KRPCCallBatchBuilder.
+buildBatch :: KRPCCallBatchBuilder a -> KRPCCallBatch -> (a, KRPCCallBatch)
+buildBatch = runState . batchBuilder
 
 
 emptyBatch :: KRPCCallBatch
