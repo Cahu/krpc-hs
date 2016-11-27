@@ -125,7 +125,7 @@ runRPCProg client ctx = runReaderT (runRPCContext ctx) client
 
 -- | Requests the creation of a new 'KRPCStream' using the provided 'KRPCStreamReq'.
 addStream :: (KRPCResponseExtractable a) => KRPCStreamReq a -> RPCContext (KRPCStream a)
-addStream = requestStream
+addStream = requestAddStream
 
 
 -- | Requests the removal of a stream.

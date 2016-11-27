@@ -83,6 +83,7 @@ while (my ($serviceName, $def) = each %$json)
 
 		push @procs, $proc;
 		push @exports, $proc->{name};
+		push @exports, $proc->{name} . 'Req';
 		push @exports, $proc->{name} . 'Stream'    if ($proc->{ret});
 		push @exports, $proc->{name} . 'StreamReq' if ($proc->{ret});
 
@@ -327,14 +328,18 @@ instance KRPCResponseExtractable [% enum.name %]
 [% proc.doc.replace('{-', '{ -') %]
  -}
 [%- IF types.size > 0 %]
+[% proc.name _ 'Req' %] :: [% types.join(' -> ') %] -> KRPCCallReq ([% proc.ret %])
+[%- ELSE %]
+[% proc.name _ 'Req' %] :: KRPCCallReq ([% proc.ret %])
+[%- END %]
+[% proc.name _ 'Req' %] [% names.join(' ') %] = makeCallReq "[% serviceName %]" "[% proc.rpcname %]" [[% args.join(', ') %]]
+
+[%- IF types.size > 0 %]
 [% proc.name %] :: [% types.join(' -> ') %] -> RPCContext ([% proc.ret %])
 [%- ELSE %]
 [% proc.name %] :: RPCContext ([% proc.ret %])
 [%- END %]
-[% proc.name %] [% names.join(' ') %] = do
-    let r = makeRequest "[% serviceName %]" "[% proc.rpcname %]" [[% args.join(', ') %]]
-    res <- sendRequest r
-    processResponse res
+[% proc.name %] [% names.join(' ') %] = simpleRequest $ [% proc.name _ 'Req' %] [% names.join(' ') %]
 [%- IF proc.ret %]
 
 [%- IF types.size > 0 %]
@@ -342,16 +347,14 @@ instance KRPCResponseExtractable [% enum.name %]
 [%- ELSE %]
 [% proc.name _ 'StreamReq' %] :: KRPCStreamReq ([% proc.ret %])
 [%- END %]
-[% proc.name _ 'StreamReq' %] [% names.join(' ') %] =
-    let req = makeCallRequest "[% serviceName %]" "[% proc.rpcname %]" [[% args.join(', ') %]]
-    in  makeStream req
+[% proc.name _ 'StreamReq' %] [% names.join(' ') %] = makeStreamReq $ [% proc.name _ 'Req' %] [% names.join(' ') %]
 
 [%- IF types.size > 0 %]
 [% proc.name _ 'Stream' %] :: [% types.join(' -> ') %] -> RPCContext (KRPCStream ([% proc.ret %]))
 [%- ELSE %]
 [% proc.name _ 'Stream' %] :: RPCContext (KRPCStream ([% proc.ret %]))
 [%- END %]
-[% proc.name _ 'Stream' %] [% names.join(' ') %] = requestStream $ [% proc.name _ 'StreamReq' %] [% names.join(' ') %]
+[% proc.name _ 'Stream' %] [% names.join(' ') %] = requestAddStream $ [% proc.name _ 'StreamReq' %] [% names.join(' ') %]
 [%- END %] 
 
 [%- END %]

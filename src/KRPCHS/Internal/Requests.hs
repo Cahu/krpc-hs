@@ -17,10 +17,10 @@ module KRPCHS.Internal.Requests
 , messageResultsCount
 , getStreamResult
 
-, processResponse
-, makeRequest
 , sendRequest
-, requestStream
+, simpleRequest
+, simpleCallRequest
+, requestAddStream
 , requestRemoveStream
 ) where
 
@@ -41,12 +41,8 @@ import qualified PB.KRPC.Response        as KRes
 import qualified PB.KRPC.Stream          as KStr
 import qualified PB.KRPC.ProcedureResult as KPRes
 
-import Data.Maybe
-import Data.Sequence (ViewL((:<)))
-import qualified Data.Sequence as Seq
-
+import Data.Maybe (fromJust)
 import qualified Data.ByteString.Lazy  as BS
-import qualified Text.ProtocolBuffers  as P
 
 
 -- | An RPC client bound to a KRPC server.
@@ -65,38 +61,42 @@ processProcedureResult :: (KRPCResponseExtractable a) => KPRes.ProcedureResult -
 processProcedureResult res = either (throwM) (return) (extract res)
 
 
--- TODO: make a unpackBatchReply in Requests.Batch to replace this function
-processResponse :: (KRPCResponseExtractable a) => KRPCCallBatchReply -> RPCContext a
-processResponse (KRPCCallBatchReply r) = case (KRes.error r) of
-    Just err -> throwM $ KRPCError (P.toString err)
-    Nothing  -> let (result :< _) = Seq.viewl (KRes.results r) in processProcedureResult result
-
-
 sendRequest :: KRPCCallBatch -> RPCContext KRPCCallBatchReply
 sendRequest (KRPCCallBatch req) = do
     sock <- asks rpcSocket
     liftIO $ sendMsg sock req
-    msg  <- liftIO $ recvMsg sock
-    either (throwM) (return . KRPCCallBatchReply) msg
+    msg <- liftIO $ recvMsg sock
+    case msg of
+        Left err -> throwM err
+        Right m  -> case (KRes.error m) of
+            Just err' -> throwM $ KRPCError (unpackUtf8String err')
+            Nothing   -> return (unpackBatchReply m)
 
 
-makeRequest :: String -> String -> [KArg.Argument] -> KRPCCallBatch
-makeRequest serviceName procName params = makeBatch [req]
-    where req = makeCallRequest serviceName procName params
+simpleRequest :: (KRPCResponseExtractable a) => KRPCCallReq a -> RPCContext a
+simpleRequest c = do
+    reply <- sendRequest b
+    case batchLookupResult hdl reply of
+        Nothing -> throwM ResponseEmpty
+        Just r  -> processProcedureResult r
+  where
+    (hdl, b) = batchAddCall c emptyBatch
 
 
-requestStream :: KRPCResponseExtractable a => KRPCStreamReq a -> RPCContext (KRPCStream a)
-requestStream strReq = do
-    res <- sendRequest (makeBatch [streamCall strReq])
-    str <- processResponse res
-    let sid = fromJust (KStr.id str)
+simpleCallRequest :: (KRPCResponseExtractable a) => String -> String -> [KArg.Argument] -> RPCContext a
+simpleCallRequest service procedure args = simpleRequest (makeCallReq service procedure args)
+
+
+requestAddStream :: KRPCResponseExtractable a => KRPCStreamReq a -> RPCContext (KRPCStream a)
+requestAddStream strReq = do
+    res <- simpleRequest (streamCall strReq)
+    let sid = fromJust (KStr.id res)
     return (KRPCStream sid)
 
 
 requestRemoveStream :: KRPCStream a -> RPCContext ()
-requestRemoveStream str = do
-    resp <- sendRequest (makeRequest "KRPC" "RemoveStream" [ makeArgument 0 (streamId str) ])
-    processResponse resp
+requestRemoveStream str = simpleCallRequest "KRPC" "RemoveStream" args
+  where args = [ makeArgument 0 (streamId str) ]
 
 
 -- | @'getStreamMessage' client@ extracts the next 'KRPCStreamMsg' received by

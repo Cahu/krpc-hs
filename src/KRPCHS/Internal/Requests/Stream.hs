@@ -12,7 +12,7 @@ module KRPCHS.Internal.Requests.Stream
 , messageLookupResult
 , messageHasResultFor
 
-, makeStream
+, makeStreamReq
 ) where
 
 import Data.Word
@@ -25,6 +25,7 @@ import KRPCHS.Internal.Requests.Call
 
 import qualified PB.KRPC.Argument        as KArg
 import qualified PB.KRPC.ProcedureResult as KPRes
+import qualified PB.KRPC.Stream          as KStr
 import qualified PB.KRPC.StreamUpdate    as KStreamMsg
 import qualified PB.KRPC.StreamResult    as KStreamRes
 
@@ -37,7 +38,7 @@ newtype KRPCStream a = KRPCStream { streamId :: StreamID }
 
 
 -- | A prepared request for a stream.
-newtype KRPCStreamReq a = KRPCStreamReq { streamCall :: KRPCCallReq a }
+newtype KRPCStreamReq a = KRPCStreamReq { streamCall :: KRPCCallReq KStr.Stream }
     deriving (Show)
 
 
@@ -67,9 +68,9 @@ unpackStreamMsg :: KStreamMsg.StreamUpdate -> KRPCStreamMsg
 unpackStreamMsg res = KRPCStreamMsg $ M.fromList (extractStreamMessage res)
 
 
-makeStream :: KRPCCallReq a -> KRPCStreamReq a
-makeStream (KRPCCallReq r) = KRPCStreamReq $
-    makeCallRequest "KRPC" "AddStream" [KArg.Argument (Just 0) (Just $ messagePut r)]
+makeStreamReq :: KRPCCallReq a -> KRPCStreamReq a
+makeStreamReq (KRPCCallReq r) = KRPCStreamReq $
+    makeCallReq "KRPC" "AddStream" [KArg.Argument (Just 0) (Just $ messagePut r)]
 
 
 -- | @'messageResultsCount' m@ returns the number of messages contained in the

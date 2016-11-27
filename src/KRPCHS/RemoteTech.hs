@@ -3,61 +3,83 @@ module KRPCHS.RemoteTech
 , Antenna
 , Comms
 , antenna
+, antennaReq
 , antennaStream
 , antennaStreamReq
 , getAntennaHasConnection
+, getAntennaHasConnectionReq
 , getAntennaHasConnectionStream
 , getAntennaHasConnectionStreamReq
 , getAntennaPart
+, getAntennaPartReq
 , getAntennaPartStream
 , getAntennaPartStreamReq
 , getAntennaTarget
+, getAntennaTargetReq
 , getAntennaTargetStream
 , getAntennaTargetStreamReq
 , getAntennaTargetBody
+, getAntennaTargetBodyReq
 , getAntennaTargetBodyStream
 , getAntennaTargetBodyStreamReq
 , getAntennaTargetGroundStation
+, getAntennaTargetGroundStationReq
 , getAntennaTargetGroundStationStream
 , getAntennaTargetGroundStationStreamReq
 , getAntennaTargetVessel
+, getAntennaTargetVesselReq
 , getAntennaTargetVesselStream
 , getAntennaTargetVesselStreamReq
 , setAntennaTarget
+, setAntennaTargetReq
 , setAntennaTargetBody
+, setAntennaTargetBodyReq
 , setAntennaTargetGroundStation
+, setAntennaTargetGroundStationReq
 , setAntennaTargetVessel
+, setAntennaTargetVesselReq
 , comms
+, commsReq
 , commsStream
 , commsStreamReq
 , commsSignalDelayToVessel
+, commsSignalDelayToVesselReq
 , commsSignalDelayToVesselStream
 , commsSignalDelayToVesselStreamReq
 , getCommsAntennas
+, getCommsAntennasReq
 , getCommsAntennasStream
 , getCommsAntennasStreamReq
 , getCommsHasConnection
+, getCommsHasConnectionReq
 , getCommsHasConnectionStream
 , getCommsHasConnectionStreamReq
 , getCommsHasConnectionToGroundStation
+, getCommsHasConnectionToGroundStationReq
 , getCommsHasConnectionToGroundStationStream
 , getCommsHasConnectionToGroundStationStreamReq
 , getCommsHasFlightComputer
+, getCommsHasFlightComputerReq
 , getCommsHasFlightComputerStream
 , getCommsHasFlightComputerStreamReq
 , getCommsHasLocalControl
+, getCommsHasLocalControlReq
 , getCommsHasLocalControlStream
 , getCommsHasLocalControlStreamReq
 , getCommsSignalDelay
+, getCommsSignalDelayReq
 , getCommsSignalDelayStream
 , getCommsSignalDelayStreamReq
 , getCommsSignalDelayToGroundStation
+, getCommsSignalDelayToGroundStationReq
 , getCommsSignalDelayToGroundStationStream
 , getCommsSignalDelayToGroundStationStreamReq
 , getCommsVessel
+, getCommsVesselReq
 , getCommsVesselStream
 , getCommsVesselStreamReq
 , getGroundStations
+, getGroundStationsReq
 , getGroundStationsStream
 , getGroundStationsStreamReq
 ) where
@@ -124,53 +146,47 @@ instance KRPCResponseExtractable Target
 {-|
 Get the antenna object for a particular part.
  -}
+antennaReq :: KRPCHS.SpaceCenter.Part -> KRPCCallReq (KRPCHS.RemoteTech.Antenna)
+antennaReq partArg = makeCallReq "RemoteTech" "Antenna" [makeArgument 0 partArg]
+
 antenna :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.RemoteTech.Antenna)
-antenna partArg = do
-    let r = makeRequest "RemoteTech" "Antenna" [makeArgument 0 partArg]
-    res <- sendRequest r
-    processResponse res
+antenna partArg = simpleRequest $ antennaReq partArg
 
 antennaStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (KRPCHS.RemoteTech.Antenna)
-antennaStreamReq partArg =
-    let req = makeCallRequest "RemoteTech" "Antenna" [makeArgument 0 partArg]
-    in  makeStream req
+antennaStreamReq partArg = makeStreamReq $ antennaReq partArg
 
 antennaStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.RemoteTech.Antenna))
-antennaStream partArg = requestStream $ antennaStreamReq partArg 
+antennaStream partArg = requestAddStream $ antennaStreamReq partArg 
 
 {-|
 Whether the antenna has a connection.
  -}
+getAntennaHasConnectionReq :: KRPCHS.RemoteTech.Antenna -> KRPCCallReq (Bool)
+getAntennaHasConnectionReq thisArg = makeCallReq "RemoteTech" "Antenna_get_HasConnection" [makeArgument 0 thisArg]
+
 getAntennaHasConnection :: KRPCHS.RemoteTech.Antenna -> RPCContext (Bool)
-getAntennaHasConnection thisArg = do
-    let r = makeRequest "RemoteTech" "Antenna_get_HasConnection" [makeArgument 0 thisArg]
-    res <- sendRequest r
-    processResponse res
+getAntennaHasConnection thisArg = simpleRequest $ getAntennaHasConnectionReq thisArg
 
 getAntennaHasConnectionStreamReq :: KRPCHS.RemoteTech.Antenna -> KRPCStreamReq (Bool)
-getAntennaHasConnectionStreamReq thisArg =
-    let req = makeCallRequest "RemoteTech" "Antenna_get_HasConnection" [makeArgument 0 thisArg]
-    in  makeStream req
+getAntennaHasConnectionStreamReq thisArg = makeStreamReq $ getAntennaHasConnectionReq thisArg
 
 getAntennaHasConnectionStream :: KRPCHS.RemoteTech.Antenna -> RPCContext (KRPCStream (Bool))
-getAntennaHasConnectionStream thisArg = requestStream $ getAntennaHasConnectionStreamReq thisArg 
+getAntennaHasConnectionStream thisArg = requestAddStream $ getAntennaHasConnectionStreamReq thisArg 
 
 {-|
 Get the part containing this antenna.
  -}
+getAntennaPartReq :: KRPCHS.RemoteTech.Antenna -> KRPCCallReq (KRPCHS.SpaceCenter.Part)
+getAntennaPartReq thisArg = makeCallReq "RemoteTech" "Antenna_get_Part" [makeArgument 0 thisArg]
+
 getAntennaPart :: KRPCHS.RemoteTech.Antenna -> RPCContext (KRPCHS.SpaceCenter.Part)
-getAntennaPart thisArg = do
-    let r = makeRequest "RemoteTech" "Antenna_get_Part" [makeArgument 0 thisArg]
-    res <- sendRequest r
-    processResponse res
+getAntennaPart thisArg = simpleRequest $ getAntennaPartReq thisArg
 
 getAntennaPartStreamReq :: KRPCHS.RemoteTech.Antenna -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
-getAntennaPartStreamReq thisArg =
-    let req = makeCallRequest "RemoteTech" "Antenna_get_Part" [makeArgument 0 thisArg]
-    in  makeStream req
+getAntennaPartStreamReq thisArg = makeStreamReq $ getAntennaPartReq thisArg
 
 getAntennaPartStream :: KRPCHS.RemoteTech.Antenna -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
-getAntennaPartStream thisArg = requestStream $ getAntennaPartStreamReq thisArg 
+getAntennaPartStream thisArg = requestAddStream $ getAntennaPartStreamReq thisArg 
 
 {-|
 The object that the antenna is targetting.
@@ -178,70 +194,62 @@ This property can be used to set the target to <see cref="M:RemoteTech.Target.No
 To set the target to a celestial body, ground station or vessel see <see cref="M:RemoteTech.Antenna.TargetBody" />,
 <see cref="M:RemoteTech.Antenna.TargetGroundStation" /> and <see cref="M:RemoteTech.Antenna.TargetVessel" />.
  -}
+getAntennaTargetReq :: KRPCHS.RemoteTech.Antenna -> KRPCCallReq (KRPCHS.RemoteTech.Target)
+getAntennaTargetReq thisArg = makeCallReq "RemoteTech" "Antenna_get_Target" [makeArgument 0 thisArg]
+
 getAntennaTarget :: KRPCHS.RemoteTech.Antenna -> RPCContext (KRPCHS.RemoteTech.Target)
-getAntennaTarget thisArg = do
-    let r = makeRequest "RemoteTech" "Antenna_get_Target" [makeArgument 0 thisArg]
-    res <- sendRequest r
-    processResponse res
+getAntennaTarget thisArg = simpleRequest $ getAntennaTargetReq thisArg
 
 getAntennaTargetStreamReq :: KRPCHS.RemoteTech.Antenna -> KRPCStreamReq (KRPCHS.RemoteTech.Target)
-getAntennaTargetStreamReq thisArg =
-    let req = makeCallRequest "RemoteTech" "Antenna_get_Target" [makeArgument 0 thisArg]
-    in  makeStream req
+getAntennaTargetStreamReq thisArg = makeStreamReq $ getAntennaTargetReq thisArg
 
 getAntennaTargetStream :: KRPCHS.RemoteTech.Antenna -> RPCContext (KRPCStream (KRPCHS.RemoteTech.Target))
-getAntennaTargetStream thisArg = requestStream $ getAntennaTargetStreamReq thisArg 
+getAntennaTargetStream thisArg = requestAddStream $ getAntennaTargetStreamReq thisArg 
 
 {-|
 The celestial body the antenna is targetting.
  -}
+getAntennaTargetBodyReq :: KRPCHS.RemoteTech.Antenna -> KRPCCallReq (KRPCHS.SpaceCenter.CelestialBody)
+getAntennaTargetBodyReq thisArg = makeCallReq "RemoteTech" "Antenna_get_TargetBody" [makeArgument 0 thisArg]
+
 getAntennaTargetBody :: KRPCHS.RemoteTech.Antenna -> RPCContext (KRPCHS.SpaceCenter.CelestialBody)
-getAntennaTargetBody thisArg = do
-    let r = makeRequest "RemoteTech" "Antenna_get_TargetBody" [makeArgument 0 thisArg]
-    res <- sendRequest r
-    processResponse res
+getAntennaTargetBody thisArg = simpleRequest $ getAntennaTargetBodyReq thisArg
 
 getAntennaTargetBodyStreamReq :: KRPCHS.RemoteTech.Antenna -> KRPCStreamReq (KRPCHS.SpaceCenter.CelestialBody)
-getAntennaTargetBodyStreamReq thisArg =
-    let req = makeCallRequest "RemoteTech" "Antenna_get_TargetBody" [makeArgument 0 thisArg]
-    in  makeStream req
+getAntennaTargetBodyStreamReq thisArg = makeStreamReq $ getAntennaTargetBodyReq thisArg
 
 getAntennaTargetBodyStream :: KRPCHS.RemoteTech.Antenna -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.CelestialBody))
-getAntennaTargetBodyStream thisArg = requestStream $ getAntennaTargetBodyStreamReq thisArg 
+getAntennaTargetBodyStream thisArg = requestAddStream $ getAntennaTargetBodyStreamReq thisArg 
 
 {-|
 The ground station the antenna is targetting.
  -}
+getAntennaTargetGroundStationReq :: KRPCHS.RemoteTech.Antenna -> KRPCCallReq (Data.Text.Text)
+getAntennaTargetGroundStationReq thisArg = makeCallReq "RemoteTech" "Antenna_get_TargetGroundStation" [makeArgument 0 thisArg]
+
 getAntennaTargetGroundStation :: KRPCHS.RemoteTech.Antenna -> RPCContext (Data.Text.Text)
-getAntennaTargetGroundStation thisArg = do
-    let r = makeRequest "RemoteTech" "Antenna_get_TargetGroundStation" [makeArgument 0 thisArg]
-    res <- sendRequest r
-    processResponse res
+getAntennaTargetGroundStation thisArg = simpleRequest $ getAntennaTargetGroundStationReq thisArg
 
 getAntennaTargetGroundStationStreamReq :: KRPCHS.RemoteTech.Antenna -> KRPCStreamReq (Data.Text.Text)
-getAntennaTargetGroundStationStreamReq thisArg =
-    let req = makeCallRequest "RemoteTech" "Antenna_get_TargetGroundStation" [makeArgument 0 thisArg]
-    in  makeStream req
+getAntennaTargetGroundStationStreamReq thisArg = makeStreamReq $ getAntennaTargetGroundStationReq thisArg
 
 getAntennaTargetGroundStationStream :: KRPCHS.RemoteTech.Antenna -> RPCContext (KRPCStream (Data.Text.Text))
-getAntennaTargetGroundStationStream thisArg = requestStream $ getAntennaTargetGroundStationStreamReq thisArg 
+getAntennaTargetGroundStationStream thisArg = requestAddStream $ getAntennaTargetGroundStationStreamReq thisArg 
 
 {-|
 The vessel the antenna is targetting.
  -}
+getAntennaTargetVesselReq :: KRPCHS.RemoteTech.Antenna -> KRPCCallReq (KRPCHS.SpaceCenter.Vessel)
+getAntennaTargetVesselReq thisArg = makeCallReq "RemoteTech" "Antenna_get_TargetVessel" [makeArgument 0 thisArg]
+
 getAntennaTargetVessel :: KRPCHS.RemoteTech.Antenna -> RPCContext (KRPCHS.SpaceCenter.Vessel)
-getAntennaTargetVessel thisArg = do
-    let r = makeRequest "RemoteTech" "Antenna_get_TargetVessel" [makeArgument 0 thisArg]
-    res <- sendRequest r
-    processResponse res
+getAntennaTargetVessel thisArg = simpleRequest $ getAntennaTargetVesselReq thisArg
 
 getAntennaTargetVesselStreamReq :: KRPCHS.RemoteTech.Antenna -> KRPCStreamReq (KRPCHS.SpaceCenter.Vessel)
-getAntennaTargetVesselStreamReq thisArg =
-    let req = makeCallRequest "RemoteTech" "Antenna_get_TargetVessel" [makeArgument 0 thisArg]
-    in  makeStream req
+getAntennaTargetVesselStreamReq thisArg = makeStreamReq $ getAntennaTargetVesselReq thisArg
 
 getAntennaTargetVesselStream :: KRPCHS.RemoteTech.Antenna -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Vessel))
-getAntennaTargetVesselStream thisArg = requestStream $ getAntennaTargetVesselStreamReq thisArg 
+getAntennaTargetVesselStream thisArg = requestAddStream $ getAntennaTargetVesselStreamReq thisArg 
 
 {-|
 The object that the antenna is targetting.
@@ -249,223 +257,201 @@ This property can be used to set the target to <see cref="M:RemoteTech.Target.No
 To set the target to a celestial body, ground station or vessel see <see cref="M:RemoteTech.Antenna.TargetBody" />,
 <see cref="M:RemoteTech.Antenna.TargetGroundStation" /> and <see cref="M:RemoteTech.Antenna.TargetVessel" />.
  -}
+setAntennaTargetReq :: KRPCHS.RemoteTech.Antenna -> KRPCHS.RemoteTech.Target -> KRPCCallReq ()
+setAntennaTargetReq thisArg valueArg = makeCallReq "RemoteTech" "Antenna_set_Target" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+
 setAntennaTarget :: KRPCHS.RemoteTech.Antenna -> KRPCHS.RemoteTech.Target -> RPCContext ()
-setAntennaTarget thisArg valueArg = do
-    let r = makeRequest "RemoteTech" "Antenna_set_Target" [makeArgument 0 thisArg, makeArgument 1 valueArg]
-    res <- sendRequest r
-    processResponse res 
+setAntennaTarget thisArg valueArg = simpleRequest $ setAntennaTargetReq thisArg valueArg 
 
 {-|
 The celestial body the antenna is targetting.
  -}
+setAntennaTargetBodyReq :: KRPCHS.RemoteTech.Antenna -> KRPCHS.SpaceCenter.CelestialBody -> KRPCCallReq ()
+setAntennaTargetBodyReq thisArg valueArg = makeCallReq "RemoteTech" "Antenna_set_TargetBody" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+
 setAntennaTargetBody :: KRPCHS.RemoteTech.Antenna -> KRPCHS.SpaceCenter.CelestialBody -> RPCContext ()
-setAntennaTargetBody thisArg valueArg = do
-    let r = makeRequest "RemoteTech" "Antenna_set_TargetBody" [makeArgument 0 thisArg, makeArgument 1 valueArg]
-    res <- sendRequest r
-    processResponse res 
+setAntennaTargetBody thisArg valueArg = simpleRequest $ setAntennaTargetBodyReq thisArg valueArg 
 
 {-|
 The ground station the antenna is targetting.
  -}
+setAntennaTargetGroundStationReq :: KRPCHS.RemoteTech.Antenna -> Data.Text.Text -> KRPCCallReq ()
+setAntennaTargetGroundStationReq thisArg valueArg = makeCallReq "RemoteTech" "Antenna_set_TargetGroundStation" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+
 setAntennaTargetGroundStation :: KRPCHS.RemoteTech.Antenna -> Data.Text.Text -> RPCContext ()
-setAntennaTargetGroundStation thisArg valueArg = do
-    let r = makeRequest "RemoteTech" "Antenna_set_TargetGroundStation" [makeArgument 0 thisArg, makeArgument 1 valueArg]
-    res <- sendRequest r
-    processResponse res 
+setAntennaTargetGroundStation thisArg valueArg = simpleRequest $ setAntennaTargetGroundStationReq thisArg valueArg 
 
 {-|
 The vessel the antenna is targetting.
  -}
+setAntennaTargetVesselReq :: KRPCHS.RemoteTech.Antenna -> KRPCHS.SpaceCenter.Vessel -> KRPCCallReq ()
+setAntennaTargetVesselReq thisArg valueArg = makeCallReq "RemoteTech" "Antenna_set_TargetVessel" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+
 setAntennaTargetVessel :: KRPCHS.RemoteTech.Antenna -> KRPCHS.SpaceCenter.Vessel -> RPCContext ()
-setAntennaTargetVessel thisArg valueArg = do
-    let r = makeRequest "RemoteTech" "Antenna_set_TargetVessel" [makeArgument 0 thisArg, makeArgument 1 valueArg]
-    res <- sendRequest r
-    processResponse res 
+setAntennaTargetVessel thisArg valueArg = simpleRequest $ setAntennaTargetVesselReq thisArg valueArg 
 
 {-|
 Get a communications object, representing the communication capability of a particular vessel.
  -}
+commsReq :: KRPCHS.SpaceCenter.Vessel -> KRPCCallReq (KRPCHS.RemoteTech.Comms)
+commsReq vesselArg = makeCallReq "RemoteTech" "Comms" [makeArgument 0 vesselArg]
+
 comms :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCHS.RemoteTech.Comms)
-comms vesselArg = do
-    let r = makeRequest "RemoteTech" "Comms" [makeArgument 0 vesselArg]
-    res <- sendRequest r
-    processResponse res
+comms vesselArg = simpleRequest $ commsReq vesselArg
 
 commsStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (KRPCHS.RemoteTech.Comms)
-commsStreamReq vesselArg =
-    let req = makeCallRequest "RemoteTech" "Comms" [makeArgument 0 vesselArg]
-    in  makeStream req
+commsStreamReq vesselArg = makeStreamReq $ commsReq vesselArg
 
 commsStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.RemoteTech.Comms))
-commsStream vesselArg = requestStream $ commsStreamReq vesselArg 
+commsStream vesselArg = requestAddStream $ commsStreamReq vesselArg 
 
 {-|
 The signal delay between the this vessel and another vessel, in seconds.<param name="other">
  -}
+commsSignalDelayToVesselReq :: KRPCHS.RemoteTech.Comms -> KRPCHS.SpaceCenter.Vessel -> KRPCCallReq (Double)
+commsSignalDelayToVesselReq thisArg otherArg = makeCallReq "RemoteTech" "Comms_SignalDelayToVessel" [makeArgument 0 thisArg, makeArgument 1 otherArg]
+
 commsSignalDelayToVessel :: KRPCHS.RemoteTech.Comms -> KRPCHS.SpaceCenter.Vessel -> RPCContext (Double)
-commsSignalDelayToVessel thisArg otherArg = do
-    let r = makeRequest "RemoteTech" "Comms_SignalDelayToVessel" [makeArgument 0 thisArg, makeArgument 1 otherArg]
-    res <- sendRequest r
-    processResponse res
+commsSignalDelayToVessel thisArg otherArg = simpleRequest $ commsSignalDelayToVesselReq thisArg otherArg
 
 commsSignalDelayToVesselStreamReq :: KRPCHS.RemoteTech.Comms -> KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (Double)
-commsSignalDelayToVesselStreamReq thisArg otherArg =
-    let req = makeCallRequest "RemoteTech" "Comms_SignalDelayToVessel" [makeArgument 0 thisArg, makeArgument 1 otherArg]
-    in  makeStream req
+commsSignalDelayToVesselStreamReq thisArg otherArg = makeStreamReq $ commsSignalDelayToVesselReq thisArg otherArg
 
 commsSignalDelayToVesselStream :: KRPCHS.RemoteTech.Comms -> KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Double))
-commsSignalDelayToVesselStream thisArg otherArg = requestStream $ commsSignalDelayToVesselStreamReq thisArg otherArg 
+commsSignalDelayToVesselStream thisArg otherArg = requestAddStream $ commsSignalDelayToVesselStreamReq thisArg otherArg 
 
 {-|
 The antennas for this vessel.
  -}
+getCommsAntennasReq :: KRPCHS.RemoteTech.Comms -> KRPCCallReq ([KRPCHS.RemoteTech.Antenna])
+getCommsAntennasReq thisArg = makeCallReq "RemoteTech" "Comms_get_Antennas" [makeArgument 0 thisArg]
+
 getCommsAntennas :: KRPCHS.RemoteTech.Comms -> RPCContext ([KRPCHS.RemoteTech.Antenna])
-getCommsAntennas thisArg = do
-    let r = makeRequest "RemoteTech" "Comms_get_Antennas" [makeArgument 0 thisArg]
-    res <- sendRequest r
-    processResponse res
+getCommsAntennas thisArg = simpleRequest $ getCommsAntennasReq thisArg
 
 getCommsAntennasStreamReq :: KRPCHS.RemoteTech.Comms -> KRPCStreamReq ([KRPCHS.RemoteTech.Antenna])
-getCommsAntennasStreamReq thisArg =
-    let req = makeCallRequest "RemoteTech" "Comms_get_Antennas" [makeArgument 0 thisArg]
-    in  makeStream req
+getCommsAntennasStreamReq thisArg = makeStreamReq $ getCommsAntennasReq thisArg
 
 getCommsAntennasStream :: KRPCHS.RemoteTech.Comms -> RPCContext (KRPCStream ([KRPCHS.RemoteTech.Antenna]))
-getCommsAntennasStream thisArg = requestStream $ getCommsAntennasStreamReq thisArg 
+getCommsAntennasStream thisArg = requestAddStream $ getCommsAntennasStreamReq thisArg 
 
 {-|
 Whether the vessel has any connection.
  -}
+getCommsHasConnectionReq :: KRPCHS.RemoteTech.Comms -> KRPCCallReq (Bool)
+getCommsHasConnectionReq thisArg = makeCallReq "RemoteTech" "Comms_get_HasConnection" [makeArgument 0 thisArg]
+
 getCommsHasConnection :: KRPCHS.RemoteTech.Comms -> RPCContext (Bool)
-getCommsHasConnection thisArg = do
-    let r = makeRequest "RemoteTech" "Comms_get_HasConnection" [makeArgument 0 thisArg]
-    res <- sendRequest r
-    processResponse res
+getCommsHasConnection thisArg = simpleRequest $ getCommsHasConnectionReq thisArg
 
 getCommsHasConnectionStreamReq :: KRPCHS.RemoteTech.Comms -> KRPCStreamReq (Bool)
-getCommsHasConnectionStreamReq thisArg =
-    let req = makeCallRequest "RemoteTech" "Comms_get_HasConnection" [makeArgument 0 thisArg]
-    in  makeStream req
+getCommsHasConnectionStreamReq thisArg = makeStreamReq $ getCommsHasConnectionReq thisArg
 
 getCommsHasConnectionStream :: KRPCHS.RemoteTech.Comms -> RPCContext (KRPCStream (Bool))
-getCommsHasConnectionStream thisArg = requestStream $ getCommsHasConnectionStreamReq thisArg 
+getCommsHasConnectionStream thisArg = requestAddStream $ getCommsHasConnectionStreamReq thisArg 
 
 {-|
 Whether the vessel has a connection to a ground station.
  -}
+getCommsHasConnectionToGroundStationReq :: KRPCHS.RemoteTech.Comms -> KRPCCallReq (Bool)
+getCommsHasConnectionToGroundStationReq thisArg = makeCallReq "RemoteTech" "Comms_get_HasConnectionToGroundStation" [makeArgument 0 thisArg]
+
 getCommsHasConnectionToGroundStation :: KRPCHS.RemoteTech.Comms -> RPCContext (Bool)
-getCommsHasConnectionToGroundStation thisArg = do
-    let r = makeRequest "RemoteTech" "Comms_get_HasConnectionToGroundStation" [makeArgument 0 thisArg]
-    res <- sendRequest r
-    processResponse res
+getCommsHasConnectionToGroundStation thisArg = simpleRequest $ getCommsHasConnectionToGroundStationReq thisArg
 
 getCommsHasConnectionToGroundStationStreamReq :: KRPCHS.RemoteTech.Comms -> KRPCStreamReq (Bool)
-getCommsHasConnectionToGroundStationStreamReq thisArg =
-    let req = makeCallRequest "RemoteTech" "Comms_get_HasConnectionToGroundStation" [makeArgument 0 thisArg]
-    in  makeStream req
+getCommsHasConnectionToGroundStationStreamReq thisArg = makeStreamReq $ getCommsHasConnectionToGroundStationReq thisArg
 
 getCommsHasConnectionToGroundStationStream :: KRPCHS.RemoteTech.Comms -> RPCContext (KRPCStream (Bool))
-getCommsHasConnectionToGroundStationStream thisArg = requestStream $ getCommsHasConnectionToGroundStationStreamReq thisArg 
+getCommsHasConnectionToGroundStationStream thisArg = requestAddStream $ getCommsHasConnectionToGroundStationStreamReq thisArg 
 
 {-|
 Whether the vessel has a flight computer on board.
  -}
+getCommsHasFlightComputerReq :: KRPCHS.RemoteTech.Comms -> KRPCCallReq (Bool)
+getCommsHasFlightComputerReq thisArg = makeCallReq "RemoteTech" "Comms_get_HasFlightComputer" [makeArgument 0 thisArg]
+
 getCommsHasFlightComputer :: KRPCHS.RemoteTech.Comms -> RPCContext (Bool)
-getCommsHasFlightComputer thisArg = do
-    let r = makeRequest "RemoteTech" "Comms_get_HasFlightComputer" [makeArgument 0 thisArg]
-    res <- sendRequest r
-    processResponse res
+getCommsHasFlightComputer thisArg = simpleRequest $ getCommsHasFlightComputerReq thisArg
 
 getCommsHasFlightComputerStreamReq :: KRPCHS.RemoteTech.Comms -> KRPCStreamReq (Bool)
-getCommsHasFlightComputerStreamReq thisArg =
-    let req = makeCallRequest "RemoteTech" "Comms_get_HasFlightComputer" [makeArgument 0 thisArg]
-    in  makeStream req
+getCommsHasFlightComputerStreamReq thisArg = makeStreamReq $ getCommsHasFlightComputerReq thisArg
 
 getCommsHasFlightComputerStream :: KRPCHS.RemoteTech.Comms -> RPCContext (KRPCStream (Bool))
-getCommsHasFlightComputerStream thisArg = requestStream $ getCommsHasFlightComputerStreamReq thisArg 
+getCommsHasFlightComputerStream thisArg = requestAddStream $ getCommsHasFlightComputerStreamReq thisArg 
 
 {-|
 Whether the vessel can be controlled locally.
  -}
+getCommsHasLocalControlReq :: KRPCHS.RemoteTech.Comms -> KRPCCallReq (Bool)
+getCommsHasLocalControlReq thisArg = makeCallReq "RemoteTech" "Comms_get_HasLocalControl" [makeArgument 0 thisArg]
+
 getCommsHasLocalControl :: KRPCHS.RemoteTech.Comms -> RPCContext (Bool)
-getCommsHasLocalControl thisArg = do
-    let r = makeRequest "RemoteTech" "Comms_get_HasLocalControl" [makeArgument 0 thisArg]
-    res <- sendRequest r
-    processResponse res
+getCommsHasLocalControl thisArg = simpleRequest $ getCommsHasLocalControlReq thisArg
 
 getCommsHasLocalControlStreamReq :: KRPCHS.RemoteTech.Comms -> KRPCStreamReq (Bool)
-getCommsHasLocalControlStreamReq thisArg =
-    let req = makeCallRequest "RemoteTech" "Comms_get_HasLocalControl" [makeArgument 0 thisArg]
-    in  makeStream req
+getCommsHasLocalControlStreamReq thisArg = makeStreamReq $ getCommsHasLocalControlReq thisArg
 
 getCommsHasLocalControlStream :: KRPCHS.RemoteTech.Comms -> RPCContext (KRPCStream (Bool))
-getCommsHasLocalControlStream thisArg = requestStream $ getCommsHasLocalControlStreamReq thisArg 
+getCommsHasLocalControlStream thisArg = requestAddStream $ getCommsHasLocalControlStreamReq thisArg 
 
 {-|
 The shortest signal delay to the vessel, in seconds.
  -}
+getCommsSignalDelayReq :: KRPCHS.RemoteTech.Comms -> KRPCCallReq (Double)
+getCommsSignalDelayReq thisArg = makeCallReq "RemoteTech" "Comms_get_SignalDelay" [makeArgument 0 thisArg]
+
 getCommsSignalDelay :: KRPCHS.RemoteTech.Comms -> RPCContext (Double)
-getCommsSignalDelay thisArg = do
-    let r = makeRequest "RemoteTech" "Comms_get_SignalDelay" [makeArgument 0 thisArg]
-    res <- sendRequest r
-    processResponse res
+getCommsSignalDelay thisArg = simpleRequest $ getCommsSignalDelayReq thisArg
 
 getCommsSignalDelayStreamReq :: KRPCHS.RemoteTech.Comms -> KRPCStreamReq (Double)
-getCommsSignalDelayStreamReq thisArg =
-    let req = makeCallRequest "RemoteTech" "Comms_get_SignalDelay" [makeArgument 0 thisArg]
-    in  makeStream req
+getCommsSignalDelayStreamReq thisArg = makeStreamReq $ getCommsSignalDelayReq thisArg
 
 getCommsSignalDelayStream :: KRPCHS.RemoteTech.Comms -> RPCContext (KRPCStream (Double))
-getCommsSignalDelayStream thisArg = requestStream $ getCommsSignalDelayStreamReq thisArg 
+getCommsSignalDelayStream thisArg = requestAddStream $ getCommsSignalDelayStreamReq thisArg 
 
 {-|
 The signal delay between the vessel and the closest ground station, in seconds.
  -}
+getCommsSignalDelayToGroundStationReq :: KRPCHS.RemoteTech.Comms -> KRPCCallReq (Double)
+getCommsSignalDelayToGroundStationReq thisArg = makeCallReq "RemoteTech" "Comms_get_SignalDelayToGroundStation" [makeArgument 0 thisArg]
+
 getCommsSignalDelayToGroundStation :: KRPCHS.RemoteTech.Comms -> RPCContext (Double)
-getCommsSignalDelayToGroundStation thisArg = do
-    let r = makeRequest "RemoteTech" "Comms_get_SignalDelayToGroundStation" [makeArgument 0 thisArg]
-    res <- sendRequest r
-    processResponse res
+getCommsSignalDelayToGroundStation thisArg = simpleRequest $ getCommsSignalDelayToGroundStationReq thisArg
 
 getCommsSignalDelayToGroundStationStreamReq :: KRPCHS.RemoteTech.Comms -> KRPCStreamReq (Double)
-getCommsSignalDelayToGroundStationStreamReq thisArg =
-    let req = makeCallRequest "RemoteTech" "Comms_get_SignalDelayToGroundStation" [makeArgument 0 thisArg]
-    in  makeStream req
+getCommsSignalDelayToGroundStationStreamReq thisArg = makeStreamReq $ getCommsSignalDelayToGroundStationReq thisArg
 
 getCommsSignalDelayToGroundStationStream :: KRPCHS.RemoteTech.Comms -> RPCContext (KRPCStream (Double))
-getCommsSignalDelayToGroundStationStream thisArg = requestStream $ getCommsSignalDelayToGroundStationStreamReq thisArg 
+getCommsSignalDelayToGroundStationStream thisArg = requestAddStream $ getCommsSignalDelayToGroundStationStreamReq thisArg 
 
 {-|
 Get the vessel.
  -}
+getCommsVesselReq :: KRPCHS.RemoteTech.Comms -> KRPCCallReq (KRPCHS.SpaceCenter.Vessel)
+getCommsVesselReq thisArg = makeCallReq "RemoteTech" "Comms_get_Vessel" [makeArgument 0 thisArg]
+
 getCommsVessel :: KRPCHS.RemoteTech.Comms -> RPCContext (KRPCHS.SpaceCenter.Vessel)
-getCommsVessel thisArg = do
-    let r = makeRequest "RemoteTech" "Comms_get_Vessel" [makeArgument 0 thisArg]
-    res <- sendRequest r
-    processResponse res
+getCommsVessel thisArg = simpleRequest $ getCommsVesselReq thisArg
 
 getCommsVesselStreamReq :: KRPCHS.RemoteTech.Comms -> KRPCStreamReq (KRPCHS.SpaceCenter.Vessel)
-getCommsVesselStreamReq thisArg =
-    let req = makeCallRequest "RemoteTech" "Comms_get_Vessel" [makeArgument 0 thisArg]
-    in  makeStream req
+getCommsVesselStreamReq thisArg = makeStreamReq $ getCommsVesselReq thisArg
 
 getCommsVesselStream :: KRPCHS.RemoteTech.Comms -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Vessel))
-getCommsVesselStream thisArg = requestStream $ getCommsVesselStreamReq thisArg 
+getCommsVesselStream thisArg = requestAddStream $ getCommsVesselStreamReq thisArg 
 
 {-|
 The names of the ground stations.
  -}
+getGroundStationsReq :: KRPCCallReq ([Data.Text.Text])
+getGroundStationsReq  = makeCallReq "RemoteTech" "get_GroundStations" []
+
 getGroundStations :: RPCContext ([Data.Text.Text])
-getGroundStations  = do
-    let r = makeRequest "RemoteTech" "get_GroundStations" []
-    res <- sendRequest r
-    processResponse res
+getGroundStations  = simpleRequest $ getGroundStationsReq 
 
 getGroundStationsStreamReq :: KRPCStreamReq ([Data.Text.Text])
-getGroundStationsStreamReq  =
-    let req = makeCallRequest "RemoteTech" "get_GroundStations" []
-    in  makeStream req
+getGroundStationsStreamReq  = makeStreamReq $ getGroundStationsReq 
 
 getGroundStationsStream :: RPCContext (KRPCStream ([Data.Text.Text]))
-getGroundStationsStream  = requestStream $ getGroundStationsStreamReq  
+getGroundStationsStream  = requestAddStream $ getGroundStationsStreamReq  
 
