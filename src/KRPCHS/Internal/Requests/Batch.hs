@@ -49,8 +49,8 @@ rpcCall r = state (batchAddCall r)
 
 
 -- | Makes a batch using the given 'KRPCCallBatchBuilder'.
-buildBatch :: KRPCCallBatchBuilder a -> KRPCCallBatch -> (a, KRPCCallBatch)
-buildBatch = runState . batchBuilder
+buildBatch :: KRPCCallBatch -> KRPCCallBatchBuilder a -> (a, KRPCCallBatch)
+buildBatch = flip (runState . batchBuilder)
 
 
 emptyBatch :: KRPCCallBatch

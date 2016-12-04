@@ -19,7 +19,7 @@ batchTest = do
     vessel <- batchGetResult vesselHandle reply
     return (ut, vessel)
   where
-    ((utHandle, vesselHandle), batch) = flip buildBatch emptyBatch $ do
+    ((utHandle, vesselHandle), batch) = buildBatch emptyBatch $ do
         u <- rpcCall $ getUTReq
         v <- rpcCall $ getActiveVesselReq
         return (u, v)
