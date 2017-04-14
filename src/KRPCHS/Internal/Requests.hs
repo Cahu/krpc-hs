@@ -152,7 +152,7 @@ makeStream r = KRPCStreamReq $
     makeRequest "KRPC" "AddStream" [KArg.Argument (Just 0) (Just $ messagePut r)]
 
 
-requestStream :: KRPCResponseExtractable a => KRPCStreamReq a -> RPCContext (KRPCStream a)
+requestStream :: KRPCStreamReq a -> RPCContext (KRPCStream a)
 requestStream KRPCStreamReq{..} = do
     res <- sendRequest streamReq
     sid <- processResponse res
