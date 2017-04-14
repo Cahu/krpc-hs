@@ -74,7 +74,7 @@ emptyKRPCStreamMsg = KRPCStreamMsg M.empty
 
 
 class (PbSerializable a) => KRPCResponseExtractable a where
-    extract :: (PbSerializable a) => KRes.Response -> Either ProtocolError a
+    extract :: KRes.Response -> Either ProtocolError a
     extract r = do
         checkError r
         maybe (Left ResponseEmpty) (decodePb) (KRes.return_value r)
