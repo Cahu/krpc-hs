@@ -74,7 +74,7 @@ emptyKRPCStreamMsg = KRPCStreamMsg M.empty
 
 
 class (PbSerializable a) => KRPCResponseExtractable a where
-    extract :: (PbSerializable a) => KRes.Response -> Either ProtocolError a
+    extract :: KRes.Response -> Either ProtocolError a
     extract r = do
         checkError r
         maybe (Left ResponseEmpty) (decodePb) (KRes.return_value r)
@@ -152,7 +152,7 @@ makeStream r = KRPCStreamReq $
     makeRequest "KRPC" "AddStream" [KArg.Argument (Just 0) (Just $ messagePut r)]
 
 
-requestStream :: KRPCResponseExtractable a => KRPCStreamReq a -> RPCContext (KRPCStream a)
+requestStream :: KRPCStreamReq a -> RPCContext (KRPCStream a)
 requestStream KRPCStreamReq{..} = do
     res <- sendRequest streamReq
     sid <- processResponse res
