@@ -28,7 +28,7 @@ data VesselRotation = VesselRotation
     , transformedY    :: Vect3
     , transformedZ    :: Vect3
     , angularVelocity :: Vect3
-    , availableTorque :: Vect3
+    , availableTorque :: (Vect3, Vect3)
     , momentOfInertia :: Vect3
     }
 
@@ -132,7 +132,7 @@ attitudeProg streamClient =
                 Left  err                -> throwM err
                 Right VesselRotation{..} -> do
                     let (momentPitch, momentRoll, momentYaw) = momentOfInertia
-                        (torquePitch, torqueRoll, torqueYaw) = availableTorque
+                        (torquePitch, torqueRoll, torqueYaw) = fst availableTorque
                     killPitch momentPitch torquePitch angularVelocity transformedX
                     killRoll  momentRoll  torqueRoll  angularVelocity transformedY
                     killYaw   momentYaw   torqueYaw   angularVelocity transformedZ

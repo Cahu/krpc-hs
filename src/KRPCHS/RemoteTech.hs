@@ -57,6 +57,9 @@ module KRPCHS.RemoteTech
 , getCommsVessel
 , getCommsVesselStream
 , getCommsVesselStreamReq
+, getAvailable
+, getAvailableStream
+, getAvailableStreamReq
 , getGroundStations
 , getGroundStationsStream
 , getGroundStationsStreamReq
@@ -70,7 +73,7 @@ import KRPCHS.Internal.SerializeUtils
 
 
 {-
- - A RemoteTech antenna. Obtained by calling <see cref="M:RemoteTech.Comms.Antennas" /> or  <see cref="M:RemoteTech.Antenna" />.
+ - A RemoteTech antenna. Obtained by calling <see cref="M:RemoteTech.Comms.Antennas" /> or <see cref="M:RemoteTech.Antenna" />.
  -}
 newtype Antenna = Antenna { antennaId :: Int }
     deriving (Show, Eq, Ord)
@@ -443,6 +446,23 @@ getCommsVesselStreamReq thisArg =
 
 getCommsVesselStream :: KRPCHS.RemoteTech.Comms -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Vessel))
 getCommsVesselStream thisArg = requestStream $ getCommsVesselStreamReq thisArg 
+
+{-
+ - Whether RemoteTech is installed.
+ -}
+getAvailable :: RPCContext (Bool)
+getAvailable  = do
+    let r = makeRequest "RemoteTech" "get_Available" []
+    res <- sendRequest r
+    processResponse res
+
+getAvailableStreamReq :: KRPCStreamReq (Bool)
+getAvailableStreamReq  =
+    let req = makeRequest "RemoteTech" "get_Available" []
+    in  makeStream req
+
+getAvailableStream :: RPCContext (KRPCStream (Bool))
+getAvailableStream  = requestStream $ getAvailableStreamReq  
 
 {-
  - The names of the ground stations.

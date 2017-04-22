@@ -14,6 +14,7 @@ import Data.Word
 import qualified Data.Text as T
 
 import qualified Data.Foldable
+import qualified Data.Set      as Set
 import qualified Data.Sequence as Seq
 import qualified Data.Map      as M
 
@@ -24,6 +25,7 @@ import qualified Text.ProtocolBuffers.Get         as G
 import qualified Text.ProtocolBuffers.Basic       as B
 import qualified Text.ProtocolBuffers.WireMessage as W
 
+import qualified PB.KRPC.Set             as KSet
 import qualified PB.KRPC.List            as KList
 import qualified PB.KRPC.Tuple           as KTuple
 import qualified PB.KRPC.Dictionary      as KDict
@@ -139,6 +141,13 @@ instance (PbSerializable a) => PbSerializable [a] where
     decodePb bytes = do
         l <- messageGet bytes
         mapM decodePb $ Data.Foldable.toList (KList.items l)
+
+
+instance (Ord a, PbSerializable a) => PbSerializable (Set.Set a) where
+    encodePb = messagePut . KSet.Set . Seq.fromList . map encodePb . Set.toList
+    decodePb bytes = do
+        m <- messageGet bytes
+        Set.fromList <$> mapM decodePb (Data.Foldable.toList (KSet.items m))
 
 
 instance (Ord k, PbSerializable k, PbSerializable v) => PbSerializable (M.Map k v) where

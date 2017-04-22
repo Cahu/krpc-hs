@@ -271,12 +271,18 @@ sub haskell_type
 		my ($obj, $dep) = haskell_type($1);
 		return ("[$obj]", $dep);
 	}
+	elsif ($type =~ /^Set\((.+)\)$/)
+	{
+		my ($obj, $contentDep) = haskell_type($1);
+		my %deps = map { $_ => 1 } ("Data.Set", @$contentDep);
+		return ("Data.Set.Set $obj", [ keys %deps ]);
+	}
 	elsif ($type =~ /^Tuple\((.+)\)$/)
 	{
 		my @objs;
 		my @deps;
 		
-		foreach my $e (split /,/, $1)
+		foreach my $e (list_type_elems($1))
 		{
 			my ($obj, $dep) = haskell_type($e);
 			push @objs, $obj;
@@ -298,6 +304,35 @@ sub haskell_type
 	}
 }
 
+
+sub list_type_elems
+{
+	my ($str) = @_;
+
+	my @elems;
+	my @split = split /(,)/, $str;
+
+	my $tmp        = "";
+	my $nest_level = 0;
+	while (my $e = shift @split)
+	{
+		$tmp .= $e;
+
+		if ($e =~ /\(/) {
+			$nest_level += 1;
+		}
+		elsif ($e =~ /\)/) {
+			$nest_level -= 1;
+		}
+
+		if ($nest_level == 0) {
+			push @elems, $tmp;
+			$tmp = "";
+		}
+	}
+
+	return grep { $_ ne ',' } @elems;
+}
 
 sub cleanup_doc
 {

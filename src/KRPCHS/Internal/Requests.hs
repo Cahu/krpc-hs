@@ -46,6 +46,7 @@ import Data.Maybe
 import qualified Data.Text as T
 import qualified Data.Map  as M
 import qualified Data.Foldable
+import qualified Data.Set      as Set
 import qualified Data.Sequence as Seq
 
 import qualified Data.ByteString       as BS
@@ -103,6 +104,15 @@ instance (PbSerializable a) => KRPCResponseExtractable [a] where
         case (KRes.return_value r) of
             Nothing    -> Right []
             Just bytes -> decodePb bytes
+
+
+instance (Ord a, PbSerializable a) => KRPCResponseExtractable (Set.Set a) where
+    extract r = do
+        checkError r
+        case (KRes.return_value r) of
+            Nothing    -> Right Set.empty
+            Just bytes -> decodePb bytes
+
 
 instance (Ord k, PbSerializable k, PbSerializable v) => KRPCResponseExtractable (M.Map k v) where
     extract r = do

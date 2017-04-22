@@ -64,6 +64,9 @@ module KRPCHS.KerbalAlarmClock
 , getAlarms
 , getAlarmsStream
 , getAlarmsStreamReq
+, getAvailable
+, getAvailableStream
+, getAvailableStreamReq
 ) where
 
 import qualified Data.Text
@@ -526,4 +529,21 @@ getAlarmsStreamReq  =
 
 getAlarmsStream :: RPCContext (KRPCStream ([KRPCHS.KerbalAlarmClock.Alarm]))
 getAlarmsStream  = requestStream $ getAlarmsStreamReq  
+
+{-
+ - Whether Kerbal Alarm Clock is available.
+ -}
+getAvailable :: RPCContext (Bool)
+getAvailable  = do
+    let r = makeRequest "KerbalAlarmClock" "get_Available" []
+    res <- sendRequest r
+    processResponse res
+
+getAvailableStreamReq :: KRPCStreamReq (Bool)
+getAvailableStreamReq  =
+    let req = makeRequest "KerbalAlarmClock" "get_Available" []
+    in  makeStream req
+
+getAvailableStream :: RPCContext (KRPCStream (Bool))
+getAvailableStream  = requestStream $ getAvailableStreamReq  
 

@@ -1,9 +1,14 @@
 module KRPCHS.SpaceCenter
-( CameraMode(..)
+( AntennaState(..)
+, CameraMode(..)
 , CargoBayState(..)
+, CommLinkType(..)
+, ContractState(..)
+, ControlSource(..)
+, ControlState(..)
 , DockingPortState(..)
-, LandingGearState(..)
-, LandingLegState(..)
+, LegState(..)
+, MotorState(..)
 , ParachuteState(..)
 , RadiatorState(..)
 , ResourceConverterState(..)
@@ -15,10 +20,18 @@ module KRPCHS.SpaceCenter
 , VesselSituation(..)
 , VesselType(..)
 , WarpMode(..)
+, WheelState(..)
+, Antenna
 , AutoPilot
 , Camera
 , CargoBay
 , CelestialBody
+, CommLink
+, CommNode
+, Comms
+, Contract
+, ContractManager
+, ContractParameter
 , Control
 , ControlSurface
 , Decoupler
@@ -29,9 +42,8 @@ module KRPCHS.SpaceCenter
 , Flight
 , Force
 , Intake
-, LandingGear
-, LandingLeg
 , LaunchClamp
+, Leg
 , Light
 , Module
 , Node
@@ -57,6 +69,47 @@ module KRPCHS.SpaceCenter
 , Vessel
 , Waypoint
 , WaypointManager
+, Wheel
+, antennaCancel
+, antennaTransmit
+, getAntennaAllowPartial
+, getAntennaAllowPartialStream
+, getAntennaAllowPartialStreamReq
+, getAntennaCanTransmit
+, getAntennaCanTransmitStream
+, getAntennaCanTransmitStreamReq
+, getAntennaCombinable
+, getAntennaCombinableStream
+, getAntennaCombinableStreamReq
+, getAntennaCombinableExponent
+, getAntennaCombinableExponentStream
+, getAntennaCombinableExponentStreamReq
+, getAntennaDeployable
+, getAntennaDeployableStream
+, getAntennaDeployableStreamReq
+, getAntennaDeployed
+, getAntennaDeployedStream
+, getAntennaDeployedStreamReq
+, getAntennaPacketInterval
+, getAntennaPacketIntervalStream
+, getAntennaPacketIntervalStreamReq
+, getAntennaPacketResourceCost
+, getAntennaPacketResourceCostStream
+, getAntennaPacketResourceCostStreamReq
+, getAntennaPacketSize
+, getAntennaPacketSizeStream
+, getAntennaPacketSizeStreamReq
+, getAntennaPart
+, getAntennaPartStream
+, getAntennaPartStreamReq
+, getAntennaPower
+, getAntennaPowerStream
+, getAntennaPowerStreamReq
+, getAntennaState
+, getAntennaStateStream
+, getAntennaStateStreamReq
+, setAntennaAllowPartial
+, setAntennaDeployed
 , autoPilotDisengage
 , autoPilotEngage
 , autoPilotTargetPitchAndHeading
@@ -251,6 +304,9 @@ module KRPCHS.SpaceCenter
 , getCelestialBodyHasAtmosphericOxygen
 , getCelestialBodyHasAtmosphericOxygenStream
 , getCelestialBodyHasAtmosphericOxygenStreamReq
+, getCelestialBodyInitialRotation
+, getCelestialBodyInitialRotationStream
+, getCelestialBodyInitialRotationStreamReq
 , getCelestialBodyMass
 , getCelestialBodyMassStream
 , getCelestialBodyMassStreamReq
@@ -269,6 +325,9 @@ module KRPCHS.SpaceCenter
 , getCelestialBodyReferenceFrame
 , getCelestialBodyReferenceFrameStream
 , getCelestialBodyReferenceFrameStreamReq
+, getCelestialBodyRotationAngle
+, getCelestialBodyRotationAngleStream
+, getCelestialBodyRotationAngleStreamReq
 , getCelestialBodyRotationalPeriod
 , getCelestialBodyRotationalPeriodStream
 , getCelestialBodyRotationalPeriodStreamReq
@@ -288,6 +347,171 @@ module KRPCHS.SpaceCenter
 , getCelestialBodySurfaceGravityStream
 , getCelestialBodySurfaceGravityStreamReq
 , clearTarget
+, getCommLinkEnd
+, getCommLinkEndStream
+, getCommLinkEndStreamReq
+, getCommLinkSignalStrength
+, getCommLinkSignalStrengthStream
+, getCommLinkSignalStrengthStreamReq
+, getCommLinkStart
+, getCommLinkStartStream
+, getCommLinkStartStreamReq
+, getCommLinkType
+, getCommLinkTypeStream
+, getCommLinkTypeStreamReq
+, getCommNodeIsControlPoint
+, getCommNodeIsControlPointStream
+, getCommNodeIsControlPointStreamReq
+, getCommNodeIsHome
+, getCommNodeIsHomeStream
+, getCommNodeIsHomeStreamReq
+, getCommNodeIsVessel
+, getCommNodeIsVesselStream
+, getCommNodeIsVesselStreamReq
+, getCommNodeName
+, getCommNodeNameStream
+, getCommNodeNameStreamReq
+, getCommNodeVessel
+, getCommNodeVesselStream
+, getCommNodeVesselStreamReq
+, getCommsCanCommunicate
+, getCommsCanCommunicateStream
+, getCommsCanCommunicateStreamReq
+, getCommsCanTransmitScience
+, getCommsCanTransmitScienceStream
+, getCommsCanTransmitScienceStreamReq
+, getCommsControlPath
+, getCommsControlPathStream
+, getCommsControlPathStreamReq
+, getCommsPower
+, getCommsPowerStream
+, getCommsPowerStreamReq
+, getCommsSignalDelay
+, getCommsSignalDelayStream
+, getCommsSignalDelayStreamReq
+, getCommsSignalStrength
+, getCommsSignalStrengthStream
+, getCommsSignalStrengthStreamReq
+, getContractManagerActiveContracts
+, getContractManagerActiveContractsStream
+, getContractManagerActiveContractsStreamReq
+, getContractManagerAllContracts
+, getContractManagerAllContractsStream
+, getContractManagerAllContractsStreamReq
+, getContractManagerCompletedContracts
+, getContractManagerCompletedContractsStream
+, getContractManagerCompletedContractsStreamReq
+, getContractManagerFailedContracts
+, getContractManagerFailedContractsStream
+, getContractManagerFailedContractsStreamReq
+, getContractManagerOfferedContracts
+, getContractManagerOfferedContractsStream
+, getContractManagerOfferedContractsStreamReq
+, getContractManagerTypes
+, getContractManagerTypesStream
+, getContractManagerTypesStreamReq
+, getContractParameterChildren
+, getContractParameterChildrenStream
+, getContractParameterChildrenStreamReq
+, getContractParameterCompleted
+, getContractParameterCompletedStream
+, getContractParameterCompletedStreamReq
+, getContractParameterFailed
+, getContractParameterFailedStream
+, getContractParameterFailedStreamReq
+, getContractParameterFundsCompletion
+, getContractParameterFundsCompletionStream
+, getContractParameterFundsCompletionStreamReq
+, getContractParameterFundsFailure
+, getContractParameterFundsFailureStream
+, getContractParameterFundsFailureStreamReq
+, getContractParameterNotes
+, getContractParameterNotesStream
+, getContractParameterNotesStreamReq
+, getContractParameterOptional
+, getContractParameterOptionalStream
+, getContractParameterOptionalStreamReq
+, getContractParameterReputationCompletion
+, getContractParameterReputationCompletionStream
+, getContractParameterReputationCompletionStreamReq
+, getContractParameterReputationFailure
+, getContractParameterReputationFailureStream
+, getContractParameterReputationFailureStreamReq
+, getContractParameterScienceCompletion
+, getContractParameterScienceCompletionStream
+, getContractParameterScienceCompletionStreamReq
+, getContractParameterTitle
+, getContractParameterTitleStream
+, getContractParameterTitleStreamReq
+, contractAccept
+, contractCancel
+, contractDecline
+, getContractActive
+, getContractActiveStream
+, getContractActiveStreamReq
+, getContractCanBeCanceled
+, getContractCanBeCanceledStream
+, getContractCanBeCanceledStreamReq
+, getContractCanBeDeclined
+, getContractCanBeDeclinedStream
+, getContractCanBeDeclinedStreamReq
+, getContractCanBeFailed
+, getContractCanBeFailedStream
+, getContractCanBeFailedStreamReq
+, getContractDescription
+, getContractDescriptionStream
+, getContractDescriptionStreamReq
+, getContractFailed
+, getContractFailedStream
+, getContractFailedStreamReq
+, getContractFundsAdvance
+, getContractFundsAdvanceStream
+, getContractFundsAdvanceStreamReq
+, getContractFundsCompletion
+, getContractFundsCompletionStream
+, getContractFundsCompletionStreamReq
+, getContractFundsFailure
+, getContractFundsFailureStream
+, getContractFundsFailureStreamReq
+, getContractKeywords
+, getContractKeywordsStream
+, getContractKeywordsStreamReq
+, getContractNotes
+, getContractNotesStream
+, getContractNotesStreamReq
+, getContractParameters
+, getContractParametersStream
+, getContractParametersStreamReq
+, getContractRead
+, getContractReadStream
+, getContractReadStreamReq
+, getContractReputationCompletion
+, getContractReputationCompletionStream
+, getContractReputationCompletionStreamReq
+, getContractReputationFailure
+, getContractReputationFailureStream
+, getContractReputationFailureStreamReq
+, getContractScienceCompletion
+, getContractScienceCompletionStream
+, getContractScienceCompletionStreamReq
+, getContractSeen
+, getContractSeenStream
+, getContractSeenStreamReq
+, getContractState
+, getContractStateStream
+, getContractStateStreamReq
+, getContractSynopsis
+, getContractSynopsisStream
+, getContractSynopsisStreamReq
+, getContractTitle
+, getContractTitleStream
+, getContractTitleStreamReq
+, getContractType
+, getContractTypeStream
+, getContractTypeStreamReq
+, getControlSurfaceAuthorityLimiter
+, getControlSurfaceAuthorityLimiterStream
+, getControlSurfaceAuthorityLimiterStreamReq
 , getControlSurfaceAvailableTorque
 , getControlSurfaceAvailableTorqueStream
 , getControlSurfaceAvailableTorqueStreamReq
@@ -312,6 +536,7 @@ module KRPCHS.SpaceCenter
 , getControlSurfaceYawEnabled
 , getControlSurfaceYawEnabledStream
 , getControlSurfaceYawEnabledStreamReq
+, setControlSurfaceAuthorityLimiter
 , setControlSurfaceDeployed
 , setControlSurfaceInverted
 , setControlSurfacePitchEnabled
@@ -332,9 +557,15 @@ module KRPCHS.SpaceCenter
 , getControlAbort
 , getControlAbortStream
 , getControlAbortStreamReq
+, getControlAntennas
+, getControlAntennasStream
+, getControlAntennasStreamReq
 , getControlBrakes
 , getControlBrakesStream
 , getControlBrakesStreamReq
+, getControlCargoBays
+, getControlCargoBaysStream
+, getControlCargoBaysStreamReq
 , getControlCurrentStage
 , getControlCurrentStageStream
 , getControlCurrentStageStreamReq
@@ -344,18 +575,39 @@ module KRPCHS.SpaceCenter
 , getControlGear
 , getControlGearStream
 , getControlGearStreamReq
+, getControlIntakes
+, getControlIntakesStream
+, getControlIntakesStreamReq
+, getControlLegs
+, getControlLegsStream
+, getControlLegsStreamReq
 , getControlLights
 , getControlLightsStream
 , getControlLightsStreamReq
 , getControlNodes
 , getControlNodesStream
 , getControlNodesStreamReq
+, getControlParachutes
+, getControlParachutesStream
+, getControlParachutesStreamReq
 , getControlPitch
 , getControlPitchStream
 , getControlPitchStreamReq
 , getControlRCS
 , getControlRCSStream
 , getControlRCSStreamReq
+, getControlRadiators
+, getControlRadiatorsStream
+, getControlRadiatorsStreamReq
+, getControlReactionWheels
+, getControlReactionWheelsStream
+, getControlReactionWheelsStreamReq
+, getControlResourceHarvesters
+, getControlResourceHarvestersStream
+, getControlResourceHarvestersStreamReq
+, getControlResourceHarvestersActive
+, getControlResourceHarvestersActiveStream
+, getControlResourceHarvestersActiveStreamReq
 , getControlRight
 , getControlRightStream
 , getControlRightStreamReq
@@ -368,9 +620,18 @@ module KRPCHS.SpaceCenter
 , getControlSASMode
 , getControlSASModeStream
 , getControlSASModeStreamReq
+, getControlSolarPanels
+, getControlSolarPanelsStream
+, getControlSolarPanelsStreamReq
+, getControlSource
+, getControlSourceStream
+, getControlSourceStreamReq
 , getControlSpeedMode
 , getControlSpeedModeStream
 , getControlSpeedModeStreamReq
+, getControlState
+, getControlStateStream
+, getControlStateStreamReq
 , getControlThrottle
 , getControlThrottleStream
 , getControlThrottleStreamReq
@@ -383,25 +644,39 @@ module KRPCHS.SpaceCenter
 , getControlWheelThrottle
 , getControlWheelThrottleStream
 , getControlWheelThrottleStreamReq
+, getControlWheels
+, getControlWheelsStream
+, getControlWheelsStreamReq
 , getControlYaw
 , getControlYawStream
 , getControlYawStreamReq
 , setControlAbort
+, setControlAntennas
 , setControlBrakes
+, setControlCargoBays
 , setControlForward
 , setControlGear
+, setControlIntakes
+, setControlLegs
 , setControlLights
+, setControlParachutes
 , setControlPitch
 , setControlRCS
+, setControlRadiators
+, setControlReactionWheels
+, setControlResourceHarvesters
+, setControlResourceHarvestersActive
 , setControlRight
 , setControlRoll
 , setControlSAS
 , setControlSASMode
+, setControlSolarPanels
 , setControlSpeedMode
 , setControlThrottle
 , setControlUp
 , setControlWheelSteering
 , setControlWheelThrottle
+, setControlWheels
 , setControlYaw
 , decouplerDecouple
 , decouplerDecoupleStream
@@ -748,29 +1023,6 @@ module KRPCHS.SpaceCenter
 , getIntakeSpeedStream
 , getIntakeSpeedStreamReq
 , setIntakeOpen
-, getLandingGearDeployable
-, getLandingGearDeployableStream
-, getLandingGearDeployableStreamReq
-, getLandingGearDeployed
-, getLandingGearDeployedStream
-, getLandingGearDeployedStreamReq
-, getLandingGearPart
-, getLandingGearPartStream
-, getLandingGearPartStreamReq
-, getLandingGearState
-, getLandingGearStateStream
-, getLandingGearStateStreamReq
-, setLandingGearDeployed
-, getLandingLegDeployed
-, getLandingLegDeployedStream
-, getLandingLegDeployedStreamReq
-, getLandingLegPart
-, getLandingLegPartStream
-, getLandingLegPartStreamReq
-, getLandingLegState
-, getLandingLegStateStream
-, getLandingLegStateStreamReq
-, setLandingLegDeployed
 , launchClampRelease
 , getLaunchClampPart
 , getLaunchClampPartStream
@@ -781,6 +1033,22 @@ module KRPCHS.SpaceCenter
 , launchableVessels
 , launchableVesselsStream
 , launchableVesselsStreamReq
+, getLegDeployable
+, getLegDeployableStream
+, getLegDeployableStreamReq
+, getLegDeployed
+, getLegDeployedStream
+, getLegDeployedStreamReq
+, getLegIsGrounded
+, getLegIsGroundedStream
+, getLegIsGroundedStreamReq
+, getLegPart
+, getLegPartStream
+, getLegPartStreamReq
+, getLegState
+, getLegStateStream
+, getLegStateStreamReq
+, setLegDeployed
 , getLightActive
 , getLightActiveStream
 , getLightActiveStreamReq
@@ -973,7 +1241,11 @@ module KRPCHS.SpaceCenter
 , getOrbitTrueAnomaly
 , getOrbitTrueAnomalyStream
 , getOrbitTrueAnomalyStreamReq
+, parachuteArm
 , parachuteDeploy
+, getParachuteArmed
+, getParachuteArmedStream
+, getParachuteArmedStreamReq
 , getParachuteDeployAltitude
 , getParachuteDeployAltitudeStream
 , getParachuteDeployAltitudeStreamReq
@@ -994,6 +1266,9 @@ module KRPCHS.SpaceCenter
 , partAddForce
 , partAddForceStream
 , partAddForceStreamReq
+, partBoundingBox
+, partBoundingBoxStream
+, partBoundingBoxStreamReq
 , partCenterOfMass
 , partCenterOfMassStream
 , partCenterOfMassStreamReq
@@ -1010,6 +1285,9 @@ module KRPCHS.SpaceCenter
 , partVelocity
 , partVelocityStream
 , partVelocityStreamReq
+, getPartAntenna
+, getPartAntennaStream
+, getPartAntennaStreamReq
 , getPartAxiallyAttached
 , getPartAxiallyAttachedStream
 , getPartAxiallyAttachedStreamReq
@@ -1061,6 +1339,12 @@ module KRPCHS.SpaceCenter
 , getPartFuelLinesTo
 , getPartFuelLinesToStream
 , getPartFuelLinesToStreamReq
+, getPartHighlightColor
+, getPartHighlightColorStream
+, getPartHighlightColorStreamReq
+, getPartHighlighted
+, getPartHighlightedStream
+, getPartHighlightedStreamReq
 , getPartImpactTolerance
 , getPartImpactToleranceStream
 , getPartImpactToleranceStreamReq
@@ -1073,15 +1357,12 @@ module KRPCHS.SpaceCenter
 , getPartIsFuelLine
 , getPartIsFuelLineStream
 , getPartIsFuelLineStreamReq
-, getPartLandingGear
-, getPartLandingGearStream
-, getPartLandingGearStreamReq
-, getPartLandingLeg
-, getPartLandingLegStream
-, getPartLandingLegStreamReq
 , getPartLaunchClamp
 , getPartLaunchClampStream
 , getPartLaunchClampStreamReq
+, getPartLeg
+, getPartLegStream
+, getPartLegStreamReq
 , getPartLight
 , getPartLightStream
 , getPartLightStreamReq
@@ -1187,6 +1468,11 @@ module KRPCHS.SpaceCenter
 , getPartVessel
 , getPartVesselStream
 , getPartVesselStreamReq
+, getPartWheel
+, getPartWheelStream
+, getPartWheelStreamReq
+, setPartHighlightColor
+, setPartHighlighted
 , setPartTag
 , partsInDecoupleStage
 , partsInDecoupleStageStream
@@ -1212,6 +1498,9 @@ module KRPCHS.SpaceCenter
 , getPartsAll
 , getPartsAllStream
 , getPartsAllStreamReq
+, getPartsAntennas
+, getPartsAntennasStream
+, getPartsAntennasStreamReq
 , getPartsCargoBays
 , getPartsCargoBaysStream
 , getPartsCargoBaysStreamReq
@@ -1239,15 +1528,12 @@ module KRPCHS.SpaceCenter
 , getPartsIntakes
 , getPartsIntakesStream
 , getPartsIntakesStreamReq
-, getPartsLandingGear
-, getPartsLandingGearStream
-, getPartsLandingGearStreamReq
-, getPartsLandingLegs
-, getPartsLandingLegsStream
-, getPartsLandingLegsStreamReq
 , getPartsLaunchClamps
 , getPartsLaunchClampsStream
 , getPartsLaunchClampsStreamReq
+, getPartsLegs
+, getPartsLegsStream
+, getPartsLegsStreamReq
 , getPartsLights
 , getPartsLightsStream
 , getPartsLightsStreamReq
@@ -1278,10 +1564,10 @@ module KRPCHS.SpaceCenter
 , getPartsSolarPanels
 , getPartsSolarPanelsStream
 , getPartsSolarPanelsStreamReq
+, getPartsWheels
+, getPartsWheelsStream
+, getPartsWheelsStreamReq
 , setPartsControlling
-, getPropellantConnectedResources
-, getPropellantConnectedResourcesStream
-, getPropellantConnectedResourcesStreamReq
 , getPropellantCurrentAmount
 , getPropellantCurrentAmountStream
 , getPropellantCurrentAmountStreamReq
@@ -1407,6 +1693,12 @@ module KRPCHS.SpaceCenter
 , getReactionWheelPartStream
 , getReactionWheelPartStreamReq
 , setReactionWheelActive
+, referenceFrameCreateHybrid
+, referenceFrameCreateHybridStream
+, referenceFrameCreateHybridStreamReq
+, referenceFrameCreateRelative
+, referenceFrameCreateRelativeStream
+, referenceFrameCreateRelativeStreamReq
 , resourceConverterActive
 , resourceConverterActiveStream
 , resourceConverterActiveStreamReq
@@ -1555,13 +1847,13 @@ module KRPCHS.SpaceCenter
 , getSensorPart
 , getSensorPartStream
 , getSensorPartStreamReq
-, getSensorPowerUsage
-, getSensorPowerUsageStream
-, getSensorPowerUsageStreamReq
 , getSensorValue
 , getSensorValueStream
 , getSensorValueStreamReq
 , setSensorActive
+, getSolarPanelDeployable
+, getSolarPanelDeployableStream
+, getSolarPanelDeployableStreamReq
 , getSolarPanelDeployed
 , getSolarPanelDeployedStream
 , getSolarPanelDeployedStreamReq
@@ -1620,6 +1912,9 @@ module KRPCHS.SpaceCenter
 , vesselAngularVelocity
 , vesselAngularVelocityStream
 , vesselAngularVelocityStreamReq
+, vesselBoundingBox
+, vesselBoundingBoxStream
+, vesselBoundingBoxStreamReq
 , vesselDirection
 , vesselDirectionStream
 , vesselDirectionStreamReq
@@ -1648,6 +1943,9 @@ module KRPCHS.SpaceCenter
 , getVesselAvailableEngineTorque
 , getVesselAvailableEngineTorqueStream
 , getVesselAvailableEngineTorqueStreamReq
+, getVesselAvailableOtherTorque
+, getVesselAvailableOtherTorqueStream
+, getVesselAvailableOtherTorqueStreamReq
 , getVesselAvailableRCSTorque
 , getVesselAvailableRCSTorqueStream
 , getVesselAvailableRCSTorqueStreamReq
@@ -1663,6 +1961,9 @@ module KRPCHS.SpaceCenter
 , getVesselBiome
 , getVesselBiomeStream
 , getVesselBiomeStreamReq
+, getVesselComms
+, getVesselCommsStream
+, getVesselCommsStreamReq
 , getVesselControl
 , getVesselControlStream
 , getVesselControlStreamReq
@@ -1760,9 +2061,9 @@ module KRPCHS.SpaceCenter
 , getWaypointColor
 , getWaypointColorStream
 , getWaypointColorStreamReq
-, getWaypointContractId
-, getWaypointContractIdStream
-, getWaypointContractIdStreamReq
+, getWaypointContract
+, getWaypointContractStream
+, getWaypointContractStreamReq
 , getWaypointGrounded
 , getWaypointGroundedStream
 , getWaypointGroundedStreamReq
@@ -1802,6 +2103,110 @@ module KRPCHS.SpaceCenter
 , setWaypointMeanAltitude
 , setWaypointName
 , setWaypointSurfaceAltitude
+, getWheelAutoFrictionControl
+, getWheelAutoFrictionControlStream
+, getWheelAutoFrictionControlStreamReq
+, getWheelBrakes
+, getWheelBrakesStream
+, getWheelBrakesStreamReq
+, getWheelBroken
+, getWheelBrokenStream
+, getWheelBrokenStreamReq
+, getWheelDeflection
+, getWheelDeflectionStream
+, getWheelDeflectionStreamReq
+, getWheelDeployable
+, getWheelDeployableStream
+, getWheelDeployableStreamReq
+, getWheelDeployed
+, getWheelDeployedStream
+, getWheelDeployedStreamReq
+, getWheelDriveLimiter
+, getWheelDriveLimiterStream
+, getWheelDriveLimiterStreamReq
+, getWheelGrounded
+, getWheelGroundedStream
+, getWheelGroundedStreamReq
+, getWheelHasBrakes
+, getWheelHasBrakesStream
+, getWheelHasBrakesStreamReq
+, getWheelHasSuspension
+, getWheelHasSuspensionStream
+, getWheelHasSuspensionStreamReq
+, getWheelManualFrictionControl
+, getWheelManualFrictionControlStream
+, getWheelManualFrictionControlStreamReq
+, getWheelMotorEnabled
+, getWheelMotorEnabledStream
+, getWheelMotorEnabledStreamReq
+, getWheelMotorInverted
+, getWheelMotorInvertedStream
+, getWheelMotorInvertedStreamReq
+, getWheelMotorOutput
+, getWheelMotorOutputStream
+, getWheelMotorOutputStreamReq
+, getWheelMotorState
+, getWheelMotorStateStream
+, getWheelMotorStateStreamReq
+, getWheelPart
+, getWheelPartStream
+, getWheelPartStreamReq
+, getWheelPowered
+, getWheelPoweredStream
+, getWheelPoweredStreamReq
+, getWheelRadius
+, getWheelRadiusStream
+, getWheelRadiusStreamReq
+, getWheelRepairable
+, getWheelRepairableStream
+, getWheelRepairableStreamReq
+, getWheelSlip
+, getWheelSlipStream
+, getWheelSlipStreamReq
+, getWheelState
+, getWheelStateStream
+, getWheelStateStreamReq
+, getWheelSteerable
+, getWheelSteerableStream
+, getWheelSteerableStreamReq
+, getWheelSteeringEnabled
+, getWheelSteeringEnabledStream
+, getWheelSteeringEnabledStreamReq
+, getWheelSteeringInverted
+, getWheelSteeringInvertedStream
+, getWheelSteeringInvertedStreamReq
+, getWheelStress
+, getWheelStressStream
+, getWheelStressStreamReq
+, getWheelStressPercentage
+, getWheelStressPercentageStream
+, getWheelStressPercentageStreamReq
+, getWheelStressTolerance
+, getWheelStressToleranceStream
+, getWheelStressToleranceStreamReq
+, getWheelSuspensionDamperStrength
+, getWheelSuspensionDamperStrengthStream
+, getWheelSuspensionDamperStrengthStreamReq
+, getWheelSuspensionSpringStrength
+, getWheelSuspensionSpringStrengthStream
+, getWheelSuspensionSpringStrengthStreamReq
+, getWheelTractionControl
+, getWheelTractionControlStream
+, getWheelTractionControlStreamReq
+, getWheelTractionControlEnabled
+, getWheelTractionControlEnabledStream
+, getWheelTractionControlEnabledStreamReq
+, setWheelAutoFrictionControl
+, setWheelBrakes
+, setWheelDeployed
+, setWheelDriveLimiter
+, setWheelManualFrictionControl
+, setWheelMotorEnabled
+, setWheelMotorInverted
+, setWheelSteeringEnabled
+, setWheelSteeringInverted
+, setWheelTractionControl
+, setWheelTractionControlEnabled
 , getActiveVessel
 , getActiveVesselStream
 , getActiveVesselStreamReq
@@ -1811,6 +2216,9 @@ module KRPCHS.SpaceCenter
 , getCamera
 , getCameraStream
 , getCameraStreamReq
+, getContractManager
+, getContractManagerStream
+, getContractManagerStreamReq
 , getFARAvailable
 , getFARAvailableStream
 , getFARAvailableStreamReq
@@ -1820,6 +2228,9 @@ module KRPCHS.SpaceCenter
 , getMaximumRailsWarpFactor
 , getMaximumRailsWarpFactorStream
 , getMaximumRailsWarpFactorStreamReq
+, getNavball
+, getNavballStream
+, getNavballStreamReq
 , getPhysicsWarpFactor
 , getPhysicsWarpFactorStream
 , getPhysicsWarpFactorStreamReq
@@ -1835,6 +2246,9 @@ module KRPCHS.SpaceCenter
 , getTargetVessel
 , getTargetVesselStream
 , getTargetVesselStreamReq
+, getUIVisible
+, getUIVisibleStream
+, getUIVisibleStreamReq
 , getUT
 , getUTStream
 , getUTStreamReq
@@ -1854,21 +2268,36 @@ module KRPCHS.SpaceCenter
 , getWaypointManagerStream
 , getWaypointManagerStreamReq
 , setActiveVessel
+, setNavball
 , setPhysicsWarpFactor
 , setRailsWarpFactor
 , setTargetBody
 , setTargetDockingPort
 , setTargetVessel
+, setUIVisible
 ) where
 
 import qualified Data.Int
 import qualified Data.Map
+import qualified Data.Set
 import qualified Data.Text
 import qualified Data.Word
 
 import KRPCHS.Internal.Requests
 import KRPCHS.Internal.SerializeUtils
 
+
+{-
+ - An antenna. Obtained by calling <see cref="M:SpaceCenter.Part.Antenna" />.
+ -}
+newtype Antenna = Antenna { antennaId :: Int }
+    deriving (Show, Eq, Ord)
+
+instance PbSerializable Antenna where
+    encodePb   = encodePb . antennaId
+    decodePb b = Antenna <$> decodePb b
+
+instance KRPCResponseExtractable Antenna
 
 {-
  - Provides basic auto-piloting utilities for a vessel.
@@ -1921,6 +2350,80 @@ instance PbSerializable CelestialBody where
     decodePb b = CelestialBody <$> decodePb b
 
 instance KRPCResponseExtractable CelestialBody
+
+{-
+ - Represents a communication node in the network. For example, a vessel or the KSC.
+ -}
+newtype CommLink = CommLink { commLinkId :: Int }
+    deriving (Show, Eq, Ord)
+
+instance PbSerializable CommLink where
+    encodePb   = encodePb . commLinkId
+    decodePb b = CommLink <$> decodePb b
+
+instance KRPCResponseExtractable CommLink
+
+{-
+ - Represents a communication node in the network. For example, a vessel or the KSC.
+ -}
+newtype CommNode = CommNode { commNodeId :: Int }
+    deriving (Show, Eq, Ord)
+
+instance PbSerializable CommNode where
+    encodePb   = encodePb . commNodeId
+    decodePb b = CommNode <$> decodePb b
+
+instance KRPCResponseExtractable CommNode
+
+{-
+ - Used to interact with CommNet for a given vessel.
+ - Obtained by calling <see cref="M:SpaceCenter.Vessel.Comms" />.
+ -}
+newtype Comms = Comms { commsId :: Int }
+    deriving (Show, Eq, Ord)
+
+instance PbSerializable Comms where
+    encodePb   = encodePb . commsId
+    decodePb b = Comms <$> decodePb b
+
+instance KRPCResponseExtractable Comms
+
+{-
+ - A contract. Can be accessed using <see cref="M:SpaceCenter.ContractManager" />.
+ -}
+newtype Contract = Contract { contractId :: Int }
+    deriving (Show, Eq, Ord)
+
+instance PbSerializable Contract where
+    encodePb   = encodePb . contractId
+    decodePb b = Contract <$> decodePb b
+
+instance KRPCResponseExtractable Contract
+
+{-
+ - Contracts manager.
+ - Obtained by calling <see cref="M:SpaceCenter.WaypointManager" />.
+ -}
+newtype ContractManager = ContractManager { contractManagerId :: Int }
+    deriving (Show, Eq, Ord)
+
+instance PbSerializable ContractManager where
+    encodePb   = encodePb . contractManagerId
+    decodePb b = ContractManager <$> decodePb b
+
+instance KRPCResponseExtractable ContractManager
+
+{-
+ - A contract parameter. See <see cref="M:SpaceCenter.Contract.Parameters" />.
+ -}
+newtype ContractParameter = ContractParameter { contractParameterId :: Int }
+    deriving (Show, Eq, Ord)
+
+instance PbSerializable ContractParameter where
+    encodePb   = encodePb . contractParameterId
+    decodePb b = ContractParameter <$> decodePb b
+
+instance KRPCResponseExtractable ContractParameter
 
 {-
  - Used to manipulate the controls of a vessel. This includes adjusting the
@@ -2052,30 +2555,6 @@ instance PbSerializable Intake where
 instance KRPCResponseExtractable Intake
 
 {-
- - Landing gear with wheels. Obtained by calling <see cref="M:SpaceCenter.Part.LandingGear" />.
- -}
-newtype LandingGear = LandingGear { landingGearId :: Int }
-    deriving (Show, Eq, Ord)
-
-instance PbSerializable LandingGear where
-    encodePb   = encodePb . landingGearId
-    decodePb b = LandingGear <$> decodePb b
-
-instance KRPCResponseExtractable LandingGear
-
-{-
- - A landing leg. Obtained by calling <see cref="M:SpaceCenter.Part.LandingLeg" />.
- -}
-newtype LandingLeg = LandingLeg { landingLegId :: Int }
-    deriving (Show, Eq, Ord)
-
-instance PbSerializable LandingLeg where
-    encodePb   = encodePb . landingLegId
-    decodePb b = LandingLeg <$> decodePb b
-
-instance KRPCResponseExtractable LandingLeg
-
-{-
  - A launch clamp. Obtained by calling <see cref="M:SpaceCenter.Part.LaunchClamp" />.
  -}
 newtype LaunchClamp = LaunchClamp { launchClampId :: Int }
@@ -2086,6 +2565,18 @@ instance PbSerializable LaunchClamp where
     decodePb b = LaunchClamp <$> decodePb b
 
 instance KRPCResponseExtractable LaunchClamp
+
+{-
+ - A landing leg. Obtained by calling <see cref="M:SpaceCenter.Part.Leg" />.
+ -}
+newtype Leg = Leg { legId :: Int }
+    deriving (Show, Eq, Ord)
+
+instance PbSerializable Leg where
+    encodePb   = encodePb . legId
+    decodePb b = Leg <$> decodePb b
+
+instance KRPCResponseExtractable Leg
 
 {-
  - A light. Obtained by calling <see cref="M:SpaceCenter.Part.Light" />.
@@ -2397,7 +2888,7 @@ instance PbSerializable Waypoint where
 instance KRPCResponseExtractable Waypoint
 
 {-
- - Waypoints are the location markers you can see on the map view showing you where contracts are targeted for. 
+ - Waypoints are the location markers you can see on the map view showing you where contracts are targeted for.
  - With this structure, you can obtain coordinate data for the locations of these waypoints.
  - Obtained by calling <see cref="M:SpaceCenter.WaypointManager" />.
  -}
@@ -2410,6 +2901,36 @@ instance PbSerializable WaypointManager where
 
 instance KRPCResponseExtractable WaypointManager
 
+{-
+ - A wheel. Includes landing gear and rover wheels. Obtained by calling <see cref="M:SpaceCenter.Part.Wheel" />.
+ - Can be used to control the motors, steering and deployment of wheels, among other things.
+ -}
+newtype Wheel = Wheel { wheelId :: Int }
+    deriving (Show, Eq, Ord)
+
+instance PbSerializable Wheel where
+    encodePb   = encodePb . wheelId
+    decodePb b = Wheel <$> decodePb b
+
+instance KRPCResponseExtractable Wheel
+
+
+{-
+ - The state of an antenna. See <see cref="M:SpaceCenter.Antenna.State" />.
+ -}
+data AntennaState
+    = AntennaState'Deployed
+    | AntennaState'Retracted
+    | AntennaState'Deploying
+    | AntennaState'Retracting
+    | AntennaState'Broken
+    deriving (Show, Eq, Ord, Enum)
+
+instance PbSerializable AntennaState where
+    encodePb   = encodePb . fromEnum
+    decodePb b = toEnum <$> decodePb b
+
+instance KRPCResponseExtractable AntennaState
 
 {-
  - See <see cref="M:SpaceCenter.Camera.Mode" />.
@@ -2447,6 +2968,76 @@ instance PbSerializable CargoBayState where
 instance KRPCResponseExtractable CargoBayState
 
 {-
+ - The type of a communication link.
+ - See <see cref="M:SpaceCenter.CommLink.Type" />.
+ -}
+data CommLinkType
+    = CommLinkType'Home
+    | CommLinkType'Control
+    | CommLinkType'Relay
+    deriving (Show, Eq, Ord, Enum)
+
+instance PbSerializable CommLinkType where
+    encodePb   = encodePb . fromEnum
+    decodePb b = toEnum <$> decodePb b
+
+instance KRPCResponseExtractable CommLinkType
+
+{-
+ - The state of a contract. See <see cref="M:SpaceCenter.Contract.State" />.
+ -}
+data ContractState
+    = ContractState'Active
+    | ContractState'Canceled
+    | ContractState'Completed
+    | ContractState'DeadlineExpired
+    | ContractState'Declined
+    | ContractState'Failed
+    | ContractState'Generated
+    | ContractState'Offered
+    | ContractState'OfferExpired
+    | ContractState'Withdrawn
+    deriving (Show, Eq, Ord, Enum)
+
+instance PbSerializable ContractState where
+    encodePb   = encodePb . fromEnum
+    decodePb b = toEnum <$> decodePb b
+
+instance KRPCResponseExtractable ContractState
+
+{-
+ - The control source of a vessel.
+ - See <see cref="M:SpaceCenter.Control.Source" />.
+ -}
+data ControlSource
+    = ControlSource'Kerbal
+    | ControlSource'Probe
+    | ControlSource'None
+    deriving (Show, Eq, Ord, Enum)
+
+instance PbSerializable ControlSource where
+    encodePb   = encodePb . fromEnum
+    decodePb b = toEnum <$> decodePb b
+
+instance KRPCResponseExtractable ControlSource
+
+{-
+ - The control state of a vessel.
+ - See <see cref="M:SpaceCenter.Control.State" />.
+ -}
+data ControlState
+    = ControlState'Full
+    | ControlState'Partial
+    | ControlState'None
+    deriving (Show, Eq, Ord, Enum)
+
+instance PbSerializable ControlState where
+    encodePb   = encodePb . fromEnum
+    decodePb b = toEnum <$> decodePb b
+
+instance KRPCResponseExtractable ControlState
+
+{-
  - The state of a docking port. See <see cref="M:SpaceCenter.DockingPort.State" />.
  -}
 data DockingPortState
@@ -2465,48 +3056,49 @@ instance PbSerializable DockingPortState where
 instance KRPCResponseExtractable DockingPortState
 
 {-
- - The state of a landing gear. See <see cref="M:SpaceCenter.LandingGear.State" />.
+ - The state of a landing leg. See <see cref="M:SpaceCenter.Leg.State" />.
  -}
-data LandingGearState
-    = LandingGearState'Deployed
-    | LandingGearState'Retracted
-    | LandingGearState'Deploying
-    | LandingGearState'Retracting
-    | LandingGearState'Broken
+data LegState
+    = LegState'Deployed
+    | LegState'Retracted
+    | LegState'Deploying
+    | LegState'Retracting
+    | LegState'Broken
     deriving (Show, Eq, Ord, Enum)
 
-instance PbSerializable LandingGearState where
+instance PbSerializable LegState where
     encodePb   = encodePb . fromEnum
     decodePb b = toEnum <$> decodePb b
 
-instance KRPCResponseExtractable LandingGearState
+instance KRPCResponseExtractable LegState
 
 {-
- - The state of a landing leg. See <see cref="M:SpaceCenter.LandingLeg.State" />.
+ - The state of the motor on a powered wheel. See <see cref="M:SpaceCenter.Wheel.MotorState" />.
  -}
-data LandingLegState
-    = LandingLegState'Deployed
-    | LandingLegState'Retracted
-    | LandingLegState'Deploying
-    | LandingLegState'Retracting
-    | LandingLegState'Broken
+data MotorState
+    = MotorState'Idle
+    | MotorState'Running
+    | MotorState'Disabled
+    | MotorState'Inoperable
+    | MotorState'NotEnoughResources
     deriving (Show, Eq, Ord, Enum)
 
-instance PbSerializable LandingLegState where
+instance PbSerializable MotorState where
     encodePb   = encodePb . fromEnum
     decodePb b = toEnum <$> decodePb b
 
-instance KRPCResponseExtractable LandingLegState
+instance KRPCResponseExtractable MotorState
 
 {-
  - The state of a parachute. See <see cref="M:SpaceCenter.Parachute.State" />.
  -}
 data ParachuteState
-    = ParachuteState'Active
-    | ParachuteState'Cut
-    | ParachuteState'Deployed
+    = ParachuteState'Stowed
+    | ParachuteState'Armed
+    | ParachuteState'Active
     | ParachuteState'SemiDeployed
-    | ParachuteState'Stowed
+    | ParachuteState'Deployed
+    | ParachuteState'Cut
     deriving (Show, Eq, Ord, Enum)
 
 instance PbSerializable ParachuteState where
@@ -2695,6 +3287,265 @@ instance PbSerializable WarpMode where
 
 instance KRPCResponseExtractable WarpMode
 
+{-
+ - The state of a wheel. See <see cref="M:SpaceCenter.Wheel.State" />.
+ -}
+data WheelState
+    = WheelState'Deployed
+    | WheelState'Retracted
+    | WheelState'Deploying
+    | WheelState'Retracting
+    | WheelState'Broken
+    deriving (Show, Eq, Ord, Enum)
+
+instance PbSerializable WheelState where
+    encodePb   = encodePb . fromEnum
+    decodePb b = toEnum <$> decodePb b
+
+instance KRPCResponseExtractable WheelState
+
+
+{-
+ - Cancel current transmission of data.
+ -}
+antennaCancel :: KRPCHS.SpaceCenter.Antenna -> RPCContext ()
+antennaCancel thisArg = do
+    let r = makeRequest "SpaceCenter" "Antenna_Cancel" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - Transmit data.
+ -}
+antennaTransmit :: KRPCHS.SpaceCenter.Antenna -> RPCContext ()
+antennaTransmit thisArg = do
+    let r = makeRequest "SpaceCenter" "Antenna_Transmit" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - Whether partial data transmission is permitted.
+ -}
+getAntennaAllowPartial :: KRPCHS.SpaceCenter.Antenna -> RPCContext (Bool)
+getAntennaAllowPartial thisArg = do
+    let r = makeRequest "SpaceCenter" "Antenna_get_AllowPartial" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getAntennaAllowPartialStreamReq :: KRPCHS.SpaceCenter.Antenna -> KRPCStreamReq (Bool)
+getAntennaAllowPartialStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Antenna_get_AllowPartial" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getAntennaAllowPartialStream :: KRPCHS.SpaceCenter.Antenna -> RPCContext (KRPCStream (Bool))
+getAntennaAllowPartialStream thisArg = requestStream $ getAntennaAllowPartialStreamReq thisArg 
+
+{-
+ - Whether data can be transmitted by this antenna.
+ -}
+getAntennaCanTransmit :: KRPCHS.SpaceCenter.Antenna -> RPCContext (Bool)
+getAntennaCanTransmit thisArg = do
+    let r = makeRequest "SpaceCenter" "Antenna_get_CanTransmit" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getAntennaCanTransmitStreamReq :: KRPCHS.SpaceCenter.Antenna -> KRPCStreamReq (Bool)
+getAntennaCanTransmitStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Antenna_get_CanTransmit" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getAntennaCanTransmitStream :: KRPCHS.SpaceCenter.Antenna -> RPCContext (KRPCStream (Bool))
+getAntennaCanTransmitStream thisArg = requestStream $ getAntennaCanTransmitStreamReq thisArg 
+
+{-
+ - Whether the antenna can be combined with other antennae on the vessel to boost the power.
+ -}
+getAntennaCombinable :: KRPCHS.SpaceCenter.Antenna -> RPCContext (Bool)
+getAntennaCombinable thisArg = do
+    let r = makeRequest "SpaceCenter" "Antenna_get_Combinable" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getAntennaCombinableStreamReq :: KRPCHS.SpaceCenter.Antenna -> KRPCStreamReq (Bool)
+getAntennaCombinableStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Antenna_get_Combinable" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getAntennaCombinableStream :: KRPCHS.SpaceCenter.Antenna -> RPCContext (KRPCStream (Bool))
+getAntennaCombinableStream thisArg = requestStream $ getAntennaCombinableStreamReq thisArg 
+
+{-
+ - Exponent used to calculate the combined power of multiple antennae on a vessel.
+ -}
+getAntennaCombinableExponent :: KRPCHS.SpaceCenter.Antenna -> RPCContext (Double)
+getAntennaCombinableExponent thisArg = do
+    let r = makeRequest "SpaceCenter" "Antenna_get_CombinableExponent" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getAntennaCombinableExponentStreamReq :: KRPCHS.SpaceCenter.Antenna -> KRPCStreamReq (Double)
+getAntennaCombinableExponentStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Antenna_get_CombinableExponent" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getAntennaCombinableExponentStream :: KRPCHS.SpaceCenter.Antenna -> RPCContext (KRPCStream (Double))
+getAntennaCombinableExponentStream thisArg = requestStream $ getAntennaCombinableExponentStreamReq thisArg 
+
+{-
+ - Whether the antenna is deployable.
+ -}
+getAntennaDeployable :: KRPCHS.SpaceCenter.Antenna -> RPCContext (Bool)
+getAntennaDeployable thisArg = do
+    let r = makeRequest "SpaceCenter" "Antenna_get_Deployable" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getAntennaDeployableStreamReq :: KRPCHS.SpaceCenter.Antenna -> KRPCStreamReq (Bool)
+getAntennaDeployableStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Antenna_get_Deployable" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getAntennaDeployableStream :: KRPCHS.SpaceCenter.Antenna -> RPCContext (KRPCStream (Bool))
+getAntennaDeployableStream thisArg = requestStream $ getAntennaDeployableStreamReq thisArg 
+
+{-
+ - Whether the antenna is deployed.Fixed antennas are always deployed.
+ - Returns an error if you try to deploy a fixed antenna.
+ -}
+getAntennaDeployed :: KRPCHS.SpaceCenter.Antenna -> RPCContext (Bool)
+getAntennaDeployed thisArg = do
+    let r = makeRequest "SpaceCenter" "Antenna_get_Deployed" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getAntennaDeployedStreamReq :: KRPCHS.SpaceCenter.Antenna -> KRPCStreamReq (Bool)
+getAntennaDeployedStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Antenna_get_Deployed" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getAntennaDeployedStream :: KRPCHS.SpaceCenter.Antenna -> RPCContext (KRPCStream (Bool))
+getAntennaDeployedStream thisArg = requestStream $ getAntennaDeployedStreamReq thisArg 
+
+{-
+ - Interval between sending packets in seconds.
+ -}
+getAntennaPacketInterval :: KRPCHS.SpaceCenter.Antenna -> RPCContext (Float)
+getAntennaPacketInterval thisArg = do
+    let r = makeRequest "SpaceCenter" "Antenna_get_PacketInterval" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getAntennaPacketIntervalStreamReq :: KRPCHS.SpaceCenter.Antenna -> KRPCStreamReq (Float)
+getAntennaPacketIntervalStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Antenna_get_PacketInterval" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getAntennaPacketIntervalStream :: KRPCHS.SpaceCenter.Antenna -> RPCContext (KRPCStream (Float))
+getAntennaPacketIntervalStream thisArg = requestStream $ getAntennaPacketIntervalStreamReq thisArg 
+
+{-
+ - Units of electric charge consumed per packet sent.
+ -}
+getAntennaPacketResourceCost :: KRPCHS.SpaceCenter.Antenna -> RPCContext (Double)
+getAntennaPacketResourceCost thisArg = do
+    let r = makeRequest "SpaceCenter" "Antenna_get_PacketResourceCost" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getAntennaPacketResourceCostStreamReq :: KRPCHS.SpaceCenter.Antenna -> KRPCStreamReq (Double)
+getAntennaPacketResourceCostStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Antenna_get_PacketResourceCost" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getAntennaPacketResourceCostStream :: KRPCHS.SpaceCenter.Antenna -> RPCContext (KRPCStream (Double))
+getAntennaPacketResourceCostStream thisArg = requestStream $ getAntennaPacketResourceCostStreamReq thisArg 
+
+{-
+ - Amount of data sent per packet in Mits.
+ -}
+getAntennaPacketSize :: KRPCHS.SpaceCenter.Antenna -> RPCContext (Float)
+getAntennaPacketSize thisArg = do
+    let r = makeRequest "SpaceCenter" "Antenna_get_PacketSize" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getAntennaPacketSizeStreamReq :: KRPCHS.SpaceCenter.Antenna -> KRPCStreamReq (Float)
+getAntennaPacketSizeStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Antenna_get_PacketSize" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getAntennaPacketSizeStream :: KRPCHS.SpaceCenter.Antenna -> RPCContext (KRPCStream (Float))
+getAntennaPacketSizeStream thisArg = requestStream $ getAntennaPacketSizeStreamReq thisArg 
+
+{-
+ - The part object for this antenna.
+ -}
+getAntennaPart :: KRPCHS.SpaceCenter.Antenna -> RPCContext (KRPCHS.SpaceCenter.Part)
+getAntennaPart thisArg = do
+    let r = makeRequest "SpaceCenter" "Antenna_get_Part" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getAntennaPartStreamReq :: KRPCHS.SpaceCenter.Antenna -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
+getAntennaPartStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Antenna_get_Part" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getAntennaPartStream :: KRPCHS.SpaceCenter.Antenna -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getAntennaPartStream thisArg = requestStream $ getAntennaPartStreamReq thisArg 
+
+{-
+ - The power of the antenna.
+ -}
+getAntennaPower :: KRPCHS.SpaceCenter.Antenna -> RPCContext (Double)
+getAntennaPower thisArg = do
+    let r = makeRequest "SpaceCenter" "Antenna_get_Power" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getAntennaPowerStreamReq :: KRPCHS.SpaceCenter.Antenna -> KRPCStreamReq (Double)
+getAntennaPowerStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Antenna_get_Power" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getAntennaPowerStream :: KRPCHS.SpaceCenter.Antenna -> RPCContext (KRPCStream (Double))
+getAntennaPowerStream thisArg = requestStream $ getAntennaPowerStreamReq thisArg 
+
+{-
+ - The current state of the antenna.
+ -}
+getAntennaState :: KRPCHS.SpaceCenter.Antenna -> RPCContext (KRPCHS.SpaceCenter.AntennaState)
+getAntennaState thisArg = do
+    let r = makeRequest "SpaceCenter" "Antenna_get_State" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getAntennaStateStreamReq :: KRPCHS.SpaceCenter.Antenna -> KRPCStreamReq (KRPCHS.SpaceCenter.AntennaState)
+getAntennaStateStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Antenna_get_State" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getAntennaStateStream :: KRPCHS.SpaceCenter.Antenna -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.AntennaState))
+getAntennaStateStream thisArg = requestStream $ getAntennaStateStreamReq thisArg 
+
+{-
+ - Whether partial data transmission is permitted.
+ -}
+setAntennaAllowPartial :: KRPCHS.SpaceCenter.Antenna -> Bool -> RPCContext ()
+setAntennaAllowPartial thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Antenna_set_AllowPartial" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - Whether the antenna is deployed.Fixed antennas are always deployed.
+ - Returns an error if you try to deploy a fixed antenna.
+ -}
+setAntennaDeployed :: KRPCHS.SpaceCenter.Antenna -> Bool -> RPCContext ()
+setAntennaDeployed thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Antenna_set_Deployed" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
 
 {-
  - Disengage the auto-pilot.
@@ -2755,7 +3606,7 @@ getAutoPilotAttenuationAngleStream thisArg = requestStream $ getAutoPilotAttenua
 {-
  - Whether the rotation rate controllers PID parameters should be automatically tuned using the
  - vessels moment of inertia and available torque. Defaults totrue.
- - See <see cref="M:SpaceCenter.AutoPilot.TimeToPeak" /> and  <see cref="M:SpaceCenter.AutoPilot.Overshoot" />.
+ - See <see cref="M:SpaceCenter.AutoPilot.TimeToPeak" /> and <see cref="M:SpaceCenter.AutoPilot.Overshoot" />.
  -}
 getAutoPilotAutoTune :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Bool)
 getAutoPilotAutoTune thisArg = do
@@ -3127,7 +3978,7 @@ setAutoPilotAttenuationAngle thisArg valueArg = do
 {-
  - Whether the rotation rate controllers PID parameters should be automatically tuned using the
  - vessels moment of inertia and available torque. Defaults totrue.
- - See <see cref="M:SpaceCenter.AutoPilot.TimeToPeak" /> and  <see cref="M:SpaceCenter.AutoPilot.Overshoot" />.
+ - See <see cref="M:SpaceCenter.AutoPilot.TimeToPeak" /> and <see cref="M:SpaceCenter.AutoPilot.Overshoot" />.
  -}
 setAutoPilotAutoTune :: KRPCHS.SpaceCenter.AutoPilot -> Bool -> RPCContext ()
 setAutoPilotAutoTune thisArg valueArg = do
@@ -3862,18 +4713,18 @@ getCelestialBodyAtmosphereDepthStream thisArg = requestStream $ getCelestialBody
 {-
  - The biomes present on this body.
  -}
-getCelestialBodyBiomes :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext ([Data.Text.Text])
+getCelestialBodyBiomes :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Data.Set.Set Data.Text.Text)
 getCelestialBodyBiomes thisArg = do
     let r = makeRequest "SpaceCenter" "CelestialBody_get_Biomes" [makeArgument 0 thisArg]
     res <- sendRequest r
     processResponse res
 
-getCelestialBodyBiomesStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> KRPCStreamReq ([Data.Text.Text])
+getCelestialBodyBiomesStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> KRPCStreamReq (Data.Set.Set Data.Text.Text)
 getCelestialBodyBiomesStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CelestialBody_get_Biomes" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCelestialBodyBiomesStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream ([Data.Text.Text]))
+getCelestialBodyBiomesStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Data.Set.Set Data.Text.Text))
 getCelestialBodyBiomesStream thisArg = requestStream $ getCelestialBodyBiomesStreamReq thisArg 
 
 {-
@@ -3961,6 +4812,23 @@ getCelestialBodyHasAtmosphericOxygenStreamReq thisArg =
 
 getCelestialBodyHasAtmosphericOxygenStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Bool))
 getCelestialBodyHasAtmosphericOxygenStream thisArg = requestStream $ getCelestialBodyHasAtmosphericOxygenStreamReq thisArg 
+
+{-
+ - The initial rotation angle of the body (at UT 0), in radians.
+ -}
+getCelestialBodyInitialRotation :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Double)
+getCelestialBodyInitialRotation thisArg = do
+    let r = makeRequest "SpaceCenter" "CelestialBody_get_InitialRotation" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getCelestialBodyInitialRotationStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> KRPCStreamReq (Double)
+getCelestialBodyInitialRotationStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "CelestialBody_get_InitialRotation" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getCelestialBodyInitialRotationStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Double))
+getCelestialBodyInitialRotationStream thisArg = requestStream $ getCelestialBodyInitialRotationStreamReq thisArg 
 
 {-
  - The mass of the body, in kilograms.
@@ -4078,6 +4946,23 @@ getCelestialBodyReferenceFrameStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCC
 getCelestialBodyReferenceFrameStream thisArg = requestStream $ getCelestialBodyReferenceFrameStreamReq thisArg 
 
 {-
+ - The current rotation angle of the body, in radians.
+ -}
+getCelestialBodyRotationAngle :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Double)
+getCelestialBodyRotationAngle thisArg = do
+    let r = makeRequest "SpaceCenter" "CelestialBody_get_RotationAngle" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getCelestialBodyRotationAngleStreamReq :: KRPCHS.SpaceCenter.CelestialBody -> KRPCStreamReq (Double)
+getCelestialBodyRotationAngleStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "CelestialBody_get_RotationAngle" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getCelestialBodyRotationAngleStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Double))
+getCelestialBodyRotationAngleStream thisArg = requestStream $ getCelestialBodyRotationAngleStreamReq thisArg 
+
+{-
  - The sidereal rotational period of the body, in seconds.
  -}
 getCelestialBodyRotationalPeriod :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Float)
@@ -4189,21 +5074,967 @@ clearTarget  = do
     processResponse res 
 
 {-
- - The available torque in the pitch, roll and yaw axes of the vessel, in Newton meters.
+ - Start point of the link.
+ -}
+getCommLinkEnd :: KRPCHS.SpaceCenter.CommLink -> RPCContext (KRPCHS.SpaceCenter.CommNode)
+getCommLinkEnd thisArg = do
+    let r = makeRequest "SpaceCenter" "CommLink_get_End" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getCommLinkEndStreamReq :: KRPCHS.SpaceCenter.CommLink -> KRPCStreamReq (KRPCHS.SpaceCenter.CommNode)
+getCommLinkEndStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "CommLink_get_End" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getCommLinkEndStream :: KRPCHS.SpaceCenter.CommLink -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.CommNode))
+getCommLinkEndStream thisArg = requestStream $ getCommLinkEndStreamReq thisArg 
+
+{-
+ - Signal strength of the link.
+ -}
+getCommLinkSignalStrength :: KRPCHS.SpaceCenter.CommLink -> RPCContext (Double)
+getCommLinkSignalStrength thisArg = do
+    let r = makeRequest "SpaceCenter" "CommLink_get_SignalStrength" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getCommLinkSignalStrengthStreamReq :: KRPCHS.SpaceCenter.CommLink -> KRPCStreamReq (Double)
+getCommLinkSignalStrengthStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "CommLink_get_SignalStrength" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getCommLinkSignalStrengthStream :: KRPCHS.SpaceCenter.CommLink -> RPCContext (KRPCStream (Double))
+getCommLinkSignalStrengthStream thisArg = requestStream $ getCommLinkSignalStrengthStreamReq thisArg 
+
+{-
+ - Start point of the link.
+ -}
+getCommLinkStart :: KRPCHS.SpaceCenter.CommLink -> RPCContext (KRPCHS.SpaceCenter.CommNode)
+getCommLinkStart thisArg = do
+    let r = makeRequest "SpaceCenter" "CommLink_get_Start" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getCommLinkStartStreamReq :: KRPCHS.SpaceCenter.CommLink -> KRPCStreamReq (KRPCHS.SpaceCenter.CommNode)
+getCommLinkStartStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "CommLink_get_Start" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getCommLinkStartStream :: KRPCHS.SpaceCenter.CommLink -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.CommNode))
+getCommLinkStartStream thisArg = requestStream $ getCommLinkStartStreamReq thisArg 
+
+{-
+ - The type of link.
+ -}
+getCommLinkType :: KRPCHS.SpaceCenter.CommLink -> RPCContext (KRPCHS.SpaceCenter.CommLinkType)
+getCommLinkType thisArg = do
+    let r = makeRequest "SpaceCenter" "CommLink_get_Type" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getCommLinkTypeStreamReq :: KRPCHS.SpaceCenter.CommLink -> KRPCStreamReq (KRPCHS.SpaceCenter.CommLinkType)
+getCommLinkTypeStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "CommLink_get_Type" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getCommLinkTypeStream :: KRPCHS.SpaceCenter.CommLink -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.CommLinkType))
+getCommLinkTypeStream thisArg = requestStream $ getCommLinkTypeStreamReq thisArg 
+
+{-
+ - Whether the communication node is a control point, for example a manned vessel.
+ -}
+getCommNodeIsControlPoint :: KRPCHS.SpaceCenter.CommNode -> RPCContext (Bool)
+getCommNodeIsControlPoint thisArg = do
+    let r = makeRequest "SpaceCenter" "CommNode_get_IsControlPoint" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getCommNodeIsControlPointStreamReq :: KRPCHS.SpaceCenter.CommNode -> KRPCStreamReq (Bool)
+getCommNodeIsControlPointStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "CommNode_get_IsControlPoint" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getCommNodeIsControlPointStream :: KRPCHS.SpaceCenter.CommNode -> RPCContext (KRPCStream (Bool))
+getCommNodeIsControlPointStream thisArg = requestStream $ getCommNodeIsControlPointStreamReq thisArg 
+
+{-
+ - Whether the communication node is on Kerbin.
+ -}
+getCommNodeIsHome :: KRPCHS.SpaceCenter.CommNode -> RPCContext (Bool)
+getCommNodeIsHome thisArg = do
+    let r = makeRequest "SpaceCenter" "CommNode_get_IsHome" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getCommNodeIsHomeStreamReq :: KRPCHS.SpaceCenter.CommNode -> KRPCStreamReq (Bool)
+getCommNodeIsHomeStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "CommNode_get_IsHome" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getCommNodeIsHomeStream :: KRPCHS.SpaceCenter.CommNode -> RPCContext (KRPCStream (Bool))
+getCommNodeIsHomeStream thisArg = requestStream $ getCommNodeIsHomeStreamReq thisArg 
+
+{-
+ - Whether the communication node is a vessel.
+ -}
+getCommNodeIsVessel :: KRPCHS.SpaceCenter.CommNode -> RPCContext (Bool)
+getCommNodeIsVessel thisArg = do
+    let r = makeRequest "SpaceCenter" "CommNode_get_IsVessel" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getCommNodeIsVesselStreamReq :: KRPCHS.SpaceCenter.CommNode -> KRPCStreamReq (Bool)
+getCommNodeIsVesselStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "CommNode_get_IsVessel" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getCommNodeIsVesselStream :: KRPCHS.SpaceCenter.CommNode -> RPCContext (KRPCStream (Bool))
+getCommNodeIsVesselStream thisArg = requestStream $ getCommNodeIsVesselStreamReq thisArg 
+
+{-
+ - Name of the communication node.
+ -}
+getCommNodeName :: KRPCHS.SpaceCenter.CommNode -> RPCContext (Data.Text.Text)
+getCommNodeName thisArg = do
+    let r = makeRequest "SpaceCenter" "CommNode_get_Name" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getCommNodeNameStreamReq :: KRPCHS.SpaceCenter.CommNode -> KRPCStreamReq (Data.Text.Text)
+getCommNodeNameStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "CommNode_get_Name" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getCommNodeNameStream :: KRPCHS.SpaceCenter.CommNode -> RPCContext (KRPCStream (Data.Text.Text))
+getCommNodeNameStream thisArg = requestStream $ getCommNodeNameStreamReq thisArg 
+
+{-
+ - The vessel for this communication node.
+ -}
+getCommNodeVessel :: KRPCHS.SpaceCenter.CommNode -> RPCContext (KRPCHS.SpaceCenter.Vessel)
+getCommNodeVessel thisArg = do
+    let r = makeRequest "SpaceCenter" "CommNode_get_Vessel" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getCommNodeVesselStreamReq :: KRPCHS.SpaceCenter.CommNode -> KRPCStreamReq (KRPCHS.SpaceCenter.Vessel)
+getCommNodeVesselStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "CommNode_get_Vessel" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getCommNodeVesselStream :: KRPCHS.SpaceCenter.CommNode -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Vessel))
+getCommNodeVesselStream thisArg = requestStream $ getCommNodeVesselStreamReq thisArg 
+
+{-
+ - Whether the vessel can communicate with KSC.
+ -}
+getCommsCanCommunicate :: KRPCHS.SpaceCenter.Comms -> RPCContext (Bool)
+getCommsCanCommunicate thisArg = do
+    let r = makeRequest "SpaceCenter" "Comms_get_CanCommunicate" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getCommsCanCommunicateStreamReq :: KRPCHS.SpaceCenter.Comms -> KRPCStreamReq (Bool)
+getCommsCanCommunicateStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Comms_get_CanCommunicate" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getCommsCanCommunicateStream :: KRPCHS.SpaceCenter.Comms -> RPCContext (KRPCStream (Bool))
+getCommsCanCommunicateStream thisArg = requestStream $ getCommsCanCommunicateStreamReq thisArg 
+
+{-
+ - Whether the vessel can transmit science data to KSC.
+ -}
+getCommsCanTransmitScience :: KRPCHS.SpaceCenter.Comms -> RPCContext (Bool)
+getCommsCanTransmitScience thisArg = do
+    let r = makeRequest "SpaceCenter" "Comms_get_CanTransmitScience" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getCommsCanTransmitScienceStreamReq :: KRPCHS.SpaceCenter.Comms -> KRPCStreamReq (Bool)
+getCommsCanTransmitScienceStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Comms_get_CanTransmitScience" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getCommsCanTransmitScienceStream :: KRPCHS.SpaceCenter.Comms -> RPCContext (KRPCStream (Bool))
+getCommsCanTransmitScienceStream thisArg = requestStream $ getCommsCanTransmitScienceStreamReq thisArg 
+
+{-
+ - The communication path used to control the vessel.
+ -}
+getCommsControlPath :: KRPCHS.SpaceCenter.Comms -> RPCContext ([KRPCHS.SpaceCenter.CommLink])
+getCommsControlPath thisArg = do
+    let r = makeRequest "SpaceCenter" "Comms_get_ControlPath" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getCommsControlPathStreamReq :: KRPCHS.SpaceCenter.Comms -> KRPCStreamReq ([KRPCHS.SpaceCenter.CommLink])
+getCommsControlPathStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Comms_get_ControlPath" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getCommsControlPathStream :: KRPCHS.SpaceCenter.Comms -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.CommLink]))
+getCommsControlPathStream thisArg = requestStream $ getCommsControlPathStreamReq thisArg 
+
+{-
+ - The combined power of all active antennae on the vessel.
+ -}
+getCommsPower :: KRPCHS.SpaceCenter.Comms -> RPCContext (Double)
+getCommsPower thisArg = do
+    let r = makeRequest "SpaceCenter" "Comms_get_Power" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getCommsPowerStreamReq :: KRPCHS.SpaceCenter.Comms -> KRPCStreamReq (Double)
+getCommsPowerStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Comms_get_Power" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getCommsPowerStream :: KRPCHS.SpaceCenter.Comms -> RPCContext (KRPCStream (Double))
+getCommsPowerStream thisArg = requestStream $ getCommsPowerStreamReq thisArg 
+
+{-
+ - Signal delay to KSC in seconds.
+ -}
+getCommsSignalDelay :: KRPCHS.SpaceCenter.Comms -> RPCContext (Double)
+getCommsSignalDelay thisArg = do
+    let r = makeRequest "SpaceCenter" "Comms_get_SignalDelay" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getCommsSignalDelayStreamReq :: KRPCHS.SpaceCenter.Comms -> KRPCStreamReq (Double)
+getCommsSignalDelayStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Comms_get_SignalDelay" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getCommsSignalDelayStream :: KRPCHS.SpaceCenter.Comms -> RPCContext (KRPCStream (Double))
+getCommsSignalDelayStream thisArg = requestStream $ getCommsSignalDelayStreamReq thisArg 
+
+{-
+ - Signal strength to KSC.
+ -}
+getCommsSignalStrength :: KRPCHS.SpaceCenter.Comms -> RPCContext (Double)
+getCommsSignalStrength thisArg = do
+    let r = makeRequest "SpaceCenter" "Comms_get_SignalStrength" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getCommsSignalStrengthStreamReq :: KRPCHS.SpaceCenter.Comms -> KRPCStreamReq (Double)
+getCommsSignalStrengthStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Comms_get_SignalStrength" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getCommsSignalStrengthStream :: KRPCHS.SpaceCenter.Comms -> RPCContext (KRPCStream (Double))
+getCommsSignalStrengthStream thisArg = requestStream $ getCommsSignalStrengthStreamReq thisArg 
+
+{-
+ - A list of all active contracts.
+ -}
+getContractManagerActiveContracts :: KRPCHS.SpaceCenter.ContractManager -> RPCContext ([KRPCHS.SpaceCenter.Contract])
+getContractManagerActiveContracts thisArg = do
+    let r = makeRequest "SpaceCenter" "ContractManager_get_ActiveContracts" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractManagerActiveContractsStreamReq :: KRPCHS.SpaceCenter.ContractManager -> KRPCStreamReq ([KRPCHS.SpaceCenter.Contract])
+getContractManagerActiveContractsStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "ContractManager_get_ActiveContracts" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractManagerActiveContractsStream :: KRPCHS.SpaceCenter.ContractManager -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Contract]))
+getContractManagerActiveContractsStream thisArg = requestStream $ getContractManagerActiveContractsStreamReq thisArg 
+
+{-
+ - A list of all contracts.
+ -}
+getContractManagerAllContracts :: KRPCHS.SpaceCenter.ContractManager -> RPCContext ([KRPCHS.SpaceCenter.Contract])
+getContractManagerAllContracts thisArg = do
+    let r = makeRequest "SpaceCenter" "ContractManager_get_AllContracts" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractManagerAllContractsStreamReq :: KRPCHS.SpaceCenter.ContractManager -> KRPCStreamReq ([KRPCHS.SpaceCenter.Contract])
+getContractManagerAllContractsStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "ContractManager_get_AllContracts" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractManagerAllContractsStream :: KRPCHS.SpaceCenter.ContractManager -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Contract]))
+getContractManagerAllContractsStream thisArg = requestStream $ getContractManagerAllContractsStreamReq thisArg 
+
+{-
+ - A list of all completed contracts.
+ -}
+getContractManagerCompletedContracts :: KRPCHS.SpaceCenter.ContractManager -> RPCContext ([KRPCHS.SpaceCenter.Contract])
+getContractManagerCompletedContracts thisArg = do
+    let r = makeRequest "SpaceCenter" "ContractManager_get_CompletedContracts" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractManagerCompletedContractsStreamReq :: KRPCHS.SpaceCenter.ContractManager -> KRPCStreamReq ([KRPCHS.SpaceCenter.Contract])
+getContractManagerCompletedContractsStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "ContractManager_get_CompletedContracts" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractManagerCompletedContractsStream :: KRPCHS.SpaceCenter.ContractManager -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Contract]))
+getContractManagerCompletedContractsStream thisArg = requestStream $ getContractManagerCompletedContractsStreamReq thisArg 
+
+{-
+ - A list of all failed contracts.
+ -}
+getContractManagerFailedContracts :: KRPCHS.SpaceCenter.ContractManager -> RPCContext ([KRPCHS.SpaceCenter.Contract])
+getContractManagerFailedContracts thisArg = do
+    let r = makeRequest "SpaceCenter" "ContractManager_get_FailedContracts" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractManagerFailedContractsStreamReq :: KRPCHS.SpaceCenter.ContractManager -> KRPCStreamReq ([KRPCHS.SpaceCenter.Contract])
+getContractManagerFailedContractsStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "ContractManager_get_FailedContracts" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractManagerFailedContractsStream :: KRPCHS.SpaceCenter.ContractManager -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Contract]))
+getContractManagerFailedContractsStream thisArg = requestStream $ getContractManagerFailedContractsStreamReq thisArg 
+
+{-
+ - A list of all offered, but unaccepted, contracts.
+ -}
+getContractManagerOfferedContracts :: KRPCHS.SpaceCenter.ContractManager -> RPCContext ([KRPCHS.SpaceCenter.Contract])
+getContractManagerOfferedContracts thisArg = do
+    let r = makeRequest "SpaceCenter" "ContractManager_get_OfferedContracts" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractManagerOfferedContractsStreamReq :: KRPCHS.SpaceCenter.ContractManager -> KRPCStreamReq ([KRPCHS.SpaceCenter.Contract])
+getContractManagerOfferedContractsStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "ContractManager_get_OfferedContracts" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractManagerOfferedContractsStream :: KRPCHS.SpaceCenter.ContractManager -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Contract]))
+getContractManagerOfferedContractsStream thisArg = requestStream $ getContractManagerOfferedContractsStreamReq thisArg 
+
+{-
+ - A list of all contract types.
+ -}
+getContractManagerTypes :: KRPCHS.SpaceCenter.ContractManager -> RPCContext (Data.Set.Set Data.Text.Text)
+getContractManagerTypes thisArg = do
+    let r = makeRequest "SpaceCenter" "ContractManager_get_Types" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractManagerTypesStreamReq :: KRPCHS.SpaceCenter.ContractManager -> KRPCStreamReq (Data.Set.Set Data.Text.Text)
+getContractManagerTypesStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "ContractManager_get_Types" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractManagerTypesStream :: KRPCHS.SpaceCenter.ContractManager -> RPCContext (KRPCStream (Data.Set.Set Data.Text.Text))
+getContractManagerTypesStream thisArg = requestStream $ getContractManagerTypesStreamReq thisArg 
+
+{-
+ - Child contract parameters.
+ -}
+getContractParameterChildren :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext ([KRPCHS.SpaceCenter.ContractParameter])
+getContractParameterChildren thisArg = do
+    let r = makeRequest "SpaceCenter" "ContractParameter_get_Children" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractParameterChildrenStreamReq :: KRPCHS.SpaceCenter.ContractParameter -> KRPCStreamReq ([KRPCHS.SpaceCenter.ContractParameter])
+getContractParameterChildrenStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "ContractParameter_get_Children" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractParameterChildrenStream :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.ContractParameter]))
+getContractParameterChildrenStream thisArg = requestStream $ getContractParameterChildrenStreamReq thisArg 
+
+{-
+ - Whether the parameter has been completed.
+ -}
+getContractParameterCompleted :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (Bool)
+getContractParameterCompleted thisArg = do
+    let r = makeRequest "SpaceCenter" "ContractParameter_get_Completed" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractParameterCompletedStreamReq :: KRPCHS.SpaceCenter.ContractParameter -> KRPCStreamReq (Bool)
+getContractParameterCompletedStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "ContractParameter_get_Completed" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractParameterCompletedStream :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (KRPCStream (Bool))
+getContractParameterCompletedStream thisArg = requestStream $ getContractParameterCompletedStreamReq thisArg 
+
+{-
+ - Whether the parameter has been failed.
+ -}
+getContractParameterFailed :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (Bool)
+getContractParameterFailed thisArg = do
+    let r = makeRequest "SpaceCenter" "ContractParameter_get_Failed" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractParameterFailedStreamReq :: KRPCHS.SpaceCenter.ContractParameter -> KRPCStreamReq (Bool)
+getContractParameterFailedStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "ContractParameter_get_Failed" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractParameterFailedStream :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (KRPCStream (Bool))
+getContractParameterFailedStream thisArg = requestStream $ getContractParameterFailedStreamReq thisArg 
+
+{-
+ - Funds received on completion of the contract parameter.
+ -}
+getContractParameterFundsCompletion :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (Double)
+getContractParameterFundsCompletion thisArg = do
+    let r = makeRequest "SpaceCenter" "ContractParameter_get_FundsCompletion" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractParameterFundsCompletionStreamReq :: KRPCHS.SpaceCenter.ContractParameter -> KRPCStreamReq (Double)
+getContractParameterFundsCompletionStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "ContractParameter_get_FundsCompletion" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractParameterFundsCompletionStream :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (KRPCStream (Double))
+getContractParameterFundsCompletionStream thisArg = requestStream $ getContractParameterFundsCompletionStreamReq thisArg 
+
+{-
+ - Funds lost if the contract parameter is failed.
+ -}
+getContractParameterFundsFailure :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (Double)
+getContractParameterFundsFailure thisArg = do
+    let r = makeRequest "SpaceCenter" "ContractParameter_get_FundsFailure" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractParameterFundsFailureStreamReq :: KRPCHS.SpaceCenter.ContractParameter -> KRPCStreamReq (Double)
+getContractParameterFundsFailureStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "ContractParameter_get_FundsFailure" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractParameterFundsFailureStream :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (KRPCStream (Double))
+getContractParameterFundsFailureStream thisArg = requestStream $ getContractParameterFundsFailureStreamReq thisArg 
+
+{-
+ - Notes for the parameter.
+ -}
+getContractParameterNotes :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (Data.Text.Text)
+getContractParameterNotes thisArg = do
+    let r = makeRequest "SpaceCenter" "ContractParameter_get_Notes" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractParameterNotesStreamReq :: KRPCHS.SpaceCenter.ContractParameter -> KRPCStreamReq (Data.Text.Text)
+getContractParameterNotesStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "ContractParameter_get_Notes" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractParameterNotesStream :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (KRPCStream (Data.Text.Text))
+getContractParameterNotesStream thisArg = requestStream $ getContractParameterNotesStreamReq thisArg 
+
+{-
+ - Whether the contract parameter is optional.
+ -}
+getContractParameterOptional :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (Bool)
+getContractParameterOptional thisArg = do
+    let r = makeRequest "SpaceCenter" "ContractParameter_get_Optional" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractParameterOptionalStreamReq :: KRPCHS.SpaceCenter.ContractParameter -> KRPCStreamReq (Bool)
+getContractParameterOptionalStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "ContractParameter_get_Optional" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractParameterOptionalStream :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (KRPCStream (Bool))
+getContractParameterOptionalStream thisArg = requestStream $ getContractParameterOptionalStreamReq thisArg 
+
+{-
+ - Reputation gained on completion of the contract parameter.
+ -}
+getContractParameterReputationCompletion :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (Double)
+getContractParameterReputationCompletion thisArg = do
+    let r = makeRequest "SpaceCenter" "ContractParameter_get_ReputationCompletion" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractParameterReputationCompletionStreamReq :: KRPCHS.SpaceCenter.ContractParameter -> KRPCStreamReq (Double)
+getContractParameterReputationCompletionStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "ContractParameter_get_ReputationCompletion" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractParameterReputationCompletionStream :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (KRPCStream (Double))
+getContractParameterReputationCompletionStream thisArg = requestStream $ getContractParameterReputationCompletionStreamReq thisArg 
+
+{-
+ - Reputation lost if the contract parameter is failed.
+ -}
+getContractParameterReputationFailure :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (Double)
+getContractParameterReputationFailure thisArg = do
+    let r = makeRequest "SpaceCenter" "ContractParameter_get_ReputationFailure" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractParameterReputationFailureStreamReq :: KRPCHS.SpaceCenter.ContractParameter -> KRPCStreamReq (Double)
+getContractParameterReputationFailureStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "ContractParameter_get_ReputationFailure" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractParameterReputationFailureStream :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (KRPCStream (Double))
+getContractParameterReputationFailureStream thisArg = requestStream $ getContractParameterReputationFailureStreamReq thisArg 
+
+{-
+ - Science gained on completion of the contract parameter.
+ -}
+getContractParameterScienceCompletion :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (Double)
+getContractParameterScienceCompletion thisArg = do
+    let r = makeRequest "SpaceCenter" "ContractParameter_get_ScienceCompletion" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractParameterScienceCompletionStreamReq :: KRPCHS.SpaceCenter.ContractParameter -> KRPCStreamReq (Double)
+getContractParameterScienceCompletionStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "ContractParameter_get_ScienceCompletion" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractParameterScienceCompletionStream :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (KRPCStream (Double))
+getContractParameterScienceCompletionStream thisArg = requestStream $ getContractParameterScienceCompletionStreamReq thisArg 
+
+{-
+ - Title of the parameter.
+ -}
+getContractParameterTitle :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (Data.Text.Text)
+getContractParameterTitle thisArg = do
+    let r = makeRequest "SpaceCenter" "ContractParameter_get_Title" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractParameterTitleStreamReq :: KRPCHS.SpaceCenter.ContractParameter -> KRPCStreamReq (Data.Text.Text)
+getContractParameterTitleStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "ContractParameter_get_Title" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractParameterTitleStream :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (KRPCStream (Data.Text.Text))
+getContractParameterTitleStream thisArg = requestStream $ getContractParameterTitleStreamReq thisArg 
+
+{-
+ - Accept an offered contract.
+ -}
+contractAccept :: KRPCHS.SpaceCenter.Contract -> RPCContext ()
+contractAccept thisArg = do
+    let r = makeRequest "SpaceCenter" "Contract_Accept" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - Cancel an active contract.
+ -}
+contractCancel :: KRPCHS.SpaceCenter.Contract -> RPCContext ()
+contractCancel thisArg = do
+    let r = makeRequest "SpaceCenter" "Contract_Cancel" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - Decline an offered contract.
+ -}
+contractDecline :: KRPCHS.SpaceCenter.Contract -> RPCContext ()
+contractDecline thisArg = do
+    let r = makeRequest "SpaceCenter" "Contract_Decline" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - Whether the contract is active.
+ -}
+getContractActive :: KRPCHS.SpaceCenter.Contract -> RPCContext (Bool)
+getContractActive thisArg = do
+    let r = makeRequest "SpaceCenter" "Contract_get_Active" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractActiveStreamReq :: KRPCHS.SpaceCenter.Contract -> KRPCStreamReq (Bool)
+getContractActiveStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Contract_get_Active" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractActiveStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Bool))
+getContractActiveStream thisArg = requestStream $ getContractActiveStreamReq thisArg 
+
+{-
+ - Whether the contract can be canceled.
+ -}
+getContractCanBeCanceled :: KRPCHS.SpaceCenter.Contract -> RPCContext (Bool)
+getContractCanBeCanceled thisArg = do
+    let r = makeRequest "SpaceCenter" "Contract_get_CanBeCanceled" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractCanBeCanceledStreamReq :: KRPCHS.SpaceCenter.Contract -> KRPCStreamReq (Bool)
+getContractCanBeCanceledStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Contract_get_CanBeCanceled" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractCanBeCanceledStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Bool))
+getContractCanBeCanceledStream thisArg = requestStream $ getContractCanBeCanceledStreamReq thisArg 
+
+{-
+ - Whether the contract can be declined.
+ -}
+getContractCanBeDeclined :: KRPCHS.SpaceCenter.Contract -> RPCContext (Bool)
+getContractCanBeDeclined thisArg = do
+    let r = makeRequest "SpaceCenter" "Contract_get_CanBeDeclined" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractCanBeDeclinedStreamReq :: KRPCHS.SpaceCenter.Contract -> KRPCStreamReq (Bool)
+getContractCanBeDeclinedStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Contract_get_CanBeDeclined" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractCanBeDeclinedStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Bool))
+getContractCanBeDeclinedStream thisArg = requestStream $ getContractCanBeDeclinedStreamReq thisArg 
+
+{-
+ - Whether the contract can be failed.
+ -}
+getContractCanBeFailed :: KRPCHS.SpaceCenter.Contract -> RPCContext (Bool)
+getContractCanBeFailed thisArg = do
+    let r = makeRequest "SpaceCenter" "Contract_get_CanBeFailed" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractCanBeFailedStreamReq :: KRPCHS.SpaceCenter.Contract -> KRPCStreamReq (Bool)
+getContractCanBeFailedStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Contract_get_CanBeFailed" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractCanBeFailedStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Bool))
+getContractCanBeFailedStream thisArg = requestStream $ getContractCanBeFailedStreamReq thisArg 
+
+{-
+ - Description of the contract.
+ -}
+getContractDescription :: KRPCHS.SpaceCenter.Contract -> RPCContext (Data.Text.Text)
+getContractDescription thisArg = do
+    let r = makeRequest "SpaceCenter" "Contract_get_Description" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractDescriptionStreamReq :: KRPCHS.SpaceCenter.Contract -> KRPCStreamReq (Data.Text.Text)
+getContractDescriptionStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Contract_get_Description" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractDescriptionStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Data.Text.Text))
+getContractDescriptionStream thisArg = requestStream $ getContractDescriptionStreamReq thisArg 
+
+{-
+ - Whether the contract has been failed.
+ -}
+getContractFailed :: KRPCHS.SpaceCenter.Contract -> RPCContext (Bool)
+getContractFailed thisArg = do
+    let r = makeRequest "SpaceCenter" "Contract_get_Failed" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractFailedStreamReq :: KRPCHS.SpaceCenter.Contract -> KRPCStreamReq (Bool)
+getContractFailedStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Contract_get_Failed" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractFailedStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Bool))
+getContractFailedStream thisArg = requestStream $ getContractFailedStreamReq thisArg 
+
+{-
+ - Funds received when accepting the contract.
+ -}
+getContractFundsAdvance :: KRPCHS.SpaceCenter.Contract -> RPCContext (Double)
+getContractFundsAdvance thisArg = do
+    let r = makeRequest "SpaceCenter" "Contract_get_FundsAdvance" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractFundsAdvanceStreamReq :: KRPCHS.SpaceCenter.Contract -> KRPCStreamReq (Double)
+getContractFundsAdvanceStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Contract_get_FundsAdvance" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractFundsAdvanceStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Double))
+getContractFundsAdvanceStream thisArg = requestStream $ getContractFundsAdvanceStreamReq thisArg 
+
+{-
+ - Funds received on completion of the contract.
+ -}
+getContractFundsCompletion :: KRPCHS.SpaceCenter.Contract -> RPCContext (Double)
+getContractFundsCompletion thisArg = do
+    let r = makeRequest "SpaceCenter" "Contract_get_FundsCompletion" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractFundsCompletionStreamReq :: KRPCHS.SpaceCenter.Contract -> KRPCStreamReq (Double)
+getContractFundsCompletionStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Contract_get_FundsCompletion" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractFundsCompletionStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Double))
+getContractFundsCompletionStream thisArg = requestStream $ getContractFundsCompletionStreamReq thisArg 
+
+{-
+ - Funds lost if the contract is failed.
+ -}
+getContractFundsFailure :: KRPCHS.SpaceCenter.Contract -> RPCContext (Double)
+getContractFundsFailure thisArg = do
+    let r = makeRequest "SpaceCenter" "Contract_get_FundsFailure" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractFundsFailureStreamReq :: KRPCHS.SpaceCenter.Contract -> KRPCStreamReq (Double)
+getContractFundsFailureStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Contract_get_FundsFailure" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractFundsFailureStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Double))
+getContractFundsFailureStream thisArg = requestStream $ getContractFundsFailureStreamReq thisArg 
+
+{-
+ - Keywords for the contract.
+ -}
+getContractKeywords :: KRPCHS.SpaceCenter.Contract -> RPCContext ([Data.Text.Text])
+getContractKeywords thisArg = do
+    let r = makeRequest "SpaceCenter" "Contract_get_Keywords" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractKeywordsStreamReq :: KRPCHS.SpaceCenter.Contract -> KRPCStreamReq ([Data.Text.Text])
+getContractKeywordsStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Contract_get_Keywords" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractKeywordsStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream ([Data.Text.Text]))
+getContractKeywordsStream thisArg = requestStream $ getContractKeywordsStreamReq thisArg 
+
+{-
+ - Notes for the contract.
+ -}
+getContractNotes :: KRPCHS.SpaceCenter.Contract -> RPCContext (Data.Text.Text)
+getContractNotes thisArg = do
+    let r = makeRequest "SpaceCenter" "Contract_get_Notes" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractNotesStreamReq :: KRPCHS.SpaceCenter.Contract -> KRPCStreamReq (Data.Text.Text)
+getContractNotesStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Contract_get_Notes" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractNotesStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Data.Text.Text))
+getContractNotesStream thisArg = requestStream $ getContractNotesStreamReq thisArg 
+
+{-
+ - Parameters for the contract.
+ -}
+getContractParameters :: KRPCHS.SpaceCenter.Contract -> RPCContext ([KRPCHS.SpaceCenter.ContractParameter])
+getContractParameters thisArg = do
+    let r = makeRequest "SpaceCenter" "Contract_get_Parameters" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractParametersStreamReq :: KRPCHS.SpaceCenter.Contract -> KRPCStreamReq ([KRPCHS.SpaceCenter.ContractParameter])
+getContractParametersStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Contract_get_Parameters" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractParametersStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.ContractParameter]))
+getContractParametersStream thisArg = requestStream $ getContractParametersStreamReq thisArg 
+
+{-
+ - Whether the contract has been read.
+ -}
+getContractRead :: KRPCHS.SpaceCenter.Contract -> RPCContext (Bool)
+getContractRead thisArg = do
+    let r = makeRequest "SpaceCenter" "Contract_get_Read" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractReadStreamReq :: KRPCHS.SpaceCenter.Contract -> KRPCStreamReq (Bool)
+getContractReadStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Contract_get_Read" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractReadStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Bool))
+getContractReadStream thisArg = requestStream $ getContractReadStreamReq thisArg 
+
+{-
+ - Reputation gained on completion of the contract.
+ -}
+getContractReputationCompletion :: KRPCHS.SpaceCenter.Contract -> RPCContext (Double)
+getContractReputationCompletion thisArg = do
+    let r = makeRequest "SpaceCenter" "Contract_get_ReputationCompletion" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractReputationCompletionStreamReq :: KRPCHS.SpaceCenter.Contract -> KRPCStreamReq (Double)
+getContractReputationCompletionStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Contract_get_ReputationCompletion" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractReputationCompletionStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Double))
+getContractReputationCompletionStream thisArg = requestStream $ getContractReputationCompletionStreamReq thisArg 
+
+{-
+ - Reputation lost if the contract is failed.
+ -}
+getContractReputationFailure :: KRPCHS.SpaceCenter.Contract -> RPCContext (Double)
+getContractReputationFailure thisArg = do
+    let r = makeRequest "SpaceCenter" "Contract_get_ReputationFailure" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractReputationFailureStreamReq :: KRPCHS.SpaceCenter.Contract -> KRPCStreamReq (Double)
+getContractReputationFailureStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Contract_get_ReputationFailure" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractReputationFailureStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Double))
+getContractReputationFailureStream thisArg = requestStream $ getContractReputationFailureStreamReq thisArg 
+
+{-
+ - Science gained on completion of the contract.
+ -}
+getContractScienceCompletion :: KRPCHS.SpaceCenter.Contract -> RPCContext (Double)
+getContractScienceCompletion thisArg = do
+    let r = makeRequest "SpaceCenter" "Contract_get_ScienceCompletion" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractScienceCompletionStreamReq :: KRPCHS.SpaceCenter.Contract -> KRPCStreamReq (Double)
+getContractScienceCompletionStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Contract_get_ScienceCompletion" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractScienceCompletionStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Double))
+getContractScienceCompletionStream thisArg = requestStream $ getContractScienceCompletionStreamReq thisArg 
+
+{-
+ - Whether the contract has been seen.
+ -}
+getContractSeen :: KRPCHS.SpaceCenter.Contract -> RPCContext (Bool)
+getContractSeen thisArg = do
+    let r = makeRequest "SpaceCenter" "Contract_get_Seen" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractSeenStreamReq :: KRPCHS.SpaceCenter.Contract -> KRPCStreamReq (Bool)
+getContractSeenStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Contract_get_Seen" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractSeenStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Bool))
+getContractSeenStream thisArg = requestStream $ getContractSeenStreamReq thisArg 
+
+{-
+ - State of the contract.
+ -}
+getContractState :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCHS.SpaceCenter.ContractState)
+getContractState thisArg = do
+    let r = makeRequest "SpaceCenter" "Contract_get_State" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractStateStreamReq :: KRPCHS.SpaceCenter.Contract -> KRPCStreamReq (KRPCHS.SpaceCenter.ContractState)
+getContractStateStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Contract_get_State" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractStateStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ContractState))
+getContractStateStream thisArg = requestStream $ getContractStateStreamReq thisArg 
+
+{-
+ - Synopsis for the contract.
+ -}
+getContractSynopsis :: KRPCHS.SpaceCenter.Contract -> RPCContext (Data.Text.Text)
+getContractSynopsis thisArg = do
+    let r = makeRequest "SpaceCenter" "Contract_get_Synopsis" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractSynopsisStreamReq :: KRPCHS.SpaceCenter.Contract -> KRPCStreamReq (Data.Text.Text)
+getContractSynopsisStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Contract_get_Synopsis" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractSynopsisStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Data.Text.Text))
+getContractSynopsisStream thisArg = requestStream $ getContractSynopsisStreamReq thisArg 
+
+{-
+ - Title of the contract.
+ -}
+getContractTitle :: KRPCHS.SpaceCenter.Contract -> RPCContext (Data.Text.Text)
+getContractTitle thisArg = do
+    let r = makeRequest "SpaceCenter" "Contract_get_Title" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractTitleStreamReq :: KRPCHS.SpaceCenter.Contract -> KRPCStreamReq (Data.Text.Text)
+getContractTitleStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Contract_get_Title" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractTitleStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Data.Text.Text))
+getContractTitleStream thisArg = requestStream $ getContractTitleStreamReq thisArg 
+
+{-
+ - Type of the contract.
+ -}
+getContractType :: KRPCHS.SpaceCenter.Contract -> RPCContext (Data.Text.Text)
+getContractType thisArg = do
+    let r = makeRequest "SpaceCenter" "Contract_get_Type" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getContractTypeStreamReq :: KRPCHS.SpaceCenter.Contract -> KRPCStreamReq (Data.Text.Text)
+getContractTypeStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Contract_get_Type" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getContractTypeStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Data.Text.Text))
+getContractTypeStream thisArg = requestStream $ getContractTypeStreamReq thisArg 
+
+{-
+ - The authority limiter for the control surface, which controls how far the control surface will move.
+ -}
+getControlSurfaceAuthorityLimiter :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (Float)
+getControlSurfaceAuthorityLimiter thisArg = do
+    let r = makeRequest "SpaceCenter" "ControlSurface_get_AuthorityLimiter" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getControlSurfaceAuthorityLimiterStreamReq :: KRPCHS.SpaceCenter.ControlSurface -> KRPCStreamReq (Float)
+getControlSurfaceAuthorityLimiterStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "ControlSurface_get_AuthorityLimiter" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getControlSurfaceAuthorityLimiterStream :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (KRPCStream (Float))
+getControlSurfaceAuthorityLimiterStream thisArg = requestStream $ getControlSurfaceAuthorityLimiterStreamReq thisArg 
+
+{-
+ - The available torque in the positive pitch, roll and yaw axes and
+ - negative pitch, roll and yaw axes of the vessel, in Newton meters.
  - These axes correspond to the coordinate axes of the <see cref="M:SpaceCenter.Vessel.ReferenceFrame" />.
  -}
-getControlSurfaceAvailableTorque :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext ((Double, Double, Double))
+getControlSurfaceAvailableTorque :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (((Double, Double, Double), (Double, Double, Double)))
 getControlSurfaceAvailableTorque thisArg = do
     let r = makeRequest "SpaceCenter" "ControlSurface_get_AvailableTorque" [makeArgument 0 thisArg]
     res <- sendRequest r
     processResponse res
 
-getControlSurfaceAvailableTorqueStreamReq :: KRPCHS.SpaceCenter.ControlSurface -> KRPCStreamReq ((Double, Double, Double))
+getControlSurfaceAvailableTorqueStreamReq :: KRPCHS.SpaceCenter.ControlSurface -> KRPCStreamReq (((Double, Double, Double), (Double, Double, Double)))
 getControlSurfaceAvailableTorqueStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ControlSurface_get_AvailableTorque" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlSurfaceAvailableTorqueStream :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (KRPCStream ((Double, Double, Double)))
+getControlSurfaceAvailableTorqueStream :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
 getControlSurfaceAvailableTorqueStream thisArg = requestStream $ getControlSurfaceAvailableTorqueStreamReq thisArg 
 
 {-
@@ -4326,6 +6157,15 @@ getControlSurfaceYawEnabledStream :: KRPCHS.SpaceCenter.ControlSurface -> RPCCon
 getControlSurfaceYawEnabledStream thisArg = requestStream $ getControlSurfaceYawEnabledStreamReq thisArg 
 
 {-
+ - The authority limiter for the control surface, which controls how far the control surface will move.
+ -}
+setControlSurfaceAuthorityLimiter :: KRPCHS.SpaceCenter.ControlSurface -> Float -> RPCContext ()
+setControlSurfaceAuthorityLimiter thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "ControlSurface_set_AuthorityLimiter" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
  - Whether the control surface has been fully deployed.
  -}
 setControlSurfaceDeployed :: KRPCHS.SpaceCenter.ControlSurface -> Bool -> RPCContext ()
@@ -4371,7 +6211,9 @@ setControlSurfaceYawEnabled thisArg valueArg = do
     processResponse res 
 
 {-
- - Activates the next stage. Equivalent to pressing the space bar in-game.A list of vessel objects that are jettisoned from the active vessel.
+ - Activates the next stage. Equivalent to pressing the space bar in-game.A list of vessel objects that are jettisoned from the active vessel.When called, the active vessel may change. It is therefore possible that,
+ - after calling this function, the object(s) returned by previous call(s) to
+ - <see cref="M:SpaceCenter.ActiveVessel" /> no longer refer to the active vessel.
  -}
 controlActivateNextStage :: KRPCHS.SpaceCenter.Control -> RPCContext ([KRPCHS.SpaceCenter.Vessel])
 controlActivateNextStage thisArg = do
@@ -4408,7 +6250,9 @@ controlAddNodeStream :: KRPCHS.SpaceCenter.Control -> Double -> Float -> Float -
 controlAddNodeStream thisArg utArg progradeArg normalArg radialArg = requestStream $ controlAddNodeStreamReq thisArg utArg progradeArg normalArg radialArg 
 
 {-
- - Returnstrueif the given action group is enabled.<param name="group">A number between 0 and 9 inclusive.
+ - Returnstrueif the given action group is enabled.<param name="group">
+ - A number between 0 and 9 inclusive,
+ - or between 0 and 250 inclusive when the <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/67235-12oct3116-action-groups-extended-250-action-groups-in-flight-editing-now-kosremotetech">Extended Action Groups modis installed.
  -}
 controlGetActionGroup :: KRPCHS.SpaceCenter.Control -> Data.Word.Word32 -> RPCContext (Bool)
 controlGetActionGroup thisArg groupArg = do
@@ -4434,8 +6278,9 @@ controlRemoveNodes thisArg = do
     processResponse res 
 
 {-
- - Sets the state of the given action group (a value between 0 and 9
- - inclusive).<param name="group">A number between 0 and 9 inclusive.<param name="state">
+ - Sets the state of the given action group.<param name="group">
+ - A number between 0 and 9 inclusive,
+ - or between 0 and 250 inclusive when the <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/67235-12oct3116-action-groups-extended-250-action-groups-in-flight-editing-now-kosremotetech">Extended Action Groups modis installed.<param name="state">
  -}
 controlSetActionGroup :: KRPCHS.SpaceCenter.Control -> Data.Word.Word32 -> Bool -> RPCContext ()
 controlSetActionGroup thisArg groupArg stateArg = do
@@ -4444,7 +6289,9 @@ controlSetActionGroup thisArg groupArg stateArg = do
     processResponse res 
 
 {-
- - Toggles the state of the given action group.<param name="group">A number between 0 and 9 inclusive.
+ - Toggles the state of the given action group.<param name="group">
+ - A number between 0 and 9 inclusive,
+ - or between 0 and 250 inclusive when the <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/67235-12oct3116-action-groups-extended-250-action-groups-in-flight-editing-now-kosremotetech">Extended Action Groups modis installed.
  -}
 controlToggleActionGroup :: KRPCHS.SpaceCenter.Control -> Data.Word.Word32 -> RPCContext ()
 controlToggleActionGroup thisArg groupArg = do
@@ -4470,6 +6317,25 @@ getControlAbortStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (B
 getControlAbortStream thisArg = requestStream $ getControlAbortStreamReq thisArg 
 
 {-
+ - Returns whether all antennas on the vessel are deployed,
+ - and sets the deployment state of all antennas.
+ - See <see cref="M:SpaceCenter.Antenna.Deployed" />.
+ -}
+getControlAntennas :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
+getControlAntennas thisArg = do
+    let r = makeRequest "SpaceCenter" "Control_get_Antennas" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getControlAntennasStreamReq :: KRPCHS.SpaceCenter.Control -> KRPCStreamReq (Bool)
+getControlAntennasStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Control_get_Antennas" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getControlAntennasStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
+getControlAntennasStream thisArg = requestStream $ getControlAntennasStreamReq thisArg 
+
+{-
  - The state of the wheel brakes.
  -}
 getControlBrakes :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
@@ -4485,6 +6351,25 @@ getControlBrakesStreamReq thisArg =
 
 getControlBrakesStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
 getControlBrakesStream thisArg = requestStream $ getControlBrakesStreamReq thisArg 
+
+{-
+ - Returns whether any of the cargo bays on the vessel are open,
+ - and sets the open state of all cargo bays.
+ - See <see cref="M:SpaceCenter.CargoBay.Open" />.
+ -}
+getControlCargoBays :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
+getControlCargoBays thisArg = do
+    let r = makeRequest "SpaceCenter" "Control_get_CargoBays" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getControlCargoBaysStreamReq :: KRPCHS.SpaceCenter.Control -> KRPCStreamReq (Bool)
+getControlCargoBaysStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Control_get_CargoBays" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getControlCargoBaysStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
+getControlCargoBaysStream thisArg = requestStream $ getControlCargoBaysStreamReq thisArg 
 
 {-
  - The current stage of the vessel. Corresponds to the stage number in
@@ -4541,6 +6426,45 @@ getControlGearStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bo
 getControlGearStream thisArg = requestStream $ getControlGearStreamReq thisArg 
 
 {-
+ - Returns whether all of the air intakes on the vessel are open,
+ - and sets the open state of all air intakes.
+ - See <see cref="M:SpaceCenter.Intake.Open" />.
+ -}
+getControlIntakes :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
+getControlIntakes thisArg = do
+    let r = makeRequest "SpaceCenter" "Control_get_Intakes" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getControlIntakesStreamReq :: KRPCHS.SpaceCenter.Control -> KRPCStreamReq (Bool)
+getControlIntakesStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Control_get_Intakes" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getControlIntakesStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
+getControlIntakesStream thisArg = requestStream $ getControlIntakesStreamReq thisArg 
+
+{-
+ - Returns whether all landing legs on the vessel are deployed,
+ - and sets the deployment state of all landing legs.
+ - Does not include wheels (for example landing gear).
+ - See <see cref="M:SpaceCenter.Leg.Deployed" />.
+ -}
+getControlLegs :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
+getControlLegs thisArg = do
+    let r = makeRequest "SpaceCenter" "Control_get_Legs" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getControlLegsStreamReq :: KRPCHS.SpaceCenter.Control -> KRPCStreamReq (Bool)
+getControlLegsStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Control_get_Legs" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getControlLegsStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
+getControlLegsStream thisArg = requestStream $ getControlLegsStreamReq thisArg 
+
+{-
  - The state of the lights.
  -}
 getControlLights :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
@@ -4573,6 +6497,26 @@ getControlNodesStreamReq thisArg =
 
 getControlNodesStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Node]))
 getControlNodesStream thisArg = requestStream $ getControlNodesStreamReq thisArg 
+
+{-
+ - Returns whether all parachutes on the vessel are deployed,
+ - and sets the deployment state of all parachutes.
+ - Cannot be set tofalse.
+ - See <see cref="M:SpaceCenter.Parachute.Deployed" />.
+ -}
+getControlParachutes :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
+getControlParachutes thisArg = do
+    let r = makeRequest "SpaceCenter" "Control_get_Parachutes" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getControlParachutesStreamReq :: KRPCHS.SpaceCenter.Control -> KRPCStreamReq (Bool)
+getControlParachutesStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Control_get_Parachutes" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getControlParachutesStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
+getControlParachutesStream thisArg = requestStream $ getControlParachutesStreamReq thisArg 
 
 {-
  - The state of the pitch control.
@@ -4609,6 +6553,82 @@ getControlRCSStreamReq thisArg =
 
 getControlRCSStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
 getControlRCSStream thisArg = requestStream $ getControlRCSStreamReq thisArg 
+
+{-
+ - Returns whether all radiators on the vessel are deployed,
+ - and sets the deployment state of all radiators.
+ - See <see cref="M:SpaceCenter.Radiator.Deployed" />.
+ -}
+getControlRadiators :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
+getControlRadiators thisArg = do
+    let r = makeRequest "SpaceCenter" "Control_get_Radiators" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getControlRadiatorsStreamReq :: KRPCHS.SpaceCenter.Control -> KRPCStreamReq (Bool)
+getControlRadiatorsStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Control_get_Radiators" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getControlRadiatorsStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
+getControlRadiatorsStream thisArg = requestStream $ getControlRadiatorsStreamReq thisArg 
+
+{-
+ - Returns whether all reactive wheels on the vessel are active,
+ - and sets the active state of all reaction wheels.
+ - See <see cref="M:SpaceCenter.ReactionWheel.Active" />.
+ -}
+getControlReactionWheels :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
+getControlReactionWheels thisArg = do
+    let r = makeRequest "SpaceCenter" "Control_get_ReactionWheels" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getControlReactionWheelsStreamReq :: KRPCHS.SpaceCenter.Control -> KRPCStreamReq (Bool)
+getControlReactionWheelsStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Control_get_ReactionWheels" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getControlReactionWheelsStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
+getControlReactionWheelsStream thisArg = requestStream $ getControlReactionWheelsStreamReq thisArg 
+
+{-
+ - Returns whether all of the resource harvesters on the vessel are deployed,
+ - and sets the deployment state of all resource harvesters.
+ - See <see cref="M:SpaceCenter.ResourceHarvester.Deployed" />.
+ -}
+getControlResourceHarvesters :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
+getControlResourceHarvesters thisArg = do
+    let r = makeRequest "SpaceCenter" "Control_get_ResourceHarvesters" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getControlResourceHarvestersStreamReq :: KRPCHS.SpaceCenter.Control -> KRPCStreamReq (Bool)
+getControlResourceHarvestersStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Control_get_ResourceHarvesters" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getControlResourceHarvestersStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
+getControlResourceHarvestersStream thisArg = requestStream $ getControlResourceHarvestersStreamReq thisArg 
+
+{-
+ - Returns whether any of the resource harvesters on the vessel are active,
+ - and sets the active state of all resource harvesters.
+ - See <see cref="M:SpaceCenter.ResourceHarvester.Active" />.
+ -}
+getControlResourceHarvestersActive :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
+getControlResourceHarvestersActive thisArg = do
+    let r = makeRequest "SpaceCenter" "Control_get_ResourceHarvestersActive" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getControlResourceHarvestersActiveStreamReq :: KRPCHS.SpaceCenter.Control -> KRPCStreamReq (Bool)
+getControlResourceHarvestersActiveStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Control_get_ResourceHarvestersActive" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getControlResourceHarvestersActiveStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
+getControlResourceHarvestersActiveStream thisArg = requestStream $ getControlResourceHarvestersActiveStreamReq thisArg 
 
 {-
  - The state of the right translational control.
@@ -4685,6 +6705,42 @@ getControlSASModeStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream 
 getControlSASModeStream thisArg = requestStream $ getControlSASModeStreamReq thisArg 
 
 {-
+ - Returns whether all solar panels on the vessel are deployed,
+ - and sets the deployment state of all solar panels.
+ - See <see cref="M:SpaceCenter.SolarPanel.Deployed" />.
+ -}
+getControlSolarPanels :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
+getControlSolarPanels thisArg = do
+    let r = makeRequest "SpaceCenter" "Control_get_SolarPanels" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getControlSolarPanelsStreamReq :: KRPCHS.SpaceCenter.Control -> KRPCStreamReq (Bool)
+getControlSolarPanelsStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Control_get_SolarPanels" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getControlSolarPanelsStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
+getControlSolarPanelsStream thisArg = requestStream $ getControlSolarPanelsStreamReq thisArg 
+
+{-
+ - The source of the vessels control, for example by a kerbal or a probe core.
+ -}
+getControlSource :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCHS.SpaceCenter.ControlSource)
+getControlSource thisArg = do
+    let r = makeRequest "SpaceCenter" "Control_get_Source" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getControlSourceStreamReq :: KRPCHS.SpaceCenter.Control -> KRPCStreamReq (KRPCHS.SpaceCenter.ControlSource)
+getControlSourceStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Control_get_Source" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getControlSourceStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ControlSource))
+getControlSourceStream thisArg = requestStream $ getControlSourceStreamReq thisArg 
+
+{-
  - The current <see cref="T:SpaceCenter.SpeedMode" /> of the navball.
  - This is the mode displayed next to the speed at the top of the navball.
  -}
@@ -4701,6 +6757,23 @@ getControlSpeedModeStreamReq thisArg =
 
 getControlSpeedModeStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.SpeedMode))
 getControlSpeedModeStream thisArg = requestStream $ getControlSpeedModeStreamReq thisArg 
+
+{-
+ - The control state of the vessel.
+ -}
+getControlState :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCHS.SpaceCenter.ControlState)
+getControlState thisArg = do
+    let r = makeRequest "SpaceCenter" "Control_get_State" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getControlStateStreamReq :: KRPCHS.SpaceCenter.Control -> KRPCStreamReq (KRPCHS.SpaceCenter.ControlState)
+getControlStateStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Control_get_State" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getControlStateStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ControlState))
+getControlStateStream thisArg = requestStream $ getControlStateStreamReq thisArg 
 
 {-
  - The state of the throttle. A value between 0 and 1.
@@ -4778,6 +6851,26 @@ getControlWheelThrottleStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCS
 getControlWheelThrottleStream thisArg = requestStream $ getControlWheelThrottleStreamReq thisArg 
 
 {-
+ - Returns whether all wheels on the vessel are deployed,
+ - and sets the deployment state of all wheels.
+ - Does not include landing legs.
+ - See <see cref="M:SpaceCenter.Wheel.Deployed" />.
+ -}
+getControlWheels :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
+getControlWheels thisArg = do
+    let r = makeRequest "SpaceCenter" "Control_get_Wheels" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getControlWheelsStreamReq :: KRPCHS.SpaceCenter.Control -> KRPCStreamReq (Bool)
+getControlWheelsStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Control_get_Wheels" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getControlWheelsStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
+getControlWheelsStream thisArg = requestStream $ getControlWheelsStreamReq thisArg 
+
+{-
  - The state of the yaw control.
  - A value between -1 and 1.
  - Equivalent to the a and d keys.
@@ -4806,11 +6899,33 @@ setControlAbort thisArg valueArg = do
     processResponse res 
 
 {-
+ - Returns whether all antennas on the vessel are deployed,
+ - and sets the deployment state of all antennas.
+ - See <see cref="M:SpaceCenter.Antenna.Deployed" />.
+ -}
+setControlAntennas :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
+setControlAntennas thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Control_set_Antennas" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
  - The state of the wheel brakes.
  -}
 setControlBrakes :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
 setControlBrakes thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Control_set_Brakes" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - Returns whether any of the cargo bays on the vessel are open,
+ - and sets the open state of all cargo bays.
+ - See <see cref="M:SpaceCenter.CargoBay.Open" />.
+ -}
+setControlCargoBays :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
+setControlCargoBays thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Control_set_CargoBays" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
     processResponse res 
 
@@ -4835,11 +6950,46 @@ setControlGear thisArg valueArg = do
     processResponse res 
 
 {-
+ - Returns whether all of the air intakes on the vessel are open,
+ - and sets the open state of all air intakes.
+ - See <see cref="M:SpaceCenter.Intake.Open" />.
+ -}
+setControlIntakes :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
+setControlIntakes thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Control_set_Intakes" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - Returns whether all landing legs on the vessel are deployed,
+ - and sets the deployment state of all landing legs.
+ - Does not include wheels (for example landing gear).
+ - See <see cref="M:SpaceCenter.Leg.Deployed" />.
+ -}
+setControlLegs :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
+setControlLegs thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Control_set_Legs" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
  - The state of the lights.
  -}
 setControlLights :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
 setControlLights thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Control_set_Lights" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - Returns whether all parachutes on the vessel are deployed,
+ - and sets the deployment state of all parachutes.
+ - Cannot be set tofalse.
+ - See <see cref="M:SpaceCenter.Parachute.Deployed" />.
+ -}
+setControlParachutes :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
+setControlParachutes thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Control_set_Parachutes" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
     processResponse res 
 
@@ -4860,6 +7010,50 @@ setControlPitch thisArg valueArg = do
 setControlRCS :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
 setControlRCS thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Control_set_RCS" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - Returns whether all radiators on the vessel are deployed,
+ - and sets the deployment state of all radiators.
+ - See <see cref="M:SpaceCenter.Radiator.Deployed" />.
+ -}
+setControlRadiators :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
+setControlRadiators thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Control_set_Radiators" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - Returns whether all reactive wheels on the vessel are active,
+ - and sets the active state of all reaction wheels.
+ - See <see cref="M:SpaceCenter.ReactionWheel.Active" />.
+ -}
+setControlReactionWheels :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
+setControlReactionWheels thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Control_set_ReactionWheels" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - Returns whether all of the resource harvesters on the vessel are deployed,
+ - and sets the deployment state of all resource harvesters.
+ - See <see cref="M:SpaceCenter.ResourceHarvester.Deployed" />.
+ -}
+setControlResourceHarvesters :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
+setControlResourceHarvesters thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Control_set_ResourceHarvesters" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - Returns whether any of the resource harvesters on the vessel are active,
+ - and sets the active state of all resource harvesters.
+ - See <see cref="M:SpaceCenter.ResourceHarvester.Active" />.
+ -}
+setControlResourceHarvestersActive :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
+setControlResourceHarvestersActive thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Control_set_ResourceHarvestersActive" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
     processResponse res 
 
@@ -4902,6 +7096,17 @@ setControlSAS thisArg valueArg = do
 setControlSASMode :: KRPCHS.SpaceCenter.Control -> KRPCHS.SpaceCenter.SASMode -> RPCContext ()
 setControlSASMode thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Control_set_SASMode" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - Returns whether all solar panels on the vessel are deployed,
+ - and sets the deployment state of all solar panels.
+ - See <see cref="M:SpaceCenter.SolarPanel.Deployed" />.
+ -}
+setControlSolarPanels :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
+setControlSolarPanels thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Control_set_SolarPanels" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
     processResponse res 
 
@@ -4959,6 +7164,18 @@ setControlWheelThrottle thisArg valueArg = do
     processResponse res 
 
 {-
+ - Returns whether all wheels on the vessel are deployed,
+ - and sets the deployment state of all wheels.
+ - Does not include landing legs.
+ - See <see cref="M:SpaceCenter.Wheel.Deployed" />.
+ -}
+setControlWheels :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
+setControlWheels thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Control_set_Wheels" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
  - The state of the yaw control.
  - A value between -1 and 1.
  - Equivalent to the a and d keys.
@@ -4971,7 +7188,9 @@ setControlYaw thisArg valueArg = do
 
 {-
  - Fires the decoupler. Returns the new vessel created when the decoupler fires.
- - Throws an exception if the decoupler has already fired.
+ - Throws an exception if the decoupler has already fired.When called, the active vessel may change. It is therefore possible that,
+ - after calling this function, the object(s) returned by previous call(s) to
+ - <see cref="M:SpaceCenter.ActiveVessel" /> no longer refer to the active vessel.
  -}
 decouplerDecouple :: KRPCHS.SpaceCenter.Decoupler -> RPCContext (KRPCHS.SpaceCenter.Vessel)
 decouplerDecouple thisArg = do
@@ -5109,7 +7328,9 @@ dockingPortRotationStream thisArg referenceFrameArg = requestStream $ dockingPor
 {-
  - Undocks the docking port and returns the new <see cref="T:SpaceCenter.Vessel" /> that is created.
  - This method can be called for either docking port in a docked pair.
- - Throws an exception if the docking port is not docked to anything.After undocking, the active vessel may change. See <see cref="M:SpaceCenter.ActiveVessel" />.
+ - Throws an exception if the docking port is not docked to anything.When called, the active vessel may change. It is therefore possible that,
+ - after calling this function, the object(s) returned by previous call(s) to
+ - <see cref="M:SpaceCenter.ActiveVessel" /> no longer refer to the active vessel.
  -}
 dockingPortUndock :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCHS.SpaceCenter.Vessel)
 dockingPortUndock thisArg = do
@@ -5337,18 +7558,18 @@ getEngineAvailableThrustStream thisArg = requestStream $ getEngineAvailableThrus
  - These axes correspond to the coordinate axes of the <see cref="M:SpaceCenter.Vessel.ReferenceFrame" />.
  - Returns zero if the engine is inactive, or not gimballed.
  -}
-getEngineAvailableTorque :: KRPCHS.SpaceCenter.Engine -> RPCContext ((Double, Double, Double))
+getEngineAvailableTorque :: KRPCHS.SpaceCenter.Engine -> RPCContext (((Double, Double, Double), (Double, Double, Double)))
 getEngineAvailableTorque thisArg = do
     let r = makeRequest "SpaceCenter" "Engine_get_AvailableTorque" [makeArgument 0 thisArg]
     res <- sendRequest r
     processResponse res
 
-getEngineAvailableTorqueStreamReq :: KRPCHS.SpaceCenter.Engine -> KRPCStreamReq ((Double, Double, Double))
+getEngineAvailableTorqueStreamReq :: KRPCHS.SpaceCenter.Engine -> KRPCStreamReq (((Double, Double, Double), (Double, Double, Double)))
 getEngineAvailableTorqueStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Engine_get_AvailableTorque" [makeArgument 0 thisArg]
     in  makeStream req
 
-getEngineAvailableTorqueStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream ((Double, Double, Double)))
+getEngineAvailableTorqueStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
 getEngineAvailableTorqueStream thisArg = requestStream $ getEngineAvailableTorqueStreamReq thisArg 
 
 {-
@@ -6267,7 +8488,7 @@ getFlightDragCoefficientStream thisArg = requestStream $ getFlightDragCoefficien
 
 {-
  - The dynamic pressure acting on the vessel, in Pascals. This is a measure of the strength of the
- - aerodynamic forces. It is equal to\frac{1}{2} . \mbox{air density} .  \mbox{velocity}^2.
+ - aerodynamic forces. It is equal to\frac{1}{2} . \mbox{air density} . \mbox{velocity}^2.
  - It is commonly denotedQ.
  -}
 getFlightDynamicPressure :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
@@ -7055,147 +9276,6 @@ setIntakeOpen thisArg valueArg = do
     processResponse res 
 
 {-
- - Whether the landing gear is deployable.
- -}
-getLandingGearDeployable :: KRPCHS.SpaceCenter.LandingGear -> RPCContext (Bool)
-getLandingGearDeployable thisArg = do
-    let r = makeRequest "SpaceCenter" "LandingGear_get_Deployable" [makeArgument 0 thisArg]
-    res <- sendRequest r
-    processResponse res
-
-getLandingGearDeployableStreamReq :: KRPCHS.SpaceCenter.LandingGear -> KRPCStreamReq (Bool)
-getLandingGearDeployableStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "LandingGear_get_Deployable" [makeArgument 0 thisArg]
-    in  makeStream req
-
-getLandingGearDeployableStream :: KRPCHS.SpaceCenter.LandingGear -> RPCContext (KRPCStream (Bool))
-getLandingGearDeployableStream thisArg = requestStream $ getLandingGearDeployableStreamReq thisArg 
-
-{-
- - Whether the landing gear is deployed.Fixed landing gear are always deployed.
- - Returns an error if you try to deploy fixed landing gear.
- -}
-getLandingGearDeployed :: KRPCHS.SpaceCenter.LandingGear -> RPCContext (Bool)
-getLandingGearDeployed thisArg = do
-    let r = makeRequest "SpaceCenter" "LandingGear_get_Deployed" [makeArgument 0 thisArg]
-    res <- sendRequest r
-    processResponse res
-
-getLandingGearDeployedStreamReq :: KRPCHS.SpaceCenter.LandingGear -> KRPCStreamReq (Bool)
-getLandingGearDeployedStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "LandingGear_get_Deployed" [makeArgument 0 thisArg]
-    in  makeStream req
-
-getLandingGearDeployedStream :: KRPCHS.SpaceCenter.LandingGear -> RPCContext (KRPCStream (Bool))
-getLandingGearDeployedStream thisArg = requestStream $ getLandingGearDeployedStreamReq thisArg 
-
-{-
- - The part object for this landing gear.
- -}
-getLandingGearPart :: KRPCHS.SpaceCenter.LandingGear -> RPCContext (KRPCHS.SpaceCenter.Part)
-getLandingGearPart thisArg = do
-    let r = makeRequest "SpaceCenter" "LandingGear_get_Part" [makeArgument 0 thisArg]
-    res <- sendRequest r
-    processResponse res
-
-getLandingGearPartStreamReq :: KRPCHS.SpaceCenter.LandingGear -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
-getLandingGearPartStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "LandingGear_get_Part" [makeArgument 0 thisArg]
-    in  makeStream req
-
-getLandingGearPartStream :: KRPCHS.SpaceCenter.LandingGear -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
-getLandingGearPartStream thisArg = requestStream $ getLandingGearPartStreamReq thisArg 
-
-{-
- - Gets the current state of the landing gear.Fixed landing gear are always deployed.
- -}
-getLandingGearState :: KRPCHS.SpaceCenter.LandingGear -> RPCContext (KRPCHS.SpaceCenter.LandingGearState)
-getLandingGearState thisArg = do
-    let r = makeRequest "SpaceCenter" "LandingGear_get_State" [makeArgument 0 thisArg]
-    res <- sendRequest r
-    processResponse res
-
-getLandingGearStateStreamReq :: KRPCHS.SpaceCenter.LandingGear -> KRPCStreamReq (KRPCHS.SpaceCenter.LandingGearState)
-getLandingGearStateStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "LandingGear_get_State" [makeArgument 0 thisArg]
-    in  makeStream req
-
-getLandingGearStateStream :: KRPCHS.SpaceCenter.LandingGear -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.LandingGearState))
-getLandingGearStateStream thisArg = requestStream $ getLandingGearStateStreamReq thisArg 
-
-{-
- - Whether the landing gear is deployed.Fixed landing gear are always deployed.
- - Returns an error if you try to deploy fixed landing gear.
- -}
-setLandingGearDeployed :: KRPCHS.SpaceCenter.LandingGear -> Bool -> RPCContext ()
-setLandingGearDeployed thisArg valueArg = do
-    let r = makeRequest "SpaceCenter" "LandingGear_set_Deployed" [makeArgument 0 thisArg, makeArgument 1 valueArg]
-    res <- sendRequest r
-    processResponse res 
-
-{-
- - Whether the landing leg is deployed.Fixed landing legs are always deployed.
- - Returns an error if you try to deploy fixed landing gear.
- -}
-getLandingLegDeployed :: KRPCHS.SpaceCenter.LandingLeg -> RPCContext (Bool)
-getLandingLegDeployed thisArg = do
-    let r = makeRequest "SpaceCenter" "LandingLeg_get_Deployed" [makeArgument 0 thisArg]
-    res <- sendRequest r
-    processResponse res
-
-getLandingLegDeployedStreamReq :: KRPCHS.SpaceCenter.LandingLeg -> KRPCStreamReq (Bool)
-getLandingLegDeployedStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "LandingLeg_get_Deployed" [makeArgument 0 thisArg]
-    in  makeStream req
-
-getLandingLegDeployedStream :: KRPCHS.SpaceCenter.LandingLeg -> RPCContext (KRPCStream (Bool))
-getLandingLegDeployedStream thisArg = requestStream $ getLandingLegDeployedStreamReq thisArg 
-
-{-
- - The part object for this landing leg.
- -}
-getLandingLegPart :: KRPCHS.SpaceCenter.LandingLeg -> RPCContext (KRPCHS.SpaceCenter.Part)
-getLandingLegPart thisArg = do
-    let r = makeRequest "SpaceCenter" "LandingLeg_get_Part" [makeArgument 0 thisArg]
-    res <- sendRequest r
-    processResponse res
-
-getLandingLegPartStreamReq :: KRPCHS.SpaceCenter.LandingLeg -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
-getLandingLegPartStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "LandingLeg_get_Part" [makeArgument 0 thisArg]
-    in  makeStream req
-
-getLandingLegPartStream :: KRPCHS.SpaceCenter.LandingLeg -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
-getLandingLegPartStream thisArg = requestStream $ getLandingLegPartStreamReq thisArg 
-
-{-
- - The current state of the landing leg.
- -}
-getLandingLegState :: KRPCHS.SpaceCenter.LandingLeg -> RPCContext (KRPCHS.SpaceCenter.LandingLegState)
-getLandingLegState thisArg = do
-    let r = makeRequest "SpaceCenter" "LandingLeg_get_State" [makeArgument 0 thisArg]
-    res <- sendRequest r
-    processResponse res
-
-getLandingLegStateStreamReq :: KRPCHS.SpaceCenter.LandingLeg -> KRPCStreamReq (KRPCHS.SpaceCenter.LandingLegState)
-getLandingLegStateStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "LandingLeg_get_State" [makeArgument 0 thisArg]
-    in  makeStream req
-
-getLandingLegStateStream :: KRPCHS.SpaceCenter.LandingLeg -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.LandingLegState))
-getLandingLegStateStream thisArg = requestStream $ getLandingLegStateStreamReq thisArg 
-
-{-
- - Whether the landing leg is deployed.Fixed landing legs are always deployed.
- - Returns an error if you try to deploy fixed landing gear.
- -}
-setLandingLegDeployed :: KRPCHS.SpaceCenter.LandingLeg -> Bool -> RPCContext ()
-setLandingLegDeployed thisArg valueArg = do
-    let r = makeRequest "SpaceCenter" "LandingLeg_set_Deployed" [makeArgument 0 thisArg, makeArgument 1 valueArg]
-    res <- sendRequest r
-    processResponse res 
-
-{-
  - Releases the docking clamp. Has no effect if the clamp has already been released.
  -}
 launchClampRelease :: KRPCHS.SpaceCenter.LaunchClamp -> RPCContext ()
@@ -7264,6 +9344,102 @@ launchableVesselsStreamReq craftDirectoryArg =
 
 launchableVesselsStream :: Data.Text.Text -> RPCContext (KRPCStream ([Data.Text.Text]))
 launchableVesselsStream craftDirectoryArg = requestStream $ launchableVesselsStreamReq craftDirectoryArg 
+
+{-
+ - Whether the leg is deployable.
+ -}
+getLegDeployable :: KRPCHS.SpaceCenter.Leg -> RPCContext (Bool)
+getLegDeployable thisArg = do
+    let r = makeRequest "SpaceCenter" "Leg_get_Deployable" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getLegDeployableStreamReq :: KRPCHS.SpaceCenter.Leg -> KRPCStreamReq (Bool)
+getLegDeployableStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Leg_get_Deployable" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getLegDeployableStream :: KRPCHS.SpaceCenter.Leg -> RPCContext (KRPCStream (Bool))
+getLegDeployableStream thisArg = requestStream $ getLegDeployableStreamReq thisArg 
+
+{-
+ - Whether the landing leg is deployed.Fixed landing legs are always deployed.
+ - Returns an error if you try to deploy fixed landing gear.
+ -}
+getLegDeployed :: KRPCHS.SpaceCenter.Leg -> RPCContext (Bool)
+getLegDeployed thisArg = do
+    let r = makeRequest "SpaceCenter" "Leg_get_Deployed" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getLegDeployedStreamReq :: KRPCHS.SpaceCenter.Leg -> KRPCStreamReq (Bool)
+getLegDeployedStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Leg_get_Deployed" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getLegDeployedStream :: KRPCHS.SpaceCenter.Leg -> RPCContext (KRPCStream (Bool))
+getLegDeployedStream thisArg = requestStream $ getLegDeployedStreamReq thisArg 
+
+{-
+ - Returns whether the leg is touching the ground.
+ -}
+getLegIsGrounded :: KRPCHS.SpaceCenter.Leg -> RPCContext (Bool)
+getLegIsGrounded thisArg = do
+    let r = makeRequest "SpaceCenter" "Leg_get_IsGrounded" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getLegIsGroundedStreamReq :: KRPCHS.SpaceCenter.Leg -> KRPCStreamReq (Bool)
+getLegIsGroundedStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Leg_get_IsGrounded" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getLegIsGroundedStream :: KRPCHS.SpaceCenter.Leg -> RPCContext (KRPCStream (Bool))
+getLegIsGroundedStream thisArg = requestStream $ getLegIsGroundedStreamReq thisArg 
+
+{-
+ - The part object for this landing leg.
+ -}
+getLegPart :: KRPCHS.SpaceCenter.Leg -> RPCContext (KRPCHS.SpaceCenter.Part)
+getLegPart thisArg = do
+    let r = makeRequest "SpaceCenter" "Leg_get_Part" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getLegPartStreamReq :: KRPCHS.SpaceCenter.Leg -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
+getLegPartStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Leg_get_Part" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getLegPartStream :: KRPCHS.SpaceCenter.Leg -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getLegPartStream thisArg = requestStream $ getLegPartStreamReq thisArg 
+
+{-
+ - The current state of the landing leg.
+ -}
+getLegState :: KRPCHS.SpaceCenter.Leg -> RPCContext (KRPCHS.SpaceCenter.LegState)
+getLegState thisArg = do
+    let r = makeRequest "SpaceCenter" "Leg_get_State" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getLegStateStreamReq :: KRPCHS.SpaceCenter.Leg -> KRPCStreamReq (KRPCHS.SpaceCenter.LegState)
+getLegStateStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Leg_get_State" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getLegStateStream :: KRPCHS.SpaceCenter.Leg -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.LegState))
+getLegStateStream thisArg = requestStream $ getLegStateStreamReq thisArg 
+
+{-
+ - Whether the landing leg is deployed.Fixed landing legs are always deployed.
+ - Returns an error if you try to deploy fixed landing gear.
+ -}
+setLegDeployed :: KRPCHS.SpaceCenter.Leg -> Bool -> RPCContext ()
+setLegDeployed thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Leg_set_Deployed" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
 
 {-
  - Whether the light is switched on.
@@ -7653,35 +9829,35 @@ nodeRemove thisArg = do
 {-
  - The delta-v of the maneuver node, in meters per second.Does not change when executing the maneuver node. See <see cref="M:SpaceCenter.Node.RemainingDeltaV" />.
  -}
-getNodeDeltaV :: KRPCHS.SpaceCenter.Node -> RPCContext (Float)
+getNodeDeltaV :: KRPCHS.SpaceCenter.Node -> RPCContext (Double)
 getNodeDeltaV thisArg = do
     let r = makeRequest "SpaceCenter" "Node_get_DeltaV" [makeArgument 0 thisArg]
     res <- sendRequest r
     processResponse res
 
-getNodeDeltaVStreamReq :: KRPCHS.SpaceCenter.Node -> KRPCStreamReq (Float)
+getNodeDeltaVStreamReq :: KRPCHS.SpaceCenter.Node -> KRPCStreamReq (Double)
 getNodeDeltaVStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Node_get_DeltaV" [makeArgument 0 thisArg]
     in  makeStream req
 
-getNodeDeltaVStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (Float))
+getNodeDeltaVStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (Double))
 getNodeDeltaVStream thisArg = requestStream $ getNodeDeltaVStreamReq thisArg 
 
 {-
  - The magnitude of the maneuver nodes delta-v in the normal direction, in meters per second.
  -}
-getNodeNormal :: KRPCHS.SpaceCenter.Node -> RPCContext (Float)
+getNodeNormal :: KRPCHS.SpaceCenter.Node -> RPCContext (Double)
 getNodeNormal thisArg = do
     let r = makeRequest "SpaceCenter" "Node_get_Normal" [makeArgument 0 thisArg]
     res <- sendRequest r
     processResponse res
 
-getNodeNormalStreamReq :: KRPCHS.SpaceCenter.Node -> KRPCStreamReq (Float)
+getNodeNormalStreamReq :: KRPCHS.SpaceCenter.Node -> KRPCStreamReq (Double)
 getNodeNormalStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Node_get_Normal" [makeArgument 0 thisArg]
     in  makeStream req
 
-getNodeNormalStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (Float))
+getNodeNormalStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (Double))
 getNodeNormalStream thisArg = requestStream $ getNodeNormalStreamReq thisArg 
 
 {-
@@ -7727,35 +9903,35 @@ getNodeOrbitalReferenceFrameStream thisArg = requestStream $ getNodeOrbitalRefer
 {-
  - The magnitude of the maneuver nodes delta-v in the prograde direction, in meters per second.
  -}
-getNodePrograde :: KRPCHS.SpaceCenter.Node -> RPCContext (Float)
+getNodePrograde :: KRPCHS.SpaceCenter.Node -> RPCContext (Double)
 getNodePrograde thisArg = do
     let r = makeRequest "SpaceCenter" "Node_get_Prograde" [makeArgument 0 thisArg]
     res <- sendRequest r
     processResponse res
 
-getNodeProgradeStreamReq :: KRPCHS.SpaceCenter.Node -> KRPCStreamReq (Float)
+getNodeProgradeStreamReq :: KRPCHS.SpaceCenter.Node -> KRPCStreamReq (Double)
 getNodeProgradeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Node_get_Prograde" [makeArgument 0 thisArg]
     in  makeStream req
 
-getNodeProgradeStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (Float))
+getNodeProgradeStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (Double))
 getNodeProgradeStream thisArg = requestStream $ getNodeProgradeStreamReq thisArg 
 
 {-
  - The magnitude of the maneuver nodes delta-v in the radial direction, in meters per second.
  -}
-getNodeRadial :: KRPCHS.SpaceCenter.Node -> RPCContext (Float)
+getNodeRadial :: KRPCHS.SpaceCenter.Node -> RPCContext (Double)
 getNodeRadial thisArg = do
     let r = makeRequest "SpaceCenter" "Node_get_Radial" [makeArgument 0 thisArg]
     res <- sendRequest r
     processResponse res
 
-getNodeRadialStreamReq :: KRPCHS.SpaceCenter.Node -> KRPCStreamReq (Float)
+getNodeRadialStreamReq :: KRPCHS.SpaceCenter.Node -> KRPCStreamReq (Double)
 getNodeRadialStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Node_get_Radial" [makeArgument 0 thisArg]
     in  makeStream req
 
-getNodeRadialStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (Float))
+getNodeRadialStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (Double))
 getNodeRadialStream thisArg = requestStream $ getNodeRadialStreamReq thisArg 
 
 {-
@@ -7780,18 +9956,18 @@ getNodeReferenceFrameStream thisArg = requestStream $ getNodeReferenceFrameStrea
  - Gets the remaining delta-v of the maneuver node, in meters per second. Changes as the node
  - is executed. This is equivalent to the delta-v reported in-game.
  -}
-getNodeRemainingDeltaV :: KRPCHS.SpaceCenter.Node -> RPCContext (Float)
+getNodeRemainingDeltaV :: KRPCHS.SpaceCenter.Node -> RPCContext (Double)
 getNodeRemainingDeltaV thisArg = do
     let r = makeRequest "SpaceCenter" "Node_get_RemainingDeltaV" [makeArgument 0 thisArg]
     res <- sendRequest r
     processResponse res
 
-getNodeRemainingDeltaVStreamReq :: KRPCHS.SpaceCenter.Node -> KRPCStreamReq (Float)
+getNodeRemainingDeltaVStreamReq :: KRPCHS.SpaceCenter.Node -> KRPCStreamReq (Double)
 getNodeRemainingDeltaVStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Node_get_RemainingDeltaV" [makeArgument 0 thisArg]
     in  makeStream req
 
-getNodeRemainingDeltaVStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (Float))
+getNodeRemainingDeltaVStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (Double))
 getNodeRemainingDeltaVStream thisArg = requestStream $ getNodeRemainingDeltaVStreamReq thisArg 
 
 {-
@@ -7831,7 +10007,7 @@ getNodeUTStream thisArg = requestStream $ getNodeUTStreamReq thisArg
 {-
  - The delta-v of the maneuver node, in meters per second.Does not change when executing the maneuver node. See <see cref="M:SpaceCenter.Node.RemainingDeltaV" />.
  -}
-setNodeDeltaV :: KRPCHS.SpaceCenter.Node -> Float -> RPCContext ()
+setNodeDeltaV :: KRPCHS.SpaceCenter.Node -> Double -> RPCContext ()
 setNodeDeltaV thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Node_set_DeltaV" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -7840,7 +10016,7 @@ setNodeDeltaV thisArg valueArg = do
 {-
  - The magnitude of the maneuver nodes delta-v in the normal direction, in meters per second.
  -}
-setNodeNormal :: KRPCHS.SpaceCenter.Node -> Float -> RPCContext ()
+setNodeNormal :: KRPCHS.SpaceCenter.Node -> Double -> RPCContext ()
 setNodeNormal thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Node_set_Normal" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -7849,7 +10025,7 @@ setNodeNormal thisArg valueArg = do
 {-
  - The magnitude of the maneuver nodes delta-v in the prograde direction, in meters per second.
  -}
-setNodePrograde :: KRPCHS.SpaceCenter.Node -> Float -> RPCContext ()
+setNodePrograde :: KRPCHS.SpaceCenter.Node -> Double -> RPCContext ()
 setNodePrograde thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Node_set_Prograde" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -7858,7 +10034,7 @@ setNodePrograde thisArg valueArg = do
 {-
  - The magnitude of the maneuver nodes delta-v in the radial direction, in meters per second.
  -}
-setNodeRadial :: KRPCHS.SpaceCenter.Node -> Float -> RPCContext ()
+setNodeRadial :: KRPCHS.SpaceCenter.Node -> Double -> RPCContext ()
 setNodeRadial thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Node_set_Radial" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -8427,6 +10603,16 @@ getOrbitTrueAnomalyStream thisArg = requestStream $ getOrbitTrueAnomalyStreamReq
 
 {-
  - Deploys the parachute. This has no effect if the parachute has already
+ - been armed or deployed. Only applicable to RealChutes parachutes.
+ -}
+parachuteArm :: KRPCHS.SpaceCenter.Parachute -> RPCContext ()
+parachuteArm thisArg = do
+    let r = makeRequest "SpaceCenter" "Parachute_Arm" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - Deploys the parachute. This has no effect if the parachute has already
  - been deployed.
  -}
 parachuteDeploy :: KRPCHS.SpaceCenter.Parachute -> RPCContext ()
@@ -8436,7 +10622,25 @@ parachuteDeploy thisArg = do
     processResponse res 
 
 {-
+ - Whether the parachute has been armed or deployed. Only applicable to RealChutes parachutes.
+ -}
+getParachuteArmed :: KRPCHS.SpaceCenter.Parachute -> RPCContext (Bool)
+getParachuteArmed thisArg = do
+    let r = makeRequest "SpaceCenter" "Parachute_get_Armed" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getParachuteArmedStreamReq :: KRPCHS.SpaceCenter.Parachute -> KRPCStreamReq (Bool)
+getParachuteArmedStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Parachute_get_Armed" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getParachuteArmedStream :: KRPCHS.SpaceCenter.Parachute -> RPCContext (KRPCStream (Bool))
+getParachuteArmedStream thisArg = requestStream $ getParachuteArmedStreamReq thisArg 
+
+{-
  - The altitude at which the parachute will full deploy, in meters.
+ - Only applicable to stock parachutes.
  -}
 getParachuteDeployAltitude :: KRPCHS.SpaceCenter.Parachute -> RPCContext (Float)
 getParachuteDeployAltitude thisArg = do
@@ -8454,6 +10658,7 @@ getParachuteDeployAltitudeStream thisArg = requestStream $ getParachuteDeployAlt
 
 {-
  - The minimum pressure at which the parachute will semi-deploy, in atmospheres.
+ - Only applicable to stock parachutes.
  -}
 getParachuteDeployMinPressure :: KRPCHS.SpaceCenter.Parachute -> RPCContext (Float)
 getParachuteDeployMinPressure thisArg = do
@@ -8522,6 +10727,7 @@ getParachuteStateStream thisArg = requestStream $ getParachuteStateStreamReq thi
 
 {-
  - The altitude at which the parachute will full deploy, in meters.
+ - Only applicable to stock parachutes.
  -}
 setParachuteDeployAltitude :: KRPCHS.SpaceCenter.Parachute -> Float -> RPCContext ()
 setParachuteDeployAltitude thisArg valueArg = do
@@ -8531,6 +10737,7 @@ setParachuteDeployAltitude thisArg valueArg = do
 
 {-
  - The minimum pressure at which the parachute will semi-deploy, in atmospheres.
+ - Only applicable to stock parachutes.
  -}
 setParachuteDeployMinPressure :: KRPCHS.SpaceCenter.Parachute -> Float -> RPCContext ()
 setParachuteDeployMinPressure thisArg valueArg = do
@@ -8555,6 +10762,26 @@ partAddForceStreamReq thisArg forceArg positionArg referenceFrameArg =
 
 partAddForceStream :: KRPCHS.SpaceCenter.Part -> (Double, Double, Double) -> (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Force))
 partAddForceStream thisArg forceArg positionArg referenceFrameArg = requestStream $ partAddForceStreamReq thisArg forceArg positionArg referenceFrameArg 
+
+{-
+ - The axis-aligned bounding box of the vessel in the given reference frame.
+ - Returns the minimum and maximum vertices of the box.<param name="referenceFrame">This is computed from the collision meshes of the part.
+ - If the part is not collidable, the box has zero volume and is centered on
+ - the <see cref="M:SpaceCenter.Part.Position" /> of the part.
+ -}
+partBoundingBox :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (((Double, Double, Double), (Double, Double, Double)))
+partBoundingBox thisArg referenceFrameArg = do
+    let r = makeRequest "SpaceCenter" "Part_BoundingBox" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
+    res <- sendRequest r
+    processResponse res
+
+partBoundingBoxStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq (((Double, Double, Double), (Double, Double, Double)))
+partBoundingBoxStreamReq thisArg referenceFrameArg =
+    let req = makeRequest "SpaceCenter" "Part_BoundingBox" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
+    in  makeStream req
+
+partBoundingBoxStream :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
+partBoundingBoxStream thisArg referenceFrameArg = requestStream $ partBoundingBoxStreamReq thisArg referenceFrameArg 
 
 {-
  - The position of the parts center of mass in the given reference frame.
@@ -8652,6 +10879,23 @@ partVelocityStreamReq thisArg referenceFrameArg =
 
 partVelocityStream :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
 partVelocityStream thisArg referenceFrameArg = requestStream $ partVelocityStreamReq thisArg referenceFrameArg 
+
+{-
+ - A <see cref="T:SpaceCenter.Antenna" /> if the part is an antenna, otherwisenull.
+ -}
+getPartAntenna :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.Antenna)
+getPartAntenna thisArg = do
+    let r = makeRequest "SpaceCenter" "Part_get_Antenna" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getPartAntennaStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (KRPCHS.SpaceCenter.Antenna)
+getPartAntennaStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Part_get_Antenna" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getPartAntennaStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Antenna))
+getPartAntennaStream thisArg = requestStream $ getPartAntennaStreamReq thisArg 
 
 {-
  - Whether the part is axially attached to its parent, i.e. on the top
@@ -8947,6 +11191,40 @@ getPartFuelLinesToStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream ([
 getPartFuelLinesToStream thisArg = requestStream $ getPartFuelLinesToStreamReq thisArg 
 
 {-
+ - The color used to highlight the part.
+ -}
+getPartHighlightColor :: KRPCHS.SpaceCenter.Part -> RPCContext ((Double, Double, Double))
+getPartHighlightColor thisArg = do
+    let r = makeRequest "SpaceCenter" "Part_get_HighlightColor" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getPartHighlightColorStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq ((Double, Double, Double))
+getPartHighlightColorStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Part_get_HighlightColor" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getPartHighlightColorStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream ((Double, Double, Double)))
+getPartHighlightColorStream thisArg = requestStream $ getPartHighlightColorStreamReq thisArg 
+
+{-
+ - Whether the part is highlighted.
+ -}
+getPartHighlighted :: KRPCHS.SpaceCenter.Part -> RPCContext (Bool)
+getPartHighlighted thisArg = do
+    let r = makeRequest "SpaceCenter" "Part_get_Highlighted" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getPartHighlightedStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (Bool)
+getPartHighlightedStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Part_get_Highlighted" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getPartHighlightedStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Bool))
+getPartHighlightedStream thisArg = requestStream $ getPartHighlightedStreamReq thisArg 
+
+{-
  - The impact tolerance of the part, in meters per second.
  -}
 getPartImpactTolerance :: KRPCHS.SpaceCenter.Part -> RPCContext (Double)
@@ -9018,40 +11296,6 @@ getPartIsFuelLineStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Bo
 getPartIsFuelLineStream thisArg = requestStream $ getPartIsFuelLineStreamReq thisArg 
 
 {-
- - A <see cref="T:SpaceCenter.LandingGear" /> if the part is a landing gear, otherwisenull.
- -}
-getPartLandingGear :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.LandingGear)
-getPartLandingGear thisArg = do
-    let r = makeRequest "SpaceCenter" "Part_get_LandingGear" [makeArgument 0 thisArg]
-    res <- sendRequest r
-    processResponse res
-
-getPartLandingGearStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (KRPCHS.SpaceCenter.LandingGear)
-getPartLandingGearStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_LandingGear" [makeArgument 0 thisArg]
-    in  makeStream req
-
-getPartLandingGearStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.LandingGear))
-getPartLandingGearStream thisArg = requestStream $ getPartLandingGearStreamReq thisArg 
-
-{-
- - A <see cref="T:SpaceCenter.LandingLeg" /> if the part is a landing leg, otherwisenull.
- -}
-getPartLandingLeg :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.LandingLeg)
-getPartLandingLeg thisArg = do
-    let r = makeRequest "SpaceCenter" "Part_get_LandingLeg" [makeArgument 0 thisArg]
-    res <- sendRequest r
-    processResponse res
-
-getPartLandingLegStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (KRPCHS.SpaceCenter.LandingLeg)
-getPartLandingLegStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Part_get_LandingLeg" [makeArgument 0 thisArg]
-    in  makeStream req
-
-getPartLandingLegStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.LandingLeg))
-getPartLandingLegStream thisArg = requestStream $ getPartLandingLegStreamReq thisArg 
-
-{-
  - A <see cref="T:SpaceCenter.LaunchClamp" /> if the part is a launch clamp, otherwisenull.
  -}
 getPartLaunchClamp :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.LaunchClamp)
@@ -9067,6 +11311,23 @@ getPartLaunchClampStreamReq thisArg =
 
 getPartLaunchClampStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.LaunchClamp))
 getPartLaunchClampStream thisArg = requestStream $ getPartLaunchClampStreamReq thisArg 
+
+{-
+ - A <see cref="T:SpaceCenter.Leg" /> if the part is a landing leg, otherwisenull.
+ -}
+getPartLeg :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.Leg)
+getPartLeg thisArg = do
+    let r = makeRequest "SpaceCenter" "Part_get_Leg" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getPartLegStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (KRPCHS.SpaceCenter.Leg)
+getPartLegStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Part_get_Leg" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getPartLegStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Leg))
+getPartLegStream thisArg = requestStream $ getPartLegStreamReq thisArg 
 
 {-
  - A <see cref="T:SpaceCenter.Light" /> if the part is a light, otherwisenull.
@@ -9685,6 +11946,41 @@ getPartVesselStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS
 getPartVesselStream thisArg = requestStream $ getPartVesselStreamReq thisArg 
 
 {-
+ - A <see cref="T:SpaceCenter.Wheel" /> if the part is a wheel, otherwisenull.
+ -}
+getPartWheel :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.Wheel)
+getPartWheel thisArg = do
+    let r = makeRequest "SpaceCenter" "Part_get_Wheel" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getPartWheelStreamReq :: KRPCHS.SpaceCenter.Part -> KRPCStreamReq (KRPCHS.SpaceCenter.Wheel)
+getPartWheelStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Part_get_Wheel" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getPartWheelStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Wheel))
+getPartWheelStream thisArg = requestStream $ getPartWheelStreamReq thisArg 
+
+{-
+ - The color used to highlight the part.
+ -}
+setPartHighlightColor :: KRPCHS.SpaceCenter.Part -> (Double, Double, Double) -> RPCContext ()
+setPartHighlightColor thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Part_set_HighlightColor" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - Whether the part is highlighted.
+ -}
+setPartHighlighted :: KRPCHS.SpaceCenter.Part -> Bool -> RPCContext ()
+setPartHighlighted thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Part_set_Highlighted" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
  - The name tag for the part. Can be set to a custom string using the in-game user interface.This requires either the <a href="http://github.com/krpc/NameTag/releases/latest">NameTagor
  - <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/61827-/">kOSmods to be installed.
  -}
@@ -9831,6 +12127,23 @@ getPartsAllStreamReq thisArg =
 
 getPartsAllStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
 getPartsAllStream thisArg = requestStream $ getPartsAllStreamReq thisArg 
+
+{-
+ - A list of all antennas in the vessel.
+ -}
+getPartsAntennas :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.Antenna])
+getPartsAntennas thisArg = do
+    let r = makeRequest "SpaceCenter" "Parts_get_Antennas" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getPartsAntennasStreamReq :: KRPCHS.SpaceCenter.Parts -> KRPCStreamReq ([KRPCHS.SpaceCenter.Antenna])
+getPartsAntennasStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Parts_get_Antennas" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getPartsAntennasStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Antenna]))
+getPartsAntennasStream thisArg = requestStream $ getPartsAntennasStreamReq thisArg 
 
 {-
  - A list of all cargo bays in the vessel.
@@ -9987,40 +12300,6 @@ getPartsIntakesStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KR
 getPartsIntakesStream thisArg = requestStream $ getPartsIntakesStreamReq thisArg 
 
 {-
- - A list of all landing gear attached to the vessel.
- -}
-getPartsLandingGear :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.LandingGear])
-getPartsLandingGear thisArg = do
-    let r = makeRequest "SpaceCenter" "Parts_get_LandingGear" [makeArgument 0 thisArg]
-    res <- sendRequest r
-    processResponse res
-
-getPartsLandingGearStreamReq :: KRPCHS.SpaceCenter.Parts -> KRPCStreamReq ([KRPCHS.SpaceCenter.LandingGear])
-getPartsLandingGearStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Parts_get_LandingGear" [makeArgument 0 thisArg]
-    in  makeStream req
-
-getPartsLandingGearStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.LandingGear]))
-getPartsLandingGearStream thisArg = requestStream $ getPartsLandingGearStreamReq thisArg 
-
-{-
- - A list of all landing legs attached to the vessel.
- -}
-getPartsLandingLegs :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.LandingLeg])
-getPartsLandingLegs thisArg = do
-    let r = makeRequest "SpaceCenter" "Parts_get_LandingLegs" [makeArgument 0 thisArg]
-    res <- sendRequest r
-    processResponse res
-
-getPartsLandingLegsStreamReq :: KRPCHS.SpaceCenter.Parts -> KRPCStreamReq ([KRPCHS.SpaceCenter.LandingLeg])
-getPartsLandingLegsStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Parts_get_LandingLegs" [makeArgument 0 thisArg]
-    in  makeStream req
-
-getPartsLandingLegsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.LandingLeg]))
-getPartsLandingLegsStream thisArg = requestStream $ getPartsLandingLegsStreamReq thisArg 
-
-{-
  - A list of all launch clamps attached to the vessel.
  -}
 getPartsLaunchClamps :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.LaunchClamp])
@@ -10036,6 +12315,23 @@ getPartsLaunchClampsStreamReq thisArg =
 
 getPartsLaunchClampsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.LaunchClamp]))
 getPartsLaunchClampsStream thisArg = requestStream $ getPartsLaunchClampsStreamReq thisArg 
+
+{-
+ - A list of all landing legs attached to the vessel.
+ -}
+getPartsLegs :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.Leg])
+getPartsLegs thisArg = do
+    let r = makeRequest "SpaceCenter" "Parts_get_Legs" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getPartsLegsStreamReq :: KRPCHS.SpaceCenter.Parts -> KRPCStreamReq ([KRPCHS.SpaceCenter.Leg])
+getPartsLegsStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Parts_get_Legs" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getPartsLegsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Leg]))
+getPartsLegsStream thisArg = requestStream $ getPartsLegsStreamReq thisArg 
 
 {-
  - A list of all lights in the vessel.
@@ -10208,6 +12504,23 @@ getPartsSolarPanelsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream 
 getPartsSolarPanelsStream thisArg = requestStream $ getPartsSolarPanelsStreamReq thisArg 
 
 {-
+ - A list of all wheels in the vessel.
+ -}
+getPartsWheels :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.Wheel])
+getPartsWheels thisArg = do
+    let r = makeRequest "SpaceCenter" "Parts_get_Wheels" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getPartsWheelsStreamReq :: KRPCHS.SpaceCenter.Parts -> KRPCStreamReq ([KRPCHS.SpaceCenter.Wheel])
+getPartsWheelsStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Parts_get_Wheels" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getPartsWheelsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Wheel]))
+getPartsWheelsStream thisArg = requestStream $ getPartsWheelsStreamReq thisArg 
+
+{-
  - The part from which the vessel is controlled.
  -}
 setPartsControlling :: KRPCHS.SpaceCenter.Parts -> KRPCHS.SpaceCenter.Part -> RPCContext ()
@@ -10215,23 +12528,6 @@ setPartsControlling thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Parts_set_Controlling" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
     processResponse res 
-
-{-
- - The reachable resources connected to this propellant.
- -}
-getPropellantConnectedResources :: KRPCHS.SpaceCenter.Propellant -> RPCContext ([KRPCHS.SpaceCenter.Resource])
-getPropellantConnectedResources thisArg = do
-    let r = makeRequest "SpaceCenter" "Propellant_get_ConnectedResources" [makeArgument 0 thisArg]
-    res <- sendRequest r
-    processResponse res
-
-getPropellantConnectedResourcesStreamReq :: KRPCHS.SpaceCenter.Propellant -> KRPCStreamReq ([KRPCHS.SpaceCenter.Resource])
-getPropellantConnectedResourcesStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Propellant_get_ConnectedResources" [makeArgument 0 thisArg]
-    in  makeStream req
-
-getPropellantConnectedResourcesStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Resource]))
-getPropellantConnectedResourcesStream thisArg = requestStream $ getPropellantConnectedResourcesStreamReq thisArg 
 
 {-
  - The current amount of propellant.
@@ -10446,18 +12742,18 @@ getRCSActiveStream thisArg = requestStream $ getRCSActiveStreamReq thisArg
  - These axes correspond to the coordinate axes of the <see cref="M:SpaceCenter.Vessel.ReferenceFrame" />.
  - Returns zero if the RCS is inactive.
  -}
-getRCSAvailableTorque :: KRPCHS.SpaceCenter.RCS -> RPCContext ((Double, Double, Double))
+getRCSAvailableTorque :: KRPCHS.SpaceCenter.RCS -> RPCContext (((Double, Double, Double), (Double, Double, Double)))
 getRCSAvailableTorque thisArg = do
     let r = makeRequest "SpaceCenter" "RCS_get_AvailableTorque" [makeArgument 0 thisArg]
     res <- sendRequest r
     processResponse res
 
-getRCSAvailableTorqueStreamReq :: KRPCHS.SpaceCenter.RCS -> KRPCStreamReq ((Double, Double, Double))
+getRCSAvailableTorqueStreamReq :: KRPCHS.SpaceCenter.RCS -> KRPCStreamReq (((Double, Double, Double), (Double, Double, Double)))
 getRCSAvailableTorqueStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "RCS_get_AvailableTorque" [makeArgument 0 thisArg]
     in  makeStream req
 
-getRCSAvailableTorqueStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream ((Double, Double, Double)))
+getRCSAvailableTorqueStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
 getRCSAvailableTorqueStream thisArg = requestStream $ getRCSAvailableTorqueStreamReq thisArg 
 
 {-
@@ -10915,18 +13211,18 @@ getReactionWheelActiveStream thisArg = requestStream $ getReactionWheelActiveStr
  - These axes correspond to the coordinate axes of the <see cref="M:SpaceCenter.Vessel.ReferenceFrame" />.
  - Returns zero if the reaction wheel is inactive or broken.
  -}
-getReactionWheelAvailableTorque :: KRPCHS.SpaceCenter.ReactionWheel -> RPCContext ((Double, Double, Double))
+getReactionWheelAvailableTorque :: KRPCHS.SpaceCenter.ReactionWheel -> RPCContext (((Double, Double, Double), (Double, Double, Double)))
 getReactionWheelAvailableTorque thisArg = do
     let r = makeRequest "SpaceCenter" "ReactionWheel_get_AvailableTorque" [makeArgument 0 thisArg]
     res <- sendRequest r
     processResponse res
 
-getReactionWheelAvailableTorqueStreamReq :: KRPCHS.SpaceCenter.ReactionWheel -> KRPCStreamReq ((Double, Double, Double))
+getReactionWheelAvailableTorqueStreamReq :: KRPCHS.SpaceCenter.ReactionWheel -> KRPCStreamReq (((Double, Double, Double), (Double, Double, Double)))
 getReactionWheelAvailableTorqueStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ReactionWheel_get_AvailableTorque" [makeArgument 0 thisArg]
     in  makeStream req
 
-getReactionWheelAvailableTorqueStream :: KRPCHS.SpaceCenter.ReactionWheel -> RPCContext (KRPCStream ((Double, Double, Double)))
+getReactionWheelAvailableTorqueStream :: KRPCHS.SpaceCenter.ReactionWheel -> RPCContext (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
 getReactionWheelAvailableTorqueStream thisArg = requestStream $ getReactionWheelAvailableTorqueStreamReq thisArg 
 
 {-
@@ -10951,18 +13247,18 @@ getReactionWheelBrokenStream thisArg = requestStream $ getReactionWheelBrokenStr
  - in the pitch, roll and yaw axes of the vessel, in Newton meters.
  - These axes correspond to the coordinate axes of the <see cref="M:SpaceCenter.Vessel.ReferenceFrame" />.
  -}
-getReactionWheelMaxTorque :: KRPCHS.SpaceCenter.ReactionWheel -> RPCContext ((Double, Double, Double))
+getReactionWheelMaxTorque :: KRPCHS.SpaceCenter.ReactionWheel -> RPCContext (((Double, Double, Double), (Double, Double, Double)))
 getReactionWheelMaxTorque thisArg = do
     let r = makeRequest "SpaceCenter" "ReactionWheel_get_MaxTorque" [makeArgument 0 thisArg]
     res <- sendRequest r
     processResponse res
 
-getReactionWheelMaxTorqueStreamReq :: KRPCHS.SpaceCenter.ReactionWheel -> KRPCStreamReq ((Double, Double, Double))
+getReactionWheelMaxTorqueStreamReq :: KRPCHS.SpaceCenter.ReactionWheel -> KRPCStreamReq (((Double, Double, Double), (Double, Double, Double)))
 getReactionWheelMaxTorqueStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ReactionWheel_get_MaxTorque" [makeArgument 0 thisArg]
     in  makeStream req
 
-getReactionWheelMaxTorqueStream :: KRPCHS.SpaceCenter.ReactionWheel -> RPCContext (KRPCStream ((Double, Double, Double)))
+getReactionWheelMaxTorqueStream :: KRPCHS.SpaceCenter.ReactionWheel -> RPCContext (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
 getReactionWheelMaxTorqueStream thisArg = requestStream $ getReactionWheelMaxTorqueStreamReq thisArg 
 
 {-
@@ -10990,6 +13286,42 @@ setReactionWheelActive thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "ReactionWheel_set_Active" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
     processResponse res 
+
+{-
+ - Create a hybrid reference frame, which is a custom reference frame
+ - whose components are inherited from other reference frames.<param name="position">The reference frame providing the position of the origin.<param name="rotation">The reference frame providing the orientation of the frame.<param name="velocity">The reference frame providing the linear velocity of the frame.<param name="angularVelocity">The reference frame providing the angular velocity of the frame.The <paramref name="position" /> is required but all other reference frames are optional.
+ - If omitted, they are set to the <paramref name="position" /> reference frame.
+ -}
+referenceFrameCreateHybrid :: KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
+referenceFrameCreateHybrid positionArg rotationArg velocityArg angularVelocityArg = do
+    let r = makeRequest "SpaceCenter" "ReferenceFrame_CreateHybrid" [makeArgument 0 positionArg, makeArgument 1 rotationArg, makeArgument 2 velocityArg, makeArgument 3 angularVelocityArg]
+    res <- sendRequest r
+    processResponse res
+
+referenceFrameCreateHybridStreamReq :: KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq (KRPCHS.SpaceCenter.ReferenceFrame)
+referenceFrameCreateHybridStreamReq positionArg rotationArg velocityArg angularVelocityArg =
+    let req = makeRequest "SpaceCenter" "ReferenceFrame_CreateHybrid" [makeArgument 0 positionArg, makeArgument 1 rotationArg, makeArgument 2 velocityArg, makeArgument 3 angularVelocityArg]
+    in  makeStream req
+
+referenceFrameCreateHybridStream :: KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
+referenceFrameCreateHybridStream positionArg rotationArg velocityArg angularVelocityArg = requestStream $ referenceFrameCreateHybridStreamReq positionArg rotationArg velocityArg angularVelocityArg 
+
+{-
+ - Create a relative reference frame.<param name="referenceFrame">The parent reference frame.<param name="position">The offset of the position of the origin.<param name="rotation">The rotation to apply to the parent frames rotation, as a quaternion. Defaults to zero.<param name="velocity">The linear velocity to offset the parent frame by. Defaults to zero.<param name="angularVelocity">The angular velocity to offset the parent frame by. Defaults to zero.
+ -}
+referenceFrameCreateRelative :: KRPCHS.SpaceCenter.ReferenceFrame -> (Double, Double, Double) -> (Double, Double, Double, Double) -> (Double, Double, Double) -> (Double, Double, Double) -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
+referenceFrameCreateRelative referenceFrameArg positionArg rotationArg velocityArg angularVelocityArg = do
+    let r = makeRequest "SpaceCenter" "ReferenceFrame_CreateRelative" [makeArgument 0 referenceFrameArg, makeArgument 1 positionArg, makeArgument 2 rotationArg, makeArgument 3 velocityArg, makeArgument 4 angularVelocityArg]
+    res <- sendRequest r
+    processResponse res
+
+referenceFrameCreateRelativeStreamReq :: KRPCHS.SpaceCenter.ReferenceFrame -> (Double, Double, Double) -> (Double, Double, Double, Double) -> (Double, Double, Double) -> (Double, Double, Double) -> KRPCStreamReq (KRPCHS.SpaceCenter.ReferenceFrame)
+referenceFrameCreateRelativeStreamReq referenceFrameArg positionArg rotationArg velocityArg angularVelocityArg =
+    let req = makeRequest "SpaceCenter" "ReferenceFrame_CreateRelative" [makeArgument 0 referenceFrameArg, makeArgument 1 positionArg, makeArgument 2 rotationArg, makeArgument 3 velocityArg, makeArgument 4 angularVelocityArg]
+    in  makeStream req
+
+referenceFrameCreateRelativeStream :: KRPCHS.SpaceCenter.ReferenceFrame -> (Double, Double, Double) -> (Double, Double, Double, Double) -> (Double, Double, Double) -> (Double, Double, Double) -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
+referenceFrameCreateRelativeStream referenceFrameArg positionArg rotationArg velocityArg angularVelocityArg = requestStream $ referenceFrameCreateRelativeStreamReq referenceFrameArg positionArg rotationArg velocityArg angularVelocityArg 
 
 {-
  - True if the specified converter is active.<param name="index">Index of the converter.
@@ -11860,23 +14192,6 @@ getSensorPartStream :: KRPCHS.SpaceCenter.Sensor -> RPCContext (KRPCStream (KRPC
 getSensorPartStream thisArg = requestStream $ getSensorPartStreamReq thisArg 
 
 {-
- - The current power usage of the sensor, in units of charge per second.
- -}
-getSensorPowerUsage :: KRPCHS.SpaceCenter.Sensor -> RPCContext (Float)
-getSensorPowerUsage thisArg = do
-    let r = makeRequest "SpaceCenter" "Sensor_get_PowerUsage" [makeArgument 0 thisArg]
-    res <- sendRequest r
-    processResponse res
-
-getSensorPowerUsageStreamReq :: KRPCHS.SpaceCenter.Sensor -> KRPCStreamReq (Float)
-getSensorPowerUsageStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Sensor_get_PowerUsage" [makeArgument 0 thisArg]
-    in  makeStream req
-
-getSensorPowerUsageStream :: KRPCHS.SpaceCenter.Sensor -> RPCContext (KRPCStream (Float))
-getSensorPowerUsageStream thisArg = requestStream $ getSensorPowerUsageStreamReq thisArg 
-
-{-
  - The current value of the sensor.
  -}
 getSensorValue :: KRPCHS.SpaceCenter.Sensor -> RPCContext (Data.Text.Text)
@@ -11901,6 +14216,23 @@ setSensorActive thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Sensor_set_Active" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
     processResponse res 
+
+{-
+ - Whether the solar panel is deployable.
+ -}
+getSolarPanelDeployable :: KRPCHS.SpaceCenter.SolarPanel -> RPCContext (Bool)
+getSolarPanelDeployable thisArg = do
+    let r = makeRequest "SpaceCenter" "SolarPanel_get_Deployable" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getSolarPanelDeployableStreamReq :: KRPCHS.SpaceCenter.SolarPanel -> KRPCStreamReq (Bool)
+getSolarPanelDeployableStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "SolarPanel_get_Deployable" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getSolarPanelDeployableStream :: KRPCHS.SpaceCenter.SolarPanel -> RPCContext (KRPCStream (Bool))
+getSolarPanelDeployableStream thisArg = requestStream $ getSolarPanelDeployableStreamReq thisArg 
 
 {-
  - Whether the solar panel is extended.
@@ -12252,6 +14584,24 @@ vesselAngularVelocityStream :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.R
 vesselAngularVelocityStream thisArg referenceFrameArg = requestStream $ vesselAngularVelocityStreamReq thisArg referenceFrameArg 
 
 {-
+ - The axis-aligned bounding box of the vessel in the given reference frame.
+ - Returns the minimum and maximum vertices of the box.<param name="referenceFrame">
+ -}
+vesselBoundingBox :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (((Double, Double, Double), (Double, Double, Double)))
+vesselBoundingBox thisArg referenceFrameArg = do
+    let r = makeRequest "SpaceCenter" "Vessel_BoundingBox" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
+    res <- sendRequest r
+    processResponse res
+
+vesselBoundingBoxStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCStreamReq (((Double, Double, Double), (Double, Double, Double)))
+vesselBoundingBoxStreamReq thisArg referenceFrameArg =
+    let req = makeRequest "SpaceCenter" "Vessel_BoundingBox" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
+    in  makeStream req
+
+vesselBoundingBoxStream :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
+vesselBoundingBoxStream thisArg referenceFrameArg = requestStream $ vesselBoundingBoxStreamReq thisArg referenceFrameArg 
+
+{-
  - Returns the direction in which the vessel is pointing, as a unit vector, in the given reference frame.<param name="referenceFrame">
  -}
 vesselDirection :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
@@ -12388,81 +14738,101 @@ getVesselAutoPilotStream thisArg = requestStream $ getVesselAutoPilotStreamReq t
 {-
  - The maximum torque that the aerodynamic control surfaces can generate.
  - Returns the torques inN.maround each of the coordinate axes of the
- - vessels reference frame (<see cref="M:SpaceCenter.Vessel.ReferenceFrame" />).
+ - vessels reference frame (<see cref="T:SpaceCenter.ReferenceFrame" />).
  - These axes are equivalent to the pitch, roll and yaw axes of the vessel.
  -}
-getVesselAvailableControlSurfaceTorque :: KRPCHS.SpaceCenter.Vessel -> RPCContext ((Double, Double, Double))
+getVesselAvailableControlSurfaceTorque :: KRPCHS.SpaceCenter.Vessel -> RPCContext (((Double, Double, Double), (Double, Double, Double)))
 getVesselAvailableControlSurfaceTorque thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_AvailableControlSurfaceTorque" [makeArgument 0 thisArg]
     res <- sendRequest r
     processResponse res
 
-getVesselAvailableControlSurfaceTorqueStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq ((Double, Double, Double))
+getVesselAvailableControlSurfaceTorqueStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (((Double, Double, Double), (Double, Double, Double)))
 getVesselAvailableControlSurfaceTorqueStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_AvailableControlSurfaceTorque" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselAvailableControlSurfaceTorqueStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream ((Double, Double, Double)))
+getVesselAvailableControlSurfaceTorqueStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
 getVesselAvailableControlSurfaceTorqueStream thisArg = requestStream $ getVesselAvailableControlSurfaceTorqueStreamReq thisArg 
 
 {-
  - The maximum torque that the currently active and gimballed engines can generate.
  - Returns the torques inN.maround each of the coordinate axes of the
- - vessels reference frame (<see cref="M:SpaceCenter.Vessel.ReferenceFrame" />).
+ - vessels reference frame (<see cref="T:SpaceCenter.ReferenceFrame" />).
  - These axes are equivalent to the pitch, roll and yaw axes of the vessel.
  -}
-getVesselAvailableEngineTorque :: KRPCHS.SpaceCenter.Vessel -> RPCContext ((Double, Double, Double))
+getVesselAvailableEngineTorque :: KRPCHS.SpaceCenter.Vessel -> RPCContext (((Double, Double, Double), (Double, Double, Double)))
 getVesselAvailableEngineTorque thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_AvailableEngineTorque" [makeArgument 0 thisArg]
     res <- sendRequest r
     processResponse res
 
-getVesselAvailableEngineTorqueStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq ((Double, Double, Double))
+getVesselAvailableEngineTorqueStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (((Double, Double, Double), (Double, Double, Double)))
 getVesselAvailableEngineTorqueStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_AvailableEngineTorque" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselAvailableEngineTorqueStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream ((Double, Double, Double)))
+getVesselAvailableEngineTorqueStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
 getVesselAvailableEngineTorqueStream thisArg = requestStream $ getVesselAvailableEngineTorqueStreamReq thisArg 
+
+{-
+ - The maximum torque that parts (excluding reaction wheels, gimballed engines, RCS and control surfaces) can generate.
+ - Returns the torques inN.maround each of the coordinate axes of the
+ - vessels reference frame (<see cref="T:SpaceCenter.ReferenceFrame" />).
+ - These axes are equivalent to the pitch, roll and yaw axes of the vessel.
+ -}
+getVesselAvailableOtherTorque :: KRPCHS.SpaceCenter.Vessel -> RPCContext (((Double, Double, Double), (Double, Double, Double)))
+getVesselAvailableOtherTorque thisArg = do
+    let r = makeRequest "SpaceCenter" "Vessel_get_AvailableOtherTorque" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getVesselAvailableOtherTorqueStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (((Double, Double, Double), (Double, Double, Double)))
+getVesselAvailableOtherTorqueStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Vessel_get_AvailableOtherTorque" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getVesselAvailableOtherTorqueStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
+getVesselAvailableOtherTorqueStream thisArg = requestStream $ getVesselAvailableOtherTorqueStreamReq thisArg 
 
 {-
  - The maximum torque that the currently active RCS thrusters can generate.
  - Returns the torques inN.maround each of the coordinate axes of the
- - vessels reference frame (<see cref="M:SpaceCenter.Vessel.ReferenceFrame" />).
+ - vessels reference frame (<see cref="T:SpaceCenter.ReferenceFrame" />).
  - These axes are equivalent to the pitch, roll and yaw axes of the vessel.
  -}
-getVesselAvailableRCSTorque :: KRPCHS.SpaceCenter.Vessel -> RPCContext ((Double, Double, Double))
+getVesselAvailableRCSTorque :: KRPCHS.SpaceCenter.Vessel -> RPCContext (((Double, Double, Double), (Double, Double, Double)))
 getVesselAvailableRCSTorque thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_AvailableRCSTorque" [makeArgument 0 thisArg]
     res <- sendRequest r
     processResponse res
 
-getVesselAvailableRCSTorqueStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq ((Double, Double, Double))
+getVesselAvailableRCSTorqueStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (((Double, Double, Double), (Double, Double, Double)))
 getVesselAvailableRCSTorqueStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_AvailableRCSTorque" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselAvailableRCSTorqueStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream ((Double, Double, Double)))
+getVesselAvailableRCSTorqueStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
 getVesselAvailableRCSTorqueStream thisArg = requestStream $ getVesselAvailableRCSTorqueStreamReq thisArg 
 
 {-
  - The maximum torque that the currently active and powered reaction wheels can generate.
  - Returns the torques inN.maround each of the coordinate axes of the
- - vessels reference frame (<see cref="M:SpaceCenter.Vessel.ReferenceFrame" />).
+ - vessels reference frame (<see cref="T:SpaceCenter.ReferenceFrame" />).
  - These axes are equivalent to the pitch, roll and yaw axes of the vessel.
  -}
-getVesselAvailableReactionWheelTorque :: KRPCHS.SpaceCenter.Vessel -> RPCContext ((Double, Double, Double))
+getVesselAvailableReactionWheelTorque :: KRPCHS.SpaceCenter.Vessel -> RPCContext (((Double, Double, Double), (Double, Double, Double)))
 getVesselAvailableReactionWheelTorque thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_AvailableReactionWheelTorque" [makeArgument 0 thisArg]
     res <- sendRequest r
     processResponse res
 
-getVesselAvailableReactionWheelTorqueStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq ((Double, Double, Double))
+getVesselAvailableReactionWheelTorqueStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (((Double, Double, Double), (Double, Double, Double)))
 getVesselAvailableReactionWheelTorqueStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_AvailableReactionWheelTorque" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselAvailableReactionWheelTorqueStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream ((Double, Double, Double)))
+getVesselAvailableReactionWheelTorqueStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
 getVesselAvailableReactionWheelTorqueStream thisArg = requestStream $ getVesselAvailableReactionWheelTorqueStreamReq thisArg 
 
 {-
@@ -12488,21 +14858,21 @@ getVesselAvailableThrustStream thisArg = requestStream $ getVesselAvailableThrus
  - The maximum torque that the vessel generate. Includes contributions from reaction wheels,
  - RCS, gimballed engines and aerodynamic control surfaces.
  - Returns the torques inN.maround each of the coordinate axes of the
- - vessels reference frame (<see cref="M:SpaceCenter.Vessel.ReferenceFrame" />).
+ - vessels reference frame (<see cref="T:SpaceCenter.ReferenceFrame" />).
  - These axes are equivalent to the pitch, roll and yaw axes of the vessel.
  -}
-getVesselAvailableTorque :: KRPCHS.SpaceCenter.Vessel -> RPCContext ((Double, Double, Double))
+getVesselAvailableTorque :: KRPCHS.SpaceCenter.Vessel -> RPCContext (((Double, Double, Double), (Double, Double, Double)))
 getVesselAvailableTorque thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_AvailableTorque" [makeArgument 0 thisArg]
     res <- sendRequest r
     processResponse res
 
-getVesselAvailableTorqueStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq ((Double, Double, Double))
+getVesselAvailableTorqueStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (((Double, Double, Double), (Double, Double, Double)))
 getVesselAvailableTorqueStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_AvailableTorque" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselAvailableTorqueStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream ((Double, Double, Double)))
+getVesselAvailableTorqueStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
 getVesselAvailableTorqueStream thisArg = requestStream $ getVesselAvailableTorqueStreamReq thisArg 
 
 {-
@@ -12521,6 +14891,24 @@ getVesselBiomeStreamReq thisArg =
 
 getVesselBiomeStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Data.Text.Text))
 getVesselBiomeStream thisArg = requestStream $ getVesselBiomeStreamReq thisArg 
+
+{-
+ - Returns a <see cref="T:SpaceCenter.Comms" /> object that can be used to interact
+ - with CommNet for this vessel.
+ -}
+getVesselComms :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCHS.SpaceCenter.Comms)
+getVesselComms thisArg = do
+    let r = makeRequest "SpaceCenter" "Vessel_get_Comms" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getVesselCommsStreamReq :: KRPCHS.SpaceCenter.Vessel -> KRPCStreamReq (KRPCHS.SpaceCenter.Comms)
+getVesselCommsStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Vessel_get_Comms" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getVesselCommsStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Comms))
+getVesselCommsStream thisArg = requestStream $ getVesselCommsStreamReq thisArg 
 
 {-
  - Returns a <see cref="T:SpaceCenter.Control" /> object that can be used to manipulate
@@ -12559,7 +14947,7 @@ getVesselDryMassStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (F
 getVesselDryMassStream thisArg = requestStream $ getVesselDryMassStreamReq thisArg 
 
 {-
- - The inertia tensor of the vessel around its center of mass, in the vessels reference frame (<see cref="M:SpaceCenter.Vessel.ReferenceFrame" />).
+ - The inertia tensor of the vessel around its center of mass, in the vessels reference frame (<see cref="T:SpaceCenter.ReferenceFrame" />).
  - Returns the 3x3 matrix as a list of elements, in row-major order.
  -}
 getVesselInertiaTensor :: KRPCHS.SpaceCenter.Vessel -> RPCContext ([Double])
@@ -12670,7 +15058,7 @@ getVesselMaxVacuumThrustStream thisArg = requestStream $ getVesselMaxVacuumThrus
 {-
  - The moment of inertia of the vessel around its center of mass inkg.m^2.
  - The inertia values are around the pitch, roll and yaw directions respectively.
- - This corresponds to the vessels reference frame (<see cref="M:SpaceCenter.Vessel.ReferenceFrame" />).
+ - This corresponds to the vessels reference frame (<see cref="T:SpaceCenter.ReferenceFrame" />).
  -}
 getVesselMomentOfInertia :: KRPCHS.SpaceCenter.Vessel -> RPCContext ((Double, Double, Double))
 getVesselMomentOfInertia thisArg = do
@@ -12995,7 +15383,7 @@ waypointManagerAddWaypointStream :: KRPCHS.SpaceCenter.WaypointManager -> Double
 waypointManagerAddWaypointStream thisArg latitudeArg longitudeArg bodyArg nameArg = requestStream $ waypointManagerAddWaypointStreamReq thisArg latitudeArg longitudeArg bodyArg nameArg 
 
 {-
- - An example map of known color - seed pairs. 
+ - An example map of known color - seed pairs.
  - Any other integers may be used as seed.
  -}
 getWaypointManagerColors :: KRPCHS.SpaceCenter.WaypointManager -> RPCContext (Data.Map.Map (Data.Text.Text) (Data.Int.Int32))
@@ -13090,7 +15478,7 @@ getWaypointBodyStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (
 getWaypointBodyStream thisArg = requestStream $ getWaypointBodyStreamReq thisArg 
 
 {-
- - True if this waypoint is part of a set of clustered waypoints with greek letter names appended (Alpha, Beta, Gamma, etc). 
+ - True if this waypoint is part of a set of clustered waypoints with greek letter names appended (Alpha, Beta, Gamma, etc).
  - If true, there is a one-to-one correspondence with the greek letter name and the <see cref="M:SpaceCenter.Waypoint.Index" />.
  -}
 getWaypointClustered :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Bool)
@@ -13125,22 +15513,21 @@ getWaypointColorStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream 
 getWaypointColorStream thisArg = requestStream $ getWaypointColorStreamReq thisArg 
 
 {-
- - The id of the associated contract.
- - Returns 0 if the waypoint does not belong to a contract.
+ - The associated contract.
  -}
-getWaypointContractId :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Data.Int.Int64)
-getWaypointContractId thisArg = do
-    let r = makeRequest "SpaceCenter" "Waypoint_get_ContractId" [makeArgument 0 thisArg]
+getWaypointContract :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCHS.SpaceCenter.Contract)
+getWaypointContract thisArg = do
+    let r = makeRequest "SpaceCenter" "Waypoint_get_Contract" [makeArgument 0 thisArg]
     res <- sendRequest r
     processResponse res
 
-getWaypointContractIdStreamReq :: KRPCHS.SpaceCenter.Waypoint -> KRPCStreamReq (Data.Int.Int64)
-getWaypointContractIdStreamReq thisArg =
-    let req = makeRequest "SpaceCenter" "Waypoint_get_ContractId" [makeArgument 0 thisArg]
+getWaypointContractStreamReq :: KRPCHS.SpaceCenter.Waypoint -> KRPCStreamReq (KRPCHS.SpaceCenter.Contract)
+getWaypointContractStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Waypoint_get_Contract" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWaypointContractIdStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Data.Int.Int64))
-getWaypointContractIdStream thisArg = requestStream $ getWaypointContractIdStreamReq thisArg 
+getWaypointContractStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Contract))
+getWaypointContractStream thisArg = requestStream $ getWaypointContractStreamReq thisArg 
 
 {-
  - True if waypoint is actually glued to the ground.
@@ -13194,9 +15581,9 @@ getWaypointIconStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (
 getWaypointIconStream thisArg = requestStream $ getWaypointIconStreamReq thisArg 
 
 {-
- - The integer index of this waypoint amongst its cluster of sibling waypoints. 
- - In other words, when you have a cluster of waypoints called "Somewhere Alpha", "Somewhere Beta", and "Somewhere Gamma", 
- - then the alpha site has index 0, the beta site has index 1 and the gamma site has index 2. 
+ - The integer index of this waypoint amongst its cluster of sibling waypoints.
+ - In other words, when you have a cluster of waypoints called "Somewhere Alpha", "Somewhere Beta", and "Somewhere Gamma",
+ - then the alpha site has index 0, the beta site has index 1 and the gamma site has index 2.
  - When <see cref="M:SpaceCenter.Waypoint.Clustered" /> is false, this value is zero but meaningless.
  -}
 getWaypointIndex :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Data.Int.Int32)
@@ -13397,6 +15784,644 @@ setWaypointSurfaceAltitude thisArg valueArg = do
     processResponse res 
 
 {-
+ - Whether automatic friction control is enabled.
+ -}
+getWheelAutoFrictionControl :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Bool)
+getWheelAutoFrictionControl thisArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_get_AutoFrictionControl" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWheelAutoFrictionControlStreamReq :: KRPCHS.SpaceCenter.Wheel -> KRPCStreamReq (Bool)
+getWheelAutoFrictionControlStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Wheel_get_AutoFrictionControl" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWheelAutoFrictionControlStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Bool))
+getWheelAutoFrictionControlStream thisArg = requestStream $ getWheelAutoFrictionControlStreamReq thisArg 
+
+{-
+ - The braking force, as a percentage of maximum, when the brakes are applied.
+ -}
+getWheelBrakes :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Float)
+getWheelBrakes thisArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_get_Brakes" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWheelBrakesStreamReq :: KRPCHS.SpaceCenter.Wheel -> KRPCStreamReq (Float)
+getWheelBrakesStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Wheel_get_Brakes" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWheelBrakesStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Float))
+getWheelBrakesStream thisArg = requestStream $ getWheelBrakesStreamReq thisArg 
+
+{-
+ - Whether the wheel is broken.
+ -}
+getWheelBroken :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Bool)
+getWheelBroken thisArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_get_Broken" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWheelBrokenStreamReq :: KRPCHS.SpaceCenter.Wheel -> KRPCStreamReq (Bool)
+getWheelBrokenStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Wheel_get_Broken" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWheelBrokenStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Bool))
+getWheelBrokenStream thisArg = requestStream $ getWheelBrokenStreamReq thisArg 
+
+{-
+ - Current deflection of the wheel.
+ -}
+getWheelDeflection :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Float)
+getWheelDeflection thisArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_get_Deflection" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWheelDeflectionStreamReq :: KRPCHS.SpaceCenter.Wheel -> KRPCStreamReq (Float)
+getWheelDeflectionStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Wheel_get_Deflection" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWheelDeflectionStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Float))
+getWheelDeflectionStream thisArg = requestStream $ getWheelDeflectionStreamReq thisArg 
+
+{-
+ - Whether the wheel is deployable.
+ -}
+getWheelDeployable :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Bool)
+getWheelDeployable thisArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_get_Deployable" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWheelDeployableStreamReq :: KRPCHS.SpaceCenter.Wheel -> KRPCStreamReq (Bool)
+getWheelDeployableStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Wheel_get_Deployable" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWheelDeployableStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Bool))
+getWheelDeployableStream thisArg = requestStream $ getWheelDeployableStreamReq thisArg 
+
+{-
+ - Whether the wheel is deployed.
+ -}
+getWheelDeployed :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Bool)
+getWheelDeployed thisArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_get_Deployed" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWheelDeployedStreamReq :: KRPCHS.SpaceCenter.Wheel -> KRPCStreamReq (Bool)
+getWheelDeployedStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Wheel_get_Deployed" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWheelDeployedStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Bool))
+getWheelDeployedStream thisArg = requestStream $ getWheelDeployedStreamReq thisArg 
+
+{-
+ - Manual setting for the motor limiter.
+ - Only takes effect if the wheel has automatic traction control disabled.
+ - A value between 0 and 100 inclusive.
+ -}
+getWheelDriveLimiter :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Float)
+getWheelDriveLimiter thisArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_get_DriveLimiter" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWheelDriveLimiterStreamReq :: KRPCHS.SpaceCenter.Wheel -> KRPCStreamReq (Float)
+getWheelDriveLimiterStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Wheel_get_DriveLimiter" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWheelDriveLimiterStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Float))
+getWheelDriveLimiterStream thisArg = requestStream $ getWheelDriveLimiterStreamReq thisArg 
+
+{-
+ - Whether the wheel is touching the ground.
+ -}
+getWheelGrounded :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Bool)
+getWheelGrounded thisArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_get_Grounded" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWheelGroundedStreamReq :: KRPCHS.SpaceCenter.Wheel -> KRPCStreamReq (Bool)
+getWheelGroundedStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Wheel_get_Grounded" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWheelGroundedStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Bool))
+getWheelGroundedStream thisArg = requestStream $ getWheelGroundedStreamReq thisArg 
+
+{-
+ - Whether the wheel has brakes.
+ -}
+getWheelHasBrakes :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Bool)
+getWheelHasBrakes thisArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_get_HasBrakes" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWheelHasBrakesStreamReq :: KRPCHS.SpaceCenter.Wheel -> KRPCStreamReq (Bool)
+getWheelHasBrakesStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Wheel_get_HasBrakes" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWheelHasBrakesStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Bool))
+getWheelHasBrakesStream thisArg = requestStream $ getWheelHasBrakesStreamReq thisArg 
+
+{-
+ - Whether the wheel has suspension.
+ -}
+getWheelHasSuspension :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Bool)
+getWheelHasSuspension thisArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_get_HasSuspension" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWheelHasSuspensionStreamReq :: KRPCHS.SpaceCenter.Wheel -> KRPCStreamReq (Bool)
+getWheelHasSuspensionStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Wheel_get_HasSuspension" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWheelHasSuspensionStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Bool))
+getWheelHasSuspensionStream thisArg = requestStream $ getWheelHasSuspensionStreamReq thisArg 
+
+{-
+ - Manual friction control value. Only has an effect if automatic friction control is disabled.
+ - A value between 0 and 5 inclusive.
+ -}
+getWheelManualFrictionControl :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Float)
+getWheelManualFrictionControl thisArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_get_ManualFrictionControl" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWheelManualFrictionControlStreamReq :: KRPCHS.SpaceCenter.Wheel -> KRPCStreamReq (Float)
+getWheelManualFrictionControlStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Wheel_get_ManualFrictionControl" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWheelManualFrictionControlStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Float))
+getWheelManualFrictionControlStream thisArg = requestStream $ getWheelManualFrictionControlStreamReq thisArg 
+
+{-
+ - Whether the motor is enabled.
+ -}
+getWheelMotorEnabled :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Bool)
+getWheelMotorEnabled thisArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_get_MotorEnabled" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWheelMotorEnabledStreamReq :: KRPCHS.SpaceCenter.Wheel -> KRPCStreamReq (Bool)
+getWheelMotorEnabledStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Wheel_get_MotorEnabled" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWheelMotorEnabledStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Bool))
+getWheelMotorEnabledStream thisArg = requestStream $ getWheelMotorEnabledStreamReq thisArg 
+
+{-
+ - Whether the direction of the motor is inverted.
+ -}
+getWheelMotorInverted :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Bool)
+getWheelMotorInverted thisArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_get_MotorInverted" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWheelMotorInvertedStreamReq :: KRPCHS.SpaceCenter.Wheel -> KRPCStreamReq (Bool)
+getWheelMotorInvertedStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Wheel_get_MotorInverted" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWheelMotorInvertedStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Bool))
+getWheelMotorInvertedStream thisArg = requestStream $ getWheelMotorInvertedStreamReq thisArg 
+
+{-
+ - The output of the motor. This is the torque currently being generated, in Newton meters.
+ -}
+getWheelMotorOutput :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Float)
+getWheelMotorOutput thisArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_get_MotorOutput" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWheelMotorOutputStreamReq :: KRPCHS.SpaceCenter.Wheel -> KRPCStreamReq (Float)
+getWheelMotorOutputStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Wheel_get_MotorOutput" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWheelMotorOutputStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Float))
+getWheelMotorOutputStream thisArg = requestStream $ getWheelMotorOutputStreamReq thisArg 
+
+{-
+ - Whether the direction of the motor is inverted.
+ -}
+getWheelMotorState :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCHS.SpaceCenter.MotorState)
+getWheelMotorState thisArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_get_MotorState" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWheelMotorStateStreamReq :: KRPCHS.SpaceCenter.Wheel -> KRPCStreamReq (KRPCHS.SpaceCenter.MotorState)
+getWheelMotorStateStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Wheel_get_MotorState" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWheelMotorStateStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.MotorState))
+getWheelMotorStateStream thisArg = requestStream $ getWheelMotorStateStreamReq thisArg 
+
+{-
+ - The part object for this wheel.
+ -}
+getWheelPart :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCHS.SpaceCenter.Part)
+getWheelPart thisArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_get_Part" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWheelPartStreamReq :: KRPCHS.SpaceCenter.Wheel -> KRPCStreamReq (KRPCHS.SpaceCenter.Part)
+getWheelPartStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Wheel_get_Part" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWheelPartStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getWheelPartStream thisArg = requestStream $ getWheelPartStreamReq thisArg 
+
+{-
+ - Whether the wheel is powered by a motor.
+ -}
+getWheelPowered :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Bool)
+getWheelPowered thisArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_get_Powered" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWheelPoweredStreamReq :: KRPCHS.SpaceCenter.Wheel -> KRPCStreamReq (Bool)
+getWheelPoweredStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Wheel_get_Powered" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWheelPoweredStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Bool))
+getWheelPoweredStream thisArg = requestStream $ getWheelPoweredStreamReq thisArg 
+
+{-
+ - Radius of the wheel, in meters.
+ -}
+getWheelRadius :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Float)
+getWheelRadius thisArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_get_Radius" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWheelRadiusStreamReq :: KRPCHS.SpaceCenter.Wheel -> KRPCStreamReq (Float)
+getWheelRadiusStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Wheel_get_Radius" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWheelRadiusStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Float))
+getWheelRadiusStream thisArg = requestStream $ getWheelRadiusStreamReq thisArg 
+
+{-
+ - Whether the wheel is repairable.
+ -}
+getWheelRepairable :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Bool)
+getWheelRepairable thisArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_get_Repairable" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWheelRepairableStreamReq :: KRPCHS.SpaceCenter.Wheel -> KRPCStreamReq (Bool)
+getWheelRepairableStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Wheel_get_Repairable" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWheelRepairableStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Bool))
+getWheelRepairableStream thisArg = requestStream $ getWheelRepairableStreamReq thisArg 
+
+{-
+ - Current slip of the wheel.
+ -}
+getWheelSlip :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Float)
+getWheelSlip thisArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_get_Slip" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWheelSlipStreamReq :: KRPCHS.SpaceCenter.Wheel -> KRPCStreamReq (Float)
+getWheelSlipStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Wheel_get_Slip" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWheelSlipStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Float))
+getWheelSlipStream thisArg = requestStream $ getWheelSlipStreamReq thisArg 
+
+{-
+ - The current state of the wheel.
+ -}
+getWheelState :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCHS.SpaceCenter.WheelState)
+getWheelState thisArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_get_State" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWheelStateStreamReq :: KRPCHS.SpaceCenter.Wheel -> KRPCStreamReq (KRPCHS.SpaceCenter.WheelState)
+getWheelStateStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Wheel_get_State" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWheelStateStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.WheelState))
+getWheelStateStream thisArg = requestStream $ getWheelStateStreamReq thisArg 
+
+{-
+ - Whether the wheel has steering.
+ -}
+getWheelSteerable :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Bool)
+getWheelSteerable thisArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_get_Steerable" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWheelSteerableStreamReq :: KRPCHS.SpaceCenter.Wheel -> KRPCStreamReq (Bool)
+getWheelSteerableStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Wheel_get_Steerable" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWheelSteerableStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Bool))
+getWheelSteerableStream thisArg = requestStream $ getWheelSteerableStreamReq thisArg 
+
+{-
+ - Whether the wheel steering is enabled.
+ -}
+getWheelSteeringEnabled :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Bool)
+getWheelSteeringEnabled thisArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_get_SteeringEnabled" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWheelSteeringEnabledStreamReq :: KRPCHS.SpaceCenter.Wheel -> KRPCStreamReq (Bool)
+getWheelSteeringEnabledStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Wheel_get_SteeringEnabled" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWheelSteeringEnabledStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Bool))
+getWheelSteeringEnabledStream thisArg = requestStream $ getWheelSteeringEnabledStreamReq thisArg 
+
+{-
+ - Whether the wheel steering is inverted.
+ -}
+getWheelSteeringInverted :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Bool)
+getWheelSteeringInverted thisArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_get_SteeringInverted" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWheelSteeringInvertedStreamReq :: KRPCHS.SpaceCenter.Wheel -> KRPCStreamReq (Bool)
+getWheelSteeringInvertedStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Wheel_get_SteeringInverted" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWheelSteeringInvertedStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Bool))
+getWheelSteeringInvertedStream thisArg = requestStream $ getWheelSteeringInvertedStreamReq thisArg 
+
+{-
+ - Current stress on the wheel.
+ -}
+getWheelStress :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Float)
+getWheelStress thisArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_get_Stress" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWheelStressStreamReq :: KRPCHS.SpaceCenter.Wheel -> KRPCStreamReq (Float)
+getWheelStressStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Wheel_get_Stress" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWheelStressStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Float))
+getWheelStressStream thisArg = requestStream $ getWheelStressStreamReq thisArg 
+
+{-
+ - Current stress on the wheel as a percentage of its stress tolerance.
+ -}
+getWheelStressPercentage :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Float)
+getWheelStressPercentage thisArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_get_StressPercentage" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWheelStressPercentageStreamReq :: KRPCHS.SpaceCenter.Wheel -> KRPCStreamReq (Float)
+getWheelStressPercentageStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Wheel_get_StressPercentage" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWheelStressPercentageStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Float))
+getWheelStressPercentageStream thisArg = requestStream $ getWheelStressPercentageStreamReq thisArg 
+
+{-
+ - Stress tolerance of the wheel.
+ -}
+getWheelStressTolerance :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Float)
+getWheelStressTolerance thisArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_get_StressTolerance" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWheelStressToleranceStreamReq :: KRPCHS.SpaceCenter.Wheel -> KRPCStreamReq (Float)
+getWheelStressToleranceStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Wheel_get_StressTolerance" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWheelStressToleranceStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Float))
+getWheelStressToleranceStream thisArg = requestStream $ getWheelStressToleranceStreamReq thisArg 
+
+{-
+ - Suspension damper strength, as set in the editor.
+ -}
+getWheelSuspensionDamperStrength :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Float)
+getWheelSuspensionDamperStrength thisArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_get_SuspensionDamperStrength" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWheelSuspensionDamperStrengthStreamReq :: KRPCHS.SpaceCenter.Wheel -> KRPCStreamReq (Float)
+getWheelSuspensionDamperStrengthStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Wheel_get_SuspensionDamperStrength" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWheelSuspensionDamperStrengthStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Float))
+getWheelSuspensionDamperStrengthStream thisArg = requestStream $ getWheelSuspensionDamperStrengthStreamReq thisArg 
+
+{-
+ - Suspension spring strength, as set in the editor.
+ -}
+getWheelSuspensionSpringStrength :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Float)
+getWheelSuspensionSpringStrength thisArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_get_SuspensionSpringStrength" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWheelSuspensionSpringStrengthStreamReq :: KRPCHS.SpaceCenter.Wheel -> KRPCStreamReq (Float)
+getWheelSuspensionSpringStrengthStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Wheel_get_SuspensionSpringStrength" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWheelSuspensionSpringStrengthStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Float))
+getWheelSuspensionSpringStrengthStream thisArg = requestStream $ getWheelSuspensionSpringStrengthStreamReq thisArg 
+
+{-
+ - Setting for the traction control.
+ - Only takes effect if the wheel has automatic traction control enabled.
+ - A value between 0 and 5 inclusive.
+ -}
+getWheelTractionControl :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Float)
+getWheelTractionControl thisArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_get_TractionControl" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWheelTractionControlStreamReq :: KRPCHS.SpaceCenter.Wheel -> KRPCStreamReq (Float)
+getWheelTractionControlStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Wheel_get_TractionControl" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWheelTractionControlStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Float))
+getWheelTractionControlStream thisArg = requestStream $ getWheelTractionControlStreamReq thisArg 
+
+{-
+ - Whether automatic traction control is enabled.
+ - A wheel only has traction control if it is powered.
+ -}
+getWheelTractionControlEnabled :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Bool)
+getWheelTractionControlEnabled thisArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_get_TractionControlEnabled" [makeArgument 0 thisArg]
+    res <- sendRequest r
+    processResponse res
+
+getWheelTractionControlEnabledStreamReq :: KRPCHS.SpaceCenter.Wheel -> KRPCStreamReq (Bool)
+getWheelTractionControlEnabledStreamReq thisArg =
+    let req = makeRequest "SpaceCenter" "Wheel_get_TractionControlEnabled" [makeArgument 0 thisArg]
+    in  makeStream req
+
+getWheelTractionControlEnabledStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Bool))
+getWheelTractionControlEnabledStream thisArg = requestStream $ getWheelTractionControlEnabledStreamReq thisArg 
+
+{-
+ - Whether automatic friction control is enabled.
+ -}
+setWheelAutoFrictionControl :: KRPCHS.SpaceCenter.Wheel -> Bool -> RPCContext ()
+setWheelAutoFrictionControl thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_set_AutoFrictionControl" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - The braking force, as a percentage of maximum, when the brakes are applied.
+ -}
+setWheelBrakes :: KRPCHS.SpaceCenter.Wheel -> Float -> RPCContext ()
+setWheelBrakes thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_set_Brakes" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - Whether the wheel is deployed.
+ -}
+setWheelDeployed :: KRPCHS.SpaceCenter.Wheel -> Bool -> RPCContext ()
+setWheelDeployed thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_set_Deployed" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - Manual setting for the motor limiter.
+ - Only takes effect if the wheel has automatic traction control disabled.
+ - A value between 0 and 100 inclusive.
+ -}
+setWheelDriveLimiter :: KRPCHS.SpaceCenter.Wheel -> Float -> RPCContext ()
+setWheelDriveLimiter thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_set_DriveLimiter" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - Manual friction control value. Only has an effect if automatic friction control is disabled.
+ - A value between 0 and 5 inclusive.
+ -}
+setWheelManualFrictionControl :: KRPCHS.SpaceCenter.Wheel -> Float -> RPCContext ()
+setWheelManualFrictionControl thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_set_ManualFrictionControl" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - Whether the motor is enabled.
+ -}
+setWheelMotorEnabled :: KRPCHS.SpaceCenter.Wheel -> Bool -> RPCContext ()
+setWheelMotorEnabled thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_set_MotorEnabled" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - Whether the direction of the motor is inverted.
+ -}
+setWheelMotorInverted :: KRPCHS.SpaceCenter.Wheel -> Bool -> RPCContext ()
+setWheelMotorInverted thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_set_MotorInverted" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - Whether the wheel steering is enabled.
+ -}
+setWheelSteeringEnabled :: KRPCHS.SpaceCenter.Wheel -> Bool -> RPCContext ()
+setWheelSteeringEnabled thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_set_SteeringEnabled" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - Whether the wheel steering is inverted.
+ -}
+setWheelSteeringInverted :: KRPCHS.SpaceCenter.Wheel -> Bool -> RPCContext ()
+setWheelSteeringInverted thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_set_SteeringInverted" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - Setting for the traction control.
+ - Only takes effect if the wheel has automatic traction control enabled.
+ - A value between 0 and 5 inclusive.
+ -}
+setWheelTractionControl :: KRPCHS.SpaceCenter.Wheel -> Float -> RPCContext ()
+setWheelTractionControl thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_set_TractionControl" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - Whether automatic traction control is enabled.
+ - A wheel only has traction control if it is powered.
+ -}
+setWheelTractionControlEnabled :: KRPCHS.SpaceCenter.Wheel -> Bool -> RPCContext ()
+setWheelTractionControlEnabled thisArg valueArg = do
+    let r = makeRequest "SpaceCenter" "Wheel_set_TractionControlEnabled" [makeArgument 0 thisArg, makeArgument 1 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
  - The currently active vessel.
  -}
 getActiveVessel :: RPCContext (KRPCHS.SpaceCenter.Vessel)
@@ -13449,6 +16474,23 @@ getCameraStream :: RPCContext (KRPCStream (KRPCHS.SpaceCenter.Camera))
 getCameraStream  = requestStream $ getCameraStreamReq  
 
 {-
+ - The contract manager.
+ -}
+getContractManager :: RPCContext (KRPCHS.SpaceCenter.ContractManager)
+getContractManager  = do
+    let r = makeRequest "SpaceCenter" "get_ContractManager" []
+    res <- sendRequest r
+    processResponse res
+
+getContractManagerStreamReq :: KRPCStreamReq (KRPCHS.SpaceCenter.ContractManager)
+getContractManagerStreamReq  =
+    let req = makeRequest "SpaceCenter" "get_ContractManager" []
+    in  makeStream req
+
+getContractManagerStream :: RPCContext (KRPCStream (KRPCHS.SpaceCenter.ContractManager))
+getContractManagerStream  = requestStream $ getContractManagerStreamReq  
+
+{-
  - Whether <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Researchis installed.
  -}
 getFARAvailable :: RPCContext (Bool)
@@ -13468,23 +16510,23 @@ getFARAvailableStream  = requestStream $ getFARAvailableStreamReq
 {-
  - The value of the <a href="https://en.wikipedia.org/wiki/Gravitational_constant">gravitational constantG inN(m/kg)^2.
  -}
-getG :: RPCContext (Float)
+getG :: RPCContext (Double)
 getG  = do
     let r = makeRequest "SpaceCenter" "get_G" []
     res <- sendRequest r
     processResponse res
 
-getGStreamReq :: KRPCStreamReq (Float)
+getGStreamReq :: KRPCStreamReq (Double)
 getGStreamReq  =
     let req = makeRequest "SpaceCenter" "get_G" []
     in  makeStream req
 
-getGStream :: RPCContext (KRPCStream (Float))
+getGStream :: RPCContext (KRPCStream (Double))
 getGStream  = requestStream $ getGStreamReq  
 
 {-
  - The current maximum regular "on-rails" warp factor that can be set.
- - A value between 0 and 7 inclusive.  See
+ - A value between 0 and 7 inclusive. See
  - <a href="http://wiki.kerbalspaceprogram.com/wiki/Time_warp">the KSP wikifor details.
  -}
 getMaximumRailsWarpFactor :: RPCContext (Data.Int.Int32)
@@ -13500,6 +16542,23 @@ getMaximumRailsWarpFactorStreamReq  =
 
 getMaximumRailsWarpFactorStream :: RPCContext (KRPCStream (Data.Int.Int32))
 getMaximumRailsWarpFactorStream  = requestStream $ getMaximumRailsWarpFactorStreamReq  
+
+{-
+ - Whether the navball is visible.
+ -}
+getNavball :: RPCContext (Bool)
+getNavball  = do
+    let r = makeRequest "SpaceCenter" "get_Navball" []
+    res <- sendRequest r
+    processResponse res
+
+getNavballStreamReq :: KRPCStreamReq (Bool)
+getNavballStreamReq  =
+    let req = makeRequest "SpaceCenter" "get_Navball" []
+    in  makeStream req
+
+getNavballStream :: RPCContext (KRPCStream (Bool))
+getNavballStream  = requestStream $ getNavballStreamReq  
 
 {-
  - The physical time warp rate. A value between 0 and 3 inclusive. 0 means
@@ -13593,6 +16652,23 @@ getTargetVesselStreamReq  =
 
 getTargetVesselStream :: RPCContext (KRPCStream (KRPCHS.SpaceCenter.Vessel))
 getTargetVesselStream  = requestStream $ getTargetVesselStreamReq  
+
+{-
+ - Whether the UI is visible.
+ -}
+getUIVisible :: RPCContext (Bool)
+getUIVisible  = do
+    let r = makeRequest "SpaceCenter" "get_UIVisible" []
+    res <- sendRequest r
+    processResponse res
+
+getUIVisibleStreamReq :: KRPCStreamReq (Bool)
+getUIVisibleStreamReq  =
+    let req = makeRequest "SpaceCenter" "get_UIVisible" []
+    in  makeStream req
+
+getUIVisibleStream :: RPCContext (KRPCStream (Bool))
+getUIVisibleStream  = requestStream $ getUIVisibleStreamReq  
 
 {-
  - The current universal time in seconds.
@@ -13715,6 +16791,15 @@ setActiveVessel valueArg = do
     processResponse res 
 
 {-
+ - Whether the navball is visible.
+ -}
+setNavball :: Bool -> RPCContext ()
+setNavball valueArg = do
+    let r = makeRequest "SpaceCenter" "set_Navball" [makeArgument 0 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
  - The physical time warp rate. A value between 0 and 3 inclusive. 0 means
  - no time warp. Returns 0 if regular "on-rails" time warp is active.
  -}
@@ -13764,6 +16849,15 @@ setTargetDockingPort valueArg = do
 setTargetVessel :: KRPCHS.SpaceCenter.Vessel -> RPCContext ()
 setTargetVessel valueArg = do
     let r = makeRequest "SpaceCenter" "set_TargetVessel" [makeArgument 0 valueArg]
+    res <- sendRequest r
+    processResponse res 
+
+{-
+ - Whether the UI is visible.
+ -}
+setUIVisible :: Bool -> RPCContext ()
+setUIVisible valueArg = do
+    let r = makeRequest "SpaceCenter" "set_UIVisible" [makeArgument 0 valueArg]
     res <- sendRequest r
     processResponse res 
 

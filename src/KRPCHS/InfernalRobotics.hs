@@ -106,6 +106,9 @@ module KRPCHS.InfernalRobotics
 , setServoMinPosition
 , setServoName
 , setServoSpeed
+, getAvailable
+, getAvailableStream
+, getAvailableStreamReq
 ) where
 
 import qualified Data.Text
@@ -833,4 +836,21 @@ setServoSpeed thisArg valueArg = do
     let r = makeRequest "InfernalRobotics" "Servo_set_Speed" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
     processResponse res 
+
+{-
+ - Whether Infernal Robotics is installed.
+ -}
+getAvailable :: RPCContext (Bool)
+getAvailable  = do
+    let r = makeRequest "InfernalRobotics" "get_Available" []
+    res <- sendRequest r
+    processResponse res
+
+getAvailableStreamReq :: KRPCStreamReq (Bool)
+getAvailableStreamReq  =
+    let req = makeRequest "InfernalRobotics" "get_Available" []
+    in  makeStream req
+
+getAvailableStream :: RPCContext (KRPCStream (Bool))
+getAvailableStream  = requestStream $ getAvailableStreamReq  
 
