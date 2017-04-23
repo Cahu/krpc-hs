@@ -1,14 +1,16 @@
-{-# LANGUAGE BangPatterns, DeriveDataTypeable, FlexibleInstances, MultiParamTypeClasses #-}
+{-# LANGUAGE BangPatterns, DeriveDataTypeable, DeriveGeneric, FlexibleInstances, MultiParamTypeClasses #-}
 {-# OPTIONS_GHC  -fno-warn-unused-imports #-}
 module PB.KRPC.ProcedureResult (ProcedureResult(..)) where
 import Prelude ((+), (/))
 import qualified Prelude as Prelude'
 import qualified Data.Typeable as Prelude'
+import qualified GHC.Generics as Prelude'
 import qualified Data.Data as Prelude'
 import qualified Text.ProtocolBuffers.Header as P'
+import qualified PB.KRPC.Error as KRPC (Error)
 
-data ProcedureResult = ProcedureResult{error :: !(P'.Maybe P'.Utf8), value :: !(P'.Maybe P'.ByteString)}
-                     deriving (Prelude'.Show, Prelude'.Eq, Prelude'.Ord, Prelude'.Typeable, Prelude'.Data)
+data ProcedureResult = ProcedureResult{error :: !(P'.Maybe KRPC.Error), value :: !(P'.Maybe P'.ByteString)}
+                     deriving (Prelude'.Show, Prelude'.Eq, Prelude'.Ord, Prelude'.Typeable, Prelude'.Data, Prelude'.Generic)
 
 instance P'.Mergeable ProcedureResult where
   mergeAppend (ProcedureResult x'1 x'2) (ProcedureResult y'1 y'2)
@@ -24,7 +26,7 @@ instance P'.Wire ProcedureResult where
        11 -> P'.prependMessageSize calc'Size
        _ -> P'.wireSizeErr ft' self'
     where
-        calc'Size = (P'.wireSizeOpt 1 9 x'1 + P'.wireSizeOpt 1 12 x'2)
+        calc'Size = (P'.wireSizeOpt 1 11 x'1 + P'.wireSizeOpt 1 12 x'2)
   wirePut ft' self'@(ProcedureResult x'1 x'2)
    = case ft' of
        10 -> put'Fields
@@ -35,7 +37,7 @@ instance P'.Wire ProcedureResult where
     where
         put'Fields
          = do
-             P'.wirePutOpt 10 9 x'1
+             P'.wirePutOpt 10 11 x'1
              P'.wirePutOpt 18 12 x'2
   wireGet ft'
    = case ft' of
@@ -45,7 +47,8 @@ instance P'.Wire ProcedureResult where
     where
         update'Self wire'Tag old'Self
          = case wire'Tag of
-             10 -> Prelude'.fmap (\ !new'Field -> old'Self{error = Prelude'.Just new'Field}) (P'.wireGet 9)
+             10 -> Prelude'.fmap (\ !new'Field -> old'Self{error = P'.mergeAppend (error old'Self) (Prelude'.Just new'Field)})
+                    (P'.wireGet 11)
              18 -> Prelude'.fmap (\ !new'Field -> old'Self{value = Prelude'.Just new'Field}) (P'.wireGet 12)
              _ -> let (field'Number, wire'Type) = P'.splitWireTag wire'Tag in P'.unknown field'Number wire'Type old'Self
 
@@ -58,7 +61,7 @@ instance P'.ReflectDescriptor ProcedureResult where
   getMessageInfo _ = P'.GetMessageInfo (P'.fromDistinctAscList []) (P'.fromDistinctAscList [10, 18])
   reflectDescriptorInfo _
    = Prelude'.read
-      "DescriptorInfo {descName = ProtoName {protobufName = FIName \".krpc.schema.ProcedureResult\", haskellPrefix = [MName \"PB\"], parentModule = [MName \"KRPC\"], baseName = MName \"ProcedureResult\"}, descFilePath = [\"PB\",\"KRPC\",\"ProcedureResult.hs\"], isGroup = False, fields = fromList [FieldInfo {fieldName = ProtoFName {protobufName' = FIName \".krpc.schema.ProcedureResult.error\", haskellPrefix' = [MName \"PB\"], parentModule' = [MName \"KRPC\",MName \"ProcedureResult\"], baseName' = FName \"error\", baseNamePrefix' = \"\"}, fieldNumber = FieldId {getFieldId = 1}, wireTag = WireTag {getWireTag = 10}, packedTag = Nothing, wireTagLength = 1, isPacked = False, isRequired = False, canRepeat = False, mightPack = False, typeCode = FieldType {getFieldType = 9}, typeName = Nothing, hsRawDefault = Nothing, hsDefault = Nothing},FieldInfo {fieldName = ProtoFName {protobufName' = FIName \".krpc.schema.ProcedureResult.value\", haskellPrefix' = [MName \"PB\"], parentModule' = [MName \"KRPC\",MName \"ProcedureResult\"], baseName' = FName \"value\", baseNamePrefix' = \"\"}, fieldNumber = FieldId {getFieldId = 2}, wireTag = WireTag {getWireTag = 18}, packedTag = Nothing, wireTagLength = 1, isPacked = False, isRequired = False, canRepeat = False, mightPack = False, typeCode = FieldType {getFieldType = 12}, typeName = Nothing, hsRawDefault = Nothing, hsDefault = Nothing}], descOneofs = fromList [], keys = fromList [], extRanges = [], knownKeys = fromList [], storeUnknown = False, lazyFields = False, makeLenses = False}"
+      "DescriptorInfo {descName = ProtoName {protobufName = FIName \".krpc.schema.ProcedureResult\", haskellPrefix = [MName \"PB\"], parentModule = [MName \"KRPC\"], baseName = MName \"ProcedureResult\"}, descFilePath = [\"PB\",\"KRPC\",\"ProcedureResult.hs\"], isGroup = False, fields = fromList [FieldInfo {fieldName = ProtoFName {protobufName' = FIName \".krpc.schema.ProcedureResult.error\", haskellPrefix' = [MName \"PB\"], parentModule' = [MName \"KRPC\",MName \"ProcedureResult\"], baseName' = FName \"error\", baseNamePrefix' = \"\"}, fieldNumber = FieldId {getFieldId = 1}, wireTag = WireTag {getWireTag = 10}, packedTag = Nothing, wireTagLength = 1, isPacked = False, isRequired = False, canRepeat = False, mightPack = False, typeCode = FieldType {getFieldType = 11}, typeName = Just (ProtoName {protobufName = FIName \".krpc.schema.Error\", haskellPrefix = [MName \"PB\"], parentModule = [MName \"KRPC\"], baseName = MName \"Error\"}), hsRawDefault = Nothing, hsDefault = Nothing},FieldInfo {fieldName = ProtoFName {protobufName' = FIName \".krpc.schema.ProcedureResult.value\", haskellPrefix' = [MName \"PB\"], parentModule' = [MName \"KRPC\",MName \"ProcedureResult\"], baseName' = FName \"value\", baseNamePrefix' = \"\"}, fieldNumber = FieldId {getFieldId = 2}, wireTag = WireTag {getWireTag = 18}, packedTag = Nothing, wireTagLength = 1, isPacked = False, isRequired = False, canRepeat = False, mightPack = False, typeCode = FieldType {getFieldType = 12}, typeName = Nothing, hsRawDefault = Nothing, hsDefault = Nothing}], descOneofs = fromList [], keys = fromList [], extRanges = [], knownKeys = fromList [], storeUnknown = False, lazyFields = False, makeLenses = False}"
 
 instance P'.TextType ProcedureResult where
   tellT = P'.tellSubMessage

@@ -39,6 +39,7 @@ library
                      , PB.KRPC.ProcedureResult
                      , PB.KRPC.Request
                      , PB.KRPC.Response
+                     , PB.KRPC.Error
                      , PB.KRPC.Set
                      , PB.KRPC.Status
                      , PB.KRPC.Stream

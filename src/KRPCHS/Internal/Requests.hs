@@ -60,7 +60,7 @@ import qualified Data.ByteString.Lazy  as BS
 data RPCClient = RPCClient { rpcSocket :: Socket, clientId :: BS.ByteString }
 
 -- | A stream client bound to a KRPC Stream server.
-data StreamClient = StreamClient { streamSocket :: Socket }
+newtype StreamClient = StreamClient { streamSocket :: Socket }
 
 
 -- | The context for RPC calls.
@@ -83,7 +83,7 @@ performBatchRequest (KRPCCallBatch req) = do
     case msg of
         Left err -> throwM err
         Right m  -> case (KRes.error m) of
-            Just err' -> throwM $ KRPCError (unpackUtf8String err')
+            Just err' -> throwM $ KRPCError (show err')
             Nothing   -> return (unpackBatchReply m)
 
 

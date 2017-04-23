@@ -1,9 +1,10 @@
-{-# LANGUAGE BangPatterns, DeriveDataTypeable, FlexibleInstances, MultiParamTypeClasses #-}
+{-# LANGUAGE BangPatterns, DeriveDataTypeable, DeriveGeneric, FlexibleInstances, MultiParamTypeClasses #-}
 {-# OPTIONS_GHC  -fno-warn-unused-imports #-}
 module PB.KRPC.Status (Status(..)) where
 import Prelude ((+), (/))
 import qualified Prelude as Prelude'
 import qualified Data.Typeable as Prelude'
+import qualified GHC.Generics as Prelude'
 import qualified Data.Data as Prelude'
 import qualified Text.ProtocolBuffers.Header as P'
 
@@ -16,7 +17,7 @@ data Status = Status{version :: !(P'.Maybe P'.Utf8), bytes_read :: !(P'.Maybe P'
                      poll_time_per_rpc_update :: !(P'.Maybe P'.Float), exec_time_per_rpc_update :: !(P'.Maybe P'.Float),
                      stream_rpcs :: !(P'.Maybe P'.Word32), stream_rpcs_executed :: !(P'.Maybe P'.Word64),
                      stream_rpc_rate :: !(P'.Maybe P'.Float), time_per_stream_update :: !(P'.Maybe P'.Float)}
-            deriving (Prelude'.Show, Prelude'.Eq, Prelude'.Ord, Prelude'.Typeable, Prelude'.Data)
+            deriving (Prelude'.Show, Prelude'.Eq, Prelude'.Ord, Prelude'.Typeable, Prelude'.Data, Prelude'.Generic)
 
 instance P'.Mergeable Status where
   mergeAppend (Status x'1 x'2 x'3 x'4 x'5 x'6 x'7 x'8 x'9 x'10 x'11 x'12 x'13 x'14 x'15 x'16 x'17 x'18 x'19)

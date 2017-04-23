@@ -1,15 +1,16 @@
-{-# LANGUAGE BangPatterns, DeriveDataTypeable, FlexibleInstances, MultiParamTypeClasses #-}
+{-# LANGUAGE BangPatterns, DeriveDataTypeable, DeriveGeneric, FlexibleInstances, MultiParamTypeClasses #-}
 {-# OPTIONS_GHC  -fno-warn-unused-imports #-}
 module PB.KRPC.StreamResult (StreamResult(..)) where
 import Prelude ((+), (/))
 import qualified Prelude as Prelude'
 import qualified Data.Typeable as Prelude'
+import qualified GHC.Generics as Prelude'
 import qualified Data.Data as Prelude'
 import qualified Text.ProtocolBuffers.Header as P'
 import qualified PB.KRPC.ProcedureResult as KRPC (ProcedureResult)
 
 data StreamResult = StreamResult{id :: !(P'.Maybe P'.Word64), result :: !(P'.Maybe KRPC.ProcedureResult)}
-                  deriving (Prelude'.Show, Prelude'.Eq, Prelude'.Ord, Prelude'.Typeable, Prelude'.Data)
+                  deriving (Prelude'.Show, Prelude'.Eq, Prelude'.Ord, Prelude'.Typeable, Prelude'.Data, Prelude'.Generic)
 
 instance P'.Mergeable StreamResult where
   mergeAppend (StreamResult x'1 x'2) (StreamResult y'1 y'2) = StreamResult (P'.mergeAppend x'1 y'1) (P'.mergeAppend x'2 y'2)

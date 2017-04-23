@@ -1,16 +1,17 @@
-{-# LANGUAGE BangPatterns, DeriveDataTypeable, FlexibleInstances, MultiParamTypeClasses #-}
+{-# LANGUAGE BangPatterns, DeriveDataTypeable, DeriveGeneric, FlexibleInstances, MultiParamTypeClasses #-}
 {-# OPTIONS_GHC  -fno-warn-unused-imports #-}
 module PB.KRPC.ProcedureCall (ProcedureCall(..)) where
 import Prelude ((+), (/))
 import qualified Prelude as Prelude'
 import qualified Data.Typeable as Prelude'
+import qualified GHC.Generics as Prelude'
 import qualified Data.Data as Prelude'
 import qualified Text.ProtocolBuffers.Header as P'
 import qualified PB.KRPC.Argument as KRPC (Argument)
 
 data ProcedureCall = ProcedureCall{service :: !(P'.Maybe P'.Utf8), procedure :: !(P'.Maybe P'.Utf8),
                                    arguments :: !(P'.Seq KRPC.Argument)}
-                   deriving (Prelude'.Show, Prelude'.Eq, Prelude'.Ord, Prelude'.Typeable, Prelude'.Data)
+                   deriving (Prelude'.Show, Prelude'.Eq, Prelude'.Ord, Prelude'.Typeable, Prelude'.Data, Prelude'.Generic)
 
 instance P'.Mergeable ProcedureCall where
   mergeAppend (ProcedureCall x'1 x'2 x'3) (ProcedureCall y'1 y'2 y'3)

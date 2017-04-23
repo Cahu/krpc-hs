@@ -262,7 +262,7 @@ instance (PbDecodable a, PbDecodable b, PbDecodable c, PbDecodable d) => PbDecod
 
 checkProcedureResultError :: KPRes.ProcedureResult -> Either ProtocolError ()
 checkProcedureResultError r = case (KPRes.error r) of
-    Just err -> Left $ KRPCError (P.toString err)
+    Just err -> Left $ KRPCError (show err)
     Nothing  -> return ()
 
 

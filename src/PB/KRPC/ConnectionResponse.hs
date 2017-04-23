@@ -1,16 +1,17 @@
-{-# LANGUAGE BangPatterns, DeriveDataTypeable, FlexibleInstances, MultiParamTypeClasses #-}
+{-# LANGUAGE BangPatterns, DeriveDataTypeable, DeriveGeneric, FlexibleInstances, MultiParamTypeClasses #-}
 {-# OPTIONS_GHC  -fno-warn-unused-imports #-}
 module PB.KRPC.ConnectionResponse (ConnectionResponse(..)) where
 import Prelude ((+), (/))
 import qualified Prelude as Prelude'
 import qualified Data.Typeable as Prelude'
+import qualified GHC.Generics as Prelude'
 import qualified Data.Data as Prelude'
 import qualified Text.ProtocolBuffers.Header as P'
 import qualified PB.KRPC.ConnectionResponse.Status as KRPC.ConnectionResponse (Status)
 
 data ConnectionResponse = ConnectionResponse{status :: !(P'.Maybe KRPC.ConnectionResponse.Status), message :: !(P'.Maybe P'.Utf8),
                                              client_identifier :: !(P'.Maybe P'.ByteString)}
-                        deriving (Prelude'.Show, Prelude'.Eq, Prelude'.Ord, Prelude'.Typeable, Prelude'.Data)
+                        deriving (Prelude'.Show, Prelude'.Eq, Prelude'.Ord, Prelude'.Typeable, Prelude'.Data, Prelude'.Generic)
 
 instance P'.Mergeable ConnectionResponse where
   mergeAppend (ConnectionResponse x'1 x'2 x'3) (ConnectionResponse y'1 y'2 y'3)
