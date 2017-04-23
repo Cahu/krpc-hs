@@ -21,6 +21,7 @@ import qualified Data.ByteString.Lazy as BL
 
 import qualified Data.Foldable
 import qualified Data.Sequence as Seq
+import qualified Data.Set      as Set
 import qualified Data.Map      as M
 
 import KRPCHS.Internal.ProtocolError
@@ -32,6 +33,7 @@ import qualified Text.ProtocolBuffers.WireMessage as W
 
 import qualified PB.KRPC.Stream          as KStr
 import qualified PB.KRPC.ProcedureResult as KPRes
+import qualified PB.KRPC.Set             as KSet
 import qualified PB.KRPC.List            as KList
 import qualified PB.KRPC.Tuple           as KTuple
 import qualified PB.KRPC.Dictionary      as KDict
@@ -181,6 +183,15 @@ instance (PbDecodable a) => PbDecodable [a] where
         mapM decodePb $ Data.Foldable.toList (KList.items l)
 
 
+instance (PbEncodable a) => PbEncodable (Set.Set a) where
+    encodePb = messagePut . KSet.Set . Seq.fromList . map encodePb . Set.toList
+
+instance (Ord a, PbDecodable a) => PbDecodable (Set.Set a) where
+    decodePb bytes = do
+        m <- messageGet bytes
+        Set.fromList <$> mapM decodePb (Data.Foldable.toList (KSet.items m))
+
+
 instance (Ord k, PbDecodable k, PbDecodable v) => PbDecodable (M.Map k v) where
     decodePb bytes = do
         m <- messageGet bytes
@@ -290,6 +301,14 @@ instance (PbDecodable a) => KRPCResponseExtractable [a] where
         checkProcedureResultError r
         case (KPRes.value r) of
             Nothing    -> Right []
+            Just bytes -> decodePb bytes
+
+
+instance (Ord a, PbDecodable a) => KRPCResponseExtractable (Set.Set a) where
+    extract r = do
+        checkProcedureResultError r
+        case (KPRes.value r) of
+            Nothing    -> Right Set.empty
             Just bytes -> decodePb bytes
 
 
