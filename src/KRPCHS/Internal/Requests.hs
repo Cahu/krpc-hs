@@ -139,7 +139,7 @@ checkError r = case (KRes.has_error r) of
     _         -> return ()
 
 
-processResponse :: (MonadRPC m, MonadThrow m, KRPCResponseExtractable a) => KRes.Response -> m a
+processResponse :: (MonadThrow m, KRPCResponseExtractable a) => KRes.Response -> m a
 processResponse res = either (throwM) (return) (extract res)
 
 

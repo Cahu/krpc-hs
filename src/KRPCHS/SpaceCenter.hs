@@ -2283,6 +2283,9 @@ import qualified Data.Set
 import qualified Data.Text
 import qualified Data.Word
 
+import Control.Monad.Catch
+import Control.Monad.IO.Class
+
 import KRPCHS.Internal.Requests
 import KRPCHS.Internal.SerializeUtils
 
@@ -3308,7 +3311,7 @@ instance KRPCResponseExtractable WheelState
 {-
  - Cancel current transmission of data.
  -}
-antennaCancel :: KRPCHS.SpaceCenter.Antenna -> RPCContext ()
+antennaCancel :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Antenna -> m ()
 antennaCancel thisArg = do
     let r = makeRequest "SpaceCenter" "Antenna_Cancel" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3317,7 +3320,7 @@ antennaCancel thisArg = do
 {-
  - Transmit data.
  -}
-antennaTransmit :: KRPCHS.SpaceCenter.Antenna -> RPCContext ()
+antennaTransmit :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Antenna -> m ()
 antennaTransmit thisArg = do
     let r = makeRequest "SpaceCenter" "Antenna_Transmit" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3326,7 +3329,7 @@ antennaTransmit thisArg = do
 {-
  - Whether partial data transmission is permitted.
  -}
-getAntennaAllowPartial :: KRPCHS.SpaceCenter.Antenna -> RPCContext (Bool)
+getAntennaAllowPartial :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Antenna -> m (Bool)
 getAntennaAllowPartial thisArg = do
     let r = makeRequest "SpaceCenter" "Antenna_get_AllowPartial" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3337,13 +3340,13 @@ getAntennaAllowPartialStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Antenna_get_AllowPartial" [makeArgument 0 thisArg]
     in  makeStream req
 
-getAntennaAllowPartialStream :: KRPCHS.SpaceCenter.Antenna -> RPCContext (KRPCStream (Bool))
+getAntennaAllowPartialStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Antenna -> m (KRPCStream (Bool))
 getAntennaAllowPartialStream thisArg = requestStream $ getAntennaAllowPartialStreamReq thisArg 
 
 {-
  - Whether data can be transmitted by this antenna.
  -}
-getAntennaCanTransmit :: KRPCHS.SpaceCenter.Antenna -> RPCContext (Bool)
+getAntennaCanTransmit :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Antenna -> m (Bool)
 getAntennaCanTransmit thisArg = do
     let r = makeRequest "SpaceCenter" "Antenna_get_CanTransmit" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3354,13 +3357,13 @@ getAntennaCanTransmitStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Antenna_get_CanTransmit" [makeArgument 0 thisArg]
     in  makeStream req
 
-getAntennaCanTransmitStream :: KRPCHS.SpaceCenter.Antenna -> RPCContext (KRPCStream (Bool))
+getAntennaCanTransmitStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Antenna -> m (KRPCStream (Bool))
 getAntennaCanTransmitStream thisArg = requestStream $ getAntennaCanTransmitStreamReq thisArg 
 
 {-
  - Whether the antenna can be combined with other antennae on the vessel to boost the power.
  -}
-getAntennaCombinable :: KRPCHS.SpaceCenter.Antenna -> RPCContext (Bool)
+getAntennaCombinable :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Antenna -> m (Bool)
 getAntennaCombinable thisArg = do
     let r = makeRequest "SpaceCenter" "Antenna_get_Combinable" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3371,13 +3374,13 @@ getAntennaCombinableStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Antenna_get_Combinable" [makeArgument 0 thisArg]
     in  makeStream req
 
-getAntennaCombinableStream :: KRPCHS.SpaceCenter.Antenna -> RPCContext (KRPCStream (Bool))
+getAntennaCombinableStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Antenna -> m (KRPCStream (Bool))
 getAntennaCombinableStream thisArg = requestStream $ getAntennaCombinableStreamReq thisArg 
 
 {-
  - Exponent used to calculate the combined power of multiple antennae on a vessel.
  -}
-getAntennaCombinableExponent :: KRPCHS.SpaceCenter.Antenna -> RPCContext (Double)
+getAntennaCombinableExponent :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Antenna -> m (Double)
 getAntennaCombinableExponent thisArg = do
     let r = makeRequest "SpaceCenter" "Antenna_get_CombinableExponent" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3388,13 +3391,13 @@ getAntennaCombinableExponentStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Antenna_get_CombinableExponent" [makeArgument 0 thisArg]
     in  makeStream req
 
-getAntennaCombinableExponentStream :: KRPCHS.SpaceCenter.Antenna -> RPCContext (KRPCStream (Double))
+getAntennaCombinableExponentStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Antenna -> m (KRPCStream (Double))
 getAntennaCombinableExponentStream thisArg = requestStream $ getAntennaCombinableExponentStreamReq thisArg 
 
 {-
  - Whether the antenna is deployable.
  -}
-getAntennaDeployable :: KRPCHS.SpaceCenter.Antenna -> RPCContext (Bool)
+getAntennaDeployable :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Antenna -> m (Bool)
 getAntennaDeployable thisArg = do
     let r = makeRequest "SpaceCenter" "Antenna_get_Deployable" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3405,14 +3408,14 @@ getAntennaDeployableStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Antenna_get_Deployable" [makeArgument 0 thisArg]
     in  makeStream req
 
-getAntennaDeployableStream :: KRPCHS.SpaceCenter.Antenna -> RPCContext (KRPCStream (Bool))
+getAntennaDeployableStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Antenna -> m (KRPCStream (Bool))
 getAntennaDeployableStream thisArg = requestStream $ getAntennaDeployableStreamReq thisArg 
 
 {-
  - Whether the antenna is deployed.Fixed antennas are always deployed.
  - Returns an error if you try to deploy a fixed antenna.
  -}
-getAntennaDeployed :: KRPCHS.SpaceCenter.Antenna -> RPCContext (Bool)
+getAntennaDeployed :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Antenna -> m (Bool)
 getAntennaDeployed thisArg = do
     let r = makeRequest "SpaceCenter" "Antenna_get_Deployed" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3423,13 +3426,13 @@ getAntennaDeployedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Antenna_get_Deployed" [makeArgument 0 thisArg]
     in  makeStream req
 
-getAntennaDeployedStream :: KRPCHS.SpaceCenter.Antenna -> RPCContext (KRPCStream (Bool))
+getAntennaDeployedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Antenna -> m (KRPCStream (Bool))
 getAntennaDeployedStream thisArg = requestStream $ getAntennaDeployedStreamReq thisArg 
 
 {-
  - Interval between sending packets in seconds.
  -}
-getAntennaPacketInterval :: KRPCHS.SpaceCenter.Antenna -> RPCContext (Float)
+getAntennaPacketInterval :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Antenna -> m (Float)
 getAntennaPacketInterval thisArg = do
     let r = makeRequest "SpaceCenter" "Antenna_get_PacketInterval" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3440,13 +3443,13 @@ getAntennaPacketIntervalStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Antenna_get_PacketInterval" [makeArgument 0 thisArg]
     in  makeStream req
 
-getAntennaPacketIntervalStream :: KRPCHS.SpaceCenter.Antenna -> RPCContext (KRPCStream (Float))
+getAntennaPacketIntervalStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Antenna -> m (KRPCStream (Float))
 getAntennaPacketIntervalStream thisArg = requestStream $ getAntennaPacketIntervalStreamReq thisArg 
 
 {-
  - Units of electric charge consumed per packet sent.
  -}
-getAntennaPacketResourceCost :: KRPCHS.SpaceCenter.Antenna -> RPCContext (Double)
+getAntennaPacketResourceCost :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Antenna -> m (Double)
 getAntennaPacketResourceCost thisArg = do
     let r = makeRequest "SpaceCenter" "Antenna_get_PacketResourceCost" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3457,13 +3460,13 @@ getAntennaPacketResourceCostStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Antenna_get_PacketResourceCost" [makeArgument 0 thisArg]
     in  makeStream req
 
-getAntennaPacketResourceCostStream :: KRPCHS.SpaceCenter.Antenna -> RPCContext (KRPCStream (Double))
+getAntennaPacketResourceCostStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Antenna -> m (KRPCStream (Double))
 getAntennaPacketResourceCostStream thisArg = requestStream $ getAntennaPacketResourceCostStreamReq thisArg 
 
 {-
  - Amount of data sent per packet in Mits.
  -}
-getAntennaPacketSize :: KRPCHS.SpaceCenter.Antenna -> RPCContext (Float)
+getAntennaPacketSize :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Antenna -> m (Float)
 getAntennaPacketSize thisArg = do
     let r = makeRequest "SpaceCenter" "Antenna_get_PacketSize" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3474,13 +3477,13 @@ getAntennaPacketSizeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Antenna_get_PacketSize" [makeArgument 0 thisArg]
     in  makeStream req
 
-getAntennaPacketSizeStream :: KRPCHS.SpaceCenter.Antenna -> RPCContext (KRPCStream (Float))
+getAntennaPacketSizeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Antenna -> m (KRPCStream (Float))
 getAntennaPacketSizeStream thisArg = requestStream $ getAntennaPacketSizeStreamReq thisArg 
 
 {-
  - The part object for this antenna.
  -}
-getAntennaPart :: KRPCHS.SpaceCenter.Antenna -> RPCContext (KRPCHS.SpaceCenter.Part)
+getAntennaPart :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Antenna -> m (KRPCHS.SpaceCenter.Part)
 getAntennaPart thisArg = do
     let r = makeRequest "SpaceCenter" "Antenna_get_Part" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3491,13 +3494,13 @@ getAntennaPartStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Antenna_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
-getAntennaPartStream :: KRPCHS.SpaceCenter.Antenna -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getAntennaPartStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Antenna -> m (KRPCStream (KRPCHS.SpaceCenter.Part))
 getAntennaPartStream thisArg = requestStream $ getAntennaPartStreamReq thisArg 
 
 {-
  - The power of the antenna.
  -}
-getAntennaPower :: KRPCHS.SpaceCenter.Antenna -> RPCContext (Double)
+getAntennaPower :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Antenna -> m (Double)
 getAntennaPower thisArg = do
     let r = makeRequest "SpaceCenter" "Antenna_get_Power" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3508,13 +3511,13 @@ getAntennaPowerStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Antenna_get_Power" [makeArgument 0 thisArg]
     in  makeStream req
 
-getAntennaPowerStream :: KRPCHS.SpaceCenter.Antenna -> RPCContext (KRPCStream (Double))
+getAntennaPowerStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Antenna -> m (KRPCStream (Double))
 getAntennaPowerStream thisArg = requestStream $ getAntennaPowerStreamReq thisArg 
 
 {-
  - The current state of the antenna.
  -}
-getAntennaState :: KRPCHS.SpaceCenter.Antenna -> RPCContext (KRPCHS.SpaceCenter.AntennaState)
+getAntennaState :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Antenna -> m (KRPCHS.SpaceCenter.AntennaState)
 getAntennaState thisArg = do
     let r = makeRequest "SpaceCenter" "Antenna_get_State" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3525,13 +3528,13 @@ getAntennaStateStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Antenna_get_State" [makeArgument 0 thisArg]
     in  makeStream req
 
-getAntennaStateStream :: KRPCHS.SpaceCenter.Antenna -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.AntennaState))
+getAntennaStateStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Antenna -> m (KRPCStream (KRPCHS.SpaceCenter.AntennaState))
 getAntennaStateStream thisArg = requestStream $ getAntennaStateStreamReq thisArg 
 
 {-
  - Whether partial data transmission is permitted.
  -}
-setAntennaAllowPartial :: KRPCHS.SpaceCenter.Antenna -> Bool -> RPCContext ()
+setAntennaAllowPartial :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Antenna -> Bool -> m ()
 setAntennaAllowPartial thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Antenna_set_AllowPartial" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -3541,7 +3544,7 @@ setAntennaAllowPartial thisArg valueArg = do
  - Whether the antenna is deployed.Fixed antennas are always deployed.
  - Returns an error if you try to deploy a fixed antenna.
  -}
-setAntennaDeployed :: KRPCHS.SpaceCenter.Antenna -> Bool -> RPCContext ()
+setAntennaDeployed :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Antenna -> Bool -> m ()
 setAntennaDeployed thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Antenna_set_Deployed" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -3550,7 +3553,7 @@ setAntennaDeployed thisArg valueArg = do
 {-
  - Disengage the auto-pilot.
  -}
-autoPilotDisengage :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext ()
+autoPilotDisengage :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m ()
 autoPilotDisengage thisArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_Disengage" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3559,7 +3562,7 @@ autoPilotDisengage thisArg = do
 {-
  - Engage the auto-pilot.
  -}
-autoPilotEngage :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext ()
+autoPilotEngage :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m ()
 autoPilotEngage thisArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_Engage" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3568,7 +3571,7 @@ autoPilotEngage thisArg = do
 {-
  - Set target pitch and heading angles.<param name="pitch">Target pitch angle, in degrees between -90° and +90°.<param name="heading">Target heading angle, in degrees between 0° and 360°.
  -}
-autoPilotTargetPitchAndHeading :: KRPCHS.SpaceCenter.AutoPilot -> Float -> Float -> RPCContext ()
+autoPilotTargetPitchAndHeading :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> Float -> Float -> m ()
 autoPilotTargetPitchAndHeading thisArg pitchArg headingArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_TargetPitchAndHeading" [makeArgument 0 thisArg, makeArgument 1 pitchArg, makeArgument 2 headingArg]
     res <- sendRequest r
@@ -3577,7 +3580,7 @@ autoPilotTargetPitchAndHeading thisArg pitchArg headingArg = do
 {-
  - Blocks until the vessel is pointing in the target direction and has the target roll (if set).
  -}
-autoPilotWait :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext ()
+autoPilotWait :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m ()
 autoPilotWait thisArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_Wait" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3589,7 +3592,7 @@ autoPilotWait thisArg = do
  - A vector of three angles, in degrees, one for each of the pitch, roll and yaw axes.
  - Defaults to 1° for each axis.
  -}
-getAutoPilotAttenuationAngle :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext ((Double, Double, Double))
+getAutoPilotAttenuationAngle :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m ((Double, Double, Double))
 getAutoPilotAttenuationAngle thisArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_get_AttenuationAngle" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3600,7 +3603,7 @@ getAutoPilotAttenuationAngleStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "AutoPilot_get_AttenuationAngle" [makeArgument 0 thisArg]
     in  makeStream req
 
-getAutoPilotAttenuationAngleStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
+getAutoPilotAttenuationAngleStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m (KRPCStream ((Double, Double, Double)))
 getAutoPilotAttenuationAngleStream thisArg = requestStream $ getAutoPilotAttenuationAngleStreamReq thisArg 
 
 {-
@@ -3608,7 +3611,7 @@ getAutoPilotAttenuationAngleStream thisArg = requestStream $ getAutoPilotAttenua
  - vessels moment of inertia and available torque. Defaults totrue.
  - See <see cref="M:SpaceCenter.AutoPilot.TimeToPeak" /> and <see cref="M:SpaceCenter.AutoPilot.Overshoot" />.
  -}
-getAutoPilotAutoTune :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Bool)
+getAutoPilotAutoTune :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m (Bool)
 getAutoPilotAutoTune thisArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_get_AutoTune" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3619,7 +3622,7 @@ getAutoPilotAutoTuneStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "AutoPilot_get_AutoTune" [makeArgument 0 thisArg]
     in  makeStream req
 
-getAutoPilotAutoTuneStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Bool))
+getAutoPilotAutoTuneStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m (KRPCStream (Bool))
 getAutoPilotAutoTuneStream thisArg = requestStream $ getAutoPilotAutoTuneStreamReq thisArg 
 
 {-
@@ -3628,7 +3631,7 @@ getAutoPilotAutoTuneStream thisArg = requestStream $ getAutoPilotAutoTuneStreamR
  - A vector of three times, in seconds, one for each of the pitch, roll and yaw axes.
  - Defaults to 5 seconds for each axis.
  -}
-getAutoPilotDecelerationTime :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext ((Double, Double, Double))
+getAutoPilotDecelerationTime :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m ((Double, Double, Double))
 getAutoPilotDecelerationTime thisArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_get_DecelerationTime" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3639,7 +3642,7 @@ getAutoPilotDecelerationTimeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "AutoPilot_get_DecelerationTime" [makeArgument 0 thisArg]
     in  makeStream req
 
-getAutoPilotDecelerationTimeStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
+getAutoPilotDecelerationTimeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m (KRPCStream ((Double, Double, Double)))
 getAutoPilotDecelerationTimeStream thisArg = requestStream $ getAutoPilotDecelerationTimeStreamReq thisArg 
 
 {-
@@ -3647,7 +3650,7 @@ getAutoPilotDecelerationTimeStream thisArg = requestStream $ getAutoPilotDeceler
  - to point in and the direction it is pointing in. Returns zero if the auto-pilot
  - has not been engaged and SAS is not enabled or is in stability assist mode.
  -}
-getAutoPilotError :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Float)
+getAutoPilotError :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m (Float)
 getAutoPilotError thisArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_get_Error" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3658,14 +3661,14 @@ getAutoPilotErrorStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "AutoPilot_get_Error" [makeArgument 0 thisArg]
     in  makeStream req
 
-getAutoPilotErrorStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Float))
+getAutoPilotErrorStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m (KRPCStream (Float))
 getAutoPilotErrorStream thisArg = requestStream $ getAutoPilotErrorStreamReq thisArg 
 
 {-
  - The error, in degrees, between the vessels current and target heading.
  - Returns zero if the auto-pilot has not been engaged.
  -}
-getAutoPilotHeadingError :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Float)
+getAutoPilotHeadingError :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m (Float)
 getAutoPilotHeadingError thisArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_get_HeadingError" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3676,7 +3679,7 @@ getAutoPilotHeadingErrorStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "AutoPilot_get_HeadingError" [makeArgument 0 thisArg]
     in  makeStream req
 
-getAutoPilotHeadingErrorStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Float))
+getAutoPilotHeadingErrorStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m (KRPCStream (Float))
 getAutoPilotHeadingErrorStream thisArg = requestStream $ getAutoPilotHeadingErrorStreamReq thisArg 
 
 {-
@@ -3684,7 +3687,7 @@ getAutoPilotHeadingErrorStream thisArg = requestStream $ getAutoPilotHeadingErro
  - A vector of three values, between 0 and 1, for each of the pitch, roll and yaw axes.
  - Defaults to 0.01 for each axis.
  -}
-getAutoPilotOvershoot :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext ((Double, Double, Double))
+getAutoPilotOvershoot :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m ((Double, Double, Double))
 getAutoPilotOvershoot thisArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_get_Overshoot" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3695,14 +3698,14 @@ getAutoPilotOvershootStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "AutoPilot_get_Overshoot" [makeArgument 0 thisArg]
     in  makeStream req
 
-getAutoPilotOvershootStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
+getAutoPilotOvershootStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m (KRPCStream ((Double, Double, Double)))
 getAutoPilotOvershootStream thisArg = requestStream $ getAutoPilotOvershootStreamReq thisArg 
 
 {-
  - The error, in degrees, between the vessels current and target pitch.
  - Returns zero if the auto-pilot has not been engaged.
  -}
-getAutoPilotPitchError :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Float)
+getAutoPilotPitchError :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m (Float)
 getAutoPilotPitchError thisArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_get_PitchError" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3713,13 +3716,13 @@ getAutoPilotPitchErrorStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "AutoPilot_get_PitchError" [makeArgument 0 thisArg]
     in  makeStream req
 
-getAutoPilotPitchErrorStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Float))
+getAutoPilotPitchErrorStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m (KRPCStream (Float))
 getAutoPilotPitchErrorStream thisArg = requestStream $ getAutoPilotPitchErrorStreamReq thisArg 
 
 {-
  - Gains for the pitch PID controller.When <see cref="M:SpaceCenter.AutoPilot.AutoTune" /> is true, these values are updated automatically, which will overwrite any manual changes.
  -}
-getAutoPilotPitchPIDGains :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext ((Double, Double, Double))
+getAutoPilotPitchPIDGains :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m ((Double, Double, Double))
 getAutoPilotPitchPIDGains thisArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_get_PitchPIDGains" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3730,14 +3733,14 @@ getAutoPilotPitchPIDGainsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "AutoPilot_get_PitchPIDGains" [makeArgument 0 thisArg]
     in  makeStream req
 
-getAutoPilotPitchPIDGainsStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
+getAutoPilotPitchPIDGainsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m (KRPCStream ((Double, Double, Double)))
 getAutoPilotPitchPIDGainsStream thisArg = requestStream $ getAutoPilotPitchPIDGainsStreamReq thisArg 
 
 {-
  - The reference frame for the target direction (<see cref="M:SpaceCenter.AutoPilot.TargetDirection" />).An error will be thrown if this property is set to a reference frame that rotates with the vessel being controlled,
  - as it is impossible to rotate the vessel in such a reference frame.
  -}
-getAutoPilotReferenceFrame :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
+getAutoPilotReferenceFrame :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m (KRPCHS.SpaceCenter.ReferenceFrame)
 getAutoPilotReferenceFrame thisArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_get_ReferenceFrame" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3748,14 +3751,14 @@ getAutoPilotReferenceFrameStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "AutoPilot_get_ReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
-getAutoPilotReferenceFrameStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
+getAutoPilotReferenceFrameStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 getAutoPilotReferenceFrameStream thisArg = requestStream $ getAutoPilotReferenceFrameStreamReq thisArg 
 
 {-
  - The error, in degrees, between the vessels current and target roll.
  - Returns zero if the auto-pilot has not been engaged or no target roll is set.
  -}
-getAutoPilotRollError :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Float)
+getAutoPilotRollError :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m (Float)
 getAutoPilotRollError thisArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_get_RollError" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3766,13 +3769,13 @@ getAutoPilotRollErrorStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "AutoPilot_get_RollError" [makeArgument 0 thisArg]
     in  makeStream req
 
-getAutoPilotRollErrorStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Float))
+getAutoPilotRollErrorStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m (KRPCStream (Float))
 getAutoPilotRollErrorStream thisArg = requestStream $ getAutoPilotRollErrorStreamReq thisArg 
 
 {-
  - Gains for the roll PID controller.When <see cref="M:SpaceCenter.AutoPilot.AutoTune" /> is true, these values are updated automatically, which will overwrite any manual changes.
  -}
-getAutoPilotRollPIDGains :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext ((Double, Double, Double))
+getAutoPilotRollPIDGains :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m ((Double, Double, Double))
 getAutoPilotRollPIDGains thisArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_get_RollPIDGains" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3783,14 +3786,14 @@ getAutoPilotRollPIDGainsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "AutoPilot_get_RollPIDGains" [makeArgument 0 thisArg]
     in  makeStream req
 
-getAutoPilotRollPIDGainsStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
+getAutoPilotRollPIDGainsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m (KRPCStream ((Double, Double, Double)))
 getAutoPilotRollPIDGainsStream thisArg = requestStream $ getAutoPilotRollPIDGainsStreamReq thisArg 
 
 {-
  - The threshold at which the autopilot will try to match the target roll angle, if any.
  - Defaults to 5 degrees.
  -}
-getAutoPilotRollThreshold :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Double)
+getAutoPilotRollThreshold :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m (Double)
 getAutoPilotRollThreshold thisArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_get_RollThreshold" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3801,13 +3804,13 @@ getAutoPilotRollThresholdStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "AutoPilot_get_RollThreshold" [makeArgument 0 thisArg]
     in  makeStream req
 
-getAutoPilotRollThresholdStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Double))
+getAutoPilotRollThresholdStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m (KRPCStream (Double))
 getAutoPilotRollThresholdStream thisArg = requestStream $ getAutoPilotRollThresholdStreamReq thisArg 
 
 {-
  - The state of SAS.Equivalent to <see cref="M:SpaceCenter.Control.SAS" />
  -}
-getAutoPilotSAS :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Bool)
+getAutoPilotSAS :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m (Bool)
 getAutoPilotSAS thisArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_get_SAS" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3818,14 +3821,14 @@ getAutoPilotSASStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "AutoPilot_get_SAS" [makeArgument 0 thisArg]
     in  makeStream req
 
-getAutoPilotSASStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Bool))
+getAutoPilotSASStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m (KRPCStream (Bool))
 getAutoPilotSASStream thisArg = requestStream $ getAutoPilotSASStreamReq thisArg 
 
 {-
  - The current <see cref="T:SpaceCenter.SASMode" />.
  - These modes are equivalent to the mode buttons to the left of the navball that appear when SAS is enabled.Equivalent to <see cref="M:SpaceCenter.Control.SASMode" />
  -}
-getAutoPilotSASMode :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCHS.SpaceCenter.SASMode)
+getAutoPilotSASMode :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m (KRPCHS.SpaceCenter.SASMode)
 getAutoPilotSASMode thisArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_get_SASMode" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3836,7 +3839,7 @@ getAutoPilotSASModeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "AutoPilot_get_SASMode" [makeArgument 0 thisArg]
     in  makeStream req
 
-getAutoPilotSASModeStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.SASMode))
+getAutoPilotSASModeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m (KRPCStream (KRPCHS.SpaceCenter.SASMode))
 getAutoPilotSASModeStream thisArg = requestStream $ getAutoPilotSASModeStreamReq thisArg 
 
 {-
@@ -3845,7 +3848,7 @@ getAutoPilotSASModeStream thisArg = requestStream $ getAutoPilotSASModeStreamReq
  - A vector of three stopping times, in seconds, one for each of the pitch, roll and yaw axes.
  - Defaults to 0.5 seconds for each axis.
  -}
-getAutoPilotStoppingTime :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext ((Double, Double, Double))
+getAutoPilotStoppingTime :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m ((Double, Double, Double))
 getAutoPilotStoppingTime thisArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_get_StoppingTime" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3856,13 +3859,13 @@ getAutoPilotStoppingTimeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "AutoPilot_get_StoppingTime" [makeArgument 0 thisArg]
     in  makeStream req
 
-getAutoPilotStoppingTimeStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
+getAutoPilotStoppingTimeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m (KRPCStream ((Double, Double, Double)))
 getAutoPilotStoppingTimeStream thisArg = requestStream $ getAutoPilotStoppingTimeStreamReq thisArg 
 
 {-
  - Direction vector corresponding to the target pitch and heading.
  -}
-getAutoPilotTargetDirection :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext ((Double, Double, Double))
+getAutoPilotTargetDirection :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m ((Double, Double, Double))
 getAutoPilotTargetDirection thisArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_get_TargetDirection" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3873,13 +3876,13 @@ getAutoPilotTargetDirectionStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "AutoPilot_get_TargetDirection" [makeArgument 0 thisArg]
     in  makeStream req
 
-getAutoPilotTargetDirectionStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
+getAutoPilotTargetDirectionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m (KRPCStream ((Double, Double, Double)))
 getAutoPilotTargetDirectionStream thisArg = requestStream $ getAutoPilotTargetDirectionStreamReq thisArg 
 
 {-
  - The target heading, in degrees, between 0° and 360°.
  -}
-getAutoPilotTargetHeading :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Float)
+getAutoPilotTargetHeading :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m (Float)
 getAutoPilotTargetHeading thisArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_get_TargetHeading" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3890,13 +3893,13 @@ getAutoPilotTargetHeadingStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "AutoPilot_get_TargetHeading" [makeArgument 0 thisArg]
     in  makeStream req
 
-getAutoPilotTargetHeadingStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Float))
+getAutoPilotTargetHeadingStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m (KRPCStream (Float))
 getAutoPilotTargetHeadingStream thisArg = requestStream $ getAutoPilotTargetHeadingStreamReq thisArg 
 
 {-
  - The target pitch, in degrees, between -90° and +90°.
  -}
-getAutoPilotTargetPitch :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Float)
+getAutoPilotTargetPitch :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m (Float)
 getAutoPilotTargetPitch thisArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_get_TargetPitch" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3907,13 +3910,13 @@ getAutoPilotTargetPitchStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "AutoPilot_get_TargetPitch" [makeArgument 0 thisArg]
     in  makeStream req
 
-getAutoPilotTargetPitchStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Float))
+getAutoPilotTargetPitchStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m (KRPCStream (Float))
 getAutoPilotTargetPitchStream thisArg = requestStream $ getAutoPilotTargetPitchStreamReq thisArg 
 
 {-
  - The target roll, in degrees.NaNif no target roll is set.
  -}
-getAutoPilotTargetRoll :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (Float)
+getAutoPilotTargetRoll :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m (Float)
 getAutoPilotTargetRoll thisArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_get_TargetRoll" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3924,7 +3927,7 @@ getAutoPilotTargetRollStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "AutoPilot_get_TargetRoll" [makeArgument 0 thisArg]
     in  makeStream req
 
-getAutoPilotTargetRollStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream (Float))
+getAutoPilotTargetRollStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m (KRPCStream (Float))
 getAutoPilotTargetRollStream thisArg = requestStream $ getAutoPilotTargetRollStreamReq thisArg 
 
 {-
@@ -3932,7 +3935,7 @@ getAutoPilotTargetRollStream thisArg = requestStream $ getAutoPilotTargetRollStr
  - A vector of three times, in seconds, for each of the pitch, roll and yaw axes.
  - Defaults to 3 seconds for each axis.
  -}
-getAutoPilotTimeToPeak :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext ((Double, Double, Double))
+getAutoPilotTimeToPeak :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m ((Double, Double, Double))
 getAutoPilotTimeToPeak thisArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_get_TimeToPeak" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3943,13 +3946,13 @@ getAutoPilotTimeToPeakStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "AutoPilot_get_TimeToPeak" [makeArgument 0 thisArg]
     in  makeStream req
 
-getAutoPilotTimeToPeakStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
+getAutoPilotTimeToPeakStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m (KRPCStream ((Double, Double, Double)))
 getAutoPilotTimeToPeakStream thisArg = requestStream $ getAutoPilotTimeToPeakStreamReq thisArg 
 
 {-
  - Gains for the yaw PID controller.When <see cref="M:SpaceCenter.AutoPilot.AutoTune" /> is true, these values are updated automatically, which will overwrite any manual changes.
  -}
-getAutoPilotYawPIDGains :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext ((Double, Double, Double))
+getAutoPilotYawPIDGains :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m ((Double, Double, Double))
 getAutoPilotYawPIDGains thisArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_get_YawPIDGains" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -3960,7 +3963,7 @@ getAutoPilotYawPIDGainsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "AutoPilot_get_YawPIDGains" [makeArgument 0 thisArg]
     in  makeStream req
 
-getAutoPilotYawPIDGainsStream :: KRPCHS.SpaceCenter.AutoPilot -> RPCContext (KRPCStream ((Double, Double, Double)))
+getAutoPilotYawPIDGainsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> m (KRPCStream ((Double, Double, Double)))
 getAutoPilotYawPIDGainsStream thisArg = requestStream $ getAutoPilotYawPIDGainsStreamReq thisArg 
 
 {-
@@ -3969,7 +3972,7 @@ getAutoPilotYawPIDGainsStream thisArg = requestStream $ getAutoPilotYawPIDGainsS
  - A vector of three angles, in degrees, one for each of the pitch, roll and yaw axes.
  - Defaults to 1° for each axis.
  -}
-setAutoPilotAttenuationAngle :: KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> RPCContext ()
+setAutoPilotAttenuationAngle :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> m ()
 setAutoPilotAttenuationAngle thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_set_AttenuationAngle" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -3980,7 +3983,7 @@ setAutoPilotAttenuationAngle thisArg valueArg = do
  - vessels moment of inertia and available torque. Defaults totrue.
  - See <see cref="M:SpaceCenter.AutoPilot.TimeToPeak" /> and <see cref="M:SpaceCenter.AutoPilot.Overshoot" />.
  -}
-setAutoPilotAutoTune :: KRPCHS.SpaceCenter.AutoPilot -> Bool -> RPCContext ()
+setAutoPilotAutoTune :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> Bool -> m ()
 setAutoPilotAutoTune thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_set_AutoTune" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -3992,7 +3995,7 @@ setAutoPilotAutoTune thisArg valueArg = do
  - A vector of three times, in seconds, one for each of the pitch, roll and yaw axes.
  - Defaults to 5 seconds for each axis.
  -}
-setAutoPilotDecelerationTime :: KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> RPCContext ()
+setAutoPilotDecelerationTime :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> m ()
 setAutoPilotDecelerationTime thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_set_DecelerationTime" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -4003,7 +4006,7 @@ setAutoPilotDecelerationTime thisArg valueArg = do
  - A vector of three values, between 0 and 1, for each of the pitch, roll and yaw axes.
  - Defaults to 0.01 for each axis.
  -}
-setAutoPilotOvershoot :: KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> RPCContext ()
+setAutoPilotOvershoot :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> m ()
 setAutoPilotOvershoot thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_set_Overshoot" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -4012,7 +4015,7 @@ setAutoPilotOvershoot thisArg valueArg = do
 {-
  - Gains for the pitch PID controller.When <see cref="M:SpaceCenter.AutoPilot.AutoTune" /> is true, these values are updated automatically, which will overwrite any manual changes.
  -}
-setAutoPilotPitchPIDGains :: KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> RPCContext ()
+setAutoPilotPitchPIDGains :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> m ()
 setAutoPilotPitchPIDGains thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_set_PitchPIDGains" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -4022,7 +4025,7 @@ setAutoPilotPitchPIDGains thisArg valueArg = do
  - The reference frame for the target direction (<see cref="M:SpaceCenter.AutoPilot.TargetDirection" />).An error will be thrown if this property is set to a reference frame that rotates with the vessel being controlled,
  - as it is impossible to rotate the vessel in such a reference frame.
  -}
-setAutoPilotReferenceFrame :: KRPCHS.SpaceCenter.AutoPilot -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ()
+setAutoPilotReferenceFrame :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> KRPCHS.SpaceCenter.ReferenceFrame -> m ()
 setAutoPilotReferenceFrame thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_set_ReferenceFrame" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -4031,7 +4034,7 @@ setAutoPilotReferenceFrame thisArg valueArg = do
 {-
  - Gains for the roll PID controller.When <see cref="M:SpaceCenter.AutoPilot.AutoTune" /> is true, these values are updated automatically, which will overwrite any manual changes.
  -}
-setAutoPilotRollPIDGains :: KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> RPCContext ()
+setAutoPilotRollPIDGains :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> m ()
 setAutoPilotRollPIDGains thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_set_RollPIDGains" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -4041,7 +4044,7 @@ setAutoPilotRollPIDGains thisArg valueArg = do
  - The threshold at which the autopilot will try to match the target roll angle, if any.
  - Defaults to 5 degrees.
  -}
-setAutoPilotRollThreshold :: KRPCHS.SpaceCenter.AutoPilot -> Double -> RPCContext ()
+setAutoPilotRollThreshold :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> Double -> m ()
 setAutoPilotRollThreshold thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_set_RollThreshold" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -4050,7 +4053,7 @@ setAutoPilotRollThreshold thisArg valueArg = do
 {-
  - The state of SAS.Equivalent to <see cref="M:SpaceCenter.Control.SAS" />
  -}
-setAutoPilotSAS :: KRPCHS.SpaceCenter.AutoPilot -> Bool -> RPCContext ()
+setAutoPilotSAS :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> Bool -> m ()
 setAutoPilotSAS thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_set_SAS" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -4060,7 +4063,7 @@ setAutoPilotSAS thisArg valueArg = do
  - The current <see cref="T:SpaceCenter.SASMode" />.
  - These modes are equivalent to the mode buttons to the left of the navball that appear when SAS is enabled.Equivalent to <see cref="M:SpaceCenter.Control.SASMode" />
  -}
-setAutoPilotSASMode :: KRPCHS.SpaceCenter.AutoPilot -> KRPCHS.SpaceCenter.SASMode -> RPCContext ()
+setAutoPilotSASMode :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> KRPCHS.SpaceCenter.SASMode -> m ()
 setAutoPilotSASMode thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_set_SASMode" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -4072,7 +4075,7 @@ setAutoPilotSASMode thisArg valueArg = do
  - A vector of three stopping times, in seconds, one for each of the pitch, roll and yaw axes.
  - Defaults to 0.5 seconds for each axis.
  -}
-setAutoPilotStoppingTime :: KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> RPCContext ()
+setAutoPilotStoppingTime :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> m ()
 setAutoPilotStoppingTime thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_set_StoppingTime" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -4081,7 +4084,7 @@ setAutoPilotStoppingTime thisArg valueArg = do
 {-
  - Direction vector corresponding to the target pitch and heading.
  -}
-setAutoPilotTargetDirection :: KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> RPCContext ()
+setAutoPilotTargetDirection :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> m ()
 setAutoPilotTargetDirection thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_set_TargetDirection" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -4090,7 +4093,7 @@ setAutoPilotTargetDirection thisArg valueArg = do
 {-
  - The target heading, in degrees, between 0° and 360°.
  -}
-setAutoPilotTargetHeading :: KRPCHS.SpaceCenter.AutoPilot -> Float -> RPCContext ()
+setAutoPilotTargetHeading :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> Float -> m ()
 setAutoPilotTargetHeading thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_set_TargetHeading" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -4099,7 +4102,7 @@ setAutoPilotTargetHeading thisArg valueArg = do
 {-
  - The target pitch, in degrees, between -90° and +90°.
  -}
-setAutoPilotTargetPitch :: KRPCHS.SpaceCenter.AutoPilot -> Float -> RPCContext ()
+setAutoPilotTargetPitch :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> Float -> m ()
 setAutoPilotTargetPitch thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_set_TargetPitch" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -4108,7 +4111,7 @@ setAutoPilotTargetPitch thisArg valueArg = do
 {-
  - The target roll, in degrees.NaNif no target roll is set.
  -}
-setAutoPilotTargetRoll :: KRPCHS.SpaceCenter.AutoPilot -> Float -> RPCContext ()
+setAutoPilotTargetRoll :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> Float -> m ()
 setAutoPilotTargetRoll thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_set_TargetRoll" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -4119,7 +4122,7 @@ setAutoPilotTargetRoll thisArg valueArg = do
  - A vector of three times, in seconds, for each of the pitch, roll and yaw axes.
  - Defaults to 3 seconds for each axis.
  -}
-setAutoPilotTimeToPeak :: KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> RPCContext ()
+setAutoPilotTimeToPeak :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> m ()
 setAutoPilotTimeToPeak thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_set_TimeToPeak" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -4128,7 +4131,7 @@ setAutoPilotTimeToPeak thisArg valueArg = do
 {-
  - Gains for the yaw PID controller.When <see cref="M:SpaceCenter.AutoPilot.AutoTune" /> is true, these values are updated automatically, which will overwrite any manual changes.
  -}
-setAutoPilotYawPIDGains :: KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> RPCContext ()
+setAutoPilotYawPIDGains :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.AutoPilot -> (Double, Double, Double) -> m ()
 setAutoPilotYawPIDGains thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "AutoPilot_set_YawPIDGains" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -4137,7 +4140,7 @@ setAutoPilotYawPIDGains thisArg valueArg = do
 {-
  - Default distance from the camera to the subject, in meters.
  -}
-getCameraDefaultDistance :: KRPCHS.SpaceCenter.Camera -> RPCContext (Float)
+getCameraDefaultDistance :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Camera -> m (Float)
 getCameraDefaultDistance thisArg = do
     let r = makeRequest "SpaceCenter" "Camera_get_DefaultDistance" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -4148,14 +4151,14 @@ getCameraDefaultDistanceStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Camera_get_DefaultDistance" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCameraDefaultDistanceStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (Float))
+getCameraDefaultDistanceStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Camera -> m (KRPCStream (Float))
 getCameraDefaultDistanceStream thisArg = requestStream $ getCameraDefaultDistanceStreamReq thisArg 
 
 {-
  - The distance from the camera to the subject, in meters.
  - A value between <see cref="M:SpaceCenter.Camera.MinDistance" /> and <see cref="M:SpaceCenter.Camera.MaxDistance" />.
  -}
-getCameraDistance :: KRPCHS.SpaceCenter.Camera -> RPCContext (Float)
+getCameraDistance :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Camera -> m (Float)
 getCameraDistance thisArg = do
     let r = makeRequest "SpaceCenter" "Camera_get_Distance" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -4166,7 +4169,7 @@ getCameraDistanceStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Camera_get_Distance" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCameraDistanceStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (Float))
+getCameraDistanceStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Camera -> m (KRPCStream (Float))
 getCameraDistanceStream thisArg = requestStream $ getCameraDistanceStreamReq thisArg 
 
 {-
@@ -4174,7 +4177,7 @@ getCameraDistanceStream thisArg = requestStream $ getCameraDistanceStreamReq thi
  - Returnsnullif the camera is not focussed on a celestial body.
  - Returns an error is the camera is not in map mode.
  -}
-getCameraFocussedBody :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCHS.SpaceCenter.CelestialBody)
+getCameraFocussedBody :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Camera -> m (KRPCHS.SpaceCenter.CelestialBody)
 getCameraFocussedBody thisArg = do
     let r = makeRequest "SpaceCenter" "Camera_get_FocussedBody" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -4185,7 +4188,7 @@ getCameraFocussedBodyStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Camera_get_FocussedBody" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCameraFocussedBodyStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.CelestialBody))
+getCameraFocussedBodyStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Camera -> m (KRPCStream (KRPCHS.SpaceCenter.CelestialBody))
 getCameraFocussedBodyStream thisArg = requestStream $ getCameraFocussedBodyStreamReq thisArg 
 
 {-
@@ -4193,7 +4196,7 @@ getCameraFocussedBodyStream thisArg = requestStream $ getCameraFocussedBodyStrea
  - Returnsnullif the camera is not focussed on a maneuver node.
  - Returns an error is the camera is not in map mode.
  -}
-getCameraFocussedNode :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCHS.SpaceCenter.Node)
+getCameraFocussedNode :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Camera -> m (KRPCHS.SpaceCenter.Node)
 getCameraFocussedNode thisArg = do
     let r = makeRequest "SpaceCenter" "Camera_get_FocussedNode" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -4204,7 +4207,7 @@ getCameraFocussedNodeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Camera_get_FocussedNode" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCameraFocussedNodeStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Node))
+getCameraFocussedNodeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Camera -> m (KRPCStream (KRPCHS.SpaceCenter.Node))
 getCameraFocussedNodeStream thisArg = requestStream $ getCameraFocussedNodeStreamReq thisArg 
 
 {-
@@ -4212,7 +4215,7 @@ getCameraFocussedNodeStream thisArg = requestStream $ getCameraFocussedNodeStrea
  - Returnsnullif the camera is not focussed on a vessel.
  - Returns an error is the camera is not in map mode.
  -}
-getCameraFocussedVessel :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCHS.SpaceCenter.Vessel)
+getCameraFocussedVessel :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Camera -> m (KRPCHS.SpaceCenter.Vessel)
 getCameraFocussedVessel thisArg = do
     let r = makeRequest "SpaceCenter" "Camera_get_FocussedVessel" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -4223,13 +4226,13 @@ getCameraFocussedVesselStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Camera_get_FocussedVessel" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCameraFocussedVesselStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Vessel))
+getCameraFocussedVesselStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Camera -> m (KRPCStream (KRPCHS.SpaceCenter.Vessel))
 getCameraFocussedVesselStream thisArg = requestStream $ getCameraFocussedVesselStreamReq thisArg 
 
 {-
  - The heading of the camera, in degrees.
  -}
-getCameraHeading :: KRPCHS.SpaceCenter.Camera -> RPCContext (Float)
+getCameraHeading :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Camera -> m (Float)
 getCameraHeading thisArg = do
     let r = makeRequest "SpaceCenter" "Camera_get_Heading" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -4240,13 +4243,13 @@ getCameraHeadingStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Camera_get_Heading" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCameraHeadingStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (Float))
+getCameraHeadingStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Camera -> m (KRPCStream (Float))
 getCameraHeadingStream thisArg = requestStream $ getCameraHeadingStreamReq thisArg 
 
 {-
  - Maximum distance from the camera to the subject, in meters.
  -}
-getCameraMaxDistance :: KRPCHS.SpaceCenter.Camera -> RPCContext (Float)
+getCameraMaxDistance :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Camera -> m (Float)
 getCameraMaxDistance thisArg = do
     let r = makeRequest "SpaceCenter" "Camera_get_MaxDistance" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -4257,13 +4260,13 @@ getCameraMaxDistanceStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Camera_get_MaxDistance" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCameraMaxDistanceStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (Float))
+getCameraMaxDistanceStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Camera -> m (KRPCStream (Float))
 getCameraMaxDistanceStream thisArg = requestStream $ getCameraMaxDistanceStreamReq thisArg 
 
 {-
  - The maximum pitch of the camera.
  -}
-getCameraMaxPitch :: KRPCHS.SpaceCenter.Camera -> RPCContext (Float)
+getCameraMaxPitch :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Camera -> m (Float)
 getCameraMaxPitch thisArg = do
     let r = makeRequest "SpaceCenter" "Camera_get_MaxPitch" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -4274,13 +4277,13 @@ getCameraMaxPitchStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Camera_get_MaxPitch" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCameraMaxPitchStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (Float))
+getCameraMaxPitchStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Camera -> m (KRPCStream (Float))
 getCameraMaxPitchStream thisArg = requestStream $ getCameraMaxPitchStreamReq thisArg 
 
 {-
  - Minimum distance from the camera to the subject, in meters.
  -}
-getCameraMinDistance :: KRPCHS.SpaceCenter.Camera -> RPCContext (Float)
+getCameraMinDistance :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Camera -> m (Float)
 getCameraMinDistance thisArg = do
     let r = makeRequest "SpaceCenter" "Camera_get_MinDistance" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -4291,13 +4294,13 @@ getCameraMinDistanceStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Camera_get_MinDistance" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCameraMinDistanceStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (Float))
+getCameraMinDistanceStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Camera -> m (KRPCStream (Float))
 getCameraMinDistanceStream thisArg = requestStream $ getCameraMinDistanceStreamReq thisArg 
 
 {-
  - The minimum pitch of the camera.
  -}
-getCameraMinPitch :: KRPCHS.SpaceCenter.Camera -> RPCContext (Float)
+getCameraMinPitch :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Camera -> m (Float)
 getCameraMinPitch thisArg = do
     let r = makeRequest "SpaceCenter" "Camera_get_MinPitch" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -4308,13 +4311,13 @@ getCameraMinPitchStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Camera_get_MinPitch" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCameraMinPitchStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (Float))
+getCameraMinPitchStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Camera -> m (KRPCStream (Float))
 getCameraMinPitchStream thisArg = requestStream $ getCameraMinPitchStreamReq thisArg 
 
 {-
  - The current mode of the camera.
  -}
-getCameraMode :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCHS.SpaceCenter.CameraMode)
+getCameraMode :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Camera -> m (KRPCHS.SpaceCenter.CameraMode)
 getCameraMode thisArg = do
     let r = makeRequest "SpaceCenter" "Camera_get_Mode" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -4325,14 +4328,14 @@ getCameraModeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Camera_get_Mode" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCameraModeStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.CameraMode))
+getCameraModeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Camera -> m (KRPCStream (KRPCHS.SpaceCenter.CameraMode))
 getCameraModeStream thisArg = requestStream $ getCameraModeStreamReq thisArg 
 
 {-
  - The pitch of the camera, in degrees.
  - A value between <see cref="M:SpaceCenter.Camera.MinPitch" /> and <see cref="M:SpaceCenter.Camera.MaxPitch" />
  -}
-getCameraPitch :: KRPCHS.SpaceCenter.Camera -> RPCContext (Float)
+getCameraPitch :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Camera -> m (Float)
 getCameraPitch thisArg = do
     let r = makeRequest "SpaceCenter" "Camera_get_Pitch" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -4343,14 +4346,14 @@ getCameraPitchStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Camera_get_Pitch" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCameraPitchStream :: KRPCHS.SpaceCenter.Camera -> RPCContext (KRPCStream (Float))
+getCameraPitchStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Camera -> m (KRPCStream (Float))
 getCameraPitchStream thisArg = requestStream $ getCameraPitchStreamReq thisArg 
 
 {-
  - The distance from the camera to the subject, in meters.
  - A value between <see cref="M:SpaceCenter.Camera.MinDistance" /> and <see cref="M:SpaceCenter.Camera.MaxDistance" />.
  -}
-setCameraDistance :: KRPCHS.SpaceCenter.Camera -> Float -> RPCContext ()
+setCameraDistance :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Camera -> Float -> m ()
 setCameraDistance thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Camera_set_Distance" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -4361,7 +4364,7 @@ setCameraDistance thisArg valueArg = do
  - Returnsnullif the camera is not focussed on a celestial body.
  - Returns an error is the camera is not in map mode.
  -}
-setCameraFocussedBody :: KRPCHS.SpaceCenter.Camera -> KRPCHS.SpaceCenter.CelestialBody -> RPCContext ()
+setCameraFocussedBody :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Camera -> KRPCHS.SpaceCenter.CelestialBody -> m ()
 setCameraFocussedBody thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Camera_set_FocussedBody" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -4372,7 +4375,7 @@ setCameraFocussedBody thisArg valueArg = do
  - Returnsnullif the camera is not focussed on a maneuver node.
  - Returns an error is the camera is not in map mode.
  -}
-setCameraFocussedNode :: KRPCHS.SpaceCenter.Camera -> KRPCHS.SpaceCenter.Node -> RPCContext ()
+setCameraFocussedNode :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Camera -> KRPCHS.SpaceCenter.Node -> m ()
 setCameraFocussedNode thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Camera_set_FocussedNode" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -4383,7 +4386,7 @@ setCameraFocussedNode thisArg valueArg = do
  - Returnsnullif the camera is not focussed on a vessel.
  - Returns an error is the camera is not in map mode.
  -}
-setCameraFocussedVessel :: KRPCHS.SpaceCenter.Camera -> KRPCHS.SpaceCenter.Vessel -> RPCContext ()
+setCameraFocussedVessel :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Camera -> KRPCHS.SpaceCenter.Vessel -> m ()
 setCameraFocussedVessel thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Camera_set_FocussedVessel" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -4392,7 +4395,7 @@ setCameraFocussedVessel thisArg valueArg = do
 {-
  - The heading of the camera, in degrees.
  -}
-setCameraHeading :: KRPCHS.SpaceCenter.Camera -> Float -> RPCContext ()
+setCameraHeading :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Camera -> Float -> m ()
 setCameraHeading thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Camera_set_Heading" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -4401,7 +4404,7 @@ setCameraHeading thisArg valueArg = do
 {-
  - The current mode of the camera.
  -}
-setCameraMode :: KRPCHS.SpaceCenter.Camera -> KRPCHS.SpaceCenter.CameraMode -> RPCContext ()
+setCameraMode :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Camera -> KRPCHS.SpaceCenter.CameraMode -> m ()
 setCameraMode thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Camera_set_Mode" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -4411,7 +4414,7 @@ setCameraMode thisArg valueArg = do
  - The pitch of the camera, in degrees.
  - A value between <see cref="M:SpaceCenter.Camera.MinPitch" /> and <see cref="M:SpaceCenter.Camera.MaxPitch" />
  -}
-setCameraPitch :: KRPCHS.SpaceCenter.Camera -> Float -> RPCContext ()
+setCameraPitch :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Camera -> Float -> m ()
 setCameraPitch thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Camera_set_Pitch" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -4423,7 +4426,7 @@ setCameraPitch thisArg valueArg = do
  - including how close the active vessel is to a planet. See
  - <a href="http://wiki.kerbalspaceprogram.com/wiki/Time_warp">the KSP wikifor details.<param name="factor">The warp factor to check.
  -}
-canRailsWarpAt :: Data.Int.Int32 -> RPCContext (Bool)
+canRailsWarpAt :: (MonadIO m, MonadThrow m, MonadRPC m) => Data.Int.Int32 -> m (Bool)
 canRailsWarpAt factorArg = do
     let r = makeRequest "SpaceCenter" "CanRailsWarpAt" [makeArgument 0 factorArg]
     res <- sendRequest r
@@ -4434,13 +4437,13 @@ canRailsWarpAtStreamReq factorArg =
     let req = makeRequest "SpaceCenter" "CanRailsWarpAt" [makeArgument 0 factorArg]
     in  makeStream req
 
-canRailsWarpAtStream :: Data.Int.Int32 -> RPCContext (KRPCStream (Bool))
+canRailsWarpAtStream :: (MonadIO m, MonadThrow m, MonadRPC m) => Data.Int.Int32 -> m (KRPCStream (Bool))
 canRailsWarpAtStream factorArg = requestStream $ canRailsWarpAtStreamReq factorArg 
 
 {-
  - Whether the cargo bay is open.
  -}
-getCargoBayOpen :: KRPCHS.SpaceCenter.CargoBay -> RPCContext (Bool)
+getCargoBayOpen :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CargoBay -> m (Bool)
 getCargoBayOpen thisArg = do
     let r = makeRequest "SpaceCenter" "CargoBay_get_Open" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -4451,13 +4454,13 @@ getCargoBayOpenStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CargoBay_get_Open" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCargoBayOpenStream :: KRPCHS.SpaceCenter.CargoBay -> RPCContext (KRPCStream (Bool))
+getCargoBayOpenStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CargoBay -> m (KRPCStream (Bool))
 getCargoBayOpenStream thisArg = requestStream $ getCargoBayOpenStreamReq thisArg 
 
 {-
  - The part object for this cargo bay.
  -}
-getCargoBayPart :: KRPCHS.SpaceCenter.CargoBay -> RPCContext (KRPCHS.SpaceCenter.Part)
+getCargoBayPart :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CargoBay -> m (KRPCHS.SpaceCenter.Part)
 getCargoBayPart thisArg = do
     let r = makeRequest "SpaceCenter" "CargoBay_get_Part" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -4468,13 +4471,13 @@ getCargoBayPartStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CargoBay_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCargoBayPartStream :: KRPCHS.SpaceCenter.CargoBay -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getCargoBayPartStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CargoBay -> m (KRPCStream (KRPCHS.SpaceCenter.Part))
 getCargoBayPartStream thisArg = requestStream $ getCargoBayPartStreamReq thisArg 
 
 {-
  - The state of the cargo bay.
  -}
-getCargoBayState :: KRPCHS.SpaceCenter.CargoBay -> RPCContext (KRPCHS.SpaceCenter.CargoBayState)
+getCargoBayState :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CargoBay -> m (KRPCHS.SpaceCenter.CargoBayState)
 getCargoBayState thisArg = do
     let r = makeRequest "SpaceCenter" "CargoBay_get_State" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -4485,13 +4488,13 @@ getCargoBayStateStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CargoBay_get_State" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCargoBayStateStream :: KRPCHS.SpaceCenter.CargoBay -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.CargoBayState))
+getCargoBayStateStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CargoBay -> m (KRPCStream (KRPCHS.SpaceCenter.CargoBayState))
 getCargoBayStateStream thisArg = requestStream $ getCargoBayStateStreamReq thisArg 
 
 {-
  - Whether the cargo bay is open.
  -}
-setCargoBayOpen :: KRPCHS.SpaceCenter.CargoBay -> Bool -> RPCContext ()
+setCargoBayOpen :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CargoBay -> Bool -> m ()
 setCargoBayOpen thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "CargoBay_set_Open" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -4503,7 +4506,7 @@ setCargoBayOpen thisArg valueArg = do
  - radians per second, and the direction of the vector indicates the axis of
  - rotation, using the right-hand rule.<param name="referenceFrame">
  -}
-celestialBodyAngularVelocity :: KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
+celestialBodyAngularVelocity :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double))
 celestialBodyAngularVelocity thisArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "CelestialBody_AngularVelocity" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     res <- sendRequest r
@@ -4514,7 +4517,7 @@ celestialBodyAngularVelocityStreamReq thisArg referenceFrameArg =
     let req = makeRequest "SpaceCenter" "CelestialBody_AngularVelocity" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
-celestialBodyAngularVelocityStream :: KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
+celestialBodyAngularVelocityStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double)))
 celestialBodyAngularVelocityStream thisArg referenceFrameArg = requestStream $ celestialBodyAngularVelocityStreamReq thisArg referenceFrameArg 
 
 {-
@@ -4522,7 +4525,7 @@ celestialBodyAngularVelocityStream thisArg referenceFrameArg = requestStream $ c
  - in meters. When over water, this is the height of the sea-bed and is therefore a
  - negative value.<param name="latitude">Latitude in degrees<param name="longitude">Longitude in degrees
  -}
-celestialBodyBedrockHeight :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> RPCContext (Double)
+celestialBodyBedrockHeight :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> m (Double)
 celestialBodyBedrockHeight thisArg latitudeArg longitudeArg = do
     let r = makeRequest "SpaceCenter" "CelestialBody_BedrockHeight" [makeArgument 0 thisArg, makeArgument 1 latitudeArg, makeArgument 2 longitudeArg]
     res <- sendRequest r
@@ -4533,14 +4536,14 @@ celestialBodyBedrockHeightStreamReq thisArg latitudeArg longitudeArg =
     let req = makeRequest "SpaceCenter" "CelestialBody_BedrockHeight" [makeArgument 0 thisArg, makeArgument 1 latitudeArg, makeArgument 2 longitudeArg]
     in  makeStream req
 
-celestialBodyBedrockHeightStream :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> RPCContext (KRPCStream (Double))
+celestialBodyBedrockHeightStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> m (KRPCStream (Double))
 celestialBodyBedrockHeightStream thisArg latitudeArg longitudeArg = requestStream $ celestialBodyBedrockHeightStreamReq thisArg latitudeArg longitudeArg 
 
 {-
  - The position of the surface at the given latitude and longitude, in the given
  - reference frame. When over water, this is the position at the bottom of the sea-bed.<param name="latitude">Latitude in degrees<param name="longitude">Longitude in degrees<param name="referenceFrame">Reference frame for the returned position vector
  -}
-celestialBodyBedrockPosition :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
+celestialBodyBedrockPosition :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double))
 celestialBodyBedrockPosition thisArg latitudeArg longitudeArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "CelestialBody_BedrockPosition" [makeArgument 0 thisArg, makeArgument 1 latitudeArg, makeArgument 2 longitudeArg, makeArgument 3 referenceFrameArg]
     res <- sendRequest r
@@ -4551,13 +4554,13 @@ celestialBodyBedrockPositionStreamReq thisArg latitudeArg longitudeArg reference
     let req = makeRequest "SpaceCenter" "CelestialBody_BedrockPosition" [makeArgument 0 thisArg, makeArgument 1 latitudeArg, makeArgument 2 longitudeArg, makeArgument 3 referenceFrameArg]
     in  makeStream req
 
-celestialBodyBedrockPositionStream :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
+celestialBodyBedrockPositionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double)))
 celestialBodyBedrockPositionStream thisArg latitudeArg longitudeArg referenceFrameArg = requestStream $ celestialBodyBedrockPositionStreamReq thisArg latitudeArg longitudeArg referenceFrameArg 
 
 {-
  - The biomes at the given latitude and longitude, in degrees.
  -}
-celestialBodyBiomeAt :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> RPCContext (Data.Text.Text)
+celestialBodyBiomeAt :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> m (Data.Text.Text)
 celestialBodyBiomeAt thisArg latitudeArg longitudeArg = do
     let r = makeRequest "SpaceCenter" "CelestialBody_BiomeAt" [makeArgument 0 thisArg, makeArgument 1 latitudeArg, makeArgument 2 longitudeArg]
     res <- sendRequest r
@@ -4568,14 +4571,14 @@ celestialBodyBiomeAtStreamReq thisArg latitudeArg longitudeArg =
     let req = makeRequest "SpaceCenter" "CelestialBody_BiomeAt" [makeArgument 0 thisArg, makeArgument 1 latitudeArg, makeArgument 2 longitudeArg]
     in  makeStream req
 
-celestialBodyBiomeAtStream :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> RPCContext (KRPCStream (Data.Text.Text))
+celestialBodyBiomeAtStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> m (KRPCStream (Data.Text.Text))
 celestialBodyBiomeAtStream thisArg latitudeArg longitudeArg = requestStream $ celestialBodyBiomeAtStreamReq thisArg latitudeArg longitudeArg 
 
 {-
  - Returns the direction in which the north pole of the celestial body is
  - pointing, as a unit vector, in the specified reference frame.<param name="referenceFrame">
  -}
-celestialBodyDirection :: KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
+celestialBodyDirection :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double))
 celestialBodyDirection thisArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "CelestialBody_Direction" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     res <- sendRequest r
@@ -4586,13 +4589,13 @@ celestialBodyDirectionStreamReq thisArg referenceFrameArg =
     let req = makeRequest "SpaceCenter" "CelestialBody_Direction" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
-celestialBodyDirectionStream :: KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
+celestialBodyDirectionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double)))
 celestialBodyDirectionStream thisArg referenceFrameArg = requestStream $ celestialBodyDirectionStreamReq thisArg referenceFrameArg 
 
 {-
  - The position at mean sea level at the given latitude and longitude, in the given reference frame.<param name="latitude">Latitude in degrees<param name="longitude">Longitude in degrees<param name="referenceFrame">Reference frame for the returned position vector
  -}
-celestialBodyMSLPosition :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
+celestialBodyMSLPosition :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double))
 celestialBodyMSLPosition thisArg latitudeArg longitudeArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "CelestialBody_MSLPosition" [makeArgument 0 thisArg, makeArgument 1 latitudeArg, makeArgument 2 longitudeArg, makeArgument 3 referenceFrameArg]
     res <- sendRequest r
@@ -4603,13 +4606,13 @@ celestialBodyMSLPositionStreamReq thisArg latitudeArg longitudeArg referenceFram
     let req = makeRequest "SpaceCenter" "CelestialBody_MSLPosition" [makeArgument 0 thisArg, makeArgument 1 latitudeArg, makeArgument 2 longitudeArg, makeArgument 3 referenceFrameArg]
     in  makeStream req
 
-celestialBodyMSLPositionStream :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
+celestialBodyMSLPositionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double)))
 celestialBodyMSLPositionStream thisArg latitudeArg longitudeArg referenceFrameArg = requestStream $ celestialBodyMSLPositionStreamReq thisArg latitudeArg longitudeArg referenceFrameArg 
 
 {-
  - Returns the position vector of the center of the body in the specified reference frame.<param name="referenceFrame">
  -}
-celestialBodyPosition :: KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
+celestialBodyPosition :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double))
 celestialBodyPosition thisArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "CelestialBody_Position" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     res <- sendRequest r
@@ -4620,13 +4623,13 @@ celestialBodyPositionStreamReq thisArg referenceFrameArg =
     let req = makeRequest "SpaceCenter" "CelestialBody_Position" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
-celestialBodyPositionStream :: KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
+celestialBodyPositionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double)))
 celestialBodyPositionStream thisArg referenceFrameArg = requestStream $ celestialBodyPositionStreamReq thisArg referenceFrameArg 
 
 {-
  - Returns the rotation of the body in the specified reference frame.<param name="referenceFrame">
  -}
-celestialBodyRotation :: KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double, Double))
+celestialBodyRotation :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double, Double))
 celestialBodyRotation thisArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "CelestialBody_Rotation" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     res <- sendRequest r
@@ -4637,14 +4640,14 @@ celestialBodyRotationStreamReq thisArg referenceFrameArg =
     let req = makeRequest "SpaceCenter" "CelestialBody_Rotation" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
-celestialBodyRotationStream :: KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double, Double)))
+celestialBodyRotationStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double, Double)))
 celestialBodyRotationStream thisArg referenceFrameArg = requestStream $ celestialBodyRotationStreamReq thisArg referenceFrameArg 
 
 {-
  - The height of the surface relative to mean sea level at the given position,
  - in meters. When over water this is equal to 0.<param name="latitude">Latitude in degrees<param name="longitude">Longitude in degrees
  -}
-celestialBodySurfaceHeight :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> RPCContext (Double)
+celestialBodySurfaceHeight :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> m (Double)
 celestialBodySurfaceHeight thisArg latitudeArg longitudeArg = do
     let r = makeRequest "SpaceCenter" "CelestialBody_SurfaceHeight" [makeArgument 0 thisArg, makeArgument 1 latitudeArg, makeArgument 2 longitudeArg]
     res <- sendRequest r
@@ -4655,14 +4658,14 @@ celestialBodySurfaceHeightStreamReq thisArg latitudeArg longitudeArg =
     let req = makeRequest "SpaceCenter" "CelestialBody_SurfaceHeight" [makeArgument 0 thisArg, makeArgument 1 latitudeArg, makeArgument 2 longitudeArg]
     in  makeStream req
 
-celestialBodySurfaceHeightStream :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> RPCContext (KRPCStream (Double))
+celestialBodySurfaceHeightStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> m (KRPCStream (Double))
 celestialBodySurfaceHeightStream thisArg latitudeArg longitudeArg = requestStream $ celestialBodySurfaceHeightStreamReq thisArg latitudeArg longitudeArg 
 
 {-
  - The position of the surface at the given latitude and longitude, in the given
  - reference frame. When over water, this is the position of the surface of the water.<param name="latitude">Latitude in degrees<param name="longitude">Longitude in degrees<param name="referenceFrame">Reference frame for the returned position vector
  -}
-celestialBodySurfacePosition :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
+celestialBodySurfacePosition :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double))
 celestialBodySurfacePosition thisArg latitudeArg longitudeArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "CelestialBody_SurfacePosition" [makeArgument 0 thisArg, makeArgument 1 latitudeArg, makeArgument 2 longitudeArg, makeArgument 3 referenceFrameArg]
     res <- sendRequest r
@@ -4673,13 +4676,13 @@ celestialBodySurfacePositionStreamReq thisArg latitudeArg longitudeArg reference
     let req = makeRequest "SpaceCenter" "CelestialBody_SurfacePosition" [makeArgument 0 thisArg, makeArgument 1 latitudeArg, makeArgument 2 longitudeArg, makeArgument 3 referenceFrameArg]
     in  makeStream req
 
-celestialBodySurfacePositionStream :: KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
+celestialBodySurfacePositionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> Double -> Double -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double)))
 celestialBodySurfacePositionStream thisArg latitudeArg longitudeArg referenceFrameArg = requestStream $ celestialBodySurfacePositionStreamReq thisArg latitudeArg longitudeArg referenceFrameArg 
 
 {-
  - Returns the velocity vector of the body in the specified reference frame.<param name="referenceFrame">
  -}
-celestialBodyVelocity :: KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
+celestialBodyVelocity :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double))
 celestialBodyVelocity thisArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "CelestialBody_Velocity" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     res <- sendRequest r
@@ -4690,13 +4693,13 @@ celestialBodyVelocityStreamReq thisArg referenceFrameArg =
     let req = makeRequest "SpaceCenter" "CelestialBody_Velocity" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
-celestialBodyVelocityStream :: KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
+celestialBodyVelocityStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double)))
 celestialBodyVelocityStream thisArg referenceFrameArg = requestStream $ celestialBodyVelocityStreamReq thisArg referenceFrameArg 
 
 {-
  - The depth of the atmosphere, in meters.
  -}
-getCelestialBodyAtmosphereDepth :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Float)
+getCelestialBodyAtmosphereDepth :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (Float)
 getCelestialBodyAtmosphereDepth thisArg = do
     let r = makeRequest "SpaceCenter" "CelestialBody_get_AtmosphereDepth" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -4707,13 +4710,13 @@ getCelestialBodyAtmosphereDepthStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CelestialBody_get_AtmosphereDepth" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCelestialBodyAtmosphereDepthStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Float))
+getCelestialBodyAtmosphereDepthStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (KRPCStream (Float))
 getCelestialBodyAtmosphereDepthStream thisArg = requestStream $ getCelestialBodyAtmosphereDepthStreamReq thisArg 
 
 {-
  - The biomes present on this body.
  -}
-getCelestialBodyBiomes :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Data.Set.Set Data.Text.Text)
+getCelestialBodyBiomes :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (Data.Set.Set Data.Text.Text)
 getCelestialBodyBiomes thisArg = do
     let r = makeRequest "SpaceCenter" "CelestialBody_get_Biomes" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -4724,13 +4727,13 @@ getCelestialBodyBiomesStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CelestialBody_get_Biomes" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCelestialBodyBiomesStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Data.Set.Set Data.Text.Text))
+getCelestialBodyBiomesStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (KRPCStream (Data.Set.Set Data.Text.Text))
 getCelestialBodyBiomesStream thisArg = requestStream $ getCelestialBodyBiomesStreamReq thisArg 
 
 {-
  - The equatorial radius of the body, in meters.
  -}
-getCelestialBodyEquatorialRadius :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Float)
+getCelestialBodyEquatorialRadius :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (Float)
 getCelestialBodyEquatorialRadius thisArg = do
     let r = makeRequest "SpaceCenter" "CelestialBody_get_EquatorialRadius" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -4741,13 +4744,13 @@ getCelestialBodyEquatorialRadiusStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CelestialBody_get_EquatorialRadius" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCelestialBodyEquatorialRadiusStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Float))
+getCelestialBodyEquatorialRadiusStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (KRPCStream (Float))
 getCelestialBodyEquatorialRadiusStream thisArg = requestStream $ getCelestialBodyEquatorialRadiusStreamReq thisArg 
 
 {-
  - The altitude, in meters, above which a vessel is considered to be flying "high" when doing science.
  -}
-getCelestialBodyFlyingHighAltitudeThreshold :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Float)
+getCelestialBodyFlyingHighAltitudeThreshold :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (Float)
 getCelestialBodyFlyingHighAltitudeThreshold thisArg = do
     let r = makeRequest "SpaceCenter" "CelestialBody_get_FlyingHighAltitudeThreshold" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -4758,14 +4761,14 @@ getCelestialBodyFlyingHighAltitudeThresholdStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CelestialBody_get_FlyingHighAltitudeThreshold" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCelestialBodyFlyingHighAltitudeThresholdStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Float))
+getCelestialBodyFlyingHighAltitudeThresholdStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (KRPCStream (Float))
 getCelestialBodyFlyingHighAltitudeThresholdStream thisArg = requestStream $ getCelestialBodyFlyingHighAltitudeThresholdStreamReq thisArg 
 
 {-
  - The <a href="https://en.wikipedia.org/wiki/Standard_gravitational_parameter">standard
  - gravitational parameterof the body inm^3s^{ -2}.
  -}
-getCelestialBodyGravitationalParameter :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Float)
+getCelestialBodyGravitationalParameter :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (Float)
 getCelestialBodyGravitationalParameter thisArg = do
     let r = makeRequest "SpaceCenter" "CelestialBody_get_GravitationalParameter" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -4776,13 +4779,13 @@ getCelestialBodyGravitationalParameterStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CelestialBody_get_GravitationalParameter" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCelestialBodyGravitationalParameterStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Float))
+getCelestialBodyGravitationalParameterStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (KRPCStream (Float))
 getCelestialBodyGravitationalParameterStream thisArg = requestStream $ getCelestialBodyGravitationalParameterStreamReq thisArg 
 
 {-
  - trueif the body has an atmosphere.
  -}
-getCelestialBodyHasAtmosphere :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Bool)
+getCelestialBodyHasAtmosphere :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (Bool)
 getCelestialBodyHasAtmosphere thisArg = do
     let r = makeRequest "SpaceCenter" "CelestialBody_get_HasAtmosphere" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -4793,13 +4796,13 @@ getCelestialBodyHasAtmosphereStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CelestialBody_get_HasAtmosphere" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCelestialBodyHasAtmosphereStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Bool))
+getCelestialBodyHasAtmosphereStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (KRPCStream (Bool))
 getCelestialBodyHasAtmosphereStream thisArg = requestStream $ getCelestialBodyHasAtmosphereStreamReq thisArg 
 
 {-
  - trueif there is oxygen in the atmosphere, required for air-breathing engines.
  -}
-getCelestialBodyHasAtmosphericOxygen :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Bool)
+getCelestialBodyHasAtmosphericOxygen :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (Bool)
 getCelestialBodyHasAtmosphericOxygen thisArg = do
     let r = makeRequest "SpaceCenter" "CelestialBody_get_HasAtmosphericOxygen" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -4810,13 +4813,13 @@ getCelestialBodyHasAtmosphericOxygenStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CelestialBody_get_HasAtmosphericOxygen" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCelestialBodyHasAtmosphericOxygenStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Bool))
+getCelestialBodyHasAtmosphericOxygenStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (KRPCStream (Bool))
 getCelestialBodyHasAtmosphericOxygenStream thisArg = requestStream $ getCelestialBodyHasAtmosphericOxygenStreamReq thisArg 
 
 {-
  - The initial rotation angle of the body (at UT 0), in radians.
  -}
-getCelestialBodyInitialRotation :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Double)
+getCelestialBodyInitialRotation :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (Double)
 getCelestialBodyInitialRotation thisArg = do
     let r = makeRequest "SpaceCenter" "CelestialBody_get_InitialRotation" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -4827,13 +4830,13 @@ getCelestialBodyInitialRotationStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CelestialBody_get_InitialRotation" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCelestialBodyInitialRotationStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Double))
+getCelestialBodyInitialRotationStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (KRPCStream (Double))
 getCelestialBodyInitialRotationStream thisArg = requestStream $ getCelestialBodyInitialRotationStreamReq thisArg 
 
 {-
  - The mass of the body, in kilograms.
  -}
-getCelestialBodyMass :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Float)
+getCelestialBodyMass :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (Float)
 getCelestialBodyMass thisArg = do
     let r = makeRequest "SpaceCenter" "CelestialBody_get_Mass" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -4844,13 +4847,13 @@ getCelestialBodyMassStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CelestialBody_get_Mass" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCelestialBodyMassStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Float))
+getCelestialBodyMassStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (KRPCStream (Float))
 getCelestialBodyMassStream thisArg = requestStream $ getCelestialBodyMassStreamReq thisArg 
 
 {-
  - The name of the body.
  -}
-getCelestialBodyName :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Data.Text.Text)
+getCelestialBodyName :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (Data.Text.Text)
 getCelestialBodyName thisArg = do
     let r = makeRequest "SpaceCenter" "CelestialBody_get_Name" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -4861,7 +4864,7 @@ getCelestialBodyNameStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CelestialBody_get_Name" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCelestialBodyNameStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Data.Text.Text))
+getCelestialBodyNameStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (KRPCStream (Data.Text.Text))
 getCelestialBodyNameStream thisArg = requestStream $ getCelestialBodyNameStreamReq thisArg 
 
 {-
@@ -4872,7 +4875,7 @@ getCelestialBodyNameStream thisArg = requestStream $ getCelestialBodyNameStreamR
  - the north pole.The z-axis points in an arbitrary direction through the
  - equator.
  -}
-getCelestialBodyNonRotatingReferenceFrame :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
+getCelestialBodyNonRotatingReferenceFrame :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (KRPCHS.SpaceCenter.ReferenceFrame)
 getCelestialBodyNonRotatingReferenceFrame thisArg = do
     let r = makeRequest "SpaceCenter" "CelestialBody_get_NonRotatingReferenceFrame" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -4883,13 +4886,13 @@ getCelestialBodyNonRotatingReferenceFrameStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CelestialBody_get_NonRotatingReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCelestialBodyNonRotatingReferenceFrameStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
+getCelestialBodyNonRotatingReferenceFrameStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 getCelestialBodyNonRotatingReferenceFrameStream thisArg = requestStream $ getCelestialBodyNonRotatingReferenceFrameStreamReq thisArg 
 
 {-
  - The orbit of the body.
  -}
-getCelestialBodyOrbit :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCHS.SpaceCenter.Orbit)
+getCelestialBodyOrbit :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (KRPCHS.SpaceCenter.Orbit)
 getCelestialBodyOrbit thisArg = do
     let r = makeRequest "SpaceCenter" "CelestialBody_get_Orbit" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -4900,7 +4903,7 @@ getCelestialBodyOrbitStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CelestialBody_get_Orbit" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCelestialBodyOrbitStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Orbit))
+getCelestialBodyOrbitStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (KRPCStream (KRPCHS.SpaceCenter.Orbit))
 getCelestialBodyOrbitStream thisArg = requestStream $ getCelestialBodyOrbitStreamReq thisArg 
 
 {-
@@ -4909,7 +4912,7 @@ getCelestialBodyOrbitStream thisArg = requestStream $ getCelestialBodyOrbitStrea
  - <list type="bullet">The origin is at the center of the body.The axes rotate with the orbital prograde/normal/radial
  - directions.The x-axis points in the orbital anti-radial direction.The y-axis points in the orbital prograde direction.The z-axis points in the orbital normal direction.
  -}
-getCelestialBodyOrbitalReferenceFrame :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
+getCelestialBodyOrbitalReferenceFrame :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (KRPCHS.SpaceCenter.ReferenceFrame)
 getCelestialBodyOrbitalReferenceFrame thisArg = do
     let r = makeRequest "SpaceCenter" "CelestialBody_get_OrbitalReferenceFrame" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -4920,7 +4923,7 @@ getCelestialBodyOrbitalReferenceFrameStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CelestialBody_get_OrbitalReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCelestialBodyOrbitalReferenceFrameStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
+getCelestialBodyOrbitalReferenceFrameStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 getCelestialBodyOrbitalReferenceFrameStream thisArg = requestStream $ getCelestialBodyOrbitalReferenceFrameStreamReq thisArg 
 
 {-
@@ -4931,7 +4934,7 @@ getCelestialBodyOrbitalReferenceFrameStream thisArg = requestStream $ getCelesti
  - towards the north pole.The z-axis points from the center of the body
  - towards the equator at 90°E longitude.
  -}
-getCelestialBodyReferenceFrame :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
+getCelestialBodyReferenceFrame :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (KRPCHS.SpaceCenter.ReferenceFrame)
 getCelestialBodyReferenceFrame thisArg = do
     let r = makeRequest "SpaceCenter" "CelestialBody_get_ReferenceFrame" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -4942,13 +4945,13 @@ getCelestialBodyReferenceFrameStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CelestialBody_get_ReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCelestialBodyReferenceFrameStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
+getCelestialBodyReferenceFrameStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 getCelestialBodyReferenceFrameStream thisArg = requestStream $ getCelestialBodyReferenceFrameStreamReq thisArg 
 
 {-
  - The current rotation angle of the body, in radians.
  -}
-getCelestialBodyRotationAngle :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Double)
+getCelestialBodyRotationAngle :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (Double)
 getCelestialBodyRotationAngle thisArg = do
     let r = makeRequest "SpaceCenter" "CelestialBody_get_RotationAngle" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -4959,13 +4962,13 @@ getCelestialBodyRotationAngleStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CelestialBody_get_RotationAngle" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCelestialBodyRotationAngleStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Double))
+getCelestialBodyRotationAngleStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (KRPCStream (Double))
 getCelestialBodyRotationAngleStream thisArg = requestStream $ getCelestialBodyRotationAngleStreamReq thisArg 
 
 {-
  - The sidereal rotational period of the body, in seconds.
  -}
-getCelestialBodyRotationalPeriod :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Float)
+getCelestialBodyRotationalPeriod :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (Float)
 getCelestialBodyRotationalPeriod thisArg = do
     let r = makeRequest "SpaceCenter" "CelestialBody_get_RotationalPeriod" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -4976,13 +4979,13 @@ getCelestialBodyRotationalPeriodStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CelestialBody_get_RotationalPeriod" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCelestialBodyRotationalPeriodStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Float))
+getCelestialBodyRotationalPeriodStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (KRPCStream (Float))
 getCelestialBodyRotationalPeriodStream thisArg = requestStream $ getCelestialBodyRotationalPeriodStreamReq thisArg 
 
 {-
  - The rotational speed of the body, in radians per second.
  -}
-getCelestialBodyRotationalSpeed :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Float)
+getCelestialBodyRotationalSpeed :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (Float)
 getCelestialBodyRotationalSpeed thisArg = do
     let r = makeRequest "SpaceCenter" "CelestialBody_get_RotationalSpeed" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -4993,13 +4996,13 @@ getCelestialBodyRotationalSpeedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CelestialBody_get_RotationalSpeed" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCelestialBodyRotationalSpeedStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Float))
+getCelestialBodyRotationalSpeedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (KRPCStream (Float))
 getCelestialBodyRotationalSpeedStream thisArg = requestStream $ getCelestialBodyRotationalSpeedStreamReq thisArg 
 
 {-
  - A list of celestial bodies that are in orbit around this celestial body.
  -}
-getCelestialBodySatellites :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext ([KRPCHS.SpaceCenter.CelestialBody])
+getCelestialBodySatellites :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m ([KRPCHS.SpaceCenter.CelestialBody])
 getCelestialBodySatellites thisArg = do
     let r = makeRequest "SpaceCenter" "CelestialBody_get_Satellites" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5010,13 +5013,13 @@ getCelestialBodySatellitesStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CelestialBody_get_Satellites" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCelestialBodySatellitesStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.CelestialBody]))
+getCelestialBodySatellitesStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (KRPCStream ([KRPCHS.SpaceCenter.CelestialBody]))
 getCelestialBodySatellitesStream thisArg = requestStream $ getCelestialBodySatellitesStreamReq thisArg 
 
 {-
  - The altitude, in meters, above which a vessel is considered to be in "high" space when doing science.
  -}
-getCelestialBodySpaceHighAltitudeThreshold :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Float)
+getCelestialBodySpaceHighAltitudeThreshold :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (Float)
 getCelestialBodySpaceHighAltitudeThreshold thisArg = do
     let r = makeRequest "SpaceCenter" "CelestialBody_get_SpaceHighAltitudeThreshold" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5027,13 +5030,13 @@ getCelestialBodySpaceHighAltitudeThresholdStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CelestialBody_get_SpaceHighAltitudeThreshold" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCelestialBodySpaceHighAltitudeThresholdStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Float))
+getCelestialBodySpaceHighAltitudeThresholdStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (KRPCStream (Float))
 getCelestialBodySpaceHighAltitudeThresholdStream thisArg = requestStream $ getCelestialBodySpaceHighAltitudeThresholdStreamReq thisArg 
 
 {-
  - The radius of the sphere of influence of the body, in meters.
  -}
-getCelestialBodySphereOfInfluence :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Float)
+getCelestialBodySphereOfInfluence :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (Float)
 getCelestialBodySphereOfInfluence thisArg = do
     let r = makeRequest "SpaceCenter" "CelestialBody_get_SphereOfInfluence" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5044,13 +5047,13 @@ getCelestialBodySphereOfInfluenceStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CelestialBody_get_SphereOfInfluence" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCelestialBodySphereOfInfluenceStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Float))
+getCelestialBodySphereOfInfluenceStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (KRPCStream (Float))
 getCelestialBodySphereOfInfluenceStream thisArg = requestStream $ getCelestialBodySphereOfInfluenceStreamReq thisArg 
 
 {-
  - The acceleration due to gravity at sea level (mean altitude) on the body, inm/s^2.
  -}
-getCelestialBodySurfaceGravity :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (Float)
+getCelestialBodySurfaceGravity :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (Float)
 getCelestialBodySurfaceGravity thisArg = do
     let r = makeRequest "SpaceCenter" "CelestialBody_get_SurfaceGravity" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5061,13 +5064,13 @@ getCelestialBodySurfaceGravityStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CelestialBody_get_SurfaceGravity" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCelestialBodySurfaceGravityStream :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext (KRPCStream (Float))
+getCelestialBodySurfaceGravityStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m (KRPCStream (Float))
 getCelestialBodySurfaceGravityStream thisArg = requestStream $ getCelestialBodySurfaceGravityStreamReq thisArg 
 
 {-
  - Clears the current target.
  -}
-clearTarget :: RPCContext ()
+clearTarget :: (MonadIO m, MonadThrow m, MonadRPC m) => m ()
 clearTarget  = do
     let r = makeRequest "SpaceCenter" "ClearTarget" []
     res <- sendRequest r
@@ -5076,7 +5079,7 @@ clearTarget  = do
 {-
  - Start point of the link.
  -}
-getCommLinkEnd :: KRPCHS.SpaceCenter.CommLink -> RPCContext (KRPCHS.SpaceCenter.CommNode)
+getCommLinkEnd :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CommLink -> m (KRPCHS.SpaceCenter.CommNode)
 getCommLinkEnd thisArg = do
     let r = makeRequest "SpaceCenter" "CommLink_get_End" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5087,13 +5090,13 @@ getCommLinkEndStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CommLink_get_End" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCommLinkEndStream :: KRPCHS.SpaceCenter.CommLink -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.CommNode))
+getCommLinkEndStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CommLink -> m (KRPCStream (KRPCHS.SpaceCenter.CommNode))
 getCommLinkEndStream thisArg = requestStream $ getCommLinkEndStreamReq thisArg 
 
 {-
  - Signal strength of the link.
  -}
-getCommLinkSignalStrength :: KRPCHS.SpaceCenter.CommLink -> RPCContext (Double)
+getCommLinkSignalStrength :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CommLink -> m (Double)
 getCommLinkSignalStrength thisArg = do
     let r = makeRequest "SpaceCenter" "CommLink_get_SignalStrength" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5104,13 +5107,13 @@ getCommLinkSignalStrengthStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CommLink_get_SignalStrength" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCommLinkSignalStrengthStream :: KRPCHS.SpaceCenter.CommLink -> RPCContext (KRPCStream (Double))
+getCommLinkSignalStrengthStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CommLink -> m (KRPCStream (Double))
 getCommLinkSignalStrengthStream thisArg = requestStream $ getCommLinkSignalStrengthStreamReq thisArg 
 
 {-
  - Start point of the link.
  -}
-getCommLinkStart :: KRPCHS.SpaceCenter.CommLink -> RPCContext (KRPCHS.SpaceCenter.CommNode)
+getCommLinkStart :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CommLink -> m (KRPCHS.SpaceCenter.CommNode)
 getCommLinkStart thisArg = do
     let r = makeRequest "SpaceCenter" "CommLink_get_Start" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5121,13 +5124,13 @@ getCommLinkStartStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CommLink_get_Start" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCommLinkStartStream :: KRPCHS.SpaceCenter.CommLink -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.CommNode))
+getCommLinkStartStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CommLink -> m (KRPCStream (KRPCHS.SpaceCenter.CommNode))
 getCommLinkStartStream thisArg = requestStream $ getCommLinkStartStreamReq thisArg 
 
 {-
  - The type of link.
  -}
-getCommLinkType :: KRPCHS.SpaceCenter.CommLink -> RPCContext (KRPCHS.SpaceCenter.CommLinkType)
+getCommLinkType :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CommLink -> m (KRPCHS.SpaceCenter.CommLinkType)
 getCommLinkType thisArg = do
     let r = makeRequest "SpaceCenter" "CommLink_get_Type" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5138,13 +5141,13 @@ getCommLinkTypeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CommLink_get_Type" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCommLinkTypeStream :: KRPCHS.SpaceCenter.CommLink -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.CommLinkType))
+getCommLinkTypeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CommLink -> m (KRPCStream (KRPCHS.SpaceCenter.CommLinkType))
 getCommLinkTypeStream thisArg = requestStream $ getCommLinkTypeStreamReq thisArg 
 
 {-
  - Whether the communication node is a control point, for example a manned vessel.
  -}
-getCommNodeIsControlPoint :: KRPCHS.SpaceCenter.CommNode -> RPCContext (Bool)
+getCommNodeIsControlPoint :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CommNode -> m (Bool)
 getCommNodeIsControlPoint thisArg = do
     let r = makeRequest "SpaceCenter" "CommNode_get_IsControlPoint" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5155,13 +5158,13 @@ getCommNodeIsControlPointStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CommNode_get_IsControlPoint" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCommNodeIsControlPointStream :: KRPCHS.SpaceCenter.CommNode -> RPCContext (KRPCStream (Bool))
+getCommNodeIsControlPointStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CommNode -> m (KRPCStream (Bool))
 getCommNodeIsControlPointStream thisArg = requestStream $ getCommNodeIsControlPointStreamReq thisArg 
 
 {-
  - Whether the communication node is on Kerbin.
  -}
-getCommNodeIsHome :: KRPCHS.SpaceCenter.CommNode -> RPCContext (Bool)
+getCommNodeIsHome :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CommNode -> m (Bool)
 getCommNodeIsHome thisArg = do
     let r = makeRequest "SpaceCenter" "CommNode_get_IsHome" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5172,13 +5175,13 @@ getCommNodeIsHomeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CommNode_get_IsHome" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCommNodeIsHomeStream :: KRPCHS.SpaceCenter.CommNode -> RPCContext (KRPCStream (Bool))
+getCommNodeIsHomeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CommNode -> m (KRPCStream (Bool))
 getCommNodeIsHomeStream thisArg = requestStream $ getCommNodeIsHomeStreamReq thisArg 
 
 {-
  - Whether the communication node is a vessel.
  -}
-getCommNodeIsVessel :: KRPCHS.SpaceCenter.CommNode -> RPCContext (Bool)
+getCommNodeIsVessel :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CommNode -> m (Bool)
 getCommNodeIsVessel thisArg = do
     let r = makeRequest "SpaceCenter" "CommNode_get_IsVessel" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5189,13 +5192,13 @@ getCommNodeIsVesselStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CommNode_get_IsVessel" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCommNodeIsVesselStream :: KRPCHS.SpaceCenter.CommNode -> RPCContext (KRPCStream (Bool))
+getCommNodeIsVesselStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CommNode -> m (KRPCStream (Bool))
 getCommNodeIsVesselStream thisArg = requestStream $ getCommNodeIsVesselStreamReq thisArg 
 
 {-
  - Name of the communication node.
  -}
-getCommNodeName :: KRPCHS.SpaceCenter.CommNode -> RPCContext (Data.Text.Text)
+getCommNodeName :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CommNode -> m (Data.Text.Text)
 getCommNodeName thisArg = do
     let r = makeRequest "SpaceCenter" "CommNode_get_Name" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5206,13 +5209,13 @@ getCommNodeNameStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CommNode_get_Name" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCommNodeNameStream :: KRPCHS.SpaceCenter.CommNode -> RPCContext (KRPCStream (Data.Text.Text))
+getCommNodeNameStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CommNode -> m (KRPCStream (Data.Text.Text))
 getCommNodeNameStream thisArg = requestStream $ getCommNodeNameStreamReq thisArg 
 
 {-
  - The vessel for this communication node.
  -}
-getCommNodeVessel :: KRPCHS.SpaceCenter.CommNode -> RPCContext (KRPCHS.SpaceCenter.Vessel)
+getCommNodeVessel :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CommNode -> m (KRPCHS.SpaceCenter.Vessel)
 getCommNodeVessel thisArg = do
     let r = makeRequest "SpaceCenter" "CommNode_get_Vessel" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5223,13 +5226,13 @@ getCommNodeVesselStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "CommNode_get_Vessel" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCommNodeVesselStream :: KRPCHS.SpaceCenter.CommNode -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Vessel))
+getCommNodeVesselStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CommNode -> m (KRPCStream (KRPCHS.SpaceCenter.Vessel))
 getCommNodeVesselStream thisArg = requestStream $ getCommNodeVesselStreamReq thisArg 
 
 {-
  - Whether the vessel can communicate with KSC.
  -}
-getCommsCanCommunicate :: KRPCHS.SpaceCenter.Comms -> RPCContext (Bool)
+getCommsCanCommunicate :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Comms -> m (Bool)
 getCommsCanCommunicate thisArg = do
     let r = makeRequest "SpaceCenter" "Comms_get_CanCommunicate" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5240,13 +5243,13 @@ getCommsCanCommunicateStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Comms_get_CanCommunicate" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCommsCanCommunicateStream :: KRPCHS.SpaceCenter.Comms -> RPCContext (KRPCStream (Bool))
+getCommsCanCommunicateStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Comms -> m (KRPCStream (Bool))
 getCommsCanCommunicateStream thisArg = requestStream $ getCommsCanCommunicateStreamReq thisArg 
 
 {-
  - Whether the vessel can transmit science data to KSC.
  -}
-getCommsCanTransmitScience :: KRPCHS.SpaceCenter.Comms -> RPCContext (Bool)
+getCommsCanTransmitScience :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Comms -> m (Bool)
 getCommsCanTransmitScience thisArg = do
     let r = makeRequest "SpaceCenter" "Comms_get_CanTransmitScience" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5257,13 +5260,13 @@ getCommsCanTransmitScienceStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Comms_get_CanTransmitScience" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCommsCanTransmitScienceStream :: KRPCHS.SpaceCenter.Comms -> RPCContext (KRPCStream (Bool))
+getCommsCanTransmitScienceStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Comms -> m (KRPCStream (Bool))
 getCommsCanTransmitScienceStream thisArg = requestStream $ getCommsCanTransmitScienceStreamReq thisArg 
 
 {-
  - The communication path used to control the vessel.
  -}
-getCommsControlPath :: KRPCHS.SpaceCenter.Comms -> RPCContext ([KRPCHS.SpaceCenter.CommLink])
+getCommsControlPath :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Comms -> m ([KRPCHS.SpaceCenter.CommLink])
 getCommsControlPath thisArg = do
     let r = makeRequest "SpaceCenter" "Comms_get_ControlPath" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5274,13 +5277,13 @@ getCommsControlPathStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Comms_get_ControlPath" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCommsControlPathStream :: KRPCHS.SpaceCenter.Comms -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.CommLink]))
+getCommsControlPathStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Comms -> m (KRPCStream ([KRPCHS.SpaceCenter.CommLink]))
 getCommsControlPathStream thisArg = requestStream $ getCommsControlPathStreamReq thisArg 
 
 {-
  - The combined power of all active antennae on the vessel.
  -}
-getCommsPower :: KRPCHS.SpaceCenter.Comms -> RPCContext (Double)
+getCommsPower :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Comms -> m (Double)
 getCommsPower thisArg = do
     let r = makeRequest "SpaceCenter" "Comms_get_Power" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5291,13 +5294,13 @@ getCommsPowerStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Comms_get_Power" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCommsPowerStream :: KRPCHS.SpaceCenter.Comms -> RPCContext (KRPCStream (Double))
+getCommsPowerStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Comms -> m (KRPCStream (Double))
 getCommsPowerStream thisArg = requestStream $ getCommsPowerStreamReq thisArg 
 
 {-
  - Signal delay to KSC in seconds.
  -}
-getCommsSignalDelay :: KRPCHS.SpaceCenter.Comms -> RPCContext (Double)
+getCommsSignalDelay :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Comms -> m (Double)
 getCommsSignalDelay thisArg = do
     let r = makeRequest "SpaceCenter" "Comms_get_SignalDelay" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5308,13 +5311,13 @@ getCommsSignalDelayStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Comms_get_SignalDelay" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCommsSignalDelayStream :: KRPCHS.SpaceCenter.Comms -> RPCContext (KRPCStream (Double))
+getCommsSignalDelayStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Comms -> m (KRPCStream (Double))
 getCommsSignalDelayStream thisArg = requestStream $ getCommsSignalDelayStreamReq thisArg 
 
 {-
  - Signal strength to KSC.
  -}
-getCommsSignalStrength :: KRPCHS.SpaceCenter.Comms -> RPCContext (Double)
+getCommsSignalStrength :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Comms -> m (Double)
 getCommsSignalStrength thisArg = do
     let r = makeRequest "SpaceCenter" "Comms_get_SignalStrength" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5325,13 +5328,13 @@ getCommsSignalStrengthStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Comms_get_SignalStrength" [makeArgument 0 thisArg]
     in  makeStream req
 
-getCommsSignalStrengthStream :: KRPCHS.SpaceCenter.Comms -> RPCContext (KRPCStream (Double))
+getCommsSignalStrengthStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Comms -> m (KRPCStream (Double))
 getCommsSignalStrengthStream thisArg = requestStream $ getCommsSignalStrengthStreamReq thisArg 
 
 {-
  - A list of all active contracts.
  -}
-getContractManagerActiveContracts :: KRPCHS.SpaceCenter.ContractManager -> RPCContext ([KRPCHS.SpaceCenter.Contract])
+getContractManagerActiveContracts :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractManager -> m ([KRPCHS.SpaceCenter.Contract])
 getContractManagerActiveContracts thisArg = do
     let r = makeRequest "SpaceCenter" "ContractManager_get_ActiveContracts" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5342,13 +5345,13 @@ getContractManagerActiveContractsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ContractManager_get_ActiveContracts" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractManagerActiveContractsStream :: KRPCHS.SpaceCenter.ContractManager -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Contract]))
+getContractManagerActiveContractsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractManager -> m (KRPCStream ([KRPCHS.SpaceCenter.Contract]))
 getContractManagerActiveContractsStream thisArg = requestStream $ getContractManagerActiveContractsStreamReq thisArg 
 
 {-
  - A list of all contracts.
  -}
-getContractManagerAllContracts :: KRPCHS.SpaceCenter.ContractManager -> RPCContext ([KRPCHS.SpaceCenter.Contract])
+getContractManagerAllContracts :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractManager -> m ([KRPCHS.SpaceCenter.Contract])
 getContractManagerAllContracts thisArg = do
     let r = makeRequest "SpaceCenter" "ContractManager_get_AllContracts" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5359,13 +5362,13 @@ getContractManagerAllContractsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ContractManager_get_AllContracts" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractManagerAllContractsStream :: KRPCHS.SpaceCenter.ContractManager -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Contract]))
+getContractManagerAllContractsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractManager -> m (KRPCStream ([KRPCHS.SpaceCenter.Contract]))
 getContractManagerAllContractsStream thisArg = requestStream $ getContractManagerAllContractsStreamReq thisArg 
 
 {-
  - A list of all completed contracts.
  -}
-getContractManagerCompletedContracts :: KRPCHS.SpaceCenter.ContractManager -> RPCContext ([KRPCHS.SpaceCenter.Contract])
+getContractManagerCompletedContracts :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractManager -> m ([KRPCHS.SpaceCenter.Contract])
 getContractManagerCompletedContracts thisArg = do
     let r = makeRequest "SpaceCenter" "ContractManager_get_CompletedContracts" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5376,13 +5379,13 @@ getContractManagerCompletedContractsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ContractManager_get_CompletedContracts" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractManagerCompletedContractsStream :: KRPCHS.SpaceCenter.ContractManager -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Contract]))
+getContractManagerCompletedContractsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractManager -> m (KRPCStream ([KRPCHS.SpaceCenter.Contract]))
 getContractManagerCompletedContractsStream thisArg = requestStream $ getContractManagerCompletedContractsStreamReq thisArg 
 
 {-
  - A list of all failed contracts.
  -}
-getContractManagerFailedContracts :: KRPCHS.SpaceCenter.ContractManager -> RPCContext ([KRPCHS.SpaceCenter.Contract])
+getContractManagerFailedContracts :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractManager -> m ([KRPCHS.SpaceCenter.Contract])
 getContractManagerFailedContracts thisArg = do
     let r = makeRequest "SpaceCenter" "ContractManager_get_FailedContracts" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5393,13 +5396,13 @@ getContractManagerFailedContractsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ContractManager_get_FailedContracts" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractManagerFailedContractsStream :: KRPCHS.SpaceCenter.ContractManager -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Contract]))
+getContractManagerFailedContractsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractManager -> m (KRPCStream ([KRPCHS.SpaceCenter.Contract]))
 getContractManagerFailedContractsStream thisArg = requestStream $ getContractManagerFailedContractsStreamReq thisArg 
 
 {-
  - A list of all offered, but unaccepted, contracts.
  -}
-getContractManagerOfferedContracts :: KRPCHS.SpaceCenter.ContractManager -> RPCContext ([KRPCHS.SpaceCenter.Contract])
+getContractManagerOfferedContracts :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractManager -> m ([KRPCHS.SpaceCenter.Contract])
 getContractManagerOfferedContracts thisArg = do
     let r = makeRequest "SpaceCenter" "ContractManager_get_OfferedContracts" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5410,13 +5413,13 @@ getContractManagerOfferedContractsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ContractManager_get_OfferedContracts" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractManagerOfferedContractsStream :: KRPCHS.SpaceCenter.ContractManager -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Contract]))
+getContractManagerOfferedContractsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractManager -> m (KRPCStream ([KRPCHS.SpaceCenter.Contract]))
 getContractManagerOfferedContractsStream thisArg = requestStream $ getContractManagerOfferedContractsStreamReq thisArg 
 
 {-
  - A list of all contract types.
  -}
-getContractManagerTypes :: KRPCHS.SpaceCenter.ContractManager -> RPCContext (Data.Set.Set Data.Text.Text)
+getContractManagerTypes :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractManager -> m (Data.Set.Set Data.Text.Text)
 getContractManagerTypes thisArg = do
     let r = makeRequest "SpaceCenter" "ContractManager_get_Types" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5427,13 +5430,13 @@ getContractManagerTypesStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ContractManager_get_Types" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractManagerTypesStream :: KRPCHS.SpaceCenter.ContractManager -> RPCContext (KRPCStream (Data.Set.Set Data.Text.Text))
+getContractManagerTypesStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractManager -> m (KRPCStream (Data.Set.Set Data.Text.Text))
 getContractManagerTypesStream thisArg = requestStream $ getContractManagerTypesStreamReq thisArg 
 
 {-
  - Child contract parameters.
  -}
-getContractParameterChildren :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext ([KRPCHS.SpaceCenter.ContractParameter])
+getContractParameterChildren :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractParameter -> m ([KRPCHS.SpaceCenter.ContractParameter])
 getContractParameterChildren thisArg = do
     let r = makeRequest "SpaceCenter" "ContractParameter_get_Children" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5444,13 +5447,13 @@ getContractParameterChildrenStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ContractParameter_get_Children" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractParameterChildrenStream :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.ContractParameter]))
+getContractParameterChildrenStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractParameter -> m (KRPCStream ([KRPCHS.SpaceCenter.ContractParameter]))
 getContractParameterChildrenStream thisArg = requestStream $ getContractParameterChildrenStreamReq thisArg 
 
 {-
  - Whether the parameter has been completed.
  -}
-getContractParameterCompleted :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (Bool)
+getContractParameterCompleted :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractParameter -> m (Bool)
 getContractParameterCompleted thisArg = do
     let r = makeRequest "SpaceCenter" "ContractParameter_get_Completed" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5461,13 +5464,13 @@ getContractParameterCompletedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ContractParameter_get_Completed" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractParameterCompletedStream :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (KRPCStream (Bool))
+getContractParameterCompletedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractParameter -> m (KRPCStream (Bool))
 getContractParameterCompletedStream thisArg = requestStream $ getContractParameterCompletedStreamReq thisArg 
 
 {-
  - Whether the parameter has been failed.
  -}
-getContractParameterFailed :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (Bool)
+getContractParameterFailed :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractParameter -> m (Bool)
 getContractParameterFailed thisArg = do
     let r = makeRequest "SpaceCenter" "ContractParameter_get_Failed" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5478,13 +5481,13 @@ getContractParameterFailedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ContractParameter_get_Failed" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractParameterFailedStream :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (KRPCStream (Bool))
+getContractParameterFailedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractParameter -> m (KRPCStream (Bool))
 getContractParameterFailedStream thisArg = requestStream $ getContractParameterFailedStreamReq thisArg 
 
 {-
  - Funds received on completion of the contract parameter.
  -}
-getContractParameterFundsCompletion :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (Double)
+getContractParameterFundsCompletion :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractParameter -> m (Double)
 getContractParameterFundsCompletion thisArg = do
     let r = makeRequest "SpaceCenter" "ContractParameter_get_FundsCompletion" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5495,13 +5498,13 @@ getContractParameterFundsCompletionStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ContractParameter_get_FundsCompletion" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractParameterFundsCompletionStream :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (KRPCStream (Double))
+getContractParameterFundsCompletionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractParameter -> m (KRPCStream (Double))
 getContractParameterFundsCompletionStream thisArg = requestStream $ getContractParameterFundsCompletionStreamReq thisArg 
 
 {-
  - Funds lost if the contract parameter is failed.
  -}
-getContractParameterFundsFailure :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (Double)
+getContractParameterFundsFailure :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractParameter -> m (Double)
 getContractParameterFundsFailure thisArg = do
     let r = makeRequest "SpaceCenter" "ContractParameter_get_FundsFailure" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5512,13 +5515,13 @@ getContractParameterFundsFailureStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ContractParameter_get_FundsFailure" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractParameterFundsFailureStream :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (KRPCStream (Double))
+getContractParameterFundsFailureStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractParameter -> m (KRPCStream (Double))
 getContractParameterFundsFailureStream thisArg = requestStream $ getContractParameterFundsFailureStreamReq thisArg 
 
 {-
  - Notes for the parameter.
  -}
-getContractParameterNotes :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (Data.Text.Text)
+getContractParameterNotes :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractParameter -> m (Data.Text.Text)
 getContractParameterNotes thisArg = do
     let r = makeRequest "SpaceCenter" "ContractParameter_get_Notes" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5529,13 +5532,13 @@ getContractParameterNotesStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ContractParameter_get_Notes" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractParameterNotesStream :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (KRPCStream (Data.Text.Text))
+getContractParameterNotesStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractParameter -> m (KRPCStream (Data.Text.Text))
 getContractParameterNotesStream thisArg = requestStream $ getContractParameterNotesStreamReq thisArg 
 
 {-
  - Whether the contract parameter is optional.
  -}
-getContractParameterOptional :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (Bool)
+getContractParameterOptional :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractParameter -> m (Bool)
 getContractParameterOptional thisArg = do
     let r = makeRequest "SpaceCenter" "ContractParameter_get_Optional" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5546,13 +5549,13 @@ getContractParameterOptionalStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ContractParameter_get_Optional" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractParameterOptionalStream :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (KRPCStream (Bool))
+getContractParameterOptionalStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractParameter -> m (KRPCStream (Bool))
 getContractParameterOptionalStream thisArg = requestStream $ getContractParameterOptionalStreamReq thisArg 
 
 {-
  - Reputation gained on completion of the contract parameter.
  -}
-getContractParameterReputationCompletion :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (Double)
+getContractParameterReputationCompletion :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractParameter -> m (Double)
 getContractParameterReputationCompletion thisArg = do
     let r = makeRequest "SpaceCenter" "ContractParameter_get_ReputationCompletion" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5563,13 +5566,13 @@ getContractParameterReputationCompletionStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ContractParameter_get_ReputationCompletion" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractParameterReputationCompletionStream :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (KRPCStream (Double))
+getContractParameterReputationCompletionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractParameter -> m (KRPCStream (Double))
 getContractParameterReputationCompletionStream thisArg = requestStream $ getContractParameterReputationCompletionStreamReq thisArg 
 
 {-
  - Reputation lost if the contract parameter is failed.
  -}
-getContractParameterReputationFailure :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (Double)
+getContractParameterReputationFailure :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractParameter -> m (Double)
 getContractParameterReputationFailure thisArg = do
     let r = makeRequest "SpaceCenter" "ContractParameter_get_ReputationFailure" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5580,13 +5583,13 @@ getContractParameterReputationFailureStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ContractParameter_get_ReputationFailure" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractParameterReputationFailureStream :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (KRPCStream (Double))
+getContractParameterReputationFailureStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractParameter -> m (KRPCStream (Double))
 getContractParameterReputationFailureStream thisArg = requestStream $ getContractParameterReputationFailureStreamReq thisArg 
 
 {-
  - Science gained on completion of the contract parameter.
  -}
-getContractParameterScienceCompletion :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (Double)
+getContractParameterScienceCompletion :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractParameter -> m (Double)
 getContractParameterScienceCompletion thisArg = do
     let r = makeRequest "SpaceCenter" "ContractParameter_get_ScienceCompletion" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5597,13 +5600,13 @@ getContractParameterScienceCompletionStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ContractParameter_get_ScienceCompletion" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractParameterScienceCompletionStream :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (KRPCStream (Double))
+getContractParameterScienceCompletionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractParameter -> m (KRPCStream (Double))
 getContractParameterScienceCompletionStream thisArg = requestStream $ getContractParameterScienceCompletionStreamReq thisArg 
 
 {-
  - Title of the parameter.
  -}
-getContractParameterTitle :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (Data.Text.Text)
+getContractParameterTitle :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractParameter -> m (Data.Text.Text)
 getContractParameterTitle thisArg = do
     let r = makeRequest "SpaceCenter" "ContractParameter_get_Title" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5614,13 +5617,13 @@ getContractParameterTitleStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ContractParameter_get_Title" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractParameterTitleStream :: KRPCHS.SpaceCenter.ContractParameter -> RPCContext (KRPCStream (Data.Text.Text))
+getContractParameterTitleStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ContractParameter -> m (KRPCStream (Data.Text.Text))
 getContractParameterTitleStream thisArg = requestStream $ getContractParameterTitleStreamReq thisArg 
 
 {-
  - Accept an offered contract.
  -}
-contractAccept :: KRPCHS.SpaceCenter.Contract -> RPCContext ()
+contractAccept :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m ()
 contractAccept thisArg = do
     let r = makeRequest "SpaceCenter" "Contract_Accept" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5629,7 +5632,7 @@ contractAccept thisArg = do
 {-
  - Cancel an active contract.
  -}
-contractCancel :: KRPCHS.SpaceCenter.Contract -> RPCContext ()
+contractCancel :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m ()
 contractCancel thisArg = do
     let r = makeRequest "SpaceCenter" "Contract_Cancel" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5638,7 +5641,7 @@ contractCancel thisArg = do
 {-
  - Decline an offered contract.
  -}
-contractDecline :: KRPCHS.SpaceCenter.Contract -> RPCContext ()
+contractDecline :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m ()
 contractDecline thisArg = do
     let r = makeRequest "SpaceCenter" "Contract_Decline" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5647,7 +5650,7 @@ contractDecline thisArg = do
 {-
  - Whether the contract is active.
  -}
-getContractActive :: KRPCHS.SpaceCenter.Contract -> RPCContext (Bool)
+getContractActive :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (Bool)
 getContractActive thisArg = do
     let r = makeRequest "SpaceCenter" "Contract_get_Active" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5658,13 +5661,13 @@ getContractActiveStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Contract_get_Active" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractActiveStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Bool))
+getContractActiveStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (KRPCStream (Bool))
 getContractActiveStream thisArg = requestStream $ getContractActiveStreamReq thisArg 
 
 {-
  - Whether the contract can be canceled.
  -}
-getContractCanBeCanceled :: KRPCHS.SpaceCenter.Contract -> RPCContext (Bool)
+getContractCanBeCanceled :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (Bool)
 getContractCanBeCanceled thisArg = do
     let r = makeRequest "SpaceCenter" "Contract_get_CanBeCanceled" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5675,13 +5678,13 @@ getContractCanBeCanceledStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Contract_get_CanBeCanceled" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractCanBeCanceledStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Bool))
+getContractCanBeCanceledStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (KRPCStream (Bool))
 getContractCanBeCanceledStream thisArg = requestStream $ getContractCanBeCanceledStreamReq thisArg 
 
 {-
  - Whether the contract can be declined.
  -}
-getContractCanBeDeclined :: KRPCHS.SpaceCenter.Contract -> RPCContext (Bool)
+getContractCanBeDeclined :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (Bool)
 getContractCanBeDeclined thisArg = do
     let r = makeRequest "SpaceCenter" "Contract_get_CanBeDeclined" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5692,13 +5695,13 @@ getContractCanBeDeclinedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Contract_get_CanBeDeclined" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractCanBeDeclinedStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Bool))
+getContractCanBeDeclinedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (KRPCStream (Bool))
 getContractCanBeDeclinedStream thisArg = requestStream $ getContractCanBeDeclinedStreamReq thisArg 
 
 {-
  - Whether the contract can be failed.
  -}
-getContractCanBeFailed :: KRPCHS.SpaceCenter.Contract -> RPCContext (Bool)
+getContractCanBeFailed :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (Bool)
 getContractCanBeFailed thisArg = do
     let r = makeRequest "SpaceCenter" "Contract_get_CanBeFailed" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5709,13 +5712,13 @@ getContractCanBeFailedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Contract_get_CanBeFailed" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractCanBeFailedStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Bool))
+getContractCanBeFailedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (KRPCStream (Bool))
 getContractCanBeFailedStream thisArg = requestStream $ getContractCanBeFailedStreamReq thisArg 
 
 {-
  - Description of the contract.
  -}
-getContractDescription :: KRPCHS.SpaceCenter.Contract -> RPCContext (Data.Text.Text)
+getContractDescription :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (Data.Text.Text)
 getContractDescription thisArg = do
     let r = makeRequest "SpaceCenter" "Contract_get_Description" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5726,13 +5729,13 @@ getContractDescriptionStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Contract_get_Description" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractDescriptionStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Data.Text.Text))
+getContractDescriptionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (KRPCStream (Data.Text.Text))
 getContractDescriptionStream thisArg = requestStream $ getContractDescriptionStreamReq thisArg 
 
 {-
  - Whether the contract has been failed.
  -}
-getContractFailed :: KRPCHS.SpaceCenter.Contract -> RPCContext (Bool)
+getContractFailed :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (Bool)
 getContractFailed thisArg = do
     let r = makeRequest "SpaceCenter" "Contract_get_Failed" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5743,13 +5746,13 @@ getContractFailedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Contract_get_Failed" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractFailedStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Bool))
+getContractFailedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (KRPCStream (Bool))
 getContractFailedStream thisArg = requestStream $ getContractFailedStreamReq thisArg 
 
 {-
  - Funds received when accepting the contract.
  -}
-getContractFundsAdvance :: KRPCHS.SpaceCenter.Contract -> RPCContext (Double)
+getContractFundsAdvance :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (Double)
 getContractFundsAdvance thisArg = do
     let r = makeRequest "SpaceCenter" "Contract_get_FundsAdvance" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5760,13 +5763,13 @@ getContractFundsAdvanceStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Contract_get_FundsAdvance" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractFundsAdvanceStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Double))
+getContractFundsAdvanceStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (KRPCStream (Double))
 getContractFundsAdvanceStream thisArg = requestStream $ getContractFundsAdvanceStreamReq thisArg 
 
 {-
  - Funds received on completion of the contract.
  -}
-getContractFundsCompletion :: KRPCHS.SpaceCenter.Contract -> RPCContext (Double)
+getContractFundsCompletion :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (Double)
 getContractFundsCompletion thisArg = do
     let r = makeRequest "SpaceCenter" "Contract_get_FundsCompletion" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5777,13 +5780,13 @@ getContractFundsCompletionStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Contract_get_FundsCompletion" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractFundsCompletionStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Double))
+getContractFundsCompletionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (KRPCStream (Double))
 getContractFundsCompletionStream thisArg = requestStream $ getContractFundsCompletionStreamReq thisArg 
 
 {-
  - Funds lost if the contract is failed.
  -}
-getContractFundsFailure :: KRPCHS.SpaceCenter.Contract -> RPCContext (Double)
+getContractFundsFailure :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (Double)
 getContractFundsFailure thisArg = do
     let r = makeRequest "SpaceCenter" "Contract_get_FundsFailure" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5794,13 +5797,13 @@ getContractFundsFailureStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Contract_get_FundsFailure" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractFundsFailureStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Double))
+getContractFundsFailureStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (KRPCStream (Double))
 getContractFundsFailureStream thisArg = requestStream $ getContractFundsFailureStreamReq thisArg 
 
 {-
  - Keywords for the contract.
  -}
-getContractKeywords :: KRPCHS.SpaceCenter.Contract -> RPCContext ([Data.Text.Text])
+getContractKeywords :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m ([Data.Text.Text])
 getContractKeywords thisArg = do
     let r = makeRequest "SpaceCenter" "Contract_get_Keywords" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5811,13 +5814,13 @@ getContractKeywordsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Contract_get_Keywords" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractKeywordsStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream ([Data.Text.Text]))
+getContractKeywordsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (KRPCStream ([Data.Text.Text]))
 getContractKeywordsStream thisArg = requestStream $ getContractKeywordsStreamReq thisArg 
 
 {-
  - Notes for the contract.
  -}
-getContractNotes :: KRPCHS.SpaceCenter.Contract -> RPCContext (Data.Text.Text)
+getContractNotes :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (Data.Text.Text)
 getContractNotes thisArg = do
     let r = makeRequest "SpaceCenter" "Contract_get_Notes" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5828,13 +5831,13 @@ getContractNotesStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Contract_get_Notes" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractNotesStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Data.Text.Text))
+getContractNotesStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (KRPCStream (Data.Text.Text))
 getContractNotesStream thisArg = requestStream $ getContractNotesStreamReq thisArg 
 
 {-
  - Parameters for the contract.
  -}
-getContractParameters :: KRPCHS.SpaceCenter.Contract -> RPCContext ([KRPCHS.SpaceCenter.ContractParameter])
+getContractParameters :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m ([KRPCHS.SpaceCenter.ContractParameter])
 getContractParameters thisArg = do
     let r = makeRequest "SpaceCenter" "Contract_get_Parameters" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5845,13 +5848,13 @@ getContractParametersStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Contract_get_Parameters" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractParametersStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.ContractParameter]))
+getContractParametersStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (KRPCStream ([KRPCHS.SpaceCenter.ContractParameter]))
 getContractParametersStream thisArg = requestStream $ getContractParametersStreamReq thisArg 
 
 {-
  - Whether the contract has been read.
  -}
-getContractRead :: KRPCHS.SpaceCenter.Contract -> RPCContext (Bool)
+getContractRead :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (Bool)
 getContractRead thisArg = do
     let r = makeRequest "SpaceCenter" "Contract_get_Read" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5862,13 +5865,13 @@ getContractReadStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Contract_get_Read" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractReadStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Bool))
+getContractReadStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (KRPCStream (Bool))
 getContractReadStream thisArg = requestStream $ getContractReadStreamReq thisArg 
 
 {-
  - Reputation gained on completion of the contract.
  -}
-getContractReputationCompletion :: KRPCHS.SpaceCenter.Contract -> RPCContext (Double)
+getContractReputationCompletion :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (Double)
 getContractReputationCompletion thisArg = do
     let r = makeRequest "SpaceCenter" "Contract_get_ReputationCompletion" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5879,13 +5882,13 @@ getContractReputationCompletionStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Contract_get_ReputationCompletion" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractReputationCompletionStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Double))
+getContractReputationCompletionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (KRPCStream (Double))
 getContractReputationCompletionStream thisArg = requestStream $ getContractReputationCompletionStreamReq thisArg 
 
 {-
  - Reputation lost if the contract is failed.
  -}
-getContractReputationFailure :: KRPCHS.SpaceCenter.Contract -> RPCContext (Double)
+getContractReputationFailure :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (Double)
 getContractReputationFailure thisArg = do
     let r = makeRequest "SpaceCenter" "Contract_get_ReputationFailure" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5896,13 +5899,13 @@ getContractReputationFailureStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Contract_get_ReputationFailure" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractReputationFailureStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Double))
+getContractReputationFailureStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (KRPCStream (Double))
 getContractReputationFailureStream thisArg = requestStream $ getContractReputationFailureStreamReq thisArg 
 
 {-
  - Science gained on completion of the contract.
  -}
-getContractScienceCompletion :: KRPCHS.SpaceCenter.Contract -> RPCContext (Double)
+getContractScienceCompletion :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (Double)
 getContractScienceCompletion thisArg = do
     let r = makeRequest "SpaceCenter" "Contract_get_ScienceCompletion" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5913,13 +5916,13 @@ getContractScienceCompletionStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Contract_get_ScienceCompletion" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractScienceCompletionStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Double))
+getContractScienceCompletionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (KRPCStream (Double))
 getContractScienceCompletionStream thisArg = requestStream $ getContractScienceCompletionStreamReq thisArg 
 
 {-
  - Whether the contract has been seen.
  -}
-getContractSeen :: KRPCHS.SpaceCenter.Contract -> RPCContext (Bool)
+getContractSeen :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (Bool)
 getContractSeen thisArg = do
     let r = makeRequest "SpaceCenter" "Contract_get_Seen" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5930,13 +5933,13 @@ getContractSeenStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Contract_get_Seen" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractSeenStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Bool))
+getContractSeenStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (KRPCStream (Bool))
 getContractSeenStream thisArg = requestStream $ getContractSeenStreamReq thisArg 
 
 {-
  - State of the contract.
  -}
-getContractState :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCHS.SpaceCenter.ContractState)
+getContractState :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (KRPCHS.SpaceCenter.ContractState)
 getContractState thisArg = do
     let r = makeRequest "SpaceCenter" "Contract_get_State" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5947,13 +5950,13 @@ getContractStateStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Contract_get_State" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractStateStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ContractState))
+getContractStateStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (KRPCStream (KRPCHS.SpaceCenter.ContractState))
 getContractStateStream thisArg = requestStream $ getContractStateStreamReq thisArg 
 
 {-
  - Synopsis for the contract.
  -}
-getContractSynopsis :: KRPCHS.SpaceCenter.Contract -> RPCContext (Data.Text.Text)
+getContractSynopsis :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (Data.Text.Text)
 getContractSynopsis thisArg = do
     let r = makeRequest "SpaceCenter" "Contract_get_Synopsis" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5964,13 +5967,13 @@ getContractSynopsisStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Contract_get_Synopsis" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractSynopsisStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Data.Text.Text))
+getContractSynopsisStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (KRPCStream (Data.Text.Text))
 getContractSynopsisStream thisArg = requestStream $ getContractSynopsisStreamReq thisArg 
 
 {-
  - Title of the contract.
  -}
-getContractTitle :: KRPCHS.SpaceCenter.Contract -> RPCContext (Data.Text.Text)
+getContractTitle :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (Data.Text.Text)
 getContractTitle thisArg = do
     let r = makeRequest "SpaceCenter" "Contract_get_Title" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5981,13 +5984,13 @@ getContractTitleStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Contract_get_Title" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractTitleStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Data.Text.Text))
+getContractTitleStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (KRPCStream (Data.Text.Text))
 getContractTitleStream thisArg = requestStream $ getContractTitleStreamReq thisArg 
 
 {-
  - Type of the contract.
  -}
-getContractType :: KRPCHS.SpaceCenter.Contract -> RPCContext (Data.Text.Text)
+getContractType :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (Data.Text.Text)
 getContractType thisArg = do
     let r = makeRequest "SpaceCenter" "Contract_get_Type" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -5998,13 +6001,13 @@ getContractTypeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Contract_get_Type" [makeArgument 0 thisArg]
     in  makeStream req
 
-getContractTypeStream :: KRPCHS.SpaceCenter.Contract -> RPCContext (KRPCStream (Data.Text.Text))
+getContractTypeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Contract -> m (KRPCStream (Data.Text.Text))
 getContractTypeStream thisArg = requestStream $ getContractTypeStreamReq thisArg 
 
 {-
  - The authority limiter for the control surface, which controls how far the control surface will move.
  -}
-getControlSurfaceAuthorityLimiter :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (Float)
+getControlSurfaceAuthorityLimiter :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ControlSurface -> m (Float)
 getControlSurfaceAuthorityLimiter thisArg = do
     let r = makeRequest "SpaceCenter" "ControlSurface_get_AuthorityLimiter" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6015,7 +6018,7 @@ getControlSurfaceAuthorityLimiterStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ControlSurface_get_AuthorityLimiter" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlSurfaceAuthorityLimiterStream :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (KRPCStream (Float))
+getControlSurfaceAuthorityLimiterStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ControlSurface -> m (KRPCStream (Float))
 getControlSurfaceAuthorityLimiterStream thisArg = requestStream $ getControlSurfaceAuthorityLimiterStreamReq thisArg 
 
 {-
@@ -6023,7 +6026,7 @@ getControlSurfaceAuthorityLimiterStream thisArg = requestStream $ getControlSurf
  - negative pitch, roll and yaw axes of the vessel, in Newton meters.
  - These axes correspond to the coordinate axes of the <see cref="M:SpaceCenter.Vessel.ReferenceFrame" />.
  -}
-getControlSurfaceAvailableTorque :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (((Double, Double, Double), (Double, Double, Double)))
+getControlSurfaceAvailableTorque :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ControlSurface -> m (((Double, Double, Double), (Double, Double, Double)))
 getControlSurfaceAvailableTorque thisArg = do
     let r = makeRequest "SpaceCenter" "ControlSurface_get_AvailableTorque" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6034,13 +6037,13 @@ getControlSurfaceAvailableTorqueStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ControlSurface_get_AvailableTorque" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlSurfaceAvailableTorqueStream :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
+getControlSurfaceAvailableTorqueStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ControlSurface -> m (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
 getControlSurfaceAvailableTorqueStream thisArg = requestStream $ getControlSurfaceAvailableTorqueStreamReq thisArg 
 
 {-
  - Whether the control surface has been fully deployed.
  -}
-getControlSurfaceDeployed :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (Bool)
+getControlSurfaceDeployed :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ControlSurface -> m (Bool)
 getControlSurfaceDeployed thisArg = do
     let r = makeRequest "SpaceCenter" "ControlSurface_get_Deployed" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6051,13 +6054,13 @@ getControlSurfaceDeployedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ControlSurface_get_Deployed" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlSurfaceDeployedStream :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (KRPCStream (Bool))
+getControlSurfaceDeployedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ControlSurface -> m (KRPCStream (Bool))
 getControlSurfaceDeployedStream thisArg = requestStream $ getControlSurfaceDeployedStreamReq thisArg 
 
 {-
  - Whether the control surface movement is inverted.
  -}
-getControlSurfaceInverted :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (Bool)
+getControlSurfaceInverted :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ControlSurface -> m (Bool)
 getControlSurfaceInverted thisArg = do
     let r = makeRequest "SpaceCenter" "ControlSurface_get_Inverted" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6068,13 +6071,13 @@ getControlSurfaceInvertedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ControlSurface_get_Inverted" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlSurfaceInvertedStream :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (KRPCStream (Bool))
+getControlSurfaceInvertedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ControlSurface -> m (KRPCStream (Bool))
 getControlSurfaceInvertedStream thisArg = requestStream $ getControlSurfaceInvertedStreamReq thisArg 
 
 {-
  - The part object for this control surface.
  -}
-getControlSurfacePart :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (KRPCHS.SpaceCenter.Part)
+getControlSurfacePart :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ControlSurface -> m (KRPCHS.SpaceCenter.Part)
 getControlSurfacePart thisArg = do
     let r = makeRequest "SpaceCenter" "ControlSurface_get_Part" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6085,13 +6088,13 @@ getControlSurfacePartStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ControlSurface_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlSurfacePartStream :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getControlSurfacePartStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ControlSurface -> m (KRPCStream (KRPCHS.SpaceCenter.Part))
 getControlSurfacePartStream thisArg = requestStream $ getControlSurfacePartStreamReq thisArg 
 
 {-
  - Whether the control surface has pitch control enabled.
  -}
-getControlSurfacePitchEnabled :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (Bool)
+getControlSurfacePitchEnabled :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ControlSurface -> m (Bool)
 getControlSurfacePitchEnabled thisArg = do
     let r = makeRequest "SpaceCenter" "ControlSurface_get_PitchEnabled" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6102,13 +6105,13 @@ getControlSurfacePitchEnabledStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ControlSurface_get_PitchEnabled" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlSurfacePitchEnabledStream :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (KRPCStream (Bool))
+getControlSurfacePitchEnabledStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ControlSurface -> m (KRPCStream (Bool))
 getControlSurfacePitchEnabledStream thisArg = requestStream $ getControlSurfacePitchEnabledStreamReq thisArg 
 
 {-
  - Whether the control surface has roll control enabled.
  -}
-getControlSurfaceRollEnabled :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (Bool)
+getControlSurfaceRollEnabled :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ControlSurface -> m (Bool)
 getControlSurfaceRollEnabled thisArg = do
     let r = makeRequest "SpaceCenter" "ControlSurface_get_RollEnabled" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6119,13 +6122,13 @@ getControlSurfaceRollEnabledStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ControlSurface_get_RollEnabled" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlSurfaceRollEnabledStream :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (KRPCStream (Bool))
+getControlSurfaceRollEnabledStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ControlSurface -> m (KRPCStream (Bool))
 getControlSurfaceRollEnabledStream thisArg = requestStream $ getControlSurfaceRollEnabledStreamReq thisArg 
 
 {-
  - Surface area of the control surface inm^2.
  -}
-getControlSurfaceSurfaceArea :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (Float)
+getControlSurfaceSurfaceArea :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ControlSurface -> m (Float)
 getControlSurfaceSurfaceArea thisArg = do
     let r = makeRequest "SpaceCenter" "ControlSurface_get_SurfaceArea" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6136,13 +6139,13 @@ getControlSurfaceSurfaceAreaStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ControlSurface_get_SurfaceArea" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlSurfaceSurfaceAreaStream :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (KRPCStream (Float))
+getControlSurfaceSurfaceAreaStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ControlSurface -> m (KRPCStream (Float))
 getControlSurfaceSurfaceAreaStream thisArg = requestStream $ getControlSurfaceSurfaceAreaStreamReq thisArg 
 
 {-
  - Whether the control surface has yaw control enabled.
  -}
-getControlSurfaceYawEnabled :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (Bool)
+getControlSurfaceYawEnabled :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ControlSurface -> m (Bool)
 getControlSurfaceYawEnabled thisArg = do
     let r = makeRequest "SpaceCenter" "ControlSurface_get_YawEnabled" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6153,13 +6156,13 @@ getControlSurfaceYawEnabledStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ControlSurface_get_YawEnabled" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlSurfaceYawEnabledStream :: KRPCHS.SpaceCenter.ControlSurface -> RPCContext (KRPCStream (Bool))
+getControlSurfaceYawEnabledStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ControlSurface -> m (KRPCStream (Bool))
 getControlSurfaceYawEnabledStream thisArg = requestStream $ getControlSurfaceYawEnabledStreamReq thisArg 
 
 {-
  - The authority limiter for the control surface, which controls how far the control surface will move.
  -}
-setControlSurfaceAuthorityLimiter :: KRPCHS.SpaceCenter.ControlSurface -> Float -> RPCContext ()
+setControlSurfaceAuthorityLimiter :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ControlSurface -> Float -> m ()
 setControlSurfaceAuthorityLimiter thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "ControlSurface_set_AuthorityLimiter" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -6168,7 +6171,7 @@ setControlSurfaceAuthorityLimiter thisArg valueArg = do
 {-
  - Whether the control surface has been fully deployed.
  -}
-setControlSurfaceDeployed :: KRPCHS.SpaceCenter.ControlSurface -> Bool -> RPCContext ()
+setControlSurfaceDeployed :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ControlSurface -> Bool -> m ()
 setControlSurfaceDeployed thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "ControlSurface_set_Deployed" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -6177,7 +6180,7 @@ setControlSurfaceDeployed thisArg valueArg = do
 {-
  - Whether the control surface movement is inverted.
  -}
-setControlSurfaceInverted :: KRPCHS.SpaceCenter.ControlSurface -> Bool -> RPCContext ()
+setControlSurfaceInverted :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ControlSurface -> Bool -> m ()
 setControlSurfaceInverted thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "ControlSurface_set_Inverted" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -6186,7 +6189,7 @@ setControlSurfaceInverted thisArg valueArg = do
 {-
  - Whether the control surface has pitch control enabled.
  -}
-setControlSurfacePitchEnabled :: KRPCHS.SpaceCenter.ControlSurface -> Bool -> RPCContext ()
+setControlSurfacePitchEnabled :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ControlSurface -> Bool -> m ()
 setControlSurfacePitchEnabled thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "ControlSurface_set_PitchEnabled" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -6195,7 +6198,7 @@ setControlSurfacePitchEnabled thisArg valueArg = do
 {-
  - Whether the control surface has roll control enabled.
  -}
-setControlSurfaceRollEnabled :: KRPCHS.SpaceCenter.ControlSurface -> Bool -> RPCContext ()
+setControlSurfaceRollEnabled :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ControlSurface -> Bool -> m ()
 setControlSurfaceRollEnabled thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "ControlSurface_set_RollEnabled" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -6204,7 +6207,7 @@ setControlSurfaceRollEnabled thisArg valueArg = do
 {-
  - Whether the control surface has yaw control enabled.
  -}
-setControlSurfaceYawEnabled :: KRPCHS.SpaceCenter.ControlSurface -> Bool -> RPCContext ()
+setControlSurfaceYawEnabled :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ControlSurface -> Bool -> m ()
 setControlSurfaceYawEnabled thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "ControlSurface_set_YawEnabled" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -6215,7 +6218,7 @@ setControlSurfaceYawEnabled thisArg valueArg = do
  - after calling this function, the object(s) returned by previous call(s) to
  - <see cref="M:SpaceCenter.ActiveVessel" /> no longer refer to the active vessel.
  -}
-controlActivateNextStage :: KRPCHS.SpaceCenter.Control -> RPCContext ([KRPCHS.SpaceCenter.Vessel])
+controlActivateNextStage :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m ([KRPCHS.SpaceCenter.Vessel])
 controlActivateNextStage thisArg = do
     let r = makeRequest "SpaceCenter" "Control_ActivateNextStage" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6226,7 +6229,7 @@ controlActivateNextStageStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Control_ActivateNextStage" [makeArgument 0 thisArg]
     in  makeStream req
 
-controlActivateNextStageStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Vessel]))
+controlActivateNextStageStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCStream ([KRPCHS.SpaceCenter.Vessel]))
 controlActivateNextStageStream thisArg = requestStream $ controlActivateNextStageStreamReq thisArg 
 
 {-
@@ -6235,7 +6238,7 @@ controlActivateNextStageStream thisArg = requestStream $ controlActivateNextStag
  - Optionally sets the magnitude of the delta-v for the maneuver node
  - in the prograde, normal and radial directions.<param name="ut">Universal time of the maneuver node.<param name="prograde">Delta-v in the prograde direction.<param name="normal">Delta-v in the normal direction.<param name="radial">Delta-v in the radial direction.
  -}
-controlAddNode :: KRPCHS.SpaceCenter.Control -> Double -> Float -> Float -> Float -> RPCContext (KRPCHS.SpaceCenter.Node)
+controlAddNode :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> Double -> Float -> Float -> Float -> m (KRPCHS.SpaceCenter.Node)
 controlAddNode thisArg utArg progradeArg normalArg radialArg = do
     let r = makeRequest "SpaceCenter" "Control_AddNode" [makeArgument 0 thisArg, makeArgument 1 utArg, makeArgument 2 progradeArg, makeArgument 3 normalArg, makeArgument 4 radialArg]
     res <- sendRequest r
@@ -6246,7 +6249,7 @@ controlAddNodeStreamReq thisArg utArg progradeArg normalArg radialArg =
     let req = makeRequest "SpaceCenter" "Control_AddNode" [makeArgument 0 thisArg, makeArgument 1 utArg, makeArgument 2 progradeArg, makeArgument 3 normalArg, makeArgument 4 radialArg]
     in  makeStream req
 
-controlAddNodeStream :: KRPCHS.SpaceCenter.Control -> Double -> Float -> Float -> Float -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Node))
+controlAddNodeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> Double -> Float -> Float -> Float -> m (KRPCStream (KRPCHS.SpaceCenter.Node))
 controlAddNodeStream thisArg utArg progradeArg normalArg radialArg = requestStream $ controlAddNodeStreamReq thisArg utArg progradeArg normalArg radialArg 
 
 {-
@@ -6254,7 +6257,7 @@ controlAddNodeStream thisArg utArg progradeArg normalArg radialArg = requestStre
  - A number between 0 and 9 inclusive,
  - or between 0 and 250 inclusive when the <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/67235-12oct3116-action-groups-extended-250-action-groups-in-flight-editing-now-kosremotetech">Extended Action Groups modis installed.
  -}
-controlGetActionGroup :: KRPCHS.SpaceCenter.Control -> Data.Word.Word32 -> RPCContext (Bool)
+controlGetActionGroup :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> Data.Word.Word32 -> m (Bool)
 controlGetActionGroup thisArg groupArg = do
     let r = makeRequest "SpaceCenter" "Control_GetActionGroup" [makeArgument 0 thisArg, makeArgument 1 groupArg]
     res <- sendRequest r
@@ -6265,13 +6268,13 @@ controlGetActionGroupStreamReq thisArg groupArg =
     let req = makeRequest "SpaceCenter" "Control_GetActionGroup" [makeArgument 0 thisArg, makeArgument 1 groupArg]
     in  makeStream req
 
-controlGetActionGroupStream :: KRPCHS.SpaceCenter.Control -> Data.Word.Word32 -> RPCContext (KRPCStream (Bool))
+controlGetActionGroupStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> Data.Word.Word32 -> m (KRPCStream (Bool))
 controlGetActionGroupStream thisArg groupArg = requestStream $ controlGetActionGroupStreamReq thisArg groupArg 
 
 {-
  - Remove all maneuver nodes.
  -}
-controlRemoveNodes :: KRPCHS.SpaceCenter.Control -> RPCContext ()
+controlRemoveNodes :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m ()
 controlRemoveNodes thisArg = do
     let r = makeRequest "SpaceCenter" "Control_RemoveNodes" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6282,7 +6285,7 @@ controlRemoveNodes thisArg = do
  - A number between 0 and 9 inclusive,
  - or between 0 and 250 inclusive when the <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/67235-12oct3116-action-groups-extended-250-action-groups-in-flight-editing-now-kosremotetech">Extended Action Groups modis installed.<param name="state">
  -}
-controlSetActionGroup :: KRPCHS.SpaceCenter.Control -> Data.Word.Word32 -> Bool -> RPCContext ()
+controlSetActionGroup :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> Data.Word.Word32 -> Bool -> m ()
 controlSetActionGroup thisArg groupArg stateArg = do
     let r = makeRequest "SpaceCenter" "Control_SetActionGroup" [makeArgument 0 thisArg, makeArgument 1 groupArg, makeArgument 2 stateArg]
     res <- sendRequest r
@@ -6293,7 +6296,7 @@ controlSetActionGroup thisArg groupArg stateArg = do
  - A number between 0 and 9 inclusive,
  - or between 0 and 250 inclusive when the <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/67235-12oct3116-action-groups-extended-250-action-groups-in-flight-editing-now-kosremotetech">Extended Action Groups modis installed.
  -}
-controlToggleActionGroup :: KRPCHS.SpaceCenter.Control -> Data.Word.Word32 -> RPCContext ()
+controlToggleActionGroup :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> Data.Word.Word32 -> m ()
 controlToggleActionGroup thisArg groupArg = do
     let r = makeRequest "SpaceCenter" "Control_ToggleActionGroup" [makeArgument 0 thisArg, makeArgument 1 groupArg]
     res <- sendRequest r
@@ -6302,7 +6305,7 @@ controlToggleActionGroup thisArg groupArg = do
 {-
  - The state of the abort action group.
  -}
-getControlAbort :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
+getControlAbort :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (Bool)
 getControlAbort thisArg = do
     let r = makeRequest "SpaceCenter" "Control_get_Abort" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6313,7 +6316,7 @@ getControlAbortStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Control_get_Abort" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlAbortStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
+getControlAbortStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCStream (Bool))
 getControlAbortStream thisArg = requestStream $ getControlAbortStreamReq thisArg 
 
 {-
@@ -6321,7 +6324,7 @@ getControlAbortStream thisArg = requestStream $ getControlAbortStreamReq thisArg
  - and sets the deployment state of all antennas.
  - See <see cref="M:SpaceCenter.Antenna.Deployed" />.
  -}
-getControlAntennas :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
+getControlAntennas :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (Bool)
 getControlAntennas thisArg = do
     let r = makeRequest "SpaceCenter" "Control_get_Antennas" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6332,13 +6335,13 @@ getControlAntennasStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Control_get_Antennas" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlAntennasStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
+getControlAntennasStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCStream (Bool))
 getControlAntennasStream thisArg = requestStream $ getControlAntennasStreamReq thisArg 
 
 {-
  - The state of the wheel brakes.
  -}
-getControlBrakes :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
+getControlBrakes :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (Bool)
 getControlBrakes thisArg = do
     let r = makeRequest "SpaceCenter" "Control_get_Brakes" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6349,7 +6352,7 @@ getControlBrakesStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Control_get_Brakes" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlBrakesStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
+getControlBrakesStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCStream (Bool))
 getControlBrakesStream thisArg = requestStream $ getControlBrakesStreamReq thisArg 
 
 {-
@@ -6357,7 +6360,7 @@ getControlBrakesStream thisArg = requestStream $ getControlBrakesStreamReq thisA
  - and sets the open state of all cargo bays.
  - See <see cref="M:SpaceCenter.CargoBay.Open" />.
  -}
-getControlCargoBays :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
+getControlCargoBays :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (Bool)
 getControlCargoBays thisArg = do
     let r = makeRequest "SpaceCenter" "Control_get_CargoBays" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6368,14 +6371,14 @@ getControlCargoBaysStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Control_get_CargoBays" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlCargoBaysStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
+getControlCargoBaysStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCStream (Bool))
 getControlCargoBaysStream thisArg = requestStream $ getControlCargoBaysStreamReq thisArg 
 
 {-
  - The current stage of the vessel. Corresponds to the stage number in
  - the in-game UI.
  -}
-getControlCurrentStage :: KRPCHS.SpaceCenter.Control -> RPCContext (Data.Int.Int32)
+getControlCurrentStage :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (Data.Int.Int32)
 getControlCurrentStage thisArg = do
     let r = makeRequest "SpaceCenter" "Control_get_CurrentStage" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6386,7 +6389,7 @@ getControlCurrentStageStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Control_get_CurrentStage" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlCurrentStageStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Data.Int.Int32))
+getControlCurrentStageStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCStream (Data.Int.Int32))
 getControlCurrentStageStream thisArg = requestStream $ getControlCurrentStageStreamReq thisArg 
 
 {-
@@ -6394,7 +6397,7 @@ getControlCurrentStageStream thisArg = requestStream $ getControlCurrentStageStr
  - A value between -1 and 1.
  - Equivalent to the h and n keys.
  -}
-getControlForward :: KRPCHS.SpaceCenter.Control -> RPCContext (Float)
+getControlForward :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (Float)
 getControlForward thisArg = do
     let r = makeRequest "SpaceCenter" "Control_get_Forward" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6405,13 +6408,13 @@ getControlForwardStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Control_get_Forward" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlForwardStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Float))
+getControlForwardStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCStream (Float))
 getControlForwardStream thisArg = requestStream $ getControlForwardStreamReq thisArg 
 
 {-
  - The state of the landing gear/legs.
  -}
-getControlGear :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
+getControlGear :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (Bool)
 getControlGear thisArg = do
     let r = makeRequest "SpaceCenter" "Control_get_Gear" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6422,7 +6425,7 @@ getControlGearStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Control_get_Gear" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlGearStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
+getControlGearStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCStream (Bool))
 getControlGearStream thisArg = requestStream $ getControlGearStreamReq thisArg 
 
 {-
@@ -6430,7 +6433,7 @@ getControlGearStream thisArg = requestStream $ getControlGearStreamReq thisArg
  - and sets the open state of all air intakes.
  - See <see cref="M:SpaceCenter.Intake.Open" />.
  -}
-getControlIntakes :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
+getControlIntakes :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (Bool)
 getControlIntakes thisArg = do
     let r = makeRequest "SpaceCenter" "Control_get_Intakes" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6441,7 +6444,7 @@ getControlIntakesStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Control_get_Intakes" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlIntakesStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
+getControlIntakesStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCStream (Bool))
 getControlIntakesStream thisArg = requestStream $ getControlIntakesStreamReq thisArg 
 
 {-
@@ -6450,7 +6453,7 @@ getControlIntakesStream thisArg = requestStream $ getControlIntakesStreamReq thi
  - Does not include wheels (for example landing gear).
  - See <see cref="M:SpaceCenter.Leg.Deployed" />.
  -}
-getControlLegs :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
+getControlLegs :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (Bool)
 getControlLegs thisArg = do
     let r = makeRequest "SpaceCenter" "Control_get_Legs" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6461,13 +6464,13 @@ getControlLegsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Control_get_Legs" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlLegsStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
+getControlLegsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCStream (Bool))
 getControlLegsStream thisArg = requestStream $ getControlLegsStreamReq thisArg 
 
 {-
  - The state of the lights.
  -}
-getControlLights :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
+getControlLights :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (Bool)
 getControlLights thisArg = do
     let r = makeRequest "SpaceCenter" "Control_get_Lights" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6478,13 +6481,13 @@ getControlLightsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Control_get_Lights" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlLightsStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
+getControlLightsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCStream (Bool))
 getControlLightsStream thisArg = requestStream $ getControlLightsStreamReq thisArg 
 
 {-
  - Returns a list of all existing maneuver nodes, ordered by time from first to last.
  -}
-getControlNodes :: KRPCHS.SpaceCenter.Control -> RPCContext ([KRPCHS.SpaceCenter.Node])
+getControlNodes :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m ([KRPCHS.SpaceCenter.Node])
 getControlNodes thisArg = do
     let r = makeRequest "SpaceCenter" "Control_get_Nodes" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6495,7 +6498,7 @@ getControlNodesStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Control_get_Nodes" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlNodesStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Node]))
+getControlNodesStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCStream ([KRPCHS.SpaceCenter.Node]))
 getControlNodesStream thisArg = requestStream $ getControlNodesStreamReq thisArg 
 
 {-
@@ -6504,7 +6507,7 @@ getControlNodesStream thisArg = requestStream $ getControlNodesStreamReq thisArg
  - Cannot be set tofalse.
  - See <see cref="M:SpaceCenter.Parachute.Deployed" />.
  -}
-getControlParachutes :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
+getControlParachutes :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (Bool)
 getControlParachutes thisArg = do
     let r = makeRequest "SpaceCenter" "Control_get_Parachutes" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6515,7 +6518,7 @@ getControlParachutesStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Control_get_Parachutes" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlParachutesStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
+getControlParachutesStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCStream (Bool))
 getControlParachutesStream thisArg = requestStream $ getControlParachutesStreamReq thisArg 
 
 {-
@@ -6523,7 +6526,7 @@ getControlParachutesStream thisArg = requestStream $ getControlParachutesStreamR
  - A value between -1 and 1.
  - Equivalent to the w and s keys.
  -}
-getControlPitch :: KRPCHS.SpaceCenter.Control -> RPCContext (Float)
+getControlPitch :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (Float)
 getControlPitch thisArg = do
     let r = makeRequest "SpaceCenter" "Control_get_Pitch" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6534,13 +6537,13 @@ getControlPitchStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Control_get_Pitch" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlPitchStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Float))
+getControlPitchStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCStream (Float))
 getControlPitchStream thisArg = requestStream $ getControlPitchStreamReq thisArg 
 
 {-
  - The state of RCS.
  -}
-getControlRCS :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
+getControlRCS :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (Bool)
 getControlRCS thisArg = do
     let r = makeRequest "SpaceCenter" "Control_get_RCS" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6551,7 +6554,7 @@ getControlRCSStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Control_get_RCS" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlRCSStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
+getControlRCSStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCStream (Bool))
 getControlRCSStream thisArg = requestStream $ getControlRCSStreamReq thisArg 
 
 {-
@@ -6559,7 +6562,7 @@ getControlRCSStream thisArg = requestStream $ getControlRCSStreamReq thisArg
  - and sets the deployment state of all radiators.
  - See <see cref="M:SpaceCenter.Radiator.Deployed" />.
  -}
-getControlRadiators :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
+getControlRadiators :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (Bool)
 getControlRadiators thisArg = do
     let r = makeRequest "SpaceCenter" "Control_get_Radiators" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6570,7 +6573,7 @@ getControlRadiatorsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Control_get_Radiators" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlRadiatorsStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
+getControlRadiatorsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCStream (Bool))
 getControlRadiatorsStream thisArg = requestStream $ getControlRadiatorsStreamReq thisArg 
 
 {-
@@ -6578,7 +6581,7 @@ getControlRadiatorsStream thisArg = requestStream $ getControlRadiatorsStreamReq
  - and sets the active state of all reaction wheels.
  - See <see cref="M:SpaceCenter.ReactionWheel.Active" />.
  -}
-getControlReactionWheels :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
+getControlReactionWheels :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (Bool)
 getControlReactionWheels thisArg = do
     let r = makeRequest "SpaceCenter" "Control_get_ReactionWheels" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6589,7 +6592,7 @@ getControlReactionWheelsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Control_get_ReactionWheels" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlReactionWheelsStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
+getControlReactionWheelsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCStream (Bool))
 getControlReactionWheelsStream thisArg = requestStream $ getControlReactionWheelsStreamReq thisArg 
 
 {-
@@ -6597,7 +6600,7 @@ getControlReactionWheelsStream thisArg = requestStream $ getControlReactionWheel
  - and sets the deployment state of all resource harvesters.
  - See <see cref="M:SpaceCenter.ResourceHarvester.Deployed" />.
  -}
-getControlResourceHarvesters :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
+getControlResourceHarvesters :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (Bool)
 getControlResourceHarvesters thisArg = do
     let r = makeRequest "SpaceCenter" "Control_get_ResourceHarvesters" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6608,7 +6611,7 @@ getControlResourceHarvestersStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Control_get_ResourceHarvesters" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlResourceHarvestersStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
+getControlResourceHarvestersStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCStream (Bool))
 getControlResourceHarvestersStream thisArg = requestStream $ getControlResourceHarvestersStreamReq thisArg 
 
 {-
@@ -6616,7 +6619,7 @@ getControlResourceHarvestersStream thisArg = requestStream $ getControlResourceH
  - and sets the active state of all resource harvesters.
  - See <see cref="M:SpaceCenter.ResourceHarvester.Active" />.
  -}
-getControlResourceHarvestersActive :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
+getControlResourceHarvestersActive :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (Bool)
 getControlResourceHarvestersActive thisArg = do
     let r = makeRequest "SpaceCenter" "Control_get_ResourceHarvestersActive" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6627,7 +6630,7 @@ getControlResourceHarvestersActiveStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Control_get_ResourceHarvestersActive" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlResourceHarvestersActiveStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
+getControlResourceHarvestersActiveStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCStream (Bool))
 getControlResourceHarvestersActiveStream thisArg = requestStream $ getControlResourceHarvestersActiveStreamReq thisArg 
 
 {-
@@ -6635,7 +6638,7 @@ getControlResourceHarvestersActiveStream thisArg = requestStream $ getControlRes
  - A value between -1 and 1.
  - Equivalent to the j and l keys.
  -}
-getControlRight :: KRPCHS.SpaceCenter.Control -> RPCContext (Float)
+getControlRight :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (Float)
 getControlRight thisArg = do
     let r = makeRequest "SpaceCenter" "Control_get_Right" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6646,7 +6649,7 @@ getControlRightStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Control_get_Right" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlRightStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Float))
+getControlRightStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCStream (Float))
 getControlRightStream thisArg = requestStream $ getControlRightStreamReq thisArg 
 
 {-
@@ -6654,7 +6657,7 @@ getControlRightStream thisArg = requestStream $ getControlRightStreamReq thisArg
  - A value between -1 and 1.
  - Equivalent to the q and e keys.
  -}
-getControlRoll :: KRPCHS.SpaceCenter.Control -> RPCContext (Float)
+getControlRoll :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (Float)
 getControlRoll thisArg = do
     let r = makeRequest "SpaceCenter" "Control_get_Roll" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6665,13 +6668,13 @@ getControlRollStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Control_get_Roll" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlRollStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Float))
+getControlRollStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCStream (Float))
 getControlRollStream thisArg = requestStream $ getControlRollStreamReq thisArg 
 
 {-
  - The state of SAS.Equivalent to <see cref="M:SpaceCenter.AutoPilot.SAS" />
  -}
-getControlSAS :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
+getControlSAS :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (Bool)
 getControlSAS thisArg = do
     let r = makeRequest "SpaceCenter" "Control_get_SAS" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6682,7 +6685,7 @@ getControlSASStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Control_get_SAS" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlSASStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
+getControlSASStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCStream (Bool))
 getControlSASStream thisArg = requestStream $ getControlSASStreamReq thisArg 
 
 {-
@@ -6690,7 +6693,7 @@ getControlSASStream thisArg = requestStream $ getControlSASStreamReq thisArg
  - These modes are equivalent to the mode buttons to
  - the left of the navball that appear when SAS is enabled.Equivalent to <see cref="M:SpaceCenter.AutoPilot.SASMode" />
  -}
-getControlSASMode :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCHS.SpaceCenter.SASMode)
+getControlSASMode :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCHS.SpaceCenter.SASMode)
 getControlSASMode thisArg = do
     let r = makeRequest "SpaceCenter" "Control_get_SASMode" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6701,7 +6704,7 @@ getControlSASModeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Control_get_SASMode" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlSASModeStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.SASMode))
+getControlSASModeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCStream (KRPCHS.SpaceCenter.SASMode))
 getControlSASModeStream thisArg = requestStream $ getControlSASModeStreamReq thisArg 
 
 {-
@@ -6709,7 +6712,7 @@ getControlSASModeStream thisArg = requestStream $ getControlSASModeStreamReq thi
  - and sets the deployment state of all solar panels.
  - See <see cref="M:SpaceCenter.SolarPanel.Deployed" />.
  -}
-getControlSolarPanels :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
+getControlSolarPanels :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (Bool)
 getControlSolarPanels thisArg = do
     let r = makeRequest "SpaceCenter" "Control_get_SolarPanels" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6720,13 +6723,13 @@ getControlSolarPanelsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Control_get_SolarPanels" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlSolarPanelsStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
+getControlSolarPanelsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCStream (Bool))
 getControlSolarPanelsStream thisArg = requestStream $ getControlSolarPanelsStreamReq thisArg 
 
 {-
  - The source of the vessels control, for example by a kerbal or a probe core.
  -}
-getControlSource :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCHS.SpaceCenter.ControlSource)
+getControlSource :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCHS.SpaceCenter.ControlSource)
 getControlSource thisArg = do
     let r = makeRequest "SpaceCenter" "Control_get_Source" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6737,14 +6740,14 @@ getControlSourceStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Control_get_Source" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlSourceStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ControlSource))
+getControlSourceStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCStream (KRPCHS.SpaceCenter.ControlSource))
 getControlSourceStream thisArg = requestStream $ getControlSourceStreamReq thisArg 
 
 {-
  - The current <see cref="T:SpaceCenter.SpeedMode" /> of the navball.
  - This is the mode displayed next to the speed at the top of the navball.
  -}
-getControlSpeedMode :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCHS.SpaceCenter.SpeedMode)
+getControlSpeedMode :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCHS.SpaceCenter.SpeedMode)
 getControlSpeedMode thisArg = do
     let r = makeRequest "SpaceCenter" "Control_get_SpeedMode" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6755,13 +6758,13 @@ getControlSpeedModeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Control_get_SpeedMode" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlSpeedModeStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.SpeedMode))
+getControlSpeedModeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCStream (KRPCHS.SpaceCenter.SpeedMode))
 getControlSpeedModeStream thisArg = requestStream $ getControlSpeedModeStreamReq thisArg 
 
 {-
  - The control state of the vessel.
  -}
-getControlState :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCHS.SpaceCenter.ControlState)
+getControlState :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCHS.SpaceCenter.ControlState)
 getControlState thisArg = do
     let r = makeRequest "SpaceCenter" "Control_get_State" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6772,13 +6775,13 @@ getControlStateStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Control_get_State" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlStateStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ControlState))
+getControlStateStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCStream (KRPCHS.SpaceCenter.ControlState))
 getControlStateStream thisArg = requestStream $ getControlStateStreamReq thisArg 
 
 {-
  - The state of the throttle. A value between 0 and 1.
  -}
-getControlThrottle :: KRPCHS.SpaceCenter.Control -> RPCContext (Float)
+getControlThrottle :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (Float)
 getControlThrottle thisArg = do
     let r = makeRequest "SpaceCenter" "Control_get_Throttle" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6789,7 +6792,7 @@ getControlThrottleStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Control_get_Throttle" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlThrottleStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Float))
+getControlThrottleStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCStream (Float))
 getControlThrottleStream thisArg = requestStream $ getControlThrottleStreamReq thisArg 
 
 {-
@@ -6797,7 +6800,7 @@ getControlThrottleStream thisArg = requestStream $ getControlThrottleStreamReq t
  - A value between -1 and 1.
  - Equivalent to the i and k keys.
  -}
-getControlUp :: KRPCHS.SpaceCenter.Control -> RPCContext (Float)
+getControlUp :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (Float)
 getControlUp thisArg = do
     let r = makeRequest "SpaceCenter" "Control_get_Up" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6808,7 +6811,7 @@ getControlUpStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Control_get_Up" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlUpStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Float))
+getControlUpStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCStream (Float))
 getControlUpStream thisArg = requestStream $ getControlUpStreamReq thisArg 
 
 {-
@@ -6816,7 +6819,7 @@ getControlUpStream thisArg = requestStream $ getControlUpStreamReq thisArg
  - A value between -1 and 1.
  - A value of 1 steers to the left, and a value of -1 steers to the right.
  -}
-getControlWheelSteering :: KRPCHS.SpaceCenter.Control -> RPCContext (Float)
+getControlWheelSteering :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (Float)
 getControlWheelSteering thisArg = do
     let r = makeRequest "SpaceCenter" "Control_get_WheelSteering" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6827,7 +6830,7 @@ getControlWheelSteeringStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Control_get_WheelSteering" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlWheelSteeringStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Float))
+getControlWheelSteeringStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCStream (Float))
 getControlWheelSteeringStream thisArg = requestStream $ getControlWheelSteeringStreamReq thisArg 
 
 {-
@@ -6836,7 +6839,7 @@ getControlWheelSteeringStream thisArg = requestStream $ getControlWheelSteeringS
  - A value of 1 rotates the wheels forwards, a value of -1 rotates
  - the wheels backwards.
  -}
-getControlWheelThrottle :: KRPCHS.SpaceCenter.Control -> RPCContext (Float)
+getControlWheelThrottle :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (Float)
 getControlWheelThrottle thisArg = do
     let r = makeRequest "SpaceCenter" "Control_get_WheelThrottle" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6847,7 +6850,7 @@ getControlWheelThrottleStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Control_get_WheelThrottle" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlWheelThrottleStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Float))
+getControlWheelThrottleStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCStream (Float))
 getControlWheelThrottleStream thisArg = requestStream $ getControlWheelThrottleStreamReq thisArg 
 
 {-
@@ -6856,7 +6859,7 @@ getControlWheelThrottleStream thisArg = requestStream $ getControlWheelThrottleS
  - Does not include landing legs.
  - See <see cref="M:SpaceCenter.Wheel.Deployed" />.
  -}
-getControlWheels :: KRPCHS.SpaceCenter.Control -> RPCContext (Bool)
+getControlWheels :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (Bool)
 getControlWheels thisArg = do
     let r = makeRequest "SpaceCenter" "Control_get_Wheels" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6867,7 +6870,7 @@ getControlWheelsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Control_get_Wheels" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlWheelsStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Bool))
+getControlWheelsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCStream (Bool))
 getControlWheelsStream thisArg = requestStream $ getControlWheelsStreamReq thisArg 
 
 {-
@@ -6875,7 +6878,7 @@ getControlWheelsStream thisArg = requestStream $ getControlWheelsStreamReq thisA
  - A value between -1 and 1.
  - Equivalent to the a and d keys.
  -}
-getControlYaw :: KRPCHS.SpaceCenter.Control -> RPCContext (Float)
+getControlYaw :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (Float)
 getControlYaw thisArg = do
     let r = makeRequest "SpaceCenter" "Control_get_Yaw" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -6886,13 +6889,13 @@ getControlYawStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Control_get_Yaw" [makeArgument 0 thisArg]
     in  makeStream req
 
-getControlYawStream :: KRPCHS.SpaceCenter.Control -> RPCContext (KRPCStream (Float))
+getControlYawStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> m (KRPCStream (Float))
 getControlYawStream thisArg = requestStream $ getControlYawStreamReq thisArg 
 
 {-
  - The state of the abort action group.
  -}
-setControlAbort :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
+setControlAbort :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> Bool -> m ()
 setControlAbort thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Control_set_Abort" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -6903,7 +6906,7 @@ setControlAbort thisArg valueArg = do
  - and sets the deployment state of all antennas.
  - See <see cref="M:SpaceCenter.Antenna.Deployed" />.
  -}
-setControlAntennas :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
+setControlAntennas :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> Bool -> m ()
 setControlAntennas thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Control_set_Antennas" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -6912,7 +6915,7 @@ setControlAntennas thisArg valueArg = do
 {-
  - The state of the wheel brakes.
  -}
-setControlBrakes :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
+setControlBrakes :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> Bool -> m ()
 setControlBrakes thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Control_set_Brakes" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -6923,7 +6926,7 @@ setControlBrakes thisArg valueArg = do
  - and sets the open state of all cargo bays.
  - See <see cref="M:SpaceCenter.CargoBay.Open" />.
  -}
-setControlCargoBays :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
+setControlCargoBays :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> Bool -> m ()
 setControlCargoBays thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Control_set_CargoBays" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -6934,7 +6937,7 @@ setControlCargoBays thisArg valueArg = do
  - A value between -1 and 1.
  - Equivalent to the h and n keys.
  -}
-setControlForward :: KRPCHS.SpaceCenter.Control -> Float -> RPCContext ()
+setControlForward :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> Float -> m ()
 setControlForward thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Control_set_Forward" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -6943,7 +6946,7 @@ setControlForward thisArg valueArg = do
 {-
  - The state of the landing gear/legs.
  -}
-setControlGear :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
+setControlGear :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> Bool -> m ()
 setControlGear thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Control_set_Gear" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -6954,7 +6957,7 @@ setControlGear thisArg valueArg = do
  - and sets the open state of all air intakes.
  - See <see cref="M:SpaceCenter.Intake.Open" />.
  -}
-setControlIntakes :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
+setControlIntakes :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> Bool -> m ()
 setControlIntakes thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Control_set_Intakes" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -6966,7 +6969,7 @@ setControlIntakes thisArg valueArg = do
  - Does not include wheels (for example landing gear).
  - See <see cref="M:SpaceCenter.Leg.Deployed" />.
  -}
-setControlLegs :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
+setControlLegs :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> Bool -> m ()
 setControlLegs thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Control_set_Legs" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -6975,7 +6978,7 @@ setControlLegs thisArg valueArg = do
 {-
  - The state of the lights.
  -}
-setControlLights :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
+setControlLights :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> Bool -> m ()
 setControlLights thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Control_set_Lights" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -6987,7 +6990,7 @@ setControlLights thisArg valueArg = do
  - Cannot be set tofalse.
  - See <see cref="M:SpaceCenter.Parachute.Deployed" />.
  -}
-setControlParachutes :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
+setControlParachutes :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> Bool -> m ()
 setControlParachutes thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Control_set_Parachutes" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -6998,7 +7001,7 @@ setControlParachutes thisArg valueArg = do
  - A value between -1 and 1.
  - Equivalent to the w and s keys.
  -}
-setControlPitch :: KRPCHS.SpaceCenter.Control -> Float -> RPCContext ()
+setControlPitch :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> Float -> m ()
 setControlPitch thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Control_set_Pitch" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -7007,7 +7010,7 @@ setControlPitch thisArg valueArg = do
 {-
  - The state of RCS.
  -}
-setControlRCS :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
+setControlRCS :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> Bool -> m ()
 setControlRCS thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Control_set_RCS" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -7018,7 +7021,7 @@ setControlRCS thisArg valueArg = do
  - and sets the deployment state of all radiators.
  - See <see cref="M:SpaceCenter.Radiator.Deployed" />.
  -}
-setControlRadiators :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
+setControlRadiators :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> Bool -> m ()
 setControlRadiators thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Control_set_Radiators" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -7029,7 +7032,7 @@ setControlRadiators thisArg valueArg = do
  - and sets the active state of all reaction wheels.
  - See <see cref="M:SpaceCenter.ReactionWheel.Active" />.
  -}
-setControlReactionWheels :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
+setControlReactionWheels :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> Bool -> m ()
 setControlReactionWheels thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Control_set_ReactionWheels" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -7040,7 +7043,7 @@ setControlReactionWheels thisArg valueArg = do
  - and sets the deployment state of all resource harvesters.
  - See <see cref="M:SpaceCenter.ResourceHarvester.Deployed" />.
  -}
-setControlResourceHarvesters :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
+setControlResourceHarvesters :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> Bool -> m ()
 setControlResourceHarvesters thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Control_set_ResourceHarvesters" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -7051,7 +7054,7 @@ setControlResourceHarvesters thisArg valueArg = do
  - and sets the active state of all resource harvesters.
  - See <see cref="M:SpaceCenter.ResourceHarvester.Active" />.
  -}
-setControlResourceHarvestersActive :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
+setControlResourceHarvestersActive :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> Bool -> m ()
 setControlResourceHarvestersActive thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Control_set_ResourceHarvestersActive" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -7062,7 +7065,7 @@ setControlResourceHarvestersActive thisArg valueArg = do
  - A value between -1 and 1.
  - Equivalent to the j and l keys.
  -}
-setControlRight :: KRPCHS.SpaceCenter.Control -> Float -> RPCContext ()
+setControlRight :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> Float -> m ()
 setControlRight thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Control_set_Right" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -7073,7 +7076,7 @@ setControlRight thisArg valueArg = do
  - A value between -1 and 1.
  - Equivalent to the q and e keys.
  -}
-setControlRoll :: KRPCHS.SpaceCenter.Control -> Float -> RPCContext ()
+setControlRoll :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> Float -> m ()
 setControlRoll thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Control_set_Roll" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -7082,7 +7085,7 @@ setControlRoll thisArg valueArg = do
 {-
  - The state of SAS.Equivalent to <see cref="M:SpaceCenter.AutoPilot.SAS" />
  -}
-setControlSAS :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
+setControlSAS :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> Bool -> m ()
 setControlSAS thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Control_set_SAS" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -7093,7 +7096,7 @@ setControlSAS thisArg valueArg = do
  - These modes are equivalent to the mode buttons to
  - the left of the navball that appear when SAS is enabled.Equivalent to <see cref="M:SpaceCenter.AutoPilot.SASMode" />
  -}
-setControlSASMode :: KRPCHS.SpaceCenter.Control -> KRPCHS.SpaceCenter.SASMode -> RPCContext ()
+setControlSASMode :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> KRPCHS.SpaceCenter.SASMode -> m ()
 setControlSASMode thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Control_set_SASMode" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -7104,7 +7107,7 @@ setControlSASMode thisArg valueArg = do
  - and sets the deployment state of all solar panels.
  - See <see cref="M:SpaceCenter.SolarPanel.Deployed" />.
  -}
-setControlSolarPanels :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
+setControlSolarPanels :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> Bool -> m ()
 setControlSolarPanels thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Control_set_SolarPanels" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -7114,7 +7117,7 @@ setControlSolarPanels thisArg valueArg = do
  - The current <see cref="T:SpaceCenter.SpeedMode" /> of the navball.
  - This is the mode displayed next to the speed at the top of the navball.
  -}
-setControlSpeedMode :: KRPCHS.SpaceCenter.Control -> KRPCHS.SpaceCenter.SpeedMode -> RPCContext ()
+setControlSpeedMode :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> KRPCHS.SpaceCenter.SpeedMode -> m ()
 setControlSpeedMode thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Control_set_SpeedMode" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -7123,7 +7126,7 @@ setControlSpeedMode thisArg valueArg = do
 {-
  - The state of the throttle. A value between 0 and 1.
  -}
-setControlThrottle :: KRPCHS.SpaceCenter.Control -> Float -> RPCContext ()
+setControlThrottle :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> Float -> m ()
 setControlThrottle thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Control_set_Throttle" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -7134,7 +7137,7 @@ setControlThrottle thisArg valueArg = do
  - A value between -1 and 1.
  - Equivalent to the i and k keys.
  -}
-setControlUp :: KRPCHS.SpaceCenter.Control -> Float -> RPCContext ()
+setControlUp :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> Float -> m ()
 setControlUp thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Control_set_Up" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -7145,7 +7148,7 @@ setControlUp thisArg valueArg = do
  - A value between -1 and 1.
  - A value of 1 steers to the left, and a value of -1 steers to the right.
  -}
-setControlWheelSteering :: KRPCHS.SpaceCenter.Control -> Float -> RPCContext ()
+setControlWheelSteering :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> Float -> m ()
 setControlWheelSteering thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Control_set_WheelSteering" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -7157,7 +7160,7 @@ setControlWheelSteering thisArg valueArg = do
  - A value of 1 rotates the wheels forwards, a value of -1 rotates
  - the wheels backwards.
  -}
-setControlWheelThrottle :: KRPCHS.SpaceCenter.Control -> Float -> RPCContext ()
+setControlWheelThrottle :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> Float -> m ()
 setControlWheelThrottle thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Control_set_WheelThrottle" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -7169,7 +7172,7 @@ setControlWheelThrottle thisArg valueArg = do
  - Does not include landing legs.
  - See <see cref="M:SpaceCenter.Wheel.Deployed" />.
  -}
-setControlWheels :: KRPCHS.SpaceCenter.Control -> Bool -> RPCContext ()
+setControlWheels :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> Bool -> m ()
 setControlWheels thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Control_set_Wheels" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -7180,7 +7183,7 @@ setControlWheels thisArg valueArg = do
  - A value between -1 and 1.
  - Equivalent to the a and d keys.
  -}
-setControlYaw :: KRPCHS.SpaceCenter.Control -> Float -> RPCContext ()
+setControlYaw :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Control -> Float -> m ()
 setControlYaw thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Control_set_Yaw" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -7192,7 +7195,7 @@ setControlYaw thisArg valueArg = do
  - after calling this function, the object(s) returned by previous call(s) to
  - <see cref="M:SpaceCenter.ActiveVessel" /> no longer refer to the active vessel.
  -}
-decouplerDecouple :: KRPCHS.SpaceCenter.Decoupler -> RPCContext (KRPCHS.SpaceCenter.Vessel)
+decouplerDecouple :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Decoupler -> m (KRPCHS.SpaceCenter.Vessel)
 decouplerDecouple thisArg = do
     let r = makeRequest "SpaceCenter" "Decoupler_Decouple" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7203,13 +7206,13 @@ decouplerDecoupleStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Decoupler_Decouple" [makeArgument 0 thisArg]
     in  makeStream req
 
-decouplerDecoupleStream :: KRPCHS.SpaceCenter.Decoupler -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Vessel))
+decouplerDecoupleStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Decoupler -> m (KRPCStream (KRPCHS.SpaceCenter.Vessel))
 decouplerDecoupleStream thisArg = requestStream $ decouplerDecoupleStreamReq thisArg 
 
 {-
  - Whether the decoupler has fired.
  -}
-getDecouplerDecoupled :: KRPCHS.SpaceCenter.Decoupler -> RPCContext (Bool)
+getDecouplerDecoupled :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Decoupler -> m (Bool)
 getDecouplerDecoupled thisArg = do
     let r = makeRequest "SpaceCenter" "Decoupler_get_Decoupled" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7220,13 +7223,13 @@ getDecouplerDecoupledStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Decoupler_get_Decoupled" [makeArgument 0 thisArg]
     in  makeStream req
 
-getDecouplerDecoupledStream :: KRPCHS.SpaceCenter.Decoupler -> RPCContext (KRPCStream (Bool))
+getDecouplerDecoupledStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Decoupler -> m (KRPCStream (Bool))
 getDecouplerDecoupledStream thisArg = requestStream $ getDecouplerDecoupledStreamReq thisArg 
 
 {-
  - The impulse that the decoupler imparts when it is fired, in Newton seconds.
  -}
-getDecouplerImpulse :: KRPCHS.SpaceCenter.Decoupler -> RPCContext (Float)
+getDecouplerImpulse :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Decoupler -> m (Float)
 getDecouplerImpulse thisArg = do
     let r = makeRequest "SpaceCenter" "Decoupler_get_Impulse" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7237,13 +7240,13 @@ getDecouplerImpulseStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Decoupler_get_Impulse" [makeArgument 0 thisArg]
     in  makeStream req
 
-getDecouplerImpulseStream :: KRPCHS.SpaceCenter.Decoupler -> RPCContext (KRPCStream (Float))
+getDecouplerImpulseStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Decoupler -> m (KRPCStream (Float))
 getDecouplerImpulseStream thisArg = requestStream $ getDecouplerImpulseStreamReq thisArg 
 
 {-
  - The part object for this decoupler.
  -}
-getDecouplerPart :: KRPCHS.SpaceCenter.Decoupler -> RPCContext (KRPCHS.SpaceCenter.Part)
+getDecouplerPart :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Decoupler -> m (KRPCHS.SpaceCenter.Part)
 getDecouplerPart thisArg = do
     let r = makeRequest "SpaceCenter" "Decoupler_get_Part" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7254,13 +7257,13 @@ getDecouplerPartStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Decoupler_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
-getDecouplerPartStream :: KRPCHS.SpaceCenter.Decoupler -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getDecouplerPartStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Decoupler -> m (KRPCStream (KRPCHS.SpaceCenter.Part))
 getDecouplerPartStream thisArg = requestStream $ getDecouplerPartStreamReq thisArg 
 
 {-
  - Whether the decoupler is enabled in the staging sequence.
  -}
-getDecouplerStaged :: KRPCHS.SpaceCenter.Decoupler -> RPCContext (Bool)
+getDecouplerStaged :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Decoupler -> m (Bool)
 getDecouplerStaged thisArg = do
     let r = makeRequest "SpaceCenter" "Decoupler_get_Staged" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7271,13 +7274,13 @@ getDecouplerStagedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Decoupler_get_Staged" [makeArgument 0 thisArg]
     in  makeStream req
 
-getDecouplerStagedStream :: KRPCHS.SpaceCenter.Decoupler -> RPCContext (KRPCStream (Bool))
+getDecouplerStagedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Decoupler -> m (KRPCStream (Bool))
 getDecouplerStagedStream thisArg = requestStream $ getDecouplerStagedStreamReq thisArg 
 
 {-
  - The direction that docking port points in, in the given reference frame.
  -}
-dockingPortDirection :: KRPCHS.SpaceCenter.DockingPort -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
+dockingPortDirection :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.DockingPort -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double))
 dockingPortDirection thisArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "DockingPort_Direction" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     res <- sendRequest r
@@ -7288,13 +7291,13 @@ dockingPortDirectionStreamReq thisArg referenceFrameArg =
     let req = makeRequest "SpaceCenter" "DockingPort_Direction" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
-dockingPortDirectionStream :: KRPCHS.SpaceCenter.DockingPort -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
+dockingPortDirectionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.DockingPort -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double)))
 dockingPortDirectionStream thisArg referenceFrameArg = requestStream $ dockingPortDirectionStreamReq thisArg referenceFrameArg 
 
 {-
  - The position of the docking port in the given reference frame.
  -}
-dockingPortPosition :: KRPCHS.SpaceCenter.DockingPort -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
+dockingPortPosition :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.DockingPort -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double))
 dockingPortPosition thisArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "DockingPort_Position" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     res <- sendRequest r
@@ -7305,13 +7308,13 @@ dockingPortPositionStreamReq thisArg referenceFrameArg =
     let req = makeRequest "SpaceCenter" "DockingPort_Position" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
-dockingPortPositionStream :: KRPCHS.SpaceCenter.DockingPort -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
+dockingPortPositionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.DockingPort -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double)))
 dockingPortPositionStream thisArg referenceFrameArg = requestStream $ dockingPortPositionStreamReq thisArg referenceFrameArg 
 
 {-
  - The rotation of the docking port, in the given reference frame.
  -}
-dockingPortRotation :: KRPCHS.SpaceCenter.DockingPort -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double, Double))
+dockingPortRotation :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.DockingPort -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double, Double))
 dockingPortRotation thisArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "DockingPort_Rotation" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     res <- sendRequest r
@@ -7322,7 +7325,7 @@ dockingPortRotationStreamReq thisArg referenceFrameArg =
     let req = makeRequest "SpaceCenter" "DockingPort_Rotation" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
-dockingPortRotationStream :: KRPCHS.SpaceCenter.DockingPort -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double, Double)))
+dockingPortRotationStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.DockingPort -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double, Double)))
 dockingPortRotationStream thisArg referenceFrameArg = requestStream $ dockingPortRotationStreamReq thisArg referenceFrameArg 
 
 {-
@@ -7332,7 +7335,7 @@ dockingPortRotationStream thisArg referenceFrameArg = requestStream $ dockingPor
  - after calling this function, the object(s) returned by previous call(s) to
  - <see cref="M:SpaceCenter.ActiveVessel" /> no longer refer to the active vessel.
  -}
-dockingPortUndock :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCHS.SpaceCenter.Vessel)
+dockingPortUndock :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.DockingPort -> m (KRPCHS.SpaceCenter.Vessel)
 dockingPortUndock thisArg = do
     let r = makeRequest "SpaceCenter" "DockingPort_Undock" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7343,14 +7346,14 @@ dockingPortUndockStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "DockingPort_Undock" [makeArgument 0 thisArg]
     in  makeStream req
 
-dockingPortUndockStream :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Vessel))
+dockingPortUndockStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.DockingPort -> m (KRPCStream (KRPCHS.SpaceCenter.Vessel))
 dockingPortUndockStream thisArg = requestStream $ dockingPortUndockStreamReq thisArg 
 
 {-
  - The part that this docking port is docked to. Returnsnullif this
  - docking port is not docked to anything.
  -}
-getDockingPortDockedPart :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCHS.SpaceCenter.Part)
+getDockingPortDockedPart :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.DockingPort -> m (KRPCHS.SpaceCenter.Part)
 getDockingPortDockedPart thisArg = do
     let r = makeRequest "SpaceCenter" "DockingPort_get_DockedPart" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7361,13 +7364,13 @@ getDockingPortDockedPartStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "DockingPort_get_DockedPart" [makeArgument 0 thisArg]
     in  makeStream req
 
-getDockingPortDockedPartStream :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getDockingPortDockedPartStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.DockingPort -> m (KRPCStream (KRPCHS.SpaceCenter.Part))
 getDockingPortDockedPartStream thisArg = requestStream $ getDockingPortDockedPartStreamReq thisArg 
 
 {-
  - Whether the docking port has a shield.
  -}
-getDockingPortHasShield :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (Bool)
+getDockingPortHasShield :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.DockingPort -> m (Bool)
 getDockingPortHasShield thisArg = do
     let r = makeRequest "SpaceCenter" "DockingPort_get_HasShield" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7378,13 +7381,13 @@ getDockingPortHasShieldStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "DockingPort_get_HasShield" [makeArgument 0 thisArg]
     in  makeStream req
 
-getDockingPortHasShieldStream :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCStream (Bool))
+getDockingPortHasShieldStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.DockingPort -> m (KRPCStream (Bool))
 getDockingPortHasShieldStream thisArg = requestStream $ getDockingPortHasShieldStreamReq thisArg 
 
 {-
  - The part object for this docking port.
  -}
-getDockingPortPart :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCHS.SpaceCenter.Part)
+getDockingPortPart :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.DockingPort -> m (KRPCHS.SpaceCenter.Part)
 getDockingPortPart thisArg = do
     let r = makeRequest "SpaceCenter" "DockingPort_get_Part" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7395,14 +7398,14 @@ getDockingPortPartStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "DockingPort_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
-getDockingPortPartStream :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getDockingPortPartStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.DockingPort -> m (KRPCStream (KRPCHS.SpaceCenter.Part))
 getDockingPortPartStream thisArg = requestStream $ getDockingPortPartStreamReq thisArg 
 
 {-
  - The distance a docking port must move away when it undocks before it
  - becomes ready to dock with another port, in meters.
  -}
-getDockingPortReengageDistance :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (Float)
+getDockingPortReengageDistance :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.DockingPort -> m (Float)
 getDockingPortReengageDistance thisArg = do
     let r = makeRequest "SpaceCenter" "DockingPort_get_ReengageDistance" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7413,7 +7416,7 @@ getDockingPortReengageDistanceStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "DockingPort_get_ReengageDistance" [makeArgument 0 thisArg]
     in  makeStream req
 
-getDockingPortReengageDistanceStream :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCStream (Float))
+getDockingPortReengageDistanceStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.DockingPort -> m (KRPCStream (Float))
 getDockingPortReengageDistanceStream thisArg = requestStream $ getDockingPortReengageDistanceStreamReq thisArg 
 
 {-
@@ -7422,7 +7425,7 @@ getDockingPortReengageDistanceStream thisArg = requestStream $ getDockingPortRee
  - <list type="bullet">The origin is at the position of the docking port.The axes rotate with the docking port.The x-axis points out to the right side of the docking port.The y-axis points in the direction the docking port is facing.The z-axis points out of the bottom off the docking port.This reference frame is not necessarily equivalent to the reference frame
  - for the part, returned by <see cref="M:SpaceCenter.Part.ReferenceFrame" />.
  -}
-getDockingPortReferenceFrame :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
+getDockingPortReferenceFrame :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.DockingPort -> m (KRPCHS.SpaceCenter.ReferenceFrame)
 getDockingPortReferenceFrame thisArg = do
     let r = makeRequest "SpaceCenter" "DockingPort_get_ReferenceFrame" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7433,7 +7436,7 @@ getDockingPortReferenceFrameStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "DockingPort_get_ReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
-getDockingPortReferenceFrameStream :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
+getDockingPortReferenceFrameStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.DockingPort -> m (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 getDockingPortReferenceFrameStream thisArg = requestStream $ getDockingPortReferenceFrameStreamReq thisArg 
 
 {-
@@ -7444,7 +7447,7 @@ getDockingPortReferenceFrameStream thisArg = requestStream $ getDockingPortRefer
  - closed, and when set tofalsethe shield is opened. If the docking
  - port does not have a shield, setting this attribute has no effect.
  -}
-getDockingPortShielded :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (Bool)
+getDockingPortShielded :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.DockingPort -> m (Bool)
 getDockingPortShielded thisArg = do
     let r = makeRequest "SpaceCenter" "DockingPort_get_Shielded" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7455,13 +7458,13 @@ getDockingPortShieldedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "DockingPort_get_Shielded" [makeArgument 0 thisArg]
     in  makeStream req
 
-getDockingPortShieldedStream :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCStream (Bool))
+getDockingPortShieldedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.DockingPort -> m (KRPCStream (Bool))
 getDockingPortShieldedStream thisArg = requestStream $ getDockingPortShieldedStreamReq thisArg 
 
 {-
  - The current state of the docking port.
  -}
-getDockingPortState :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCHS.SpaceCenter.DockingPortState)
+getDockingPortState :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.DockingPort -> m (KRPCHS.SpaceCenter.DockingPortState)
 getDockingPortState thisArg = do
     let r = makeRequest "SpaceCenter" "DockingPort_get_State" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7472,7 +7475,7 @@ getDockingPortStateStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "DockingPort_get_State" [makeArgument 0 thisArg]
     in  makeStream req
 
-getDockingPortStateStream :: KRPCHS.SpaceCenter.DockingPort -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.DockingPortState))
+getDockingPortStateStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.DockingPort -> m (KRPCStream (KRPCHS.SpaceCenter.DockingPortState))
 getDockingPortStateStream thisArg = requestStream $ getDockingPortStateStreamReq thisArg 
 
 {-
@@ -7483,7 +7486,7 @@ getDockingPortStateStream thisArg = requestStream $ getDockingPortStateStreamReq
  - closed, and when set tofalsethe shield is opened. If the docking
  - port does not have a shield, setting this attribute has no effect.
  -}
-setDockingPortShielded :: KRPCHS.SpaceCenter.DockingPort -> Bool -> RPCContext ()
+setDockingPortShielded :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.DockingPort -> Bool -> m ()
 setDockingPortShielded thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "DockingPort_set_Shielded" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -7492,7 +7495,7 @@ setDockingPortShielded thisArg valueArg = do
 {-
  - Toggle the current engine mode.
  -}
-engineToggleMode :: KRPCHS.SpaceCenter.Engine -> RPCContext ()
+engineToggleMode :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m ()
 engineToggleMode thisArg = do
     let r = makeRequest "SpaceCenter" "Engine_ToggleMode" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7502,7 +7505,7 @@ engineToggleMode thisArg = do
  - Whether the engine is active. Setting this attribute may have no effect,
  - depending on <see cref="M:SpaceCenter.Engine.CanShutdown" /> and <see cref="M:SpaceCenter.Engine.CanRestart" />.
  -}
-getEngineActive :: KRPCHS.SpaceCenter.Engine -> RPCContext (Bool)
+getEngineActive :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (Bool)
 getEngineActive thisArg = do
     let r = makeRequest "SpaceCenter" "Engine_get_Active" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7513,13 +7516,13 @@ getEngineActiveStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Engine_get_Active" [makeArgument 0 thisArg]
     in  makeStream req
 
-getEngineActiveStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Bool))
+getEngineActiveStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (KRPCStream (Bool))
 getEngineActiveStream thisArg = requestStream $ getEngineActiveStreamReq thisArg 
 
 {-
  - Whether the engine will automatically switch modes.
  -}
-getEngineAutoModeSwitch :: KRPCHS.SpaceCenter.Engine -> RPCContext (Bool)
+getEngineAutoModeSwitch :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (Bool)
 getEngineAutoModeSwitch thisArg = do
     let r = makeRequest "SpaceCenter" "Engine_get_AutoModeSwitch" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7530,7 +7533,7 @@ getEngineAutoModeSwitchStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Engine_get_AutoModeSwitch" [makeArgument 0 thisArg]
     in  makeStream req
 
-getEngineAutoModeSwitchStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Bool))
+getEngineAutoModeSwitchStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (KRPCStream (Bool))
 getEngineAutoModeSwitchStream thisArg = requestStream $ getEngineAutoModeSwitchStreamReq thisArg 
 
 {-
@@ -7539,7 +7542,7 @@ getEngineAutoModeSwitchStream thisArg = requestStream $ getEngineAutoModeSwitchS
  - Returns zero if the engine does not have any fuel.
  - Takes the engine's current <see cref="M:SpaceCenter.Engine.ThrustLimit" /> and atmospheric conditions into account.
  -}
-getEngineAvailableThrust :: KRPCHS.SpaceCenter.Engine -> RPCContext (Float)
+getEngineAvailableThrust :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (Float)
 getEngineAvailableThrust thisArg = do
     let r = makeRequest "SpaceCenter" "Engine_get_AvailableThrust" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7550,7 +7553,7 @@ getEngineAvailableThrustStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Engine_get_AvailableThrust" [makeArgument 0 thisArg]
     in  makeStream req
 
-getEngineAvailableThrustStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Float))
+getEngineAvailableThrustStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (KRPCStream (Float))
 getEngineAvailableThrustStream thisArg = requestStream $ getEngineAvailableThrustStreamReq thisArg 
 
 {-
@@ -7558,7 +7561,7 @@ getEngineAvailableThrustStream thisArg = requestStream $ getEngineAvailableThrus
  - These axes correspond to the coordinate axes of the <see cref="M:SpaceCenter.Vessel.ReferenceFrame" />.
  - Returns zero if the engine is inactive, or not gimballed.
  -}
-getEngineAvailableTorque :: KRPCHS.SpaceCenter.Engine -> RPCContext (((Double, Double, Double), (Double, Double, Double)))
+getEngineAvailableTorque :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (((Double, Double, Double), (Double, Double, Double)))
 getEngineAvailableTorque thisArg = do
     let r = makeRequest "SpaceCenter" "Engine_get_AvailableTorque" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7569,7 +7572,7 @@ getEngineAvailableTorqueStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Engine_get_AvailableTorque" [makeArgument 0 thisArg]
     in  makeStream req
 
-getEngineAvailableTorqueStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
+getEngineAvailableTorqueStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
 getEngineAvailableTorqueStream thisArg = requestStream $ getEngineAvailableTorqueStreamReq thisArg 
 
 {-
@@ -7577,7 +7580,7 @@ getEngineAvailableTorqueStream thisArg = requestStream $ getEngineAvailableTorqu
  - returnsfalse. For example, this istruefor liquid fueled rockets
  - andfalsefor solid rocket boosters.
  -}
-getEngineCanRestart :: KRPCHS.SpaceCenter.Engine -> RPCContext (Bool)
+getEngineCanRestart :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (Bool)
 getEngineCanRestart thisArg = do
     let r = makeRequest "SpaceCenter" "Engine_get_CanRestart" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7588,13 +7591,13 @@ getEngineCanRestartStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Engine_get_CanRestart" [makeArgument 0 thisArg]
     in  makeStream req
 
-getEngineCanRestartStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Bool))
+getEngineCanRestartStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (KRPCStream (Bool))
 getEngineCanRestartStream thisArg = requestStream $ getEngineCanRestartStreamReq thisArg 
 
 {-
  - Whether the engine can be shutdown once activated. For example, this istruefor liquid fueled rockets andfalsefor solid rocket boosters.
  -}
-getEngineCanShutdown :: KRPCHS.SpaceCenter.Engine -> RPCContext (Bool)
+getEngineCanShutdown :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (Bool)
 getEngineCanShutdown thisArg = do
     let r = makeRequest "SpaceCenter" "Engine_get_CanShutdown" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7605,14 +7608,14 @@ getEngineCanShutdownStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Engine_get_CanShutdown" [makeArgument 0 thisArg]
     in  makeStream req
 
-getEngineCanShutdownStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Bool))
+getEngineCanShutdownStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (KRPCStream (Bool))
 getEngineCanShutdownStream thisArg = requestStream $ getEngineCanShutdownStreamReq thisArg 
 
 {-
  - The gimbal limiter of the engine. A value between 0 and 1.
  - Returns 0 if the gimbal is locked.
  -}
-getEngineGimbalLimit :: KRPCHS.SpaceCenter.Engine -> RPCContext (Float)
+getEngineGimbalLimit :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (Float)
 getEngineGimbalLimit thisArg = do
     let r = makeRequest "SpaceCenter" "Engine_get_GimbalLimit" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7623,14 +7626,14 @@ getEngineGimbalLimitStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Engine_get_GimbalLimit" [makeArgument 0 thisArg]
     in  makeStream req
 
-getEngineGimbalLimitStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Float))
+getEngineGimbalLimitStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (KRPCStream (Float))
 getEngineGimbalLimitStream thisArg = requestStream $ getEngineGimbalLimitStreamReq thisArg 
 
 {-
  - Whether the engines gimbal is locked in place. Setting this attribute has
  - no effect if the engine is not gimballed.
  -}
-getEngineGimbalLocked :: KRPCHS.SpaceCenter.Engine -> RPCContext (Bool)
+getEngineGimbalLocked :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (Bool)
 getEngineGimbalLocked thisArg = do
     let r = makeRequest "SpaceCenter" "Engine_get_GimbalLocked" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7641,14 +7644,14 @@ getEngineGimbalLockedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Engine_get_GimbalLocked" [makeArgument 0 thisArg]
     in  makeStream req
 
-getEngineGimbalLockedStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Bool))
+getEngineGimbalLockedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (KRPCStream (Bool))
 getEngineGimbalLockedStream thisArg = requestStream $ getEngineGimbalLockedStreamReq thisArg 
 
 {-
  - The range over which the gimbal can move, in degrees.
  - Returns 0 if the engine is not gimballed.
  -}
-getEngineGimbalRange :: KRPCHS.SpaceCenter.Engine -> RPCContext (Float)
+getEngineGimbalRange :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (Float)
 getEngineGimbalRange thisArg = do
     let r = makeRequest "SpaceCenter" "Engine_get_GimbalRange" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7659,13 +7662,13 @@ getEngineGimbalRangeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Engine_get_GimbalRange" [makeArgument 0 thisArg]
     in  makeStream req
 
-getEngineGimbalRangeStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Float))
+getEngineGimbalRangeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (KRPCStream (Float))
 getEngineGimbalRangeStream thisArg = requestStream $ getEngineGimbalRangeStreamReq thisArg 
 
 {-
  - Whether the engine is gimballed.
  -}
-getEngineGimballed :: KRPCHS.SpaceCenter.Engine -> RPCContext (Bool)
+getEngineGimballed :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (Bool)
 getEngineGimballed thisArg = do
     let r = makeRequest "SpaceCenter" "Engine_get_Gimballed" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7676,13 +7679,13 @@ getEngineGimballedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Engine_get_Gimballed" [makeArgument 0 thisArg]
     in  makeStream req
 
-getEngineGimballedStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Bool))
+getEngineGimballedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (KRPCStream (Bool))
 getEngineGimballedStream thisArg = requestStream $ getEngineGimballedStreamReq thisArg 
 
 {-
  - Whether the engine has any fuel available.The engine must be activated for this property to update correctly.
  -}
-getEngineHasFuel :: KRPCHS.SpaceCenter.Engine -> RPCContext (Bool)
+getEngineHasFuel :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (Bool)
 getEngineHasFuel thisArg = do
     let r = makeRequest "SpaceCenter" "Engine_get_HasFuel" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7693,13 +7696,13 @@ getEngineHasFuelStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Engine_get_HasFuel" [makeArgument 0 thisArg]
     in  makeStream req
 
-getEngineHasFuelStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Bool))
+getEngineHasFuelStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (KRPCStream (Bool))
 getEngineHasFuelStream thisArg = requestStream $ getEngineHasFuelStreamReq thisArg 
 
 {-
  - Whether the engine has multiple modes of operation.
  -}
-getEngineHasModes :: KRPCHS.SpaceCenter.Engine -> RPCContext (Bool)
+getEngineHasModes :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (Bool)
 getEngineHasModes thisArg = do
     let r = makeRequest "SpaceCenter" "Engine_get_HasModes" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7710,13 +7713,13 @@ getEngineHasModesStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Engine_get_HasModes" [makeArgument 0 thisArg]
     in  makeStream req
 
-getEngineHasModesStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Bool))
+getEngineHasModesStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (KRPCStream (Bool))
 getEngineHasModesStream thisArg = requestStream $ getEngineHasModesStreamReq thisArg 
 
 {-
  - The specific impulse of the engine at sea level on Kerbin, in seconds.
  -}
-getEngineKerbinSeaLevelSpecificImpulse :: KRPCHS.SpaceCenter.Engine -> RPCContext (Float)
+getEngineKerbinSeaLevelSpecificImpulse :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (Float)
 getEngineKerbinSeaLevelSpecificImpulse thisArg = do
     let r = makeRequest "SpaceCenter" "Engine_get_KerbinSeaLevelSpecificImpulse" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7727,14 +7730,14 @@ getEngineKerbinSeaLevelSpecificImpulseStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Engine_get_KerbinSeaLevelSpecificImpulse" [makeArgument 0 thisArg]
     in  makeStream req
 
-getEngineKerbinSeaLevelSpecificImpulseStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Float))
+getEngineKerbinSeaLevelSpecificImpulseStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (KRPCStream (Float))
 getEngineKerbinSeaLevelSpecificImpulseStream thisArg = requestStream $ getEngineKerbinSeaLevelSpecificImpulseStreamReq thisArg 
 
 {-
  - The amount of thrust, in Newtons, that would be produced by the engine
  - when activated and fueled, with its throttle and throttle limiter set to 100%.
  -}
-getEngineMaxThrust :: KRPCHS.SpaceCenter.Engine -> RPCContext (Float)
+getEngineMaxThrust :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (Float)
 getEngineMaxThrust thisArg = do
     let r = makeRequest "SpaceCenter" "Engine_get_MaxThrust" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7745,7 +7748,7 @@ getEngineMaxThrustStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Engine_get_MaxThrust" [makeArgument 0 thisArg]
     in  makeStream req
 
-getEngineMaxThrustStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Float))
+getEngineMaxThrustStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (KRPCStream (Float))
 getEngineMaxThrustStream thisArg = requestStream $ getEngineMaxThrustStreamReq thisArg 
 
 {-
@@ -7754,7 +7757,7 @@ getEngineMaxThrustStream thisArg = requestStream $ getEngineMaxThrustStreamReq t
  - when activated, <see cref="M:SpaceCenter.Engine.ThrustLimit" /> is set to 100%, the main
  - vessel's throttle is set to 100% and the engine is in a vacuum.
  -}
-getEngineMaxVacuumThrust :: KRPCHS.SpaceCenter.Engine -> RPCContext (Float)
+getEngineMaxVacuumThrust :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (Float)
 getEngineMaxVacuumThrust thisArg = do
     let r = makeRequest "SpaceCenter" "Engine_get_MaxVacuumThrust" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7765,13 +7768,13 @@ getEngineMaxVacuumThrustStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Engine_get_MaxVacuumThrust" [makeArgument 0 thisArg]
     in  makeStream req
 
-getEngineMaxVacuumThrustStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Float))
+getEngineMaxVacuumThrustStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (KRPCStream (Float))
 getEngineMaxVacuumThrustStream thisArg = requestStream $ getEngineMaxVacuumThrustStreamReq thisArg 
 
 {-
  - The name of the current engine mode.
  -}
-getEngineMode :: KRPCHS.SpaceCenter.Engine -> RPCContext (Data.Text.Text)
+getEngineMode :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (Data.Text.Text)
 getEngineMode thisArg = do
     let r = makeRequest "SpaceCenter" "Engine_get_Mode" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7782,14 +7785,14 @@ getEngineModeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Engine_get_Mode" [makeArgument 0 thisArg]
     in  makeStream req
 
-getEngineModeStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Data.Text.Text))
+getEngineModeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (KRPCStream (Data.Text.Text))
 getEngineModeStream thisArg = requestStream $ getEngineModeStreamReq thisArg 
 
 {-
  - The available modes for the engine.
  - A dictionary mapping mode names to <see cref="T:SpaceCenter.Engine" /> objects.
  -}
-getEngineModes :: KRPCHS.SpaceCenter.Engine -> RPCContext (Data.Map.Map (Data.Text.Text) (KRPCHS.SpaceCenter.Engine))
+getEngineModes :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (Data.Map.Map (Data.Text.Text) (KRPCHS.SpaceCenter.Engine))
 getEngineModes thisArg = do
     let r = makeRequest "SpaceCenter" "Engine_get_Modes" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7800,13 +7803,13 @@ getEngineModesStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Engine_get_Modes" [makeArgument 0 thisArg]
     in  makeStream req
 
-getEngineModesStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Data.Map.Map (Data.Text.Text) (KRPCHS.SpaceCenter.Engine)))
+getEngineModesStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (KRPCStream (Data.Map.Map (Data.Text.Text) (KRPCHS.SpaceCenter.Engine)))
 getEngineModesStream thisArg = requestStream $ getEngineModesStreamReq thisArg 
 
 {-
  - The part object for this engine.
  -}
-getEnginePart :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCHS.SpaceCenter.Part)
+getEnginePart :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (KRPCHS.SpaceCenter.Part)
 getEnginePart thisArg = do
     let r = makeRequest "SpaceCenter" "Engine_get_Part" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7817,13 +7820,13 @@ getEnginePartStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Engine_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
-getEnginePartStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getEnginePartStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (KRPCStream (KRPCHS.SpaceCenter.Part))
 getEnginePartStream thisArg = requestStream $ getEnginePartStreamReq thisArg 
 
 {-
  - The names of the propellants that the engine consumes.
  -}
-getEnginePropellantNames :: KRPCHS.SpaceCenter.Engine -> RPCContext ([Data.Text.Text])
+getEnginePropellantNames :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m ([Data.Text.Text])
 getEnginePropellantNames thisArg = do
     let r = makeRequest "SpaceCenter" "Engine_get_PropellantNames" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7834,7 +7837,7 @@ getEnginePropellantNamesStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Engine_get_PropellantNames" [makeArgument 0 thisArg]
     in  makeStream req
 
-getEnginePropellantNamesStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream ([Data.Text.Text]))
+getEnginePropellantNamesStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (KRPCStream ([Data.Text.Text]))
 getEnginePropellantNamesStream thisArg = requestStream $ getEnginePropellantNamesStreamReq thisArg 
 
 {-
@@ -7842,7 +7845,7 @@ getEnginePropellantNamesStream thisArg = requestStream $ getEnginePropellantName
  - to the ratio at which they are consumed by the engine.For example, if the ratios are 0.6 for LiquidFuel and 0.4 for Oxidizer, then for every 0.6 units of
  - LiquidFuel that the engine burns, it will burn 0.4 units of Oxidizer.
  -}
-getEnginePropellantRatios :: KRPCHS.SpaceCenter.Engine -> RPCContext (Data.Map.Map (Data.Text.Text) (Float))
+getEnginePropellantRatios :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (Data.Map.Map (Data.Text.Text) (Float))
 getEnginePropellantRatios thisArg = do
     let r = makeRequest "SpaceCenter" "Engine_get_PropellantRatios" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7853,13 +7856,13 @@ getEnginePropellantRatiosStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Engine_get_PropellantRatios" [makeArgument 0 thisArg]
     in  makeStream req
 
-getEnginePropellantRatiosStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Data.Map.Map (Data.Text.Text) (Float)))
+getEnginePropellantRatiosStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (KRPCStream (Data.Map.Map (Data.Text.Text) (Float)))
 getEnginePropellantRatiosStream thisArg = requestStream $ getEnginePropellantRatiosStreamReq thisArg 
 
 {-
  - The propellants that the engine consumes.
  -}
-getEnginePropellants :: KRPCHS.SpaceCenter.Engine -> RPCContext ([KRPCHS.SpaceCenter.Propellant])
+getEnginePropellants :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m ([KRPCHS.SpaceCenter.Propellant])
 getEnginePropellants thisArg = do
     let r = makeRequest "SpaceCenter" "Engine_get_Propellants" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7870,14 +7873,14 @@ getEnginePropellantsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Engine_get_Propellants" [makeArgument 0 thisArg]
     in  makeStream req
 
-getEnginePropellantsStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Propellant]))
+getEnginePropellantsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (KRPCStream ([KRPCHS.SpaceCenter.Propellant]))
 getEnginePropellantsStream thisArg = requestStream $ getEnginePropellantsStreamReq thisArg 
 
 {-
  - The current specific impulse of the engine, in seconds. Returns zero
  - if the engine is not active.
  -}
-getEngineSpecificImpulse :: KRPCHS.SpaceCenter.Engine -> RPCContext (Float)
+getEngineSpecificImpulse :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (Float)
 getEngineSpecificImpulse thisArg = do
     let r = makeRequest "SpaceCenter" "Engine_get_SpecificImpulse" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7888,7 +7891,7 @@ getEngineSpecificImpulseStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Engine_get_SpecificImpulse" [makeArgument 0 thisArg]
     in  makeStream req
 
-getEngineSpecificImpulseStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Float))
+getEngineSpecificImpulseStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (KRPCStream (Float))
 getEngineSpecificImpulseStream thisArg = requestStream $ getEngineSpecificImpulseStreamReq thisArg 
 
 {-
@@ -7897,7 +7900,7 @@ getEngineSpecificImpulseStream thisArg = requestStream $ getEngineSpecificImpuls
  - setting, as some engines take time to adjust their throttle
  - (such as jet engines).
  -}
-getEngineThrottle :: KRPCHS.SpaceCenter.Engine -> RPCContext (Float)
+getEngineThrottle :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (Float)
 getEngineThrottle thisArg = do
     let r = makeRequest "SpaceCenter" "Engine_get_Throttle" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7908,7 +7911,7 @@ getEngineThrottleStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Engine_get_Throttle" [makeArgument 0 thisArg]
     in  makeStream req
 
-getEngineThrottleStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Float))
+getEngineThrottleStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (KRPCStream (Float))
 getEngineThrottleStream thisArg = requestStream $ getEngineThrottleStreamReq thisArg 
 
 {-
@@ -7916,7 +7919,7 @@ getEngineThrottleStream thisArg = requestStream $ getEngineThrottleStreamReq thi
  - this istruefor liquid fueled rockets, andfalsefor solid rocket
  - boosters.
  -}
-getEngineThrottleLocked :: KRPCHS.SpaceCenter.Engine -> RPCContext (Bool)
+getEngineThrottleLocked :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (Bool)
 getEngineThrottleLocked thisArg = do
     let r = makeRequest "SpaceCenter" "Engine_get_ThrottleLocked" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7927,13 +7930,13 @@ getEngineThrottleLockedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Engine_get_ThrottleLocked" [makeArgument 0 thisArg]
     in  makeStream req
 
-getEngineThrottleLockedStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Bool))
+getEngineThrottleLockedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (KRPCStream (Bool))
 getEngineThrottleLockedStream thisArg = requestStream $ getEngineThrottleLockedStreamReq thisArg 
 
 {-
  - The current amount of thrust being produced by the engine, in Newtons.
  -}
-getEngineThrust :: KRPCHS.SpaceCenter.Engine -> RPCContext (Float)
+getEngineThrust :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (Float)
 getEngineThrust thisArg = do
     let r = makeRequest "SpaceCenter" "Engine_get_Thrust" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7944,7 +7947,7 @@ getEngineThrustStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Engine_get_Thrust" [makeArgument 0 thisArg]
     in  makeStream req
 
-getEngineThrustStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Float))
+getEngineThrustStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (KRPCStream (Float))
 getEngineThrustStream thisArg = requestStream $ getEngineThrustStreamReq thisArg 
 
 {-
@@ -7952,7 +7955,7 @@ getEngineThrustStream thisArg = requestStream $ getEngineThrustStreamReq thisArg
  - attribute may have no effect, for example the thrust limit for a solid
  - rocket booster cannot be changed in flight.
  -}
-getEngineThrustLimit :: KRPCHS.SpaceCenter.Engine -> RPCContext (Float)
+getEngineThrustLimit :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (Float)
 getEngineThrustLimit thisArg = do
     let r = makeRequest "SpaceCenter" "Engine_get_ThrustLimit" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7963,7 +7966,7 @@ getEngineThrustLimitStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Engine_get_ThrustLimit" [makeArgument 0 thisArg]
     in  makeStream req
 
-getEngineThrustLimitStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Float))
+getEngineThrustLimitStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (KRPCStream (Float))
 getEngineThrustLimitStream thisArg = requestStream $ getEngineThrustLimitStreamReq thisArg 
 
 {-
@@ -7972,7 +7975,7 @@ getEngineThrustLimitStream thisArg = requestStream $ getEngineThrustLimitStreamR
  - The overall thrust produced by the engine, as reported by <see cref="M:SpaceCenter.Engine.AvailableThrust" />,
  - <see cref="M:SpaceCenter.Engine.MaxThrust" /> and others, is the sum of the thrust generated by each thruster.
  -}
-getEngineThrusters :: KRPCHS.SpaceCenter.Engine -> RPCContext ([KRPCHS.SpaceCenter.Thruster])
+getEngineThrusters :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m ([KRPCHS.SpaceCenter.Thruster])
 getEngineThrusters thisArg = do
     let r = makeRequest "SpaceCenter" "Engine_get_Thrusters" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -7983,13 +7986,13 @@ getEngineThrustersStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Engine_get_Thrusters" [makeArgument 0 thisArg]
     in  makeStream req
 
-getEngineThrustersStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Thruster]))
+getEngineThrustersStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (KRPCStream ([KRPCHS.SpaceCenter.Thruster]))
 getEngineThrustersStream thisArg = requestStream $ getEngineThrustersStreamReq thisArg 
 
 {-
  - The vacuum specific impulse of the engine, in seconds.
  -}
-getEngineVacuumSpecificImpulse :: KRPCHS.SpaceCenter.Engine -> RPCContext (Float)
+getEngineVacuumSpecificImpulse :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (Float)
 getEngineVacuumSpecificImpulse thisArg = do
     let r = makeRequest "SpaceCenter" "Engine_get_VacuumSpecificImpulse" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8000,14 +8003,14 @@ getEngineVacuumSpecificImpulseStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Engine_get_VacuumSpecificImpulse" [makeArgument 0 thisArg]
     in  makeStream req
 
-getEngineVacuumSpecificImpulseStream :: KRPCHS.SpaceCenter.Engine -> RPCContext (KRPCStream (Float))
+getEngineVacuumSpecificImpulseStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> m (KRPCStream (Float))
 getEngineVacuumSpecificImpulseStream thisArg = requestStream $ getEngineVacuumSpecificImpulseStreamReq thisArg 
 
 {-
  - Whether the engine is active. Setting this attribute may have no effect,
  - depending on <see cref="M:SpaceCenter.Engine.CanShutdown" /> and <see cref="M:SpaceCenter.Engine.CanRestart" />.
  -}
-setEngineActive :: KRPCHS.SpaceCenter.Engine -> Bool -> RPCContext ()
+setEngineActive :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> Bool -> m ()
 setEngineActive thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Engine_set_Active" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -8016,7 +8019,7 @@ setEngineActive thisArg valueArg = do
 {-
  - Whether the engine will automatically switch modes.
  -}
-setEngineAutoModeSwitch :: KRPCHS.SpaceCenter.Engine -> Bool -> RPCContext ()
+setEngineAutoModeSwitch :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> Bool -> m ()
 setEngineAutoModeSwitch thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Engine_set_AutoModeSwitch" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -8026,7 +8029,7 @@ setEngineAutoModeSwitch thisArg valueArg = do
  - The gimbal limiter of the engine. A value between 0 and 1.
  - Returns 0 if the gimbal is locked.
  -}
-setEngineGimbalLimit :: KRPCHS.SpaceCenter.Engine -> Float -> RPCContext ()
+setEngineGimbalLimit :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> Float -> m ()
 setEngineGimbalLimit thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Engine_set_GimbalLimit" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -8036,7 +8039,7 @@ setEngineGimbalLimit thisArg valueArg = do
  - Whether the engines gimbal is locked in place. Setting this attribute has
  - no effect if the engine is not gimballed.
  -}
-setEngineGimbalLocked :: KRPCHS.SpaceCenter.Engine -> Bool -> RPCContext ()
+setEngineGimbalLocked :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> Bool -> m ()
 setEngineGimbalLocked thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Engine_set_GimbalLocked" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -8045,7 +8048,7 @@ setEngineGimbalLocked thisArg valueArg = do
 {-
  - The name of the current engine mode.
  -}
-setEngineMode :: KRPCHS.SpaceCenter.Engine -> Data.Text.Text -> RPCContext ()
+setEngineMode :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> Data.Text.Text -> m ()
 setEngineMode thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Engine_set_Mode" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -8056,7 +8059,7 @@ setEngineMode thisArg valueArg = do
  - attribute may have no effect, for example the thrust limit for a solid
  - rocket booster cannot be changed in flight.
  -}
-setEngineThrustLimit :: KRPCHS.SpaceCenter.Engine -> Float -> RPCContext ()
+setEngineThrustLimit :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Engine -> Float -> m ()
 setEngineThrustLimit thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Engine_set_ThrustLimit" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -8065,7 +8068,7 @@ setEngineThrustLimit thisArg valueArg = do
 {-
  - Dump the experimental data contained by the experiment.
  -}
-experimentDump :: KRPCHS.SpaceCenter.Experiment -> RPCContext ()
+experimentDump :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Experiment -> m ()
 experimentDump thisArg = do
     let r = makeRequest "SpaceCenter" "Experiment_Dump" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8074,7 +8077,7 @@ experimentDump thisArg = do
 {-
  - Reset the experiment.
  -}
-experimentReset :: KRPCHS.SpaceCenter.Experiment -> RPCContext ()
+experimentReset :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Experiment -> m ()
 experimentReset thisArg = do
     let r = makeRequest "SpaceCenter" "Experiment_Reset" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8083,7 +8086,7 @@ experimentReset thisArg = do
 {-
  - Run the experiment.
  -}
-experimentRun :: KRPCHS.SpaceCenter.Experiment -> RPCContext ()
+experimentRun :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Experiment -> m ()
 experimentRun thisArg = do
     let r = makeRequest "SpaceCenter" "Experiment_Run" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8092,7 +8095,7 @@ experimentRun thisArg = do
 {-
  - Transmit all experimental data contained by this part.
  -}
-experimentTransmit :: KRPCHS.SpaceCenter.Experiment -> RPCContext ()
+experimentTransmit :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Experiment -> m ()
 experimentTransmit thisArg = do
     let r = makeRequest "SpaceCenter" "Experiment_Transmit" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8101,7 +8104,7 @@ experimentTransmit thisArg = do
 {-
  - Determines if the experiment is available given the current conditions.
  -}
-getExperimentAvailable :: KRPCHS.SpaceCenter.Experiment -> RPCContext (Bool)
+getExperimentAvailable :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Experiment -> m (Bool)
 getExperimentAvailable thisArg = do
     let r = makeRequest "SpaceCenter" "Experiment_get_Available" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8112,13 +8115,13 @@ getExperimentAvailableStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Experiment_get_Available" [makeArgument 0 thisArg]
     in  makeStream req
 
-getExperimentAvailableStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream (Bool))
+getExperimentAvailableStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Experiment -> m (KRPCStream (Bool))
 getExperimentAvailableStream thisArg = requestStream $ getExperimentAvailableStreamReq thisArg 
 
 {-
  - The name of the biome the experiment is currently in.
  -}
-getExperimentBiome :: KRPCHS.SpaceCenter.Experiment -> RPCContext (Data.Text.Text)
+getExperimentBiome :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Experiment -> m (Data.Text.Text)
 getExperimentBiome thisArg = do
     let r = makeRequest "SpaceCenter" "Experiment_get_Biome" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8129,13 +8132,13 @@ getExperimentBiomeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Experiment_get_Biome" [makeArgument 0 thisArg]
     in  makeStream req
 
-getExperimentBiomeStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream (Data.Text.Text))
+getExperimentBiomeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Experiment -> m (KRPCStream (Data.Text.Text))
 getExperimentBiomeStream thisArg = requestStream $ getExperimentBiomeStreamReq thisArg 
 
 {-
  - The data contained in this experiment.
  -}
-getExperimentData :: KRPCHS.SpaceCenter.Experiment -> RPCContext ([KRPCHS.SpaceCenter.ScienceData])
+getExperimentData :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Experiment -> m ([KRPCHS.SpaceCenter.ScienceData])
 getExperimentData thisArg = do
     let r = makeRequest "SpaceCenter" "Experiment_get_Data" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8146,13 +8149,13 @@ getExperimentDataStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Experiment_get_Data" [makeArgument 0 thisArg]
     in  makeStream req
 
-getExperimentDataStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.ScienceData]))
+getExperimentDataStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Experiment -> m (KRPCStream ([KRPCHS.SpaceCenter.ScienceData]))
 getExperimentDataStream thisArg = requestStream $ getExperimentDataStreamReq thisArg 
 
 {-
  - Whether the experiment has been deployed.
  -}
-getExperimentDeployed :: KRPCHS.SpaceCenter.Experiment -> RPCContext (Bool)
+getExperimentDeployed :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Experiment -> m (Bool)
 getExperimentDeployed thisArg = do
     let r = makeRequest "SpaceCenter" "Experiment_get_Deployed" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8163,13 +8166,13 @@ getExperimentDeployedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Experiment_get_Deployed" [makeArgument 0 thisArg]
     in  makeStream req
 
-getExperimentDeployedStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream (Bool))
+getExperimentDeployedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Experiment -> m (KRPCStream (Bool))
 getExperimentDeployedStream thisArg = requestStream $ getExperimentDeployedStreamReq thisArg 
 
 {-
  - Whether the experiment contains data.
  -}
-getExperimentHasData :: KRPCHS.SpaceCenter.Experiment -> RPCContext (Bool)
+getExperimentHasData :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Experiment -> m (Bool)
 getExperimentHasData thisArg = do
     let r = makeRequest "SpaceCenter" "Experiment_get_HasData" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8180,13 +8183,13 @@ getExperimentHasDataStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Experiment_get_HasData" [makeArgument 0 thisArg]
     in  makeStream req
 
-getExperimentHasDataStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream (Bool))
+getExperimentHasDataStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Experiment -> m (KRPCStream (Bool))
 getExperimentHasDataStream thisArg = requestStream $ getExperimentHasDataStreamReq thisArg 
 
 {-
  - Whether the experiment is inoperable.
  -}
-getExperimentInoperable :: KRPCHS.SpaceCenter.Experiment -> RPCContext (Bool)
+getExperimentInoperable :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Experiment -> m (Bool)
 getExperimentInoperable thisArg = do
     let r = makeRequest "SpaceCenter" "Experiment_get_Inoperable" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8197,13 +8200,13 @@ getExperimentInoperableStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Experiment_get_Inoperable" [makeArgument 0 thisArg]
     in  makeStream req
 
-getExperimentInoperableStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream (Bool))
+getExperimentInoperableStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Experiment -> m (KRPCStream (Bool))
 getExperimentInoperableStream thisArg = requestStream $ getExperimentInoperableStreamReq thisArg 
 
 {-
  - The part object for this experiment.
  -}
-getExperimentPart :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCHS.SpaceCenter.Part)
+getExperimentPart :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Experiment -> m (KRPCHS.SpaceCenter.Part)
 getExperimentPart thisArg = do
     let r = makeRequest "SpaceCenter" "Experiment_get_Part" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8214,13 +8217,13 @@ getExperimentPartStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Experiment_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
-getExperimentPartStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getExperimentPartStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Experiment -> m (KRPCStream (KRPCHS.SpaceCenter.Part))
 getExperimentPartStream thisArg = requestStream $ getExperimentPartStreamReq thisArg 
 
 {-
  - Whether the experiment can be re-run.
  -}
-getExperimentRerunnable :: KRPCHS.SpaceCenter.Experiment -> RPCContext (Bool)
+getExperimentRerunnable :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Experiment -> m (Bool)
 getExperimentRerunnable thisArg = do
     let r = makeRequest "SpaceCenter" "Experiment_get_Rerunnable" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8231,14 +8234,14 @@ getExperimentRerunnableStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Experiment_get_Rerunnable" [makeArgument 0 thisArg]
     in  makeStream req
 
-getExperimentRerunnableStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream (Bool))
+getExperimentRerunnableStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Experiment -> m (KRPCStream (Bool))
 getExperimentRerunnableStream thisArg = requestStream $ getExperimentRerunnableStreamReq thisArg 
 
 {-
  - Containing information on the corresponding specific science result for the current conditions.
  - Returns null if experiment is unavailable.
  -}
-getExperimentScienceSubject :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCHS.SpaceCenter.ScienceSubject)
+getExperimentScienceSubject :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Experiment -> m (KRPCHS.SpaceCenter.ScienceSubject)
 getExperimentScienceSubject thisArg = do
     let r = makeRequest "SpaceCenter" "Experiment_get_ScienceSubject" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8249,13 +8252,13 @@ getExperimentScienceSubjectStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Experiment_get_ScienceSubject" [makeArgument 0 thisArg]
     in  makeStream req
 
-getExperimentScienceSubjectStream :: KRPCHS.SpaceCenter.Experiment -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ScienceSubject))
+getExperimentScienceSubjectStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Experiment -> m (KRPCStream (KRPCHS.SpaceCenter.ScienceSubject))
 getExperimentScienceSubjectStream thisArg = requestStream $ getExperimentScienceSubjectStreamReq thisArg 
 
 {-
  - Jettison the fairing. Has no effect if it has already been jettisoned.
  -}
-fairingJettison :: KRPCHS.SpaceCenter.Fairing -> RPCContext ()
+fairingJettison :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Fairing -> m ()
 fairingJettison thisArg = do
     let r = makeRequest "SpaceCenter" "Fairing_Jettison" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8264,7 +8267,7 @@ fairingJettison thisArg = do
 {-
  - Whether the fairing has been jettisoned.
  -}
-getFairingJettisoned :: KRPCHS.SpaceCenter.Fairing -> RPCContext (Bool)
+getFairingJettisoned :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Fairing -> m (Bool)
 getFairingJettisoned thisArg = do
     let r = makeRequest "SpaceCenter" "Fairing_get_Jettisoned" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8275,13 +8278,13 @@ getFairingJettisonedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Fairing_get_Jettisoned" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFairingJettisonedStream :: KRPCHS.SpaceCenter.Fairing -> RPCContext (KRPCStream (Bool))
+getFairingJettisonedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Fairing -> m (KRPCStream (Bool))
 getFairingJettisonedStream thisArg = requestStream $ getFairingJettisonedStreamReq thisArg 
 
 {-
  - The part object for this fairing.
  -}
-getFairingPart :: KRPCHS.SpaceCenter.Fairing -> RPCContext (KRPCHS.SpaceCenter.Part)
+getFairingPart :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Fairing -> m (KRPCHS.SpaceCenter.Part)
 getFairingPart thisArg = do
     let r = makeRequest "SpaceCenter" "Fairing_get_Part" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8292,14 +8295,14 @@ getFairingPartStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Fairing_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFairingPartStream :: KRPCHS.SpaceCenter.Fairing -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getFairingPartStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Fairing -> m (KRPCStream (KRPCHS.SpaceCenter.Part))
 getFairingPartStream thisArg = requestStream $ getFairingPartStreamReq thisArg 
 
 {-
  - The total aerodynamic forces acting on the vessel, as a vector pointing in the direction of the force, with its
  - magnitude equal to the strength of the force in Newtons.
  -}
-getFlightAerodynamicForce :: KRPCHS.SpaceCenter.Flight -> RPCContext ((Double, Double, Double))
+getFlightAerodynamicForce :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m ((Double, Double, Double))
 getFlightAerodynamicForce thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_AerodynamicForce" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8310,13 +8313,13 @@ getFlightAerodynamicForceStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_AerodynamicForce" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightAerodynamicForceStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
+getFlightAerodynamicForceStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream ((Double, Double, Double)))
 getFlightAerodynamicForceStream thisArg = requestStream $ getFlightAerodynamicForceStreamReq thisArg 
 
 {-
  - Gets the pitch angle between the orientation of the vessel and its velocity vector, in degrees.
  -}
-getFlightAngleOfAttack :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
+getFlightAngleOfAttack :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (Float)
 getFlightAngleOfAttack thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_AngleOfAttack" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8327,13 +8330,13 @@ getFlightAngleOfAttackStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_AngleOfAttack" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightAngleOfAttackStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
+getFlightAngleOfAttackStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream (Float))
 getFlightAngleOfAttackStream thisArg = requestStream $ getFlightAngleOfAttackStreamReq thisArg 
 
 {-
  - The unit direction vector pointing in the anti-normal direction.
  -}
-getFlightAntiNormal :: KRPCHS.SpaceCenter.Flight -> RPCContext ((Double, Double, Double))
+getFlightAntiNormal :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m ((Double, Double, Double))
 getFlightAntiNormal thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_AntiNormal" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8344,13 +8347,13 @@ getFlightAntiNormalStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_AntiNormal" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightAntiNormalStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
+getFlightAntiNormalStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream ((Double, Double, Double)))
 getFlightAntiNormalStream thisArg = requestStream $ getFlightAntiNormalStreamReq thisArg 
 
 {-
  - The unit direction vector pointing in the anti-radial direction.
  -}
-getFlightAntiRadial :: KRPCHS.SpaceCenter.Flight -> RPCContext ((Double, Double, Double))
+getFlightAntiRadial :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m ((Double, Double, Double))
 getFlightAntiRadial thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_AntiRadial" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8361,13 +8364,13 @@ getFlightAntiRadialStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_AntiRadial" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightAntiRadialStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
+getFlightAntiRadialStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream ((Double, Double, Double)))
 getFlightAntiRadialStream thisArg = requestStream $ getFlightAntiRadialStreamReq thisArg 
 
 {-
  - The current density of the atmosphere around the vessel, inkg/m^3.
  -}
-getFlightAtmosphereDensity :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
+getFlightAtmosphereDensity :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (Float)
 getFlightAtmosphereDensity thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_AtmosphereDensity" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8378,13 +8381,13 @@ getFlightAtmosphereDensityStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_AtmosphereDensity" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightAtmosphereDensityStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
+getFlightAtmosphereDensityStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream (Float))
 getFlightAtmosphereDensityStream thisArg = requestStream $ getFlightAtmosphereDensityStreamReq thisArg 
 
 {-
  - Gets the <a href="https://en.wikipedia.org/wiki/Ballistic_coefficient">ballistic coefficient.Requires <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Research.
  -}
-getFlightBallisticCoefficient :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
+getFlightBallisticCoefficient :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (Float)
 getFlightBallisticCoefficient thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_BallisticCoefficient" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8395,14 +8398,14 @@ getFlightBallisticCoefficientStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_BallisticCoefficient" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightBallisticCoefficientStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
+getFlightBallisticCoefficientStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream (Float))
 getFlightBallisticCoefficientStream thisArg = requestStream $ getFlightBallisticCoefficientStreamReq thisArg 
 
 {-
  - The altitude above the surface of the body, in meters. When over water, this is the altitude above the sea floor.
  - Measured from the center of mass of the vessel.
  -}
-getFlightBedrockAltitude :: KRPCHS.SpaceCenter.Flight -> RPCContext (Double)
+getFlightBedrockAltitude :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (Double)
 getFlightBedrockAltitude thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_BedrockAltitude" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8413,13 +8416,13 @@ getFlightBedrockAltitudeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_BedrockAltitude" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightBedrockAltitudeStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Double))
+getFlightBedrockAltitudeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream (Double))
 getFlightBedrockAltitudeStream thisArg = requestStream $ getFlightBedrockAltitudeStreamReq thisArg 
 
 {-
  - The position of the center of mass of the vessel.
  -}
-getFlightCenterOfMass :: KRPCHS.SpaceCenter.Flight -> RPCContext ((Double, Double, Double))
+getFlightCenterOfMass :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m ((Double, Double, Double))
 getFlightCenterOfMass thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_CenterOfMass" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8430,13 +8433,13 @@ getFlightCenterOfMassStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_CenterOfMass" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightCenterOfMassStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
+getFlightCenterOfMassStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream ((Double, Double, Double)))
 getFlightCenterOfMassStream thisArg = requestStream $ getFlightCenterOfMassStreamReq thisArg 
 
 {-
  - The direction vector that the vessel is pointing in.
  -}
-getFlightDirection :: KRPCHS.SpaceCenter.Flight -> RPCContext ((Double, Double, Double))
+getFlightDirection :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m ((Double, Double, Double))
 getFlightDirection thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_Direction" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8447,14 +8450,14 @@ getFlightDirectionStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_Direction" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightDirectionStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
+getFlightDirectionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream ((Double, Double, Double)))
 getFlightDirectionStream thisArg = requestStream $ getFlightDirectionStreamReq thisArg 
 
 {-
  - The <a href="https://en.wikipedia.org/wiki/Aerodynamic_force">aerodynamic dragcurrently acting on the vessel,
  - as a vector pointing in the direction of the force, with its magnitude equal to the strength of the force in Newtons.
  -}
-getFlightDrag :: KRPCHS.SpaceCenter.Flight -> RPCContext ((Double, Double, Double))
+getFlightDrag :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m ((Double, Double, Double))
 getFlightDrag thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_Drag" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8465,14 +8468,14 @@ getFlightDragStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_Drag" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightDragStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
+getFlightDragStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream ((Double, Double, Double)))
 getFlightDragStream thisArg = requestStream $ getFlightDragStreamReq thisArg 
 
 {-
  - Gets the coefficient of drag. This is the amount of drag produced by the vessel. It depends on air speed,
  - air density and wing area.Requires <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Research.
  -}
-getFlightDragCoefficient :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
+getFlightDragCoefficient :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (Float)
 getFlightDragCoefficient thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_DragCoefficient" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8483,7 +8486,7 @@ getFlightDragCoefficientStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_DragCoefficient" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightDragCoefficientStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
+getFlightDragCoefficientStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream (Float))
 getFlightDragCoefficientStream thisArg = requestStream $ getFlightDragCoefficientStreamReq thisArg 
 
 {-
@@ -8491,7 +8494,7 @@ getFlightDragCoefficientStream thisArg = requestStream $ getFlightDragCoefficien
  - aerodynamic forces. It is equal to\frac{1}{2} . \mbox{air density} . \mbox{velocity}^2.
  - It is commonly denotedQ.
  -}
-getFlightDynamicPressure :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
+getFlightDynamicPressure :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (Float)
 getFlightDynamicPressure thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_DynamicPressure" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8502,14 +8505,14 @@ getFlightDynamicPressureStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_DynamicPressure" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightDynamicPressureStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
+getFlightDynamicPressureStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream (Float))
 getFlightDynamicPressureStream thisArg = requestStream $ getFlightDynamicPressureStreamReq thisArg 
 
 {-
  - The elevation of the terrain under the vessel, in meters. This is the height of the terrain above sea level,
  - and is negative when the vessel is over the sea.
  -}
-getFlightElevation :: KRPCHS.SpaceCenter.Flight -> RPCContext (Double)
+getFlightElevation :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (Double)
 getFlightElevation thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_Elevation" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8520,13 +8523,13 @@ getFlightElevationStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_Elevation" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightElevationStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Double))
+getFlightElevationStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream (Double))
 getFlightElevationStream thisArg = requestStream $ getFlightElevationStreamReq thisArg 
 
 {-
  - The <a href="https://en.wikipedia.org/wiki/Equivalent_airspeed">equivalent air speedof the vessel, inm/s.
  -}
-getFlightEquivalentAirSpeed :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
+getFlightEquivalentAirSpeed :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (Float)
 getFlightEquivalentAirSpeed thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_EquivalentAirSpeed" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8537,13 +8540,13 @@ getFlightEquivalentAirSpeedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_EquivalentAirSpeed" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightEquivalentAirSpeedStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
+getFlightEquivalentAirSpeedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream (Float))
 getFlightEquivalentAirSpeedStream thisArg = requestStream $ getFlightEquivalentAirSpeedStreamReq thisArg 
 
 {-
  - The current G force acting on the vessel inm/s^2.
  -}
-getFlightGForce :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
+getFlightGForce :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (Float)
 getFlightGForce thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_GForce" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8554,13 +8557,13 @@ getFlightGForceStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_GForce" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightGForceStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
+getFlightGForceStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream (Float))
 getFlightGForceStream thisArg = requestStream $ getFlightGForceStreamReq thisArg 
 
 {-
  - The heading angle of the vessel relative to north, in degrees. A value between 0° and 360°.
  -}
-getFlightHeading :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
+getFlightHeading :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (Float)
 getFlightHeading thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_Heading" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8571,13 +8574,13 @@ getFlightHeadingStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_Heading" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightHeadingStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
+getFlightHeadingStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream (Float))
 getFlightHeadingStream thisArg = requestStream $ getFlightHeadingStreamReq thisArg 
 
 {-
  - The horizontal speed of the vessel in meters per second.
  -}
-getFlightHorizontalSpeed :: KRPCHS.SpaceCenter.Flight -> RPCContext (Double)
+getFlightHorizontalSpeed :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (Double)
 getFlightHorizontalSpeed thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_HorizontalSpeed" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8588,13 +8591,13 @@ getFlightHorizontalSpeedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_HorizontalSpeed" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightHorizontalSpeedStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Double))
+getFlightHorizontalSpeedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream (Double))
 getFlightHorizontalSpeedStream thisArg = requestStream $ getFlightHorizontalSpeedStreamReq thisArg 
 
 {-
  - The <a href="https://en.wikipedia.org/wiki/Latitude">latitudeof the vessel for the body being orbited, in degrees.
  -}
-getFlightLatitude :: KRPCHS.SpaceCenter.Flight -> RPCContext (Double)
+getFlightLatitude :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (Double)
 getFlightLatitude thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_Latitude" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8605,14 +8608,14 @@ getFlightLatitudeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_Latitude" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightLatitudeStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Double))
+getFlightLatitudeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream (Double))
 getFlightLatitudeStream thisArg = requestStream $ getFlightLatitudeStreamReq thisArg 
 
 {-
  - The <a href="https://en.wikipedia.org/wiki/Aerodynamic_force">aerodynamic liftcurrently acting on the vessel,
  - as a vector pointing in the direction of the force, with its magnitude equal to the strength of the force in Newtons.
  -}
-getFlightLift :: KRPCHS.SpaceCenter.Flight -> RPCContext ((Double, Double, Double))
+getFlightLift :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m ((Double, Double, Double))
 getFlightLift thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_Lift" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8623,13 +8626,13 @@ getFlightLiftStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_Lift" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightLiftStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
+getFlightLiftStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream ((Double, Double, Double)))
 getFlightLiftStream thisArg = requestStream $ getFlightLiftStreamReq thisArg 
 
 {-
  - Gets the coefficient of lift. This is the amount of lift produced by the vessel, and depends on air speed, air density and wing area.Requires <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Research.
  -}
-getFlightLiftCoefficient :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
+getFlightLiftCoefficient :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (Float)
 getFlightLiftCoefficient thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_LiftCoefficient" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8640,13 +8643,13 @@ getFlightLiftCoefficientStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_LiftCoefficient" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightLiftCoefficientStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
+getFlightLiftCoefficientStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream (Float))
 getFlightLiftCoefficientStream thisArg = requestStream $ getFlightLiftCoefficientStreamReq thisArg 
 
 {-
  - The <a href="https://en.wikipedia.org/wiki/Longitude">longitudeof the vessel for the body being orbited, in degrees.
  -}
-getFlightLongitude :: KRPCHS.SpaceCenter.Flight -> RPCContext (Double)
+getFlightLongitude :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (Double)
 getFlightLongitude thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_Longitude" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8657,13 +8660,13 @@ getFlightLongitudeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_Longitude" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightLongitudeStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Double))
+getFlightLongitudeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream (Double))
 getFlightLongitudeStream thisArg = requestStream $ getFlightLongitudeStreamReq thisArg 
 
 {-
  - The speed of the vessel, in multiples of the speed of sound.
  -}
-getFlightMach :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
+getFlightMach :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (Float)
 getFlightMach thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_Mach" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8674,14 +8677,14 @@ getFlightMachStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_Mach" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightMachStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
+getFlightMachStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream (Float))
 getFlightMachStream thisArg = requestStream $ getFlightMachStreamReq thisArg 
 
 {-
  - The altitude above sea level, in meters.
  - Measured from the center of mass of the vessel.
  -}
-getFlightMeanAltitude :: KRPCHS.SpaceCenter.Flight -> RPCContext (Double)
+getFlightMeanAltitude :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (Double)
 getFlightMeanAltitude thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_MeanAltitude" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8692,13 +8695,13 @@ getFlightMeanAltitudeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_MeanAltitude" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightMeanAltitudeStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Double))
+getFlightMeanAltitudeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream (Double))
 getFlightMeanAltitudeStream thisArg = requestStream $ getFlightMeanAltitudeStreamReq thisArg 
 
 {-
  - The unit direction vector pointing in the normal direction.
  -}
-getFlightNormal :: KRPCHS.SpaceCenter.Flight -> RPCContext ((Double, Double, Double))
+getFlightNormal :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m ((Double, Double, Double))
 getFlightNormal thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_Normal" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8709,13 +8712,13 @@ getFlightNormalStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_Normal" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightNormalStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
+getFlightNormalStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream ((Double, Double, Double)))
 getFlightNormalStream thisArg = requestStream $ getFlightNormalStreamReq thisArg 
 
 {-
  - The pitch angle of the vessel relative to the horizon, in degrees. A value between -90° and +90°.
  -}
-getFlightPitch :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
+getFlightPitch :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (Float)
 getFlightPitch thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_Pitch" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8726,13 +8729,13 @@ getFlightPitchStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_Pitch" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightPitchStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
+getFlightPitchStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream (Float))
 getFlightPitchStream thisArg = requestStream $ getFlightPitchStreamReq thisArg 
 
 {-
  - The unit direction vector pointing in the prograde direction.
  -}
-getFlightPrograde :: KRPCHS.SpaceCenter.Flight -> RPCContext ((Double, Double, Double))
+getFlightPrograde :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m ((Double, Double, Double))
 getFlightPrograde thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_Prograde" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8743,13 +8746,13 @@ getFlightProgradeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_Prograde" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightProgradeStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
+getFlightProgradeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream ((Double, Double, Double)))
 getFlightProgradeStream thisArg = requestStream $ getFlightProgradeStreamReq thisArg 
 
 {-
  - The unit direction vector pointing in the radial direction.
  -}
-getFlightRadial :: KRPCHS.SpaceCenter.Flight -> RPCContext ((Double, Double, Double))
+getFlightRadial :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m ((Double, Double, Double))
 getFlightRadial thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_Radial" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8760,13 +8763,13 @@ getFlightRadialStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_Radial" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightRadialStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
+getFlightRadialStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream ((Double, Double, Double)))
 getFlightRadialStream thisArg = requestStream $ getFlightRadialStreamReq thisArg 
 
 {-
  - The unit direction vector pointing in the retrograde direction.
  -}
-getFlightRetrograde :: KRPCHS.SpaceCenter.Flight -> RPCContext ((Double, Double, Double))
+getFlightRetrograde :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m ((Double, Double, Double))
 getFlightRetrograde thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_Retrograde" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8777,13 +8780,13 @@ getFlightRetrogradeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_Retrograde" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightRetrogradeStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
+getFlightRetrogradeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream ((Double, Double, Double)))
 getFlightRetrogradeStream thisArg = requestStream $ getFlightRetrogradeStreamReq thisArg 
 
 {-
  - The vessels Reynolds number.Requires <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Research.
  -}
-getFlightReynoldsNumber :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
+getFlightReynoldsNumber :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (Float)
 getFlightReynoldsNumber thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_ReynoldsNumber" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8794,13 +8797,13 @@ getFlightReynoldsNumberStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_ReynoldsNumber" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightReynoldsNumberStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
+getFlightReynoldsNumberStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream (Float))
 getFlightReynoldsNumberStream thisArg = requestStream $ getFlightReynoldsNumberStreamReq thisArg 
 
 {-
  - The roll angle of the vessel relative to the horizon, in degrees. A value between -180° and +180°.
  -}
-getFlightRoll :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
+getFlightRoll :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (Float)
 getFlightRoll thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_Roll" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8811,13 +8814,13 @@ getFlightRollStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_Roll" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightRollStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
+getFlightRollStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream (Float))
 getFlightRollStream thisArg = requestStream $ getFlightRollStreamReq thisArg 
 
 {-
  - The rotation of the vessel.
  -}
-getFlightRotation :: KRPCHS.SpaceCenter.Flight -> RPCContext ((Double, Double, Double, Double))
+getFlightRotation :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m ((Double, Double, Double, Double))
 getFlightRotation thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_Rotation" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8828,13 +8831,13 @@ getFlightRotationStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_Rotation" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightRotationStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double, Double)))
+getFlightRotationStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream ((Double, Double, Double, Double)))
 getFlightRotationStream thisArg = requestStream $ getFlightRotationStreamReq thisArg 
 
 {-
  - Gets the yaw angle between the orientation of the vessel and its velocity vector, in degrees.
  -}
-getFlightSideslipAngle :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
+getFlightSideslipAngle :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (Float)
 getFlightSideslipAngle thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_SideslipAngle" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8845,13 +8848,13 @@ getFlightSideslipAngleStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_SideslipAngle" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightSideslipAngleStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
+getFlightSideslipAngleStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream (Float))
 getFlightSideslipAngleStream thisArg = requestStream $ getFlightSideslipAngleStreamReq thisArg 
 
 {-
  - The speed of the vessel in meters per second.
  -}
-getFlightSpeed :: KRPCHS.SpaceCenter.Flight -> RPCContext (Double)
+getFlightSpeed :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (Double)
 getFlightSpeed thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_Speed" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8862,13 +8865,13 @@ getFlightSpeedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_Speed" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightSpeedStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Double))
+getFlightSpeedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream (Double))
 getFlightSpeedStream thisArg = requestStream $ getFlightSpeedStreamReq thisArg 
 
 {-
  - The speed of sound, in the atmosphere around the vessel, inm/s.
  -}
-getFlightSpeedOfSound :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
+getFlightSpeedOfSound :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (Float)
 getFlightSpeedOfSound thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_SpeedOfSound" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8879,14 +8882,14 @@ getFlightSpeedOfSoundStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_SpeedOfSound" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightSpeedOfSoundStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
+getFlightSpeedOfSoundStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream (Float))
 getFlightSpeedOfSoundStream thisArg = requestStream $ getFlightSpeedOfSoundStreamReq thisArg 
 
 {-
  - Gets the current amount of stall, between 0 and 1. A value greater than 0.005 indicates a minor stall
  - and a value greater than 0.5 indicates a large-scale stall.Requires <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Research.
  -}
-getFlightStallFraction :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
+getFlightStallFraction :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (Float)
 getFlightStallFraction thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_StallFraction" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8897,14 +8900,14 @@ getFlightStallFractionStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_StallFraction" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightStallFractionStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
+getFlightStallFractionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream (Float))
 getFlightStallFractionStream thisArg = requestStream $ getFlightStallFractionStreamReq thisArg 
 
 {-
  - The <a href="https://en.wikipedia.org/wiki/Total_air_temperature">static (ambient) temperatureof the
  - atmosphere around the vessel, in Kelvin.
  -}
-getFlightStaticAirTemperature :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
+getFlightStaticAirTemperature :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (Float)
 getFlightStaticAirTemperature thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_StaticAirTemperature" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8915,13 +8918,13 @@ getFlightStaticAirTemperatureStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_StaticAirTemperature" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightStaticAirTemperatureStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
+getFlightStaticAirTemperatureStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream (Float))
 getFlightStaticAirTemperatureStream thisArg = requestStream $ getFlightStaticAirTemperatureStreamReq thisArg 
 
 {-
  - The static atmospheric pressure acting on the vessel, in Pascals.
  -}
-getFlightStaticPressure :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
+getFlightStaticPressure :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (Float)
 getFlightStaticPressure thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_StaticPressure" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8932,13 +8935,13 @@ getFlightStaticPressureStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_StaticPressure" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightStaticPressureStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
+getFlightStaticPressureStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream (Float))
 getFlightStaticPressureStream thisArg = requestStream $ getFlightStaticPressureStreamReq thisArg 
 
 {-
  - The static atmospheric pressure at mean sea level, in Pascals.
  -}
-getFlightStaticPressureAtMSL :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
+getFlightStaticPressureAtMSL :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (Float)
 getFlightStaticPressureAtMSL thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_StaticPressureAtMSL" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8949,14 +8952,14 @@ getFlightStaticPressureAtMSLStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_StaticPressureAtMSL" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightStaticPressureAtMSLStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
+getFlightStaticPressureAtMSLStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream (Float))
 getFlightStaticPressureAtMSLStream thisArg = requestStream $ getFlightStaticPressureAtMSLStreamReq thisArg 
 
 {-
  - The altitude above the surface of the body or sea level, whichever is closer, in meters.
  - Measured from the center of mass of the vessel.
  -}
-getFlightSurfaceAltitude :: KRPCHS.SpaceCenter.Flight -> RPCContext (Double)
+getFlightSurfaceAltitude :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (Double)
 getFlightSurfaceAltitude thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_SurfaceAltitude" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8967,14 +8970,14 @@ getFlightSurfaceAltitudeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_SurfaceAltitude" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightSurfaceAltitudeStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Double))
+getFlightSurfaceAltitudeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream (Double))
 getFlightSurfaceAltitudeStream thisArg = requestStream $ getFlightSurfaceAltitudeStreamReq thisArg 
 
 {-
  - An estimate of the current terminal velocity of the vessel, inm/s.
  - This is the speed at which the drag forces cancel out the force of gravity.
  -}
-getFlightTerminalVelocity :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
+getFlightTerminalVelocity :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (Float)
 getFlightTerminalVelocity thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_TerminalVelocity" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -8985,7 +8988,7 @@ getFlightTerminalVelocityStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_TerminalVelocity" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightTerminalVelocityStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
+getFlightTerminalVelocityStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream (Float))
 getFlightTerminalVelocityStream thisArg = requestStream $ getFlightTerminalVelocityStreamReq thisArg 
 
 {-
@@ -8993,7 +8996,7 @@ getFlightTerminalVelocityStream thisArg = requestStream $ getFlightTerminalVeloc
  - efficiency of the engines, with a lower value indicating a more efficient vessel. This value is the
  - number of Newtons of fuel that are burned, per hour, to produce one newton of thrust.Requires <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Research.
  -}
-getFlightThrustSpecificFuelConsumption :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
+getFlightThrustSpecificFuelConsumption :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (Float)
 getFlightThrustSpecificFuelConsumption thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_ThrustSpecificFuelConsumption" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9004,14 +9007,14 @@ getFlightThrustSpecificFuelConsumptionStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_ThrustSpecificFuelConsumption" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightThrustSpecificFuelConsumptionStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
+getFlightThrustSpecificFuelConsumptionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream (Float))
 getFlightThrustSpecificFuelConsumptionStream thisArg = requestStream $ getFlightThrustSpecificFuelConsumptionStreamReq thisArg 
 
 {-
  - The <a href="https://en.wikipedia.org/wiki/Total_air_temperature">total air temperatureof the atmosphere
  - around the vessel, in Kelvin. This temperature includes the <see cref="M:SpaceCenter.Flight.StaticAirTemperature" /> and the vessel's kinetic energy.
  -}
-getFlightTotalAirTemperature :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
+getFlightTotalAirTemperature :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (Float)
 getFlightTotalAirTemperature thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_TotalAirTemperature" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9022,13 +9025,13 @@ getFlightTotalAirTemperatureStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_TotalAirTemperature" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightTotalAirTemperatureStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
+getFlightTotalAirTemperatureStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream (Float))
 getFlightTotalAirTemperatureStream thisArg = requestStream $ getFlightTotalAirTemperatureStreamReq thisArg 
 
 {-
  - The <a href="https://en.wikipedia.org/wiki/True_airspeed">true air speedof the vessel, inm/s.
  -}
-getFlightTrueAirSpeed :: KRPCHS.SpaceCenter.Flight -> RPCContext (Float)
+getFlightTrueAirSpeed :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (Float)
 getFlightTrueAirSpeed thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_TrueAirSpeed" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9039,14 +9042,14 @@ getFlightTrueAirSpeedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_TrueAirSpeed" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightTrueAirSpeedStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Float))
+getFlightTrueAirSpeedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream (Float))
 getFlightTrueAirSpeedStream thisArg = requestStream $ getFlightTrueAirSpeedStreamReq thisArg 
 
 {-
  - The velocity vector of the vessel. The magnitude of the vector is the speed of the vessel in meters per second.
  - The direction of the vector is the direction of the vessels motion.
  -}
-getFlightVelocity :: KRPCHS.SpaceCenter.Flight -> RPCContext ((Double, Double, Double))
+getFlightVelocity :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m ((Double, Double, Double))
 getFlightVelocity thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_Velocity" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9057,13 +9060,13 @@ getFlightVelocityStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_Velocity" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightVelocityStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream ((Double, Double, Double)))
+getFlightVelocityStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream ((Double, Double, Double)))
 getFlightVelocityStream thisArg = requestStream $ getFlightVelocityStreamReq thisArg 
 
 {-
  - The vertical speed of the vessel in meters per second.
  -}
-getFlightVerticalSpeed :: KRPCHS.SpaceCenter.Flight -> RPCContext (Double)
+getFlightVerticalSpeed :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (Double)
 getFlightVerticalSpeed thisArg = do
     let r = makeRequest "SpaceCenter" "Flight_get_VerticalSpeed" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9074,13 +9077,13 @@ getFlightVerticalSpeedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Flight_get_VerticalSpeed" [makeArgument 0 thisArg]
     in  makeStream req
 
-getFlightVerticalSpeedStream :: KRPCHS.SpaceCenter.Flight -> RPCContext (KRPCStream (Double))
+getFlightVerticalSpeedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Flight -> m (KRPCStream (Double))
 getFlightVerticalSpeedStream thisArg = requestStream $ getFlightVerticalSpeedStreamReq thisArg 
 
 {-
  - Remove the force.
  -}
-forceRemove :: KRPCHS.SpaceCenter.Force -> RPCContext ()
+forceRemove :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Force -> m ()
 forceRemove thisArg = do
     let r = makeRequest "SpaceCenter" "Force_Remove" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9089,7 +9092,7 @@ forceRemove thisArg = do
 {-
  - The force vector. The magnitude of the vector is the strength of the force in Newtons.
  -}
-getForceForceVector :: KRPCHS.SpaceCenter.Force -> RPCContext ((Double, Double, Double))
+getForceForceVector :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Force -> m ((Double, Double, Double))
 getForceForceVector thisArg = do
     let r = makeRequest "SpaceCenter" "Force_get_ForceVector" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9100,13 +9103,13 @@ getForceForceVectorStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Force_get_ForceVector" [makeArgument 0 thisArg]
     in  makeStream req
 
-getForceForceVectorStream :: KRPCHS.SpaceCenter.Force -> RPCContext (KRPCStream ((Double, Double, Double)))
+getForceForceVectorStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Force -> m (KRPCStream ((Double, Double, Double)))
 getForceForceVectorStream thisArg = requestStream $ getForceForceVectorStreamReq thisArg 
 
 {-
  - The part that this force is applied to.
  -}
-getForcePart :: KRPCHS.SpaceCenter.Force -> RPCContext (KRPCHS.SpaceCenter.Part)
+getForcePart :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Force -> m (KRPCHS.SpaceCenter.Part)
 getForcePart thisArg = do
     let r = makeRequest "SpaceCenter" "Force_get_Part" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9117,13 +9120,13 @@ getForcePartStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Force_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
-getForcePartStream :: KRPCHS.SpaceCenter.Force -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getForcePartStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Force -> m (KRPCStream (KRPCHS.SpaceCenter.Part))
 getForcePartStream thisArg = requestStream $ getForcePartStreamReq thisArg 
 
 {-
  - The position at which the force acts.
  -}
-getForcePosition :: KRPCHS.SpaceCenter.Force -> RPCContext ((Double, Double, Double))
+getForcePosition :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Force -> m ((Double, Double, Double))
 getForcePosition thisArg = do
     let r = makeRequest "SpaceCenter" "Force_get_Position" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9134,13 +9137,13 @@ getForcePositionStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Force_get_Position" [makeArgument 0 thisArg]
     in  makeStream req
 
-getForcePositionStream :: KRPCHS.SpaceCenter.Force -> RPCContext (KRPCStream ((Double, Double, Double)))
+getForcePositionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Force -> m (KRPCStream ((Double, Double, Double)))
 getForcePositionStream thisArg = requestStream $ getForcePositionStreamReq thisArg 
 
 {-
  - The reference frame of the force vector and position.
  -}
-getForceReferenceFrame :: KRPCHS.SpaceCenter.Force -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
+getForceReferenceFrame :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Force -> m (KRPCHS.SpaceCenter.ReferenceFrame)
 getForceReferenceFrame thisArg = do
     let r = makeRequest "SpaceCenter" "Force_get_ReferenceFrame" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9151,13 +9154,13 @@ getForceReferenceFrameStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Force_get_ReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
-getForceReferenceFrameStream :: KRPCHS.SpaceCenter.Force -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
+getForceReferenceFrameStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Force -> m (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 getForceReferenceFrameStream thisArg = requestStream $ getForceReferenceFrameStreamReq thisArg 
 
 {-
  - The force vector. The magnitude of the vector is the strength of the force in Newtons.
  -}
-setForceForceVector :: KRPCHS.SpaceCenter.Force -> (Double, Double, Double) -> RPCContext ()
+setForceForceVector :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Force -> (Double, Double, Double) -> m ()
 setForceForceVector thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Force_set_ForceVector" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -9166,7 +9169,7 @@ setForceForceVector thisArg valueArg = do
 {-
  - The position at which the force acts.
  -}
-setForcePosition :: KRPCHS.SpaceCenter.Force -> (Double, Double, Double) -> RPCContext ()
+setForcePosition :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Force -> (Double, Double, Double) -> m ()
 setForcePosition thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Force_set_Position" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -9175,7 +9178,7 @@ setForcePosition thisArg valueArg = do
 {-
  - The reference frame of the force vector and position.
  -}
-setForceReferenceFrame :: KRPCHS.SpaceCenter.Force -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ()
+setForceReferenceFrame :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Force -> KRPCHS.SpaceCenter.ReferenceFrame -> m ()
 setForceReferenceFrame thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Force_set_ReferenceFrame" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -9184,7 +9187,7 @@ setForceReferenceFrame thisArg valueArg = do
 {-
  - The area of the intake's opening, in square meters.
  -}
-getIntakeArea :: KRPCHS.SpaceCenter.Intake -> RPCContext (Float)
+getIntakeArea :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Intake -> m (Float)
 getIntakeArea thisArg = do
     let r = makeRequest "SpaceCenter" "Intake_get_Area" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9195,13 +9198,13 @@ getIntakeAreaStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Intake_get_Area" [makeArgument 0 thisArg]
     in  makeStream req
 
-getIntakeAreaStream :: KRPCHS.SpaceCenter.Intake -> RPCContext (KRPCStream (Float))
+getIntakeAreaStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Intake -> m (KRPCStream (Float))
 getIntakeAreaStream thisArg = requestStream $ getIntakeAreaStreamReq thisArg 
 
 {-
  - The rate of flow into the intake, in units of resource per second.
  -}
-getIntakeFlow :: KRPCHS.SpaceCenter.Intake -> RPCContext (Float)
+getIntakeFlow :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Intake -> m (Float)
 getIntakeFlow thisArg = do
     let r = makeRequest "SpaceCenter" "Intake_get_Flow" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9212,13 +9215,13 @@ getIntakeFlowStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Intake_get_Flow" [makeArgument 0 thisArg]
     in  makeStream req
 
-getIntakeFlowStream :: KRPCHS.SpaceCenter.Intake -> RPCContext (KRPCStream (Float))
+getIntakeFlowStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Intake -> m (KRPCStream (Float))
 getIntakeFlowStream thisArg = requestStream $ getIntakeFlowStreamReq thisArg 
 
 {-
  - Whether the intake is open.
  -}
-getIntakeOpen :: KRPCHS.SpaceCenter.Intake -> RPCContext (Bool)
+getIntakeOpen :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Intake -> m (Bool)
 getIntakeOpen thisArg = do
     let r = makeRequest "SpaceCenter" "Intake_get_Open" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9229,13 +9232,13 @@ getIntakeOpenStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Intake_get_Open" [makeArgument 0 thisArg]
     in  makeStream req
 
-getIntakeOpenStream :: KRPCHS.SpaceCenter.Intake -> RPCContext (KRPCStream (Bool))
+getIntakeOpenStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Intake -> m (KRPCStream (Bool))
 getIntakeOpenStream thisArg = requestStream $ getIntakeOpenStreamReq thisArg 
 
 {-
  - The part object for this intake.
  -}
-getIntakePart :: KRPCHS.SpaceCenter.Intake -> RPCContext (KRPCHS.SpaceCenter.Part)
+getIntakePart :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Intake -> m (KRPCHS.SpaceCenter.Part)
 getIntakePart thisArg = do
     let r = makeRequest "SpaceCenter" "Intake_get_Part" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9246,13 +9249,13 @@ getIntakePartStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Intake_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
-getIntakePartStream :: KRPCHS.SpaceCenter.Intake -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getIntakePartStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Intake -> m (KRPCStream (KRPCHS.SpaceCenter.Part))
 getIntakePartStream thisArg = requestStream $ getIntakePartStreamReq thisArg 
 
 {-
  - Speed of the flow into the intake, inm/s.
  -}
-getIntakeSpeed :: KRPCHS.SpaceCenter.Intake -> RPCContext (Float)
+getIntakeSpeed :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Intake -> m (Float)
 getIntakeSpeed thisArg = do
     let r = makeRequest "SpaceCenter" "Intake_get_Speed" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9263,13 +9266,13 @@ getIntakeSpeedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Intake_get_Speed" [makeArgument 0 thisArg]
     in  makeStream req
 
-getIntakeSpeedStream :: KRPCHS.SpaceCenter.Intake -> RPCContext (KRPCStream (Float))
+getIntakeSpeedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Intake -> m (KRPCStream (Float))
 getIntakeSpeedStream thisArg = requestStream $ getIntakeSpeedStreamReq thisArg 
 
 {-
  - Whether the intake is open.
  -}
-setIntakeOpen :: KRPCHS.SpaceCenter.Intake -> Bool -> RPCContext ()
+setIntakeOpen :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Intake -> Bool -> m ()
 setIntakeOpen thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Intake_set_Open" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -9278,7 +9281,7 @@ setIntakeOpen thisArg valueArg = do
 {-
  - Releases the docking clamp. Has no effect if the clamp has already been released.
  -}
-launchClampRelease :: KRPCHS.SpaceCenter.LaunchClamp -> RPCContext ()
+launchClampRelease :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.LaunchClamp -> m ()
 launchClampRelease thisArg = do
     let r = makeRequest "SpaceCenter" "LaunchClamp_Release" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9287,7 +9290,7 @@ launchClampRelease thisArg = do
 {-
  - The part object for this launch clamp.
  -}
-getLaunchClampPart :: KRPCHS.SpaceCenter.LaunchClamp -> RPCContext (KRPCHS.SpaceCenter.Part)
+getLaunchClampPart :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.LaunchClamp -> m (KRPCHS.SpaceCenter.Part)
 getLaunchClampPart thisArg = do
     let r = makeRequest "SpaceCenter" "LaunchClamp_get_Part" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9298,13 +9301,13 @@ getLaunchClampPartStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "LaunchClamp_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
-getLaunchClampPartStream :: KRPCHS.SpaceCenter.LaunchClamp -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getLaunchClampPartStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.LaunchClamp -> m (KRPCStream (KRPCHS.SpaceCenter.Part))
 getLaunchClampPartStream thisArg = requestStream $ getLaunchClampPartStreamReq thisArg 
 
 {-
  - Launch a vessel.<param name="craftDirectory">Name of the directory in the current saves "Ships" directory, that contains the craft file. For example"VAB"or"SPH".<param name="name">Name of the vessel to launch. This is the name of the ".craft" file in the save directory, without the ".craft" file extension.<param name="launchSite">Name of the launch site. For example"LaunchPad"or"Runway".
  -}
-launchVessel :: Data.Text.Text -> Data.Text.Text -> Data.Text.Text -> RPCContext ()
+launchVessel :: (MonadIO m, MonadThrow m, MonadRPC m) => Data.Text.Text -> Data.Text.Text -> Data.Text.Text -> m ()
 launchVessel craftDirectoryArg nameArg launchSiteArg = do
     let r = makeRequest "SpaceCenter" "LaunchVessel" [makeArgument 0 craftDirectoryArg, makeArgument 1 nameArg, makeArgument 2 launchSiteArg]
     res <- sendRequest r
@@ -9313,7 +9316,7 @@ launchVessel craftDirectoryArg nameArg launchSiteArg = do
 {-
  - Launch a new vessel from the SPH onto the runway.<param name="name">Name of the vessel to launch.This is equivalent to calling <see cref="M:SpaceCenter.LaunchVessel" /> with the craft directory set to "SPH" and the launch site set to "Runway".
  -}
-launchVesselFromSPH :: Data.Text.Text -> RPCContext ()
+launchVesselFromSPH :: (MonadIO m, MonadThrow m, MonadRPC m) => Data.Text.Text -> m ()
 launchVesselFromSPH nameArg = do
     let r = makeRequest "SpaceCenter" "LaunchVesselFromSPH" [makeArgument 0 nameArg]
     res <- sendRequest r
@@ -9322,7 +9325,7 @@ launchVesselFromSPH nameArg = do
 {-
  - Launch a new vessel from the VAB onto the launchpad.<param name="name">Name of the vessel to launch.This is equivalent to calling <see cref="M:SpaceCenter.LaunchVessel" /> with the craft directory set to "VAB" and the launch site set to "LaunchPad".
  -}
-launchVesselFromVAB :: Data.Text.Text -> RPCContext ()
+launchVesselFromVAB :: (MonadIO m, MonadThrow m, MonadRPC m) => Data.Text.Text -> m ()
 launchVesselFromVAB nameArg = do
     let r = makeRequest "SpaceCenter" "LaunchVesselFromVAB" [makeArgument 0 nameArg]
     res <- sendRequest r
@@ -9331,7 +9334,7 @@ launchVesselFromVAB nameArg = do
 {-
  - Returns a list of vessels from the given <paramref name="craftDirectory" /> that can be launched.<param name="craftDirectory">Name of the directory in the current saves "Ships" directory. For example"VAB"or"SPH".
  -}
-launchableVessels :: Data.Text.Text -> RPCContext ([Data.Text.Text])
+launchableVessels :: (MonadIO m, MonadThrow m, MonadRPC m) => Data.Text.Text -> m ([Data.Text.Text])
 launchableVessels craftDirectoryArg = do
     let r = makeRequest "SpaceCenter" "LaunchableVessels" [makeArgument 0 craftDirectoryArg]
     res <- sendRequest r
@@ -9342,13 +9345,13 @@ launchableVesselsStreamReq craftDirectoryArg =
     let req = makeRequest "SpaceCenter" "LaunchableVessels" [makeArgument 0 craftDirectoryArg]
     in  makeStream req
 
-launchableVesselsStream :: Data.Text.Text -> RPCContext (KRPCStream ([Data.Text.Text]))
+launchableVesselsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => Data.Text.Text -> m (KRPCStream ([Data.Text.Text]))
 launchableVesselsStream craftDirectoryArg = requestStream $ launchableVesselsStreamReq craftDirectoryArg 
 
 {-
  - Whether the leg is deployable.
  -}
-getLegDeployable :: KRPCHS.SpaceCenter.Leg -> RPCContext (Bool)
+getLegDeployable :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Leg -> m (Bool)
 getLegDeployable thisArg = do
     let r = makeRequest "SpaceCenter" "Leg_get_Deployable" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9359,14 +9362,14 @@ getLegDeployableStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Leg_get_Deployable" [makeArgument 0 thisArg]
     in  makeStream req
 
-getLegDeployableStream :: KRPCHS.SpaceCenter.Leg -> RPCContext (KRPCStream (Bool))
+getLegDeployableStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Leg -> m (KRPCStream (Bool))
 getLegDeployableStream thisArg = requestStream $ getLegDeployableStreamReq thisArg 
 
 {-
  - Whether the landing leg is deployed.Fixed landing legs are always deployed.
  - Returns an error if you try to deploy fixed landing gear.
  -}
-getLegDeployed :: KRPCHS.SpaceCenter.Leg -> RPCContext (Bool)
+getLegDeployed :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Leg -> m (Bool)
 getLegDeployed thisArg = do
     let r = makeRequest "SpaceCenter" "Leg_get_Deployed" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9377,13 +9380,13 @@ getLegDeployedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Leg_get_Deployed" [makeArgument 0 thisArg]
     in  makeStream req
 
-getLegDeployedStream :: KRPCHS.SpaceCenter.Leg -> RPCContext (KRPCStream (Bool))
+getLegDeployedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Leg -> m (KRPCStream (Bool))
 getLegDeployedStream thisArg = requestStream $ getLegDeployedStreamReq thisArg 
 
 {-
  - Returns whether the leg is touching the ground.
  -}
-getLegIsGrounded :: KRPCHS.SpaceCenter.Leg -> RPCContext (Bool)
+getLegIsGrounded :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Leg -> m (Bool)
 getLegIsGrounded thisArg = do
     let r = makeRequest "SpaceCenter" "Leg_get_IsGrounded" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9394,13 +9397,13 @@ getLegIsGroundedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Leg_get_IsGrounded" [makeArgument 0 thisArg]
     in  makeStream req
 
-getLegIsGroundedStream :: KRPCHS.SpaceCenter.Leg -> RPCContext (KRPCStream (Bool))
+getLegIsGroundedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Leg -> m (KRPCStream (Bool))
 getLegIsGroundedStream thisArg = requestStream $ getLegIsGroundedStreamReq thisArg 
 
 {-
  - The part object for this landing leg.
  -}
-getLegPart :: KRPCHS.SpaceCenter.Leg -> RPCContext (KRPCHS.SpaceCenter.Part)
+getLegPart :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Leg -> m (KRPCHS.SpaceCenter.Part)
 getLegPart thisArg = do
     let r = makeRequest "SpaceCenter" "Leg_get_Part" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9411,13 +9414,13 @@ getLegPartStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Leg_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
-getLegPartStream :: KRPCHS.SpaceCenter.Leg -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getLegPartStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Leg -> m (KRPCStream (KRPCHS.SpaceCenter.Part))
 getLegPartStream thisArg = requestStream $ getLegPartStreamReq thisArg 
 
 {-
  - The current state of the landing leg.
  -}
-getLegState :: KRPCHS.SpaceCenter.Leg -> RPCContext (KRPCHS.SpaceCenter.LegState)
+getLegState :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Leg -> m (KRPCHS.SpaceCenter.LegState)
 getLegState thisArg = do
     let r = makeRequest "SpaceCenter" "Leg_get_State" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9428,14 +9431,14 @@ getLegStateStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Leg_get_State" [makeArgument 0 thisArg]
     in  makeStream req
 
-getLegStateStream :: KRPCHS.SpaceCenter.Leg -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.LegState))
+getLegStateStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Leg -> m (KRPCStream (KRPCHS.SpaceCenter.LegState))
 getLegStateStream thisArg = requestStream $ getLegStateStreamReq thisArg 
 
 {-
  - Whether the landing leg is deployed.Fixed landing legs are always deployed.
  - Returns an error if you try to deploy fixed landing gear.
  -}
-setLegDeployed :: KRPCHS.SpaceCenter.Leg -> Bool -> RPCContext ()
+setLegDeployed :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Leg -> Bool -> m ()
 setLegDeployed thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Leg_set_Deployed" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -9444,7 +9447,7 @@ setLegDeployed thisArg valueArg = do
 {-
  - Whether the light is switched on.
  -}
-getLightActive :: KRPCHS.SpaceCenter.Light -> RPCContext (Bool)
+getLightActive :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Light -> m (Bool)
 getLightActive thisArg = do
     let r = makeRequest "SpaceCenter" "Light_get_Active" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9455,13 +9458,13 @@ getLightActiveStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Light_get_Active" [makeArgument 0 thisArg]
     in  makeStream req
 
-getLightActiveStream :: KRPCHS.SpaceCenter.Light -> RPCContext (KRPCStream (Bool))
+getLightActiveStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Light -> m (KRPCStream (Bool))
 getLightActiveStream thisArg = requestStream $ getLightActiveStreamReq thisArg 
 
 {-
  - The color of the light, as an RGB triple.
  -}
-getLightColor :: KRPCHS.SpaceCenter.Light -> RPCContext ((Float, Float, Float))
+getLightColor :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Light -> m ((Float, Float, Float))
 getLightColor thisArg = do
     let r = makeRequest "SpaceCenter" "Light_get_Color" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9472,13 +9475,13 @@ getLightColorStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Light_get_Color" [makeArgument 0 thisArg]
     in  makeStream req
 
-getLightColorStream :: KRPCHS.SpaceCenter.Light -> RPCContext (KRPCStream ((Float, Float, Float)))
+getLightColorStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Light -> m (KRPCStream ((Float, Float, Float)))
 getLightColorStream thisArg = requestStream $ getLightColorStreamReq thisArg 
 
 {-
  - The part object for this light.
  -}
-getLightPart :: KRPCHS.SpaceCenter.Light -> RPCContext (KRPCHS.SpaceCenter.Part)
+getLightPart :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Light -> m (KRPCHS.SpaceCenter.Part)
 getLightPart thisArg = do
     let r = makeRequest "SpaceCenter" "Light_get_Part" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9489,13 +9492,13 @@ getLightPartStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Light_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
-getLightPartStream :: KRPCHS.SpaceCenter.Light -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getLightPartStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Light -> m (KRPCStream (KRPCHS.SpaceCenter.Part))
 getLightPartStream thisArg = requestStream $ getLightPartStreamReq thisArg 
 
 {-
  - The current power usage, in units of charge per second.
  -}
-getLightPowerUsage :: KRPCHS.SpaceCenter.Light -> RPCContext (Float)
+getLightPowerUsage :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Light -> m (Float)
 getLightPowerUsage thisArg = do
     let r = makeRequest "SpaceCenter" "Light_get_PowerUsage" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9506,13 +9509,13 @@ getLightPowerUsageStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Light_get_PowerUsage" [makeArgument 0 thisArg]
     in  makeStream req
 
-getLightPowerUsageStream :: KRPCHS.SpaceCenter.Light -> RPCContext (KRPCStream (Float))
+getLightPowerUsageStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Light -> m (KRPCStream (Float))
 getLightPowerUsageStream thisArg = requestStream $ getLightPowerUsageStreamReq thisArg 
 
 {-
  - Whether the light is switched on.
  -}
-setLightActive :: KRPCHS.SpaceCenter.Light -> Bool -> RPCContext ()
+setLightActive :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Light -> Bool -> m ()
 setLightActive thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Light_set_Active" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -9521,7 +9524,7 @@ setLightActive thisArg valueArg = do
 {-
  - The color of the light, as an RGB triple.
  -}
-setLightColor :: KRPCHS.SpaceCenter.Light -> (Float, Float, Float) -> RPCContext ()
+setLightColor :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Light -> (Float, Float, Float) -> m ()
 setLightColor thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Light_set_Color" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -9531,7 +9534,7 @@ setLightColor thisArg valueArg = do
  - Load the game with the given name.
  - This will create a load a save file calledname.sfsfrom the folder of the current save game.
  -}
-load :: Data.Text.Text -> RPCContext ()
+load :: (MonadIO m, MonadThrow m, MonadRPC m) => Data.Text.Text -> m ()
 load nameArg = do
     let r = makeRequest "SpaceCenter" "Load" [makeArgument 0 nameArg]
     res <- sendRequest r
@@ -9540,7 +9543,7 @@ load nameArg = do
 {-
  - Returns the value of a field.<param name="name">Name of the field.
  -}
-moduleGetField :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> RPCContext (Data.Text.Text)
+moduleGetField :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Module -> Data.Text.Text -> m (Data.Text.Text)
 moduleGetField thisArg nameArg = do
     let r = makeRequest "SpaceCenter" "Module_GetField" [makeArgument 0 thisArg, makeArgument 1 nameArg]
     res <- sendRequest r
@@ -9551,13 +9554,13 @@ moduleGetFieldStreamReq thisArg nameArg =
     let req = makeRequest "SpaceCenter" "Module_GetField" [makeArgument 0 thisArg, makeArgument 1 nameArg]
     in  makeStream req
 
-moduleGetFieldStream :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> RPCContext (KRPCStream (Data.Text.Text))
+moduleGetFieldStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Module -> Data.Text.Text -> m (KRPCStream (Data.Text.Text))
 moduleGetFieldStream thisArg nameArg = requestStream $ moduleGetFieldStreamReq thisArg nameArg 
 
 {-
  - trueif the part has an action with the given name.<param name="name">
  -}
-moduleHasAction :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> RPCContext (Bool)
+moduleHasAction :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Module -> Data.Text.Text -> m (Bool)
 moduleHasAction thisArg nameArg = do
     let r = makeRequest "SpaceCenter" "Module_HasAction" [makeArgument 0 thisArg, makeArgument 1 nameArg]
     res <- sendRequest r
@@ -9568,13 +9571,13 @@ moduleHasActionStreamReq thisArg nameArg =
     let req = makeRequest "SpaceCenter" "Module_HasAction" [makeArgument 0 thisArg, makeArgument 1 nameArg]
     in  makeStream req
 
-moduleHasActionStream :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> RPCContext (KRPCStream (Bool))
+moduleHasActionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Module -> Data.Text.Text -> m (KRPCStream (Bool))
 moduleHasActionStream thisArg nameArg = requestStream $ moduleHasActionStreamReq thisArg nameArg 
 
 {-
  - trueif the module has an event with the given name.<param name="name">
  -}
-moduleHasEvent :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> RPCContext (Bool)
+moduleHasEvent :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Module -> Data.Text.Text -> m (Bool)
 moduleHasEvent thisArg nameArg = do
     let r = makeRequest "SpaceCenter" "Module_HasEvent" [makeArgument 0 thisArg, makeArgument 1 nameArg]
     res <- sendRequest r
@@ -9585,13 +9588,13 @@ moduleHasEventStreamReq thisArg nameArg =
     let req = makeRequest "SpaceCenter" "Module_HasEvent" [makeArgument 0 thisArg, makeArgument 1 nameArg]
     in  makeStream req
 
-moduleHasEventStream :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> RPCContext (KRPCStream (Bool))
+moduleHasEventStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Module -> Data.Text.Text -> m (KRPCStream (Bool))
 moduleHasEventStream thisArg nameArg = requestStream $ moduleHasEventStreamReq thisArg nameArg 
 
 {-
  - Returnstrueif the module has a field with the given name.<param name="name">Name of the field.
  -}
-moduleHasField :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> RPCContext (Bool)
+moduleHasField :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Module -> Data.Text.Text -> m (Bool)
 moduleHasField thisArg nameArg = do
     let r = makeRequest "SpaceCenter" "Module_HasField" [makeArgument 0 thisArg, makeArgument 1 nameArg]
     res <- sendRequest r
@@ -9602,13 +9605,13 @@ moduleHasFieldStreamReq thisArg nameArg =
     let req = makeRequest "SpaceCenter" "Module_HasField" [makeArgument 0 thisArg, makeArgument 1 nameArg]
     in  makeStream req
 
-moduleHasFieldStream :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> RPCContext (KRPCStream (Bool))
+moduleHasFieldStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Module -> Data.Text.Text -> m (KRPCStream (Bool))
 moduleHasFieldStream thisArg nameArg = requestStream $ moduleHasFieldStreamReq thisArg nameArg 
 
 {-
  - Set the value of a field to its original value.<param name="name">Name of the field.
  -}
-moduleResetField :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> RPCContext ()
+moduleResetField :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Module -> Data.Text.Text -> m ()
 moduleResetField thisArg nameArg = do
     let r = makeRequest "SpaceCenter" "Module_ResetField" [makeArgument 0 thisArg, makeArgument 1 nameArg]
     res <- sendRequest r
@@ -9617,7 +9620,7 @@ moduleResetField thisArg nameArg = do
 {-
  - Set the value of an action with the given name.<param name="name"><param name="value">
  -}
-moduleSetAction :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> Bool -> RPCContext ()
+moduleSetAction :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Module -> Data.Text.Text -> Bool -> m ()
 moduleSetAction thisArg nameArg valueArg = do
     let r = makeRequest "SpaceCenter" "Module_SetAction" [makeArgument 0 thisArg, makeArgument 1 nameArg, makeArgument 2 valueArg]
     res <- sendRequest r
@@ -9626,7 +9629,7 @@ moduleSetAction thisArg nameArg valueArg = do
 {-
  - Set the value of a field to the given floating point number.<param name="name">Name of the field.<param name="value">Value to set.
  -}
-moduleSetFieldFloat :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> Float -> RPCContext ()
+moduleSetFieldFloat :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Module -> Data.Text.Text -> Float -> m ()
 moduleSetFieldFloat thisArg nameArg valueArg = do
     let r = makeRequest "SpaceCenter" "Module_SetFieldFloat" [makeArgument 0 thisArg, makeArgument 1 nameArg, makeArgument 2 valueArg]
     res <- sendRequest r
@@ -9635,7 +9638,7 @@ moduleSetFieldFloat thisArg nameArg valueArg = do
 {-
  - Set the value of a field to the given integer number.<param name="name">Name of the field.<param name="value">Value to set.
  -}
-moduleSetFieldInt :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> Data.Int.Int32 -> RPCContext ()
+moduleSetFieldInt :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Module -> Data.Text.Text -> Data.Int.Int32 -> m ()
 moduleSetFieldInt thisArg nameArg valueArg = do
     let r = makeRequest "SpaceCenter" "Module_SetFieldInt" [makeArgument 0 thisArg, makeArgument 1 nameArg, makeArgument 2 valueArg]
     res <- sendRequest r
@@ -9644,7 +9647,7 @@ moduleSetFieldInt thisArg nameArg valueArg = do
 {-
  - Set the value of a field to the given string.<param name="name">Name of the field.<param name="value">Value to set.
  -}
-moduleSetFieldString :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> Data.Text.Text -> RPCContext ()
+moduleSetFieldString :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Module -> Data.Text.Text -> Data.Text.Text -> m ()
 moduleSetFieldString thisArg nameArg valueArg = do
     let r = makeRequest "SpaceCenter" "Module_SetFieldString" [makeArgument 0 thisArg, makeArgument 1 nameArg, makeArgument 2 valueArg]
     res <- sendRequest r
@@ -9653,7 +9656,7 @@ moduleSetFieldString thisArg nameArg valueArg = do
 {-
  - Trigger the named event. Equivalent to clicking the button in the right-click menu of the part.<param name="name">
  -}
-moduleTriggerEvent :: KRPCHS.SpaceCenter.Module -> Data.Text.Text -> RPCContext ()
+moduleTriggerEvent :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Module -> Data.Text.Text -> m ()
 moduleTriggerEvent thisArg nameArg = do
     let r = makeRequest "SpaceCenter" "Module_TriggerEvent" [makeArgument 0 thisArg, makeArgument 1 nameArg]
     res <- sendRequest r
@@ -9663,7 +9666,7 @@ moduleTriggerEvent thisArg nameArg = do
  - A list of all the names of the modules actions. These are the parts actions that can be assigned
  - to action groups in the in-game editor.
  -}
-getModuleActions :: KRPCHS.SpaceCenter.Module -> RPCContext ([Data.Text.Text])
+getModuleActions :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Module -> m ([Data.Text.Text])
 getModuleActions thisArg = do
     let r = makeRequest "SpaceCenter" "Module_get_Actions" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9674,14 +9677,14 @@ getModuleActionsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Module_get_Actions" [makeArgument 0 thisArg]
     in  makeStream req
 
-getModuleActionsStream :: KRPCHS.SpaceCenter.Module -> RPCContext (KRPCStream ([Data.Text.Text]))
+getModuleActionsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Module -> m (KRPCStream ([Data.Text.Text]))
 getModuleActionsStream thisArg = requestStream $ getModuleActionsStreamReq thisArg 
 
 {-
  - A list of the names of all of the modules events. Events are the clickable buttons
  - visible in the right-click menu of the part.
  -}
-getModuleEvents :: KRPCHS.SpaceCenter.Module -> RPCContext ([Data.Text.Text])
+getModuleEvents :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Module -> m ([Data.Text.Text])
 getModuleEvents thisArg = do
     let r = makeRequest "SpaceCenter" "Module_get_Events" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9692,14 +9695,14 @@ getModuleEventsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Module_get_Events" [makeArgument 0 thisArg]
     in  makeStream req
 
-getModuleEventsStream :: KRPCHS.SpaceCenter.Module -> RPCContext (KRPCStream ([Data.Text.Text]))
+getModuleEventsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Module -> m (KRPCStream ([Data.Text.Text]))
 getModuleEventsStream thisArg = requestStream $ getModuleEventsStreamReq thisArg 
 
 {-
  - The modules field names and their associated values, as a dictionary.
  - These are the values visible in the right-click menu of the part.
  -}
-getModuleFields :: KRPCHS.SpaceCenter.Module -> RPCContext (Data.Map.Map (Data.Text.Text) (Data.Text.Text))
+getModuleFields :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Module -> m (Data.Map.Map (Data.Text.Text) (Data.Text.Text))
 getModuleFields thisArg = do
     let r = makeRequest "SpaceCenter" "Module_get_Fields" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9710,13 +9713,13 @@ getModuleFieldsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Module_get_Fields" [makeArgument 0 thisArg]
     in  makeStream req
 
-getModuleFieldsStream :: KRPCHS.SpaceCenter.Module -> RPCContext (KRPCStream (Data.Map.Map (Data.Text.Text) (Data.Text.Text)))
+getModuleFieldsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Module -> m (KRPCStream (Data.Map.Map (Data.Text.Text) (Data.Text.Text)))
 getModuleFieldsStream thisArg = requestStream $ getModuleFieldsStreamReq thisArg 
 
 {-
  - Name of the PartModule. For example, "ModuleEngines".
  -}
-getModuleName :: KRPCHS.SpaceCenter.Module -> RPCContext (Data.Text.Text)
+getModuleName :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Module -> m (Data.Text.Text)
 getModuleName thisArg = do
     let r = makeRequest "SpaceCenter" "Module_get_Name" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9727,13 +9730,13 @@ getModuleNameStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Module_get_Name" [makeArgument 0 thisArg]
     in  makeStream req
 
-getModuleNameStream :: KRPCHS.SpaceCenter.Module -> RPCContext (KRPCStream (Data.Text.Text))
+getModuleNameStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Module -> m (KRPCStream (Data.Text.Text))
 getModuleNameStream thisArg = requestStream $ getModuleNameStreamReq thisArg 
 
 {-
  - The part that contains this module.
  -}
-getModulePart :: KRPCHS.SpaceCenter.Module -> RPCContext (KRPCHS.SpaceCenter.Part)
+getModulePart :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Module -> m (KRPCHS.SpaceCenter.Part)
 getModulePart thisArg = do
     let r = makeRequest "SpaceCenter" "Module_get_Part" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9744,14 +9747,14 @@ getModulePartStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Module_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
-getModulePartStream :: KRPCHS.SpaceCenter.Module -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getModulePartStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Module -> m (KRPCStream (KRPCHS.SpaceCenter.Part))
 getModulePartStream thisArg = requestStream $ getModulePartStreamReq thisArg 
 
 {-
  - Returns a vector whose direction the direction of the maneuver node burn, and whose magnitude
  - is the delta-v of the burn in m/s.<param name="referenceFrame">Does not change when executing the maneuver node. See <see cref="M:SpaceCenter.Node.RemainingBurnVector" />.
  -}
-nodeBurnVector :: KRPCHS.SpaceCenter.Node -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
+nodeBurnVector :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double))
 nodeBurnVector thisArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "Node_BurnVector" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     res <- sendRequest r
@@ -9762,13 +9765,13 @@ nodeBurnVectorStreamReq thisArg referenceFrameArg =
     let req = makeRequest "SpaceCenter" "Node_BurnVector" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
-nodeBurnVectorStream :: KRPCHS.SpaceCenter.Node -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
+nodeBurnVectorStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double)))
 nodeBurnVectorStream thisArg referenceFrameArg = requestStream $ nodeBurnVectorStreamReq thisArg referenceFrameArg 
 
 {-
  - Returns the unit direction vector of the maneuver nodes burn in the given reference frame.<param name="referenceFrame">
  -}
-nodeDirection :: KRPCHS.SpaceCenter.Node -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
+nodeDirection :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double))
 nodeDirection thisArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "Node_Direction" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     res <- sendRequest r
@@ -9779,13 +9782,13 @@ nodeDirectionStreamReq thisArg referenceFrameArg =
     let req = makeRequest "SpaceCenter" "Node_Direction" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
-nodeDirectionStream :: KRPCHS.SpaceCenter.Node -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
+nodeDirectionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double)))
 nodeDirectionStream thisArg referenceFrameArg = requestStream $ nodeDirectionStreamReq thisArg referenceFrameArg 
 
 {-
  - Returns the position vector of the maneuver node in the given reference frame.<param name="referenceFrame">
  -}
-nodePosition :: KRPCHS.SpaceCenter.Node -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
+nodePosition :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double))
 nodePosition thisArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "Node_Position" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     res <- sendRequest r
@@ -9796,14 +9799,14 @@ nodePositionStreamReq thisArg referenceFrameArg =
     let req = makeRequest "SpaceCenter" "Node_Position" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
-nodePositionStream :: KRPCHS.SpaceCenter.Node -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
+nodePositionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double)))
 nodePositionStream thisArg referenceFrameArg = requestStream $ nodePositionStreamReq thisArg referenceFrameArg 
 
 {-
  - Returns a vector whose direction the direction of the maneuver node burn, and whose magnitude
  - is the delta-v of the burn in m/s. The direction and magnitude change as the burn is executed.<param name="referenceFrame">
  -}
-nodeRemainingBurnVector :: KRPCHS.SpaceCenter.Node -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
+nodeRemainingBurnVector :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double))
 nodeRemainingBurnVector thisArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "Node_RemainingBurnVector" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     res <- sendRequest r
@@ -9814,13 +9817,13 @@ nodeRemainingBurnVectorStreamReq thisArg referenceFrameArg =
     let req = makeRequest "SpaceCenter" "Node_RemainingBurnVector" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
-nodeRemainingBurnVectorStream :: KRPCHS.SpaceCenter.Node -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
+nodeRemainingBurnVectorStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double)))
 nodeRemainingBurnVectorStream thisArg referenceFrameArg = requestStream $ nodeRemainingBurnVectorStreamReq thisArg referenceFrameArg 
 
 {-
  - Removes the maneuver node.
  -}
-nodeRemove :: KRPCHS.SpaceCenter.Node -> RPCContext ()
+nodeRemove :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> m ()
 nodeRemove thisArg = do
     let r = makeRequest "SpaceCenter" "Node_Remove" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9829,7 +9832,7 @@ nodeRemove thisArg = do
 {-
  - The delta-v of the maneuver node, in meters per second.Does not change when executing the maneuver node. See <see cref="M:SpaceCenter.Node.RemainingDeltaV" />.
  -}
-getNodeDeltaV :: KRPCHS.SpaceCenter.Node -> RPCContext (Double)
+getNodeDeltaV :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> m (Double)
 getNodeDeltaV thisArg = do
     let r = makeRequest "SpaceCenter" "Node_get_DeltaV" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9840,13 +9843,13 @@ getNodeDeltaVStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Node_get_DeltaV" [makeArgument 0 thisArg]
     in  makeStream req
 
-getNodeDeltaVStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (Double))
+getNodeDeltaVStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> m (KRPCStream (Double))
 getNodeDeltaVStream thisArg = requestStream $ getNodeDeltaVStreamReq thisArg 
 
 {-
  - The magnitude of the maneuver nodes delta-v in the normal direction, in meters per second.
  -}
-getNodeNormal :: KRPCHS.SpaceCenter.Node -> RPCContext (Double)
+getNodeNormal :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> m (Double)
 getNodeNormal thisArg = do
     let r = makeRequest "SpaceCenter" "Node_get_Normal" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9857,13 +9860,13 @@ getNodeNormalStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Node_get_Normal" [makeArgument 0 thisArg]
     in  makeStream req
 
-getNodeNormalStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (Double))
+getNodeNormalStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> m (KRPCStream (Double))
 getNodeNormalStream thisArg = requestStream $ getNodeNormalStreamReq thisArg 
 
 {-
  - The orbit that results from executing the maneuver node.
  -}
-getNodeOrbit :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCHS.SpaceCenter.Orbit)
+getNodeOrbit :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> m (KRPCHS.SpaceCenter.Orbit)
 getNodeOrbit thisArg = do
     let r = makeRequest "SpaceCenter" "Node_get_Orbit" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9874,7 +9877,7 @@ getNodeOrbitStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Node_get_Orbit" [makeArgument 0 thisArg]
     in  makeStream req
 
-getNodeOrbitStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Orbit))
+getNodeOrbitStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> m (KRPCStream (KRPCHS.SpaceCenter.Orbit))
 getNodeOrbitStream thisArg = requestStream $ getNodeOrbitStreamReq thisArg 
 
 {-
@@ -9886,7 +9889,7 @@ getNodeOrbitStream thisArg = requestStream $ getNodeOrbitStreamReq thisArg
  - orbit, at the position of the maneuver node.The z-axis points in the orbital normal direction of the original orbit,
  - at the position of the maneuver node.
  -}
-getNodeOrbitalReferenceFrame :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
+getNodeOrbitalReferenceFrame :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> m (KRPCHS.SpaceCenter.ReferenceFrame)
 getNodeOrbitalReferenceFrame thisArg = do
     let r = makeRequest "SpaceCenter" "Node_get_OrbitalReferenceFrame" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9897,13 +9900,13 @@ getNodeOrbitalReferenceFrameStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Node_get_OrbitalReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
-getNodeOrbitalReferenceFrameStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
+getNodeOrbitalReferenceFrameStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> m (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 getNodeOrbitalReferenceFrameStream thisArg = requestStream $ getNodeOrbitalReferenceFrameStreamReq thisArg 
 
 {-
  - The magnitude of the maneuver nodes delta-v in the prograde direction, in meters per second.
  -}
-getNodePrograde :: KRPCHS.SpaceCenter.Node -> RPCContext (Double)
+getNodePrograde :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> m (Double)
 getNodePrograde thisArg = do
     let r = makeRequest "SpaceCenter" "Node_get_Prograde" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9914,13 +9917,13 @@ getNodeProgradeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Node_get_Prograde" [makeArgument 0 thisArg]
     in  makeStream req
 
-getNodeProgradeStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (Double))
+getNodeProgradeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> m (KRPCStream (Double))
 getNodeProgradeStream thisArg = requestStream $ getNodeProgradeStreamReq thisArg 
 
 {-
  - The magnitude of the maneuver nodes delta-v in the radial direction, in meters per second.
  -}
-getNodeRadial :: KRPCHS.SpaceCenter.Node -> RPCContext (Double)
+getNodeRadial :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> m (Double)
 getNodeRadial thisArg = do
     let r = makeRequest "SpaceCenter" "Node_get_Radial" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9931,14 +9934,14 @@ getNodeRadialStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Node_get_Radial" [makeArgument 0 thisArg]
     in  makeStream req
 
-getNodeRadialStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (Double))
+getNodeRadialStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> m (KRPCStream (Double))
 getNodeRadialStream thisArg = requestStream $ getNodeRadialStreamReq thisArg 
 
 {-
  - Gets the reference frame that is fixed relative to the maneuver node's burn.
  - <list type="bullet">The origin is at the position of the maneuver node.The y-axis points in the direction of the burn.The x-axis and z-axis point in arbitrary but fixed directions.
  -}
-getNodeReferenceFrame :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
+getNodeReferenceFrame :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> m (KRPCHS.SpaceCenter.ReferenceFrame)
 getNodeReferenceFrame thisArg = do
     let r = makeRequest "SpaceCenter" "Node_get_ReferenceFrame" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9949,14 +9952,14 @@ getNodeReferenceFrameStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Node_get_ReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
-getNodeReferenceFrameStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
+getNodeReferenceFrameStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> m (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 getNodeReferenceFrameStream thisArg = requestStream $ getNodeReferenceFrameStreamReq thisArg 
 
 {-
  - Gets the remaining delta-v of the maneuver node, in meters per second. Changes as the node
  - is executed. This is equivalent to the delta-v reported in-game.
  -}
-getNodeRemainingDeltaV :: KRPCHS.SpaceCenter.Node -> RPCContext (Double)
+getNodeRemainingDeltaV :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> m (Double)
 getNodeRemainingDeltaV thisArg = do
     let r = makeRequest "SpaceCenter" "Node_get_RemainingDeltaV" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9967,13 +9970,13 @@ getNodeRemainingDeltaVStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Node_get_RemainingDeltaV" [makeArgument 0 thisArg]
     in  makeStream req
 
-getNodeRemainingDeltaVStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (Double))
+getNodeRemainingDeltaVStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> m (KRPCStream (Double))
 getNodeRemainingDeltaVStream thisArg = requestStream $ getNodeRemainingDeltaVStreamReq thisArg 
 
 {-
  - The time until the maneuver node will be encountered, in seconds.
  -}
-getNodeTimeTo :: KRPCHS.SpaceCenter.Node -> RPCContext (Double)
+getNodeTimeTo :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> m (Double)
 getNodeTimeTo thisArg = do
     let r = makeRequest "SpaceCenter" "Node_get_TimeTo" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -9984,13 +9987,13 @@ getNodeTimeToStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Node_get_TimeTo" [makeArgument 0 thisArg]
     in  makeStream req
 
-getNodeTimeToStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (Double))
+getNodeTimeToStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> m (KRPCStream (Double))
 getNodeTimeToStream thisArg = requestStream $ getNodeTimeToStreamReq thisArg 
 
 {-
  - The universal time at which the maneuver will occur, in seconds.
  -}
-getNodeUT :: KRPCHS.SpaceCenter.Node -> RPCContext (Double)
+getNodeUT :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> m (Double)
 getNodeUT thisArg = do
     let r = makeRequest "SpaceCenter" "Node_get_UT" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10001,13 +10004,13 @@ getNodeUTStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Node_get_UT" [makeArgument 0 thisArg]
     in  makeStream req
 
-getNodeUTStream :: KRPCHS.SpaceCenter.Node -> RPCContext (KRPCStream (Double))
+getNodeUTStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> m (KRPCStream (Double))
 getNodeUTStream thisArg = requestStream $ getNodeUTStreamReq thisArg 
 
 {-
  - The delta-v of the maneuver node, in meters per second.Does not change when executing the maneuver node. See <see cref="M:SpaceCenter.Node.RemainingDeltaV" />.
  -}
-setNodeDeltaV :: KRPCHS.SpaceCenter.Node -> Double -> RPCContext ()
+setNodeDeltaV :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> Double -> m ()
 setNodeDeltaV thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Node_set_DeltaV" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -10016,7 +10019,7 @@ setNodeDeltaV thisArg valueArg = do
 {-
  - The magnitude of the maneuver nodes delta-v in the normal direction, in meters per second.
  -}
-setNodeNormal :: KRPCHS.SpaceCenter.Node -> Double -> RPCContext ()
+setNodeNormal :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> Double -> m ()
 setNodeNormal thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Node_set_Normal" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -10025,7 +10028,7 @@ setNodeNormal thisArg valueArg = do
 {-
  - The magnitude of the maneuver nodes delta-v in the prograde direction, in meters per second.
  -}
-setNodePrograde :: KRPCHS.SpaceCenter.Node -> Double -> RPCContext ()
+setNodePrograde :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> Double -> m ()
 setNodePrograde thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Node_set_Prograde" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -10034,7 +10037,7 @@ setNodePrograde thisArg valueArg = do
 {-
  - The magnitude of the maneuver nodes delta-v in the radial direction, in meters per second.
  -}
-setNodeRadial :: KRPCHS.SpaceCenter.Node -> Double -> RPCContext ()
+setNodeRadial :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> Double -> m ()
 setNodeRadial thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Node_set_Radial" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -10043,7 +10046,7 @@ setNodeRadial thisArg valueArg = do
 {-
  - The universal time at which the maneuver will occur, in seconds.
  -}
-setNodeUT :: KRPCHS.SpaceCenter.Node -> Double -> RPCContext ()
+setNodeUT :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Node -> Double -> m ()
 setNodeUT thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Node_set_UT" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -10052,7 +10055,7 @@ setNodeUT thisArg valueArg = do
 {-
  - The eccentric anomaly at the given universal time.<param name="ut">The universal time, in seconds.
  -}
-orbitEccentricAnomalyAtUT :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (Double)
+orbitEccentricAnomalyAtUT :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> Double -> m (Double)
 orbitEccentricAnomalyAtUT thisArg utArg = do
     let r = makeRequest "SpaceCenter" "Orbit_EccentricAnomalyAtUT" [makeArgument 0 thisArg, makeArgument 1 utArg]
     res <- sendRequest r
@@ -10063,13 +10066,13 @@ orbitEccentricAnomalyAtUTStreamReq thisArg utArg =
     let req = makeRequest "SpaceCenter" "Orbit_EccentricAnomalyAtUT" [makeArgument 0 thisArg, makeArgument 1 utArg]
     in  makeStream req
 
-orbitEccentricAnomalyAtUTStream :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (KRPCStream (Double))
+orbitEccentricAnomalyAtUTStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> Double -> m (KRPCStream (Double))
 orbitEccentricAnomalyAtUTStream thisArg utArg = requestStream $ orbitEccentricAnomalyAtUTStreamReq thisArg utArg 
 
 {-
  - The orbital speed at the given time, in meters per second.<param name="time">Time from now, in seconds.
  -}
-orbitOrbitalSpeedAt :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (Double)
+orbitOrbitalSpeedAt :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> Double -> m (Double)
 orbitOrbitalSpeedAt thisArg timeArg = do
     let r = makeRequest "SpaceCenter" "Orbit_OrbitalSpeedAt" [makeArgument 0 thisArg, makeArgument 1 timeArg]
     res <- sendRequest r
@@ -10080,13 +10083,13 @@ orbitOrbitalSpeedAtStreamReq thisArg timeArg =
     let req = makeRequest "SpaceCenter" "Orbit_OrbitalSpeedAt" [makeArgument 0 thisArg, makeArgument 1 timeArg]
     in  makeStream req
 
-orbitOrbitalSpeedAtStream :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (KRPCStream (Double))
+orbitOrbitalSpeedAtStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> Double -> m (KRPCStream (Double))
 orbitOrbitalSpeedAtStream thisArg timeArg = requestStream $ orbitOrbitalSpeedAtStreamReq thisArg timeArg 
 
 {-
  - The orbital radius at the point in the orbit given by the true anomaly.<param name="trueAnomaly">The true anomaly.
  -}
-orbitRadiusAtTrueAnomaly :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (Double)
+orbitRadiusAtTrueAnomaly :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> Double -> m (Double)
 orbitRadiusAtTrueAnomaly thisArg trueAnomalyArg = do
     let r = makeRequest "SpaceCenter" "Orbit_RadiusAtTrueAnomaly" [makeArgument 0 thisArg, makeArgument 1 trueAnomalyArg]
     res <- sendRequest r
@@ -10097,14 +10100,14 @@ orbitRadiusAtTrueAnomalyStreamReq thisArg trueAnomalyArg =
     let req = makeRequest "SpaceCenter" "Orbit_RadiusAtTrueAnomaly" [makeArgument 0 thisArg, makeArgument 1 trueAnomalyArg]
     in  makeStream req
 
-orbitRadiusAtTrueAnomalyStream :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (KRPCStream (Double))
+orbitRadiusAtTrueAnomalyStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> Double -> m (KRPCStream (Double))
 orbitRadiusAtTrueAnomalyStream thisArg trueAnomalyArg = requestStream $ orbitRadiusAtTrueAnomalyStreamReq thisArg trueAnomalyArg 
 
 {-
  - The unit direction vector from which the orbits longitude of ascending node is measured,
  - in the given reference frame.<param name="referenceFrame">
  -}
-orbitReferencePlaneDirection :: KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
+orbitReferencePlaneDirection :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double))
 orbitReferencePlaneDirection referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "Orbit_ReferencePlaneDirection" [makeArgument 0 referenceFrameArg]
     res <- sendRequest r
@@ -10115,14 +10118,14 @@ orbitReferencePlaneDirectionStreamReq referenceFrameArg =
     let req = makeRequest "SpaceCenter" "Orbit_ReferencePlaneDirection" [makeArgument 0 referenceFrameArg]
     in  makeStream req
 
-orbitReferencePlaneDirectionStream :: KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
+orbitReferencePlaneDirectionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double)))
 orbitReferencePlaneDirectionStream referenceFrameArg = requestStream $ orbitReferencePlaneDirectionStreamReq referenceFrameArg 
 
 {-
  - The unit direction vector that is normal to the orbits reference plane, in the given
  - reference frame. The reference plane is the plane from which the orbits inclination is measured.<param name="referenceFrame">
  -}
-orbitReferencePlaneNormal :: KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
+orbitReferencePlaneNormal :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double))
 orbitReferencePlaneNormal referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "Orbit_ReferencePlaneNormal" [makeArgument 0 referenceFrameArg]
     res <- sendRequest r
@@ -10133,13 +10136,13 @@ orbitReferencePlaneNormalStreamReq referenceFrameArg =
     let req = makeRequest "SpaceCenter" "Orbit_ReferencePlaneNormal" [makeArgument 0 referenceFrameArg]
     in  makeStream req
 
-orbitReferencePlaneNormalStream :: KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
+orbitReferencePlaneNormalStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double)))
 orbitReferencePlaneNormalStream referenceFrameArg = requestStream $ orbitReferencePlaneNormalStreamReq referenceFrameArg 
 
 {-
  - The true anomaly at the given orbital radius.<param name="radius">The orbital radius in meters.
  -}
-orbitTrueAnomalyAtRadius :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (Double)
+orbitTrueAnomalyAtRadius :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> Double -> m (Double)
 orbitTrueAnomalyAtRadius thisArg radiusArg = do
     let r = makeRequest "SpaceCenter" "Orbit_TrueAnomalyAtRadius" [makeArgument 0 thisArg, makeArgument 1 radiusArg]
     res <- sendRequest r
@@ -10150,13 +10153,13 @@ orbitTrueAnomalyAtRadiusStreamReq thisArg radiusArg =
     let req = makeRequest "SpaceCenter" "Orbit_TrueAnomalyAtRadius" [makeArgument 0 thisArg, makeArgument 1 radiusArg]
     in  makeStream req
 
-orbitTrueAnomalyAtRadiusStream :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (KRPCStream (Double))
+orbitTrueAnomalyAtRadiusStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> Double -> m (KRPCStream (Double))
 orbitTrueAnomalyAtRadiusStream thisArg radiusArg = requestStream $ orbitTrueAnomalyAtRadiusStreamReq thisArg radiusArg 
 
 {-
  - The true anomaly at the given time.<param name="ut">The universal time in seconds.
  -}
-orbitTrueAnomalyAtUT :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (Double)
+orbitTrueAnomalyAtUT :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> Double -> m (Double)
 orbitTrueAnomalyAtUT thisArg utArg = do
     let r = makeRequest "SpaceCenter" "Orbit_TrueAnomalyAtUT" [makeArgument 0 thisArg, makeArgument 1 utArg]
     res <- sendRequest r
@@ -10167,13 +10170,13 @@ orbitTrueAnomalyAtUTStreamReq thisArg utArg =
     let req = makeRequest "SpaceCenter" "Orbit_TrueAnomalyAtUT" [makeArgument 0 thisArg, makeArgument 1 utArg]
     in  makeStream req
 
-orbitTrueAnomalyAtUTStream :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (KRPCStream (Double))
+orbitTrueAnomalyAtUTStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> Double -> m (KRPCStream (Double))
 orbitTrueAnomalyAtUTStream thisArg utArg = requestStream $ orbitTrueAnomalyAtUTStreamReq thisArg utArg 
 
 {-
  - The universal time, in seconds, corresponding to the given true anomaly.<param name="trueAnomaly">True anomaly.
  -}
-orbitUTAtTrueAnomaly :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (Double)
+orbitUTAtTrueAnomaly :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> Double -> m (Double)
 orbitUTAtTrueAnomaly thisArg trueAnomalyArg = do
     let r = makeRequest "SpaceCenter" "Orbit_UTAtTrueAnomaly" [makeArgument 0 thisArg, makeArgument 1 trueAnomalyArg]
     res <- sendRequest r
@@ -10184,13 +10187,13 @@ orbitUTAtTrueAnomalyStreamReq thisArg trueAnomalyArg =
     let req = makeRequest "SpaceCenter" "Orbit_UTAtTrueAnomaly" [makeArgument 0 thisArg, makeArgument 1 trueAnomalyArg]
     in  makeStream req
 
-orbitUTAtTrueAnomalyStream :: KRPCHS.SpaceCenter.Orbit -> Double -> RPCContext (KRPCStream (Double))
+orbitUTAtTrueAnomalyStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> Double -> m (KRPCStream (Double))
 orbitUTAtTrueAnomalyStream thisArg trueAnomalyArg = requestStream $ orbitUTAtTrueAnomalyStreamReq thisArg trueAnomalyArg 
 
 {-
  - Gets the apoapsis of the orbit, in meters, from the center of mass of the body being orbited.For the apoapsis altitude reported on the in-game map view, use <see cref="M:SpaceCenter.Orbit.ApoapsisAltitude" />.
  -}
-getOrbitApoapsis :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
+getOrbitApoapsis :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (Double)
 getOrbitApoapsis thisArg = do
     let r = makeRequest "SpaceCenter" "Orbit_get_Apoapsis" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10201,13 +10204,13 @@ getOrbitApoapsisStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Orbit_get_Apoapsis" [makeArgument 0 thisArg]
     in  makeStream req
 
-getOrbitApoapsisStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
+getOrbitApoapsisStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (KRPCStream (Double))
 getOrbitApoapsisStream thisArg = requestStream $ getOrbitApoapsisStreamReq thisArg 
 
 {-
  - The apoapsis of the orbit, in meters, above the sea level of the body being orbited.This is equal to <see cref="M:SpaceCenter.Orbit.Apoapsis" /> minus the equatorial radius of the body.
  -}
-getOrbitApoapsisAltitude :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
+getOrbitApoapsisAltitude :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (Double)
 getOrbitApoapsisAltitude thisArg = do
     let r = makeRequest "SpaceCenter" "Orbit_get_ApoapsisAltitude" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10218,13 +10221,13 @@ getOrbitApoapsisAltitudeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Orbit_get_ApoapsisAltitude" [makeArgument 0 thisArg]
     in  makeStream req
 
-getOrbitApoapsisAltitudeStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
+getOrbitApoapsisAltitudeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (KRPCStream (Double))
 getOrbitApoapsisAltitudeStream thisArg = requestStream $ getOrbitApoapsisAltitudeStreamReq thisArg 
 
 {-
  - The <a href="https://en.wikipedia.org/wiki/Argument_of_periapsis">argument of periapsis, in radians.
  -}
-getOrbitArgumentOfPeriapsis :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
+getOrbitArgumentOfPeriapsis :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (Double)
 getOrbitArgumentOfPeriapsis thisArg = do
     let r = makeRequest "SpaceCenter" "Orbit_get_ArgumentOfPeriapsis" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10235,13 +10238,13 @@ getOrbitArgumentOfPeriapsisStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Orbit_get_ArgumentOfPeriapsis" [makeArgument 0 thisArg]
     in  makeStream req
 
-getOrbitArgumentOfPeriapsisStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
+getOrbitArgumentOfPeriapsisStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (KRPCStream (Double))
 getOrbitArgumentOfPeriapsisStream thisArg = requestStream $ getOrbitArgumentOfPeriapsisStreamReq thisArg 
 
 {-
  - The celestial body (e.g. planet or moon) around which the object is orbiting.
  -}
-getOrbitBody :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCHS.SpaceCenter.CelestialBody)
+getOrbitBody :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (KRPCHS.SpaceCenter.CelestialBody)
 getOrbitBody thisArg = do
     let r = makeRequest "SpaceCenter" "Orbit_get_Body" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10252,13 +10255,13 @@ getOrbitBodyStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Orbit_get_Body" [makeArgument 0 thisArg]
     in  makeStream req
 
-getOrbitBodyStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.CelestialBody))
+getOrbitBodyStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (KRPCStream (KRPCHS.SpaceCenter.CelestialBody))
 getOrbitBodyStream thisArg = requestStream $ getOrbitBodyStreamReq thisArg 
 
 {-
  - The <a href="https://en.wikipedia.org/wiki/Eccentric_anomaly">eccentric anomaly.
  -}
-getOrbitEccentricAnomaly :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
+getOrbitEccentricAnomaly :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (Double)
 getOrbitEccentricAnomaly thisArg = do
     let r = makeRequest "SpaceCenter" "Orbit_get_EccentricAnomaly" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10269,13 +10272,13 @@ getOrbitEccentricAnomalyStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Orbit_get_EccentricAnomaly" [makeArgument 0 thisArg]
     in  makeStream req
 
-getOrbitEccentricAnomalyStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
+getOrbitEccentricAnomalyStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (KRPCStream (Double))
 getOrbitEccentricAnomalyStream thisArg = requestStream $ getOrbitEccentricAnomalyStreamReq thisArg 
 
 {-
  - The <a href="https://en.wikipedia.org/wiki/Orbital_eccentricity">eccentricityof the orbit.
  -}
-getOrbitEccentricity :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
+getOrbitEccentricity :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (Double)
 getOrbitEccentricity thisArg = do
     let r = makeRequest "SpaceCenter" "Orbit_get_Eccentricity" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10286,14 +10289,14 @@ getOrbitEccentricityStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Orbit_get_Eccentricity" [makeArgument 0 thisArg]
     in  makeStream req
 
-getOrbitEccentricityStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
+getOrbitEccentricityStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (KRPCStream (Double))
 getOrbitEccentricityStream thisArg = requestStream $ getOrbitEccentricityStreamReq thisArg 
 
 {-
  - The time since the epoch (the point at which the
  - <a href="https://en.wikipedia.org/wiki/Mean_anomaly">mean anomaly at epochwas measured, in seconds.
  -}
-getOrbitEpoch :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
+getOrbitEpoch :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (Double)
 getOrbitEpoch thisArg = do
     let r = makeRequest "SpaceCenter" "Orbit_get_Epoch" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10304,14 +10307,14 @@ getOrbitEpochStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Orbit_get_Epoch" [makeArgument 0 thisArg]
     in  makeStream req
 
-getOrbitEpochStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
+getOrbitEpochStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (KRPCStream (Double))
 getOrbitEpochStream thisArg = requestStream $ getOrbitEpochStreamReq thisArg 
 
 {-
  - The <a href="https://en.wikipedia.org/wiki/Orbital_inclination">inclinationof the orbit,
  - in radians.
  -}
-getOrbitInclination :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
+getOrbitInclination :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (Double)
 getOrbitInclination thisArg = do
     let r = makeRequest "SpaceCenter" "Orbit_get_Inclination" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10322,14 +10325,14 @@ getOrbitInclinationStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Orbit_get_Inclination" [makeArgument 0 thisArg]
     in  makeStream req
 
-getOrbitInclinationStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
+getOrbitInclinationStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (KRPCStream (Double))
 getOrbitInclinationStream thisArg = requestStream $ getOrbitInclinationStreamReq thisArg 
 
 {-
  - The <a href="https://en.wikipedia.org/wiki/Longitude_of_the_ascending_node">longitude of the
  - ascending node, in radians.
  -}
-getOrbitLongitudeOfAscendingNode :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
+getOrbitLongitudeOfAscendingNode :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (Double)
 getOrbitLongitudeOfAscendingNode thisArg = do
     let r = makeRequest "SpaceCenter" "Orbit_get_LongitudeOfAscendingNode" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10340,13 +10343,13 @@ getOrbitLongitudeOfAscendingNodeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Orbit_get_LongitudeOfAscendingNode" [makeArgument 0 thisArg]
     in  makeStream req
 
-getOrbitLongitudeOfAscendingNodeStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
+getOrbitLongitudeOfAscendingNodeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (KRPCStream (Double))
 getOrbitLongitudeOfAscendingNodeStream thisArg = requestStream $ getOrbitLongitudeOfAscendingNodeStreamReq thisArg 
 
 {-
  - The <a href="https://en.wikipedia.org/wiki/Mean_anomaly">mean anomaly.
  -}
-getOrbitMeanAnomaly :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
+getOrbitMeanAnomaly :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (Double)
 getOrbitMeanAnomaly thisArg = do
     let r = makeRequest "SpaceCenter" "Orbit_get_MeanAnomaly" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10357,13 +10360,13 @@ getOrbitMeanAnomalyStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Orbit_get_MeanAnomaly" [makeArgument 0 thisArg]
     in  makeStream req
 
-getOrbitMeanAnomalyStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
+getOrbitMeanAnomalyStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (KRPCStream (Double))
 getOrbitMeanAnomalyStream thisArg = requestStream $ getOrbitMeanAnomalyStreamReq thisArg 
 
 {-
  - The <a href="https://en.wikipedia.org/wiki/Mean_anomaly">mean anomaly at epoch.
  -}
-getOrbitMeanAnomalyAtEpoch :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
+getOrbitMeanAnomalyAtEpoch :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (Double)
 getOrbitMeanAnomalyAtEpoch thisArg = do
     let r = makeRequest "SpaceCenter" "Orbit_get_MeanAnomalyAtEpoch" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10374,14 +10377,14 @@ getOrbitMeanAnomalyAtEpochStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Orbit_get_MeanAnomalyAtEpoch" [makeArgument 0 thisArg]
     in  makeStream req
 
-getOrbitMeanAnomalyAtEpochStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
+getOrbitMeanAnomalyAtEpochStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (KRPCStream (Double))
 getOrbitMeanAnomalyAtEpochStream thisArg = requestStream $ getOrbitMeanAnomalyAtEpochStreamReq thisArg 
 
 {-
  - If the object is going to change sphere of influence in the future, returns the new orbit
  - after the change. Otherwise returnsnull.
  -}
-getOrbitNextOrbit :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCHS.SpaceCenter.Orbit)
+getOrbitNextOrbit :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (KRPCHS.SpaceCenter.Orbit)
 getOrbitNextOrbit thisArg = do
     let r = makeRequest "SpaceCenter" "Orbit_get_NextOrbit" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10392,13 +10395,13 @@ getOrbitNextOrbitStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Orbit_get_NextOrbit" [makeArgument 0 thisArg]
     in  makeStream req
 
-getOrbitNextOrbitStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Orbit))
+getOrbitNextOrbitStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (KRPCStream (KRPCHS.SpaceCenter.Orbit))
 getOrbitNextOrbitStream thisArg = requestStream $ getOrbitNextOrbitStreamReq thisArg 
 
 {-
  - The current orbital speed in meters per second.
  -}
-getOrbitOrbitalSpeed :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
+getOrbitOrbitalSpeed :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (Double)
 getOrbitOrbitalSpeed thisArg = do
     let r = makeRequest "SpaceCenter" "Orbit_get_OrbitalSpeed" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10409,13 +10412,13 @@ getOrbitOrbitalSpeedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Orbit_get_OrbitalSpeed" [makeArgument 0 thisArg]
     in  makeStream req
 
-getOrbitOrbitalSpeedStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
+getOrbitOrbitalSpeedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (KRPCStream (Double))
 getOrbitOrbitalSpeedStream thisArg = requestStream $ getOrbitOrbitalSpeedStreamReq thisArg 
 
 {-
  - The periapsis of the orbit, in meters, from the center of mass of the body being orbited.For the periapsis altitude reported on the in-game map view, use <see cref="M:SpaceCenter.Orbit.PeriapsisAltitude" />.
  -}
-getOrbitPeriapsis :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
+getOrbitPeriapsis :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (Double)
 getOrbitPeriapsis thisArg = do
     let r = makeRequest "SpaceCenter" "Orbit_get_Periapsis" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10426,13 +10429,13 @@ getOrbitPeriapsisStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Orbit_get_Periapsis" [makeArgument 0 thisArg]
     in  makeStream req
 
-getOrbitPeriapsisStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
+getOrbitPeriapsisStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (KRPCStream (Double))
 getOrbitPeriapsisStream thisArg = requestStream $ getOrbitPeriapsisStreamReq thisArg 
 
 {-
  - The periapsis of the orbit, in meters, above the sea level of the body being orbited.This is equal to <see cref="M:SpaceCenter.Orbit.Periapsis" /> minus the equatorial radius of the body.
  -}
-getOrbitPeriapsisAltitude :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
+getOrbitPeriapsisAltitude :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (Double)
 getOrbitPeriapsisAltitude thisArg = do
     let r = makeRequest "SpaceCenter" "Orbit_get_PeriapsisAltitude" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10443,13 +10446,13 @@ getOrbitPeriapsisAltitudeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Orbit_get_PeriapsisAltitude" [makeArgument 0 thisArg]
     in  makeStream req
 
-getOrbitPeriapsisAltitudeStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
+getOrbitPeriapsisAltitudeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (KRPCStream (Double))
 getOrbitPeriapsisAltitudeStream thisArg = requestStream $ getOrbitPeriapsisAltitudeStreamReq thisArg 
 
 {-
  - The orbital period, in seconds.
  -}
-getOrbitPeriod :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
+getOrbitPeriod :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (Double)
 getOrbitPeriod thisArg = do
     let r = makeRequest "SpaceCenter" "Orbit_get_Period" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10460,14 +10463,14 @@ getOrbitPeriodStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Orbit_get_Period" [makeArgument 0 thisArg]
     in  makeStream req
 
-getOrbitPeriodStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
+getOrbitPeriodStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (KRPCStream (Double))
 getOrbitPeriodStream thisArg = requestStream $ getOrbitPeriodStreamReq thisArg 
 
 {-
  - The current radius of the orbit, in meters. This is the distance between the center
  - of mass of the object in orbit, and the center of mass of the body around which it is orbiting.This value will change over time if the orbit is elliptical.
  -}
-getOrbitRadius :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
+getOrbitRadius :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (Double)
 getOrbitRadius thisArg = do
     let r = makeRequest "SpaceCenter" "Orbit_get_Radius" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10478,13 +10481,13 @@ getOrbitRadiusStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Orbit_get_Radius" [makeArgument 0 thisArg]
     in  makeStream req
 
-getOrbitRadiusStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
+getOrbitRadiusStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (KRPCStream (Double))
 getOrbitRadiusStream thisArg = requestStream $ getOrbitRadiusStreamReq thisArg 
 
 {-
  - The semi-major axis of the orbit, in meters.
  -}
-getOrbitSemiMajorAxis :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
+getOrbitSemiMajorAxis :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (Double)
 getOrbitSemiMajorAxis thisArg = do
     let r = makeRequest "SpaceCenter" "Orbit_get_SemiMajorAxis" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10495,13 +10498,13 @@ getOrbitSemiMajorAxisStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Orbit_get_SemiMajorAxis" [makeArgument 0 thisArg]
     in  makeStream req
 
-getOrbitSemiMajorAxisStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
+getOrbitSemiMajorAxisStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (KRPCStream (Double))
 getOrbitSemiMajorAxisStream thisArg = requestStream $ getOrbitSemiMajorAxisStreamReq thisArg 
 
 {-
  - The semi-minor axis of the orbit, in meters.
  -}
-getOrbitSemiMinorAxis :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
+getOrbitSemiMinorAxis :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (Double)
 getOrbitSemiMinorAxis thisArg = do
     let r = makeRequest "SpaceCenter" "Orbit_get_SemiMinorAxis" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10512,13 +10515,13 @@ getOrbitSemiMinorAxisStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Orbit_get_SemiMinorAxis" [makeArgument 0 thisArg]
     in  makeStream req
 
-getOrbitSemiMinorAxisStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
+getOrbitSemiMinorAxisStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (KRPCStream (Double))
 getOrbitSemiMinorAxisStream thisArg = requestStream $ getOrbitSemiMinorAxisStreamReq thisArg 
 
 {-
  - The current orbital speed of the object in meters per second.This value will change over time if the orbit is elliptical.
  -}
-getOrbitSpeed :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
+getOrbitSpeed :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (Double)
 getOrbitSpeed thisArg = do
     let r = makeRequest "SpaceCenter" "Orbit_get_Speed" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10529,13 +10532,13 @@ getOrbitSpeedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Orbit_get_Speed" [makeArgument 0 thisArg]
     in  makeStream req
 
-getOrbitSpeedStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
+getOrbitSpeedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (KRPCStream (Double))
 getOrbitSpeedStream thisArg = requestStream $ getOrbitSpeedStreamReq thisArg 
 
 {-
  - The time until the object reaches apoapsis, in seconds.
  -}
-getOrbitTimeToApoapsis :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
+getOrbitTimeToApoapsis :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (Double)
 getOrbitTimeToApoapsis thisArg = do
     let r = makeRequest "SpaceCenter" "Orbit_get_TimeToApoapsis" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10546,13 +10549,13 @@ getOrbitTimeToApoapsisStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Orbit_get_TimeToApoapsis" [makeArgument 0 thisArg]
     in  makeStream req
 
-getOrbitTimeToApoapsisStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
+getOrbitTimeToApoapsisStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (KRPCStream (Double))
 getOrbitTimeToApoapsisStream thisArg = requestStream $ getOrbitTimeToApoapsisStreamReq thisArg 
 
 {-
  - The time until the object reaches periapsis, in seconds.
  -}
-getOrbitTimeToPeriapsis :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
+getOrbitTimeToPeriapsis :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (Double)
 getOrbitTimeToPeriapsis thisArg = do
     let r = makeRequest "SpaceCenter" "Orbit_get_TimeToPeriapsis" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10563,14 +10566,14 @@ getOrbitTimeToPeriapsisStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Orbit_get_TimeToPeriapsis" [makeArgument 0 thisArg]
     in  makeStream req
 
-getOrbitTimeToPeriapsisStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
+getOrbitTimeToPeriapsisStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (KRPCStream (Double))
 getOrbitTimeToPeriapsisStream thisArg = requestStream $ getOrbitTimeToPeriapsisStreamReq thisArg 
 
 {-
  - The time until the object changes sphere of influence, in seconds. ReturnsNaNif the
  - object is not going to change sphere of influence.
  -}
-getOrbitTimeToSOIChange :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
+getOrbitTimeToSOIChange :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (Double)
 getOrbitTimeToSOIChange thisArg = do
     let r = makeRequest "SpaceCenter" "Orbit_get_TimeToSOIChange" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10581,13 +10584,13 @@ getOrbitTimeToSOIChangeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Orbit_get_TimeToSOIChange" [makeArgument 0 thisArg]
     in  makeStream req
 
-getOrbitTimeToSOIChangeStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
+getOrbitTimeToSOIChangeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (KRPCStream (Double))
 getOrbitTimeToSOIChangeStream thisArg = requestStream $ getOrbitTimeToSOIChangeStreamReq thisArg 
 
 {-
  - The <a href="https://en.wikipedia.org/wiki/True_anomaly">true anomaly.
  -}
-getOrbitTrueAnomaly :: KRPCHS.SpaceCenter.Orbit -> RPCContext (Double)
+getOrbitTrueAnomaly :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (Double)
 getOrbitTrueAnomaly thisArg = do
     let r = makeRequest "SpaceCenter" "Orbit_get_TrueAnomaly" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10598,14 +10601,14 @@ getOrbitTrueAnomalyStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Orbit_get_TrueAnomaly" [makeArgument 0 thisArg]
     in  makeStream req
 
-getOrbitTrueAnomalyStream :: KRPCHS.SpaceCenter.Orbit -> RPCContext (KRPCStream (Double))
+getOrbitTrueAnomalyStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Orbit -> m (KRPCStream (Double))
 getOrbitTrueAnomalyStream thisArg = requestStream $ getOrbitTrueAnomalyStreamReq thisArg 
 
 {-
  - Deploys the parachute. This has no effect if the parachute has already
  - been armed or deployed. Only applicable to RealChutes parachutes.
  -}
-parachuteArm :: KRPCHS.SpaceCenter.Parachute -> RPCContext ()
+parachuteArm :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parachute -> m ()
 parachuteArm thisArg = do
     let r = makeRequest "SpaceCenter" "Parachute_Arm" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10615,7 +10618,7 @@ parachuteArm thisArg = do
  - Deploys the parachute. This has no effect if the parachute has already
  - been deployed.
  -}
-parachuteDeploy :: KRPCHS.SpaceCenter.Parachute -> RPCContext ()
+parachuteDeploy :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parachute -> m ()
 parachuteDeploy thisArg = do
     let r = makeRequest "SpaceCenter" "Parachute_Deploy" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10624,7 +10627,7 @@ parachuteDeploy thisArg = do
 {-
  - Whether the parachute has been armed or deployed. Only applicable to RealChutes parachutes.
  -}
-getParachuteArmed :: KRPCHS.SpaceCenter.Parachute -> RPCContext (Bool)
+getParachuteArmed :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parachute -> m (Bool)
 getParachuteArmed thisArg = do
     let r = makeRequest "SpaceCenter" "Parachute_get_Armed" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10635,14 +10638,14 @@ getParachuteArmedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Parachute_get_Armed" [makeArgument 0 thisArg]
     in  makeStream req
 
-getParachuteArmedStream :: KRPCHS.SpaceCenter.Parachute -> RPCContext (KRPCStream (Bool))
+getParachuteArmedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parachute -> m (KRPCStream (Bool))
 getParachuteArmedStream thisArg = requestStream $ getParachuteArmedStreamReq thisArg 
 
 {-
  - The altitude at which the parachute will full deploy, in meters.
  - Only applicable to stock parachutes.
  -}
-getParachuteDeployAltitude :: KRPCHS.SpaceCenter.Parachute -> RPCContext (Float)
+getParachuteDeployAltitude :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parachute -> m (Float)
 getParachuteDeployAltitude thisArg = do
     let r = makeRequest "SpaceCenter" "Parachute_get_DeployAltitude" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10653,14 +10656,14 @@ getParachuteDeployAltitudeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Parachute_get_DeployAltitude" [makeArgument 0 thisArg]
     in  makeStream req
 
-getParachuteDeployAltitudeStream :: KRPCHS.SpaceCenter.Parachute -> RPCContext (KRPCStream (Float))
+getParachuteDeployAltitudeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parachute -> m (KRPCStream (Float))
 getParachuteDeployAltitudeStream thisArg = requestStream $ getParachuteDeployAltitudeStreamReq thisArg 
 
 {-
  - The minimum pressure at which the parachute will semi-deploy, in atmospheres.
  - Only applicable to stock parachutes.
  -}
-getParachuteDeployMinPressure :: KRPCHS.SpaceCenter.Parachute -> RPCContext (Float)
+getParachuteDeployMinPressure :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parachute -> m (Float)
 getParachuteDeployMinPressure thisArg = do
     let r = makeRequest "SpaceCenter" "Parachute_get_DeployMinPressure" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10671,13 +10674,13 @@ getParachuteDeployMinPressureStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Parachute_get_DeployMinPressure" [makeArgument 0 thisArg]
     in  makeStream req
 
-getParachuteDeployMinPressureStream :: KRPCHS.SpaceCenter.Parachute -> RPCContext (KRPCStream (Float))
+getParachuteDeployMinPressureStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parachute -> m (KRPCStream (Float))
 getParachuteDeployMinPressureStream thisArg = requestStream $ getParachuteDeployMinPressureStreamReq thisArg 
 
 {-
  - Whether the parachute has been deployed.
  -}
-getParachuteDeployed :: KRPCHS.SpaceCenter.Parachute -> RPCContext (Bool)
+getParachuteDeployed :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parachute -> m (Bool)
 getParachuteDeployed thisArg = do
     let r = makeRequest "SpaceCenter" "Parachute_get_Deployed" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10688,13 +10691,13 @@ getParachuteDeployedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Parachute_get_Deployed" [makeArgument 0 thisArg]
     in  makeStream req
 
-getParachuteDeployedStream :: KRPCHS.SpaceCenter.Parachute -> RPCContext (KRPCStream (Bool))
+getParachuteDeployedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parachute -> m (KRPCStream (Bool))
 getParachuteDeployedStream thisArg = requestStream $ getParachuteDeployedStreamReq thisArg 
 
 {-
  - The part object for this parachute.
  -}
-getParachutePart :: KRPCHS.SpaceCenter.Parachute -> RPCContext (KRPCHS.SpaceCenter.Part)
+getParachutePart :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parachute -> m (KRPCHS.SpaceCenter.Part)
 getParachutePart thisArg = do
     let r = makeRequest "SpaceCenter" "Parachute_get_Part" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10705,13 +10708,13 @@ getParachutePartStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Parachute_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
-getParachutePartStream :: KRPCHS.SpaceCenter.Parachute -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getParachutePartStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parachute -> m (KRPCStream (KRPCHS.SpaceCenter.Part))
 getParachutePartStream thisArg = requestStream $ getParachutePartStreamReq thisArg 
 
 {-
  - The current state of the parachute.
  -}
-getParachuteState :: KRPCHS.SpaceCenter.Parachute -> RPCContext (KRPCHS.SpaceCenter.ParachuteState)
+getParachuteState :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parachute -> m (KRPCHS.SpaceCenter.ParachuteState)
 getParachuteState thisArg = do
     let r = makeRequest "SpaceCenter" "Parachute_get_State" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10722,14 +10725,14 @@ getParachuteStateStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Parachute_get_State" [makeArgument 0 thisArg]
     in  makeStream req
 
-getParachuteStateStream :: KRPCHS.SpaceCenter.Parachute -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ParachuteState))
+getParachuteStateStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parachute -> m (KRPCStream (KRPCHS.SpaceCenter.ParachuteState))
 getParachuteStateStream thisArg = requestStream $ getParachuteStateStreamReq thisArg 
 
 {-
  - The altitude at which the parachute will full deploy, in meters.
  - Only applicable to stock parachutes.
  -}
-setParachuteDeployAltitude :: KRPCHS.SpaceCenter.Parachute -> Float -> RPCContext ()
+setParachuteDeployAltitude :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parachute -> Float -> m ()
 setParachuteDeployAltitude thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Parachute_set_DeployAltitude" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -10739,7 +10742,7 @@ setParachuteDeployAltitude thisArg valueArg = do
  - The minimum pressure at which the parachute will semi-deploy, in atmospheres.
  - Only applicable to stock parachutes.
  -}
-setParachuteDeployMinPressure :: KRPCHS.SpaceCenter.Parachute -> Float -> RPCContext ()
+setParachuteDeployMinPressure :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parachute -> Float -> m ()
 setParachuteDeployMinPressure thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Parachute_set_DeployMinPressure" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -10749,7 +10752,7 @@ setParachuteDeployMinPressure thisArg valueArg = do
  - Exert a constant force on the part, acting at the given position.
  - Returns an object that can be used to remove or modify the force.
  -}
-partAddForce :: KRPCHS.SpaceCenter.Part -> (Double, Double, Double) -> (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCHS.SpaceCenter.Force)
+partAddForce :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> (Double, Double, Double) -> (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCHS.SpaceCenter.Force)
 partAddForce thisArg forceArg positionArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "Part_AddForce" [makeArgument 0 thisArg, makeArgument 1 forceArg, makeArgument 2 positionArg, makeArgument 3 referenceFrameArg]
     res <- sendRequest r
@@ -10760,7 +10763,7 @@ partAddForceStreamReq thisArg forceArg positionArg referenceFrameArg =
     let req = makeRequest "SpaceCenter" "Part_AddForce" [makeArgument 0 thisArg, makeArgument 1 forceArg, makeArgument 2 positionArg, makeArgument 3 referenceFrameArg]
     in  makeStream req
 
-partAddForceStream :: KRPCHS.SpaceCenter.Part -> (Double, Double, Double) -> (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Force))
+partAddForceStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> (Double, Double, Double) -> (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream (KRPCHS.SpaceCenter.Force))
 partAddForceStream thisArg forceArg positionArg referenceFrameArg = requestStream $ partAddForceStreamReq thisArg forceArg positionArg referenceFrameArg 
 
 {-
@@ -10769,7 +10772,7 @@ partAddForceStream thisArg forceArg positionArg referenceFrameArg = requestStrea
  - If the part is not collidable, the box has zero volume and is centered on
  - the <see cref="M:SpaceCenter.Part.Position" /> of the part.
  -}
-partBoundingBox :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (((Double, Double, Double), (Double, Double, Double)))
+partBoundingBox :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> m (((Double, Double, Double), (Double, Double, Double)))
 partBoundingBox thisArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "Part_BoundingBox" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     res <- sendRequest r
@@ -10780,14 +10783,14 @@ partBoundingBoxStreamReq thisArg referenceFrameArg =
     let req = makeRequest "SpaceCenter" "Part_BoundingBox" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
-partBoundingBoxStream :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
+partBoundingBoxStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
 partBoundingBoxStream thisArg referenceFrameArg = requestStream $ partBoundingBoxStreamReq thisArg referenceFrameArg 
 
 {-
  - The position of the parts center of mass in the given reference frame.
  - If the part is physicsless, this is equivalent to <see cref="M:SpaceCenter.Part.Position" />.<param name="referenceFrame">
  -}
-partCenterOfMass :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
+partCenterOfMass :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double))
 partCenterOfMass thisArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "Part_CenterOfMass" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     res <- sendRequest r
@@ -10798,13 +10801,13 @@ partCenterOfMassStreamReq thisArg referenceFrameArg =
     let req = makeRequest "SpaceCenter" "Part_CenterOfMass" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
-partCenterOfMassStream :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
+partCenterOfMassStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double)))
 partCenterOfMassStream thisArg referenceFrameArg = requestStream $ partCenterOfMassStreamReq thisArg referenceFrameArg 
 
 {-
  - The direction of the part in the given reference frame.<param name="referenceFrame">
  -}
-partDirection :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
+partDirection :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double))
 partDirection thisArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "Part_Direction" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     res <- sendRequest r
@@ -10815,13 +10818,13 @@ partDirectionStreamReq thisArg referenceFrameArg =
     let req = makeRequest "SpaceCenter" "Part_Direction" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
-partDirectionStream :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
+partDirectionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double)))
 partDirectionStream thisArg referenceFrameArg = requestStream $ partDirectionStreamReq thisArg referenceFrameArg 
 
 {-
  - Exert an instantaneous force on the part, acting at the given position.The force is applied instantaneously in a single physics update.
  -}
-partInstantaneousForce :: KRPCHS.SpaceCenter.Part -> (Double, Double, Double) -> (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ()
+partInstantaneousForce :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> (Double, Double, Double) -> (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> m ()
 partInstantaneousForce thisArg forceArg positionArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "Part_InstantaneousForce" [makeArgument 0 thisArg, makeArgument 1 forceArg, makeArgument 2 positionArg, makeArgument 3 referenceFrameArg]
     res <- sendRequest r
@@ -10832,7 +10835,7 @@ partInstantaneousForce thisArg forceArg positionArg referenceFrameArg = do
  - It s not necessarily the same as the parts center of mass.
  - Use <see cref="M:SpaceCenter.Part.CenterOfMass" /> to get the parts center of mass.<param name="referenceFrame">
  -}
-partPosition :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
+partPosition :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double))
 partPosition thisArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "Part_Position" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     res <- sendRequest r
@@ -10843,13 +10846,13 @@ partPositionStreamReq thisArg referenceFrameArg =
     let req = makeRequest "SpaceCenter" "Part_Position" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
-partPositionStream :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
+partPositionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double)))
 partPositionStream thisArg referenceFrameArg = requestStream $ partPositionStreamReq thisArg referenceFrameArg 
 
 {-
  - The rotation of the part in the given reference frame.<param name="referenceFrame">
  -}
-partRotation :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double, Double))
+partRotation :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double, Double))
 partRotation thisArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "Part_Rotation" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     res <- sendRequest r
@@ -10860,13 +10863,13 @@ partRotationStreamReq thisArg referenceFrameArg =
     let req = makeRequest "SpaceCenter" "Part_Rotation" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
-partRotationStream :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double, Double)))
+partRotationStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double, Double)))
 partRotationStream thisArg referenceFrameArg = requestStream $ partRotationStreamReq thisArg referenceFrameArg 
 
 {-
  - The velocity of the part in the given reference frame.<param name="referenceFrame">
  -}
-partVelocity :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
+partVelocity :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double))
 partVelocity thisArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "Part_Velocity" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     res <- sendRequest r
@@ -10877,13 +10880,13 @@ partVelocityStreamReq thisArg referenceFrameArg =
     let req = makeRequest "SpaceCenter" "Part_Velocity" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
-partVelocityStream :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
+partVelocityStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double)))
 partVelocityStream thisArg referenceFrameArg = requestStream $ partVelocityStreamReq thisArg referenceFrameArg 
 
 {-
  - A <see cref="T:SpaceCenter.Antenna" /> if the part is an antenna, otherwisenull.
  -}
-getPartAntenna :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.Antenna)
+getPartAntenna :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCHS.SpaceCenter.Antenna)
 getPartAntenna thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_Antenna" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10894,14 +10897,14 @@ getPartAntennaStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_Antenna" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartAntennaStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Antenna))
+getPartAntennaStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (KRPCHS.SpaceCenter.Antenna))
 getPartAntennaStream thisArg = requestStream $ getPartAntennaStreamReq thisArg 
 
 {-
  - Whether the part is axially attached to its parent, i.e. on the top
  - or bottom of its parent. If the part has no parent, returnsfalse.
  -}
-getPartAxiallyAttached :: KRPCHS.SpaceCenter.Part -> RPCContext (Bool)
+getPartAxiallyAttached :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (Bool)
 getPartAxiallyAttached thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_AxiallyAttached" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10912,13 +10915,13 @@ getPartAxiallyAttachedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_AxiallyAttached" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartAxiallyAttachedStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Bool))
+getPartAxiallyAttachedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (Bool))
 getPartAxiallyAttachedStream thisArg = requestStream $ getPartAxiallyAttachedStreamReq thisArg 
 
 {-
  - A <see cref="T:SpaceCenter.CargoBay" /> if the part is a cargo bay, otherwisenull.
  -}
-getPartCargoBay :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.CargoBay)
+getPartCargoBay :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCHS.SpaceCenter.CargoBay)
 getPartCargoBay thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_CargoBay" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10929,7 +10932,7 @@ getPartCargoBayStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_CargoBay" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartCargoBayStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.CargoBay))
+getPartCargoBayStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (KRPCHS.SpaceCenter.CargoBay))
 getPartCargoBayStream thisArg = requestStream $ getPartCargoBayStreamReq thisArg 
 
 {-
@@ -10937,7 +10940,7 @@ getPartCargoBayStream thisArg = requestStream $ getPartCargoBayStreamReq thisArg
  - <list type="bullet">The origin is at the center of mass of the part, as returned by <see cref="M:SpaceCenter.Part.CenterOfMass" />.The axes rotate with the part.The x, y and z axis directions depend on the design of the part.For docking port parts, this reference frame is not necessarily equivalent to the reference frame
  - for the docking port, returned by <see cref="M:SpaceCenter.DockingPort.ReferenceFrame" />.
  -}
-getPartCenterOfMassReferenceFrame :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
+getPartCenterOfMassReferenceFrame :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCHS.SpaceCenter.ReferenceFrame)
 getPartCenterOfMassReferenceFrame thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_CenterOfMassReferenceFrame" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10948,14 +10951,14 @@ getPartCenterOfMassReferenceFrameStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_CenterOfMassReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartCenterOfMassReferenceFrameStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
+getPartCenterOfMassReferenceFrameStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 getPartCenterOfMassReferenceFrameStream thisArg = requestStream $ getPartCenterOfMassReferenceFrameStreamReq thisArg 
 
 {-
  - The parts children. Returns an empty list if the part has no children.
  - This, in combination with <see cref="M:SpaceCenter.Part.Parent" />, can be used to traverse the vessels parts tree.
  -}
-getPartChildren :: KRPCHS.SpaceCenter.Part -> RPCContext ([KRPCHS.SpaceCenter.Part])
+getPartChildren :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m ([KRPCHS.SpaceCenter.Part])
 getPartChildren thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_Children" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10966,13 +10969,13 @@ getPartChildrenStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_Children" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartChildrenStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
+getPartChildrenStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream ([KRPCHS.SpaceCenter.Part]))
 getPartChildrenStream thisArg = requestStream $ getPartChildrenStreamReq thisArg 
 
 {-
  - A <see cref="T:SpaceCenter.ControlSurface" /> if the part is an aerodynamic control surface, otherwisenull.
  -}
-getPartControlSurface :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.ControlSurface)
+getPartControlSurface :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCHS.SpaceCenter.ControlSurface)
 getPartControlSurface thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_ControlSurface" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -10983,13 +10986,13 @@ getPartControlSurfaceStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_ControlSurface" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartControlSurfaceStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ControlSurface))
+getPartControlSurfaceStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (KRPCHS.SpaceCenter.ControlSurface))
 getPartControlSurfaceStream thisArg = requestStream $ getPartControlSurfaceStreamReq thisArg 
 
 {-
  - The cost of the part, in units of funds.
  -}
-getPartCost :: KRPCHS.SpaceCenter.Part -> RPCContext (Double)
+getPartCost :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (Double)
 getPartCost thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_Cost" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11000,13 +11003,13 @@ getPartCostStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_Cost" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartCostStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Double))
+getPartCostStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (Double))
 getPartCostStream thisArg = requestStream $ getPartCostStreamReq thisArg 
 
 {-
  - Whether this part is crossfeed capable.
  -}
-getPartCrossfeed :: KRPCHS.SpaceCenter.Part -> RPCContext (Bool)
+getPartCrossfeed :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (Bool)
 getPartCrossfeed thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_Crossfeed" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11017,13 +11020,13 @@ getPartCrossfeedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_Crossfeed" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartCrossfeedStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Bool))
+getPartCrossfeedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (Bool))
 getPartCrossfeedStream thisArg = requestStream $ getPartCrossfeedStreamReq thisArg 
 
 {-
  - The stage in which this part will be decoupled. Returns -1 if the part is never decoupled from the vessel.
  -}
-getPartDecoupleStage :: KRPCHS.SpaceCenter.Part -> RPCContext (Data.Int.Int32)
+getPartDecoupleStage :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (Data.Int.Int32)
 getPartDecoupleStage thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_DecoupleStage" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11034,13 +11037,13 @@ getPartDecoupleStageStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_DecoupleStage" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartDecoupleStageStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Data.Int.Int32))
+getPartDecoupleStageStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (Data.Int.Int32))
 getPartDecoupleStageStream thisArg = requestStream $ getPartDecoupleStageStreamReq thisArg 
 
 {-
  - A <see cref="T:SpaceCenter.Decoupler" /> if the part is a decoupler, otherwisenull.
  -}
-getPartDecoupler :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.Decoupler)
+getPartDecoupler :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCHS.SpaceCenter.Decoupler)
 getPartDecoupler thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_Decoupler" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11051,13 +11054,13 @@ getPartDecouplerStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_Decoupler" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartDecouplerStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Decoupler))
+getPartDecouplerStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (KRPCHS.SpaceCenter.Decoupler))
 getPartDecouplerStream thisArg = requestStream $ getPartDecouplerStreamReq thisArg 
 
 {-
  - A <see cref="T:SpaceCenter.DockingPort" /> if the part is a docking port, otherwisenull.
  -}
-getPartDockingPort :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.DockingPort)
+getPartDockingPort :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCHS.SpaceCenter.DockingPort)
 getPartDockingPort thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_DockingPort" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11068,13 +11071,13 @@ getPartDockingPortStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_DockingPort" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartDockingPortStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.DockingPort))
+getPartDockingPortStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (KRPCHS.SpaceCenter.DockingPort))
 getPartDockingPortStream thisArg = requestStream $ getPartDockingPortStreamReq thisArg 
 
 {-
  - The mass of the part, not including any resources it contains, in kilograms. Returns zero if the part is massless.
  -}
-getPartDryMass :: KRPCHS.SpaceCenter.Part -> RPCContext (Double)
+getPartDryMass :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (Double)
 getPartDryMass thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_DryMass" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11085,13 +11088,13 @@ getPartDryMassStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_DryMass" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartDryMassStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Double))
+getPartDryMassStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (Double))
 getPartDryMassStream thisArg = requestStream $ getPartDryMassStreamReq thisArg 
 
 {-
  - The dynamic pressure acting on the part, in Pascals.
  -}
-getPartDynamicPressure :: KRPCHS.SpaceCenter.Part -> RPCContext (Float)
+getPartDynamicPressure :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (Float)
 getPartDynamicPressure thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_DynamicPressure" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11102,13 +11105,13 @@ getPartDynamicPressureStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_DynamicPressure" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartDynamicPressureStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Float))
+getPartDynamicPressureStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (Float))
 getPartDynamicPressureStream thisArg = requestStream $ getPartDynamicPressureStreamReq thisArg 
 
 {-
  - An <see cref="T:SpaceCenter.Engine" /> if the part is an engine, otherwisenull.
  -}
-getPartEngine :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.Engine)
+getPartEngine :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCHS.SpaceCenter.Engine)
 getPartEngine thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_Engine" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11119,13 +11122,13 @@ getPartEngineStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_Engine" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartEngineStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Engine))
+getPartEngineStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (KRPCHS.SpaceCenter.Engine))
 getPartEngineStream thisArg = requestStream $ getPartEngineStreamReq thisArg 
 
 {-
  - An <see cref="T:SpaceCenter.Experiment" /> if the part is a science experiment, otherwisenull.
  -}
-getPartExperiment :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.Experiment)
+getPartExperiment :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCHS.SpaceCenter.Experiment)
 getPartExperiment thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_Experiment" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11136,13 +11139,13 @@ getPartExperimentStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_Experiment" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartExperimentStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Experiment))
+getPartExperimentStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (KRPCHS.SpaceCenter.Experiment))
 getPartExperimentStream thisArg = requestStream $ getPartExperimentStreamReq thisArg 
 
 {-
  - A <see cref="T:SpaceCenter.Fairing" /> if the part is a fairing, otherwisenull.
  -}
-getPartFairing :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.Fairing)
+getPartFairing :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCHS.SpaceCenter.Fairing)
 getPartFairing thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_Fairing" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11153,13 +11156,13 @@ getPartFairingStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_Fairing" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartFairingStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Fairing))
+getPartFairingStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (KRPCHS.SpaceCenter.Fairing))
 getPartFairingStream thisArg = requestStream $ getPartFairingStreamReq thisArg 
 
 {-
  - The parts that are connected to this part via fuel lines, where the direction of the fuel line is into this part.
  -}
-getPartFuelLinesFrom :: KRPCHS.SpaceCenter.Part -> RPCContext ([KRPCHS.SpaceCenter.Part])
+getPartFuelLinesFrom :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m ([KRPCHS.SpaceCenter.Part])
 getPartFuelLinesFrom thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_FuelLinesFrom" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11170,13 +11173,13 @@ getPartFuelLinesFromStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_FuelLinesFrom" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartFuelLinesFromStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
+getPartFuelLinesFromStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream ([KRPCHS.SpaceCenter.Part]))
 getPartFuelLinesFromStream thisArg = requestStream $ getPartFuelLinesFromStreamReq thisArg 
 
 {-
  - The parts that are connected to this part via fuel lines, where the direction of the fuel line is out of this part.
  -}
-getPartFuelLinesTo :: KRPCHS.SpaceCenter.Part -> RPCContext ([KRPCHS.SpaceCenter.Part])
+getPartFuelLinesTo :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m ([KRPCHS.SpaceCenter.Part])
 getPartFuelLinesTo thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_FuelLinesTo" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11187,13 +11190,13 @@ getPartFuelLinesToStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_FuelLinesTo" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartFuelLinesToStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
+getPartFuelLinesToStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream ([KRPCHS.SpaceCenter.Part]))
 getPartFuelLinesToStream thisArg = requestStream $ getPartFuelLinesToStreamReq thisArg 
 
 {-
  - The color used to highlight the part.
  -}
-getPartHighlightColor :: KRPCHS.SpaceCenter.Part -> RPCContext ((Double, Double, Double))
+getPartHighlightColor :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m ((Double, Double, Double))
 getPartHighlightColor thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_HighlightColor" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11204,13 +11207,13 @@ getPartHighlightColorStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_HighlightColor" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartHighlightColorStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream ((Double, Double, Double)))
+getPartHighlightColorStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream ((Double, Double, Double)))
 getPartHighlightColorStream thisArg = requestStream $ getPartHighlightColorStreamReq thisArg 
 
 {-
  - Whether the part is highlighted.
  -}
-getPartHighlighted :: KRPCHS.SpaceCenter.Part -> RPCContext (Bool)
+getPartHighlighted :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (Bool)
 getPartHighlighted thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_Highlighted" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11221,13 +11224,13 @@ getPartHighlightedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_Highlighted" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartHighlightedStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Bool))
+getPartHighlightedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (Bool))
 getPartHighlightedStream thisArg = requestStream $ getPartHighlightedStreamReq thisArg 
 
 {-
  - The impact tolerance of the part, in meters per second.
  -}
-getPartImpactTolerance :: KRPCHS.SpaceCenter.Part -> RPCContext (Double)
+getPartImpactTolerance :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (Double)
 getPartImpactTolerance thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_ImpactTolerance" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11238,14 +11241,14 @@ getPartImpactToleranceStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_ImpactTolerance" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartImpactToleranceStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Double))
+getPartImpactToleranceStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (Double))
 getPartImpactToleranceStream thisArg = requestStream $ getPartImpactToleranceStreamReq thisArg 
 
 {-
  - The inertia tensor of the part in the parts reference frame (<see cref="T:SpaceCenter.ReferenceFrame" />).
  - Returns the 3x3 matrix as a list of elements, in row-major order.
  -}
-getPartInertiaTensor :: KRPCHS.SpaceCenter.Part -> RPCContext ([Double])
+getPartInertiaTensor :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m ([Double])
 getPartInertiaTensor thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_InertiaTensor" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11256,7 +11259,7 @@ getPartInertiaTensorStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_InertiaTensor" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartInertiaTensorStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream ([Double]))
+getPartInertiaTensorStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream ([Double]))
 getPartInertiaTensorStream thisArg = requestStream $ getPartInertiaTensorStreamReq thisArg 
 
 {-
@@ -11264,7 +11267,7 @@ getPartInertiaTensorStream thisArg = requestStream $ getPartInertiaTensorStreamR
  - including liquid fuel rockets, solid rocket boosters and jet engines.
  - For RCS thrusters see <see cref="T:SpaceCenter.RCS" />.
  -}
-getPartIntake :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.Intake)
+getPartIntake :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCHS.SpaceCenter.Intake)
 getPartIntake thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_Intake" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11275,13 +11278,13 @@ getPartIntakeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_Intake" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartIntakeStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Intake))
+getPartIntakeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (KRPCHS.SpaceCenter.Intake))
 getPartIntakeStream thisArg = requestStream $ getPartIntakeStreamReq thisArg 
 
 {-
  - Whether this part is a fuel line.
  -}
-getPartIsFuelLine :: KRPCHS.SpaceCenter.Part -> RPCContext (Bool)
+getPartIsFuelLine :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (Bool)
 getPartIsFuelLine thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_IsFuelLine" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11292,13 +11295,13 @@ getPartIsFuelLineStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_IsFuelLine" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartIsFuelLineStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Bool))
+getPartIsFuelLineStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (Bool))
 getPartIsFuelLineStream thisArg = requestStream $ getPartIsFuelLineStreamReq thisArg 
 
 {-
  - A <see cref="T:SpaceCenter.LaunchClamp" /> if the part is a launch clamp, otherwisenull.
  -}
-getPartLaunchClamp :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.LaunchClamp)
+getPartLaunchClamp :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCHS.SpaceCenter.LaunchClamp)
 getPartLaunchClamp thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_LaunchClamp" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11309,13 +11312,13 @@ getPartLaunchClampStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_LaunchClamp" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartLaunchClampStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.LaunchClamp))
+getPartLaunchClampStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (KRPCHS.SpaceCenter.LaunchClamp))
 getPartLaunchClampStream thisArg = requestStream $ getPartLaunchClampStreamReq thisArg 
 
 {-
  - A <see cref="T:SpaceCenter.Leg" /> if the part is a landing leg, otherwisenull.
  -}
-getPartLeg :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.Leg)
+getPartLeg :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCHS.SpaceCenter.Leg)
 getPartLeg thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_Leg" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11326,13 +11329,13 @@ getPartLegStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_Leg" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartLegStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Leg))
+getPartLegStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (KRPCHS.SpaceCenter.Leg))
 getPartLegStream thisArg = requestStream $ getPartLegStreamReq thisArg 
 
 {-
  - A <see cref="T:SpaceCenter.Light" /> if the part is a light, otherwisenull.
  -}
-getPartLight :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.Light)
+getPartLight :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCHS.SpaceCenter.Light)
 getPartLight thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_Light" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11343,14 +11346,14 @@ getPartLightStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_Light" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartLightStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Light))
+getPartLightStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (KRPCHS.SpaceCenter.Light))
 getPartLightStream thisArg = requestStream $ getPartLightStreamReq thisArg 
 
 {-
  - The current mass of the part, including resources it contains, in kilograms.
  - Returns zero if the part is massless.
  -}
-getPartMass :: KRPCHS.SpaceCenter.Part -> RPCContext (Double)
+getPartMass :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (Double)
 getPartMass thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_Mass" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11361,13 +11364,13 @@ getPartMassStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_Mass" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartMassStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Double))
+getPartMassStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (Double))
 getPartMassStream thisArg = requestStream $ getPartMassStreamReq thisArg 
 
 {-
  - Whether the part is <a href="http://wiki.kerbalspaceprogram.com/wiki/Massless_part">massless.
  -}
-getPartMassless :: KRPCHS.SpaceCenter.Part -> RPCContext (Bool)
+getPartMassless :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (Bool)
 getPartMassless thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_Massless" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11378,13 +11381,13 @@ getPartMasslessStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_Massless" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartMasslessStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Bool))
+getPartMasslessStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (Bool))
 getPartMasslessStream thisArg = requestStream $ getPartMasslessStreamReq thisArg 
 
 {-
  - Maximum temperature that the skin of the part can survive, in Kelvin.
  -}
-getPartMaxSkinTemperature :: KRPCHS.SpaceCenter.Part -> RPCContext (Double)
+getPartMaxSkinTemperature :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (Double)
 getPartMaxSkinTemperature thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_MaxSkinTemperature" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11395,13 +11398,13 @@ getPartMaxSkinTemperatureStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_MaxSkinTemperature" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartMaxSkinTemperatureStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Double))
+getPartMaxSkinTemperatureStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (Double))
 getPartMaxSkinTemperatureStream thisArg = requestStream $ getPartMaxSkinTemperatureStreamReq thisArg 
 
 {-
  - Maximum temperature that the part can survive, in Kelvin.
  -}
-getPartMaxTemperature :: KRPCHS.SpaceCenter.Part -> RPCContext (Double)
+getPartMaxTemperature :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (Double)
 getPartMaxTemperature thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_MaxTemperature" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11412,13 +11415,13 @@ getPartMaxTemperatureStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_MaxTemperature" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartMaxTemperatureStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Double))
+getPartMaxTemperatureStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (Double))
 getPartMaxTemperatureStream thisArg = requestStream $ getPartMaxTemperatureStreamReq thisArg 
 
 {-
  - The modules for this part.
  -}
-getPartModules :: KRPCHS.SpaceCenter.Part -> RPCContext ([KRPCHS.SpaceCenter.Module])
+getPartModules :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m ([KRPCHS.SpaceCenter.Module])
 getPartModules thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_Modules" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11429,14 +11432,14 @@ getPartModulesStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_Modules" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartModulesStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Module]))
+getPartModulesStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream ([KRPCHS.SpaceCenter.Module]))
 getPartModulesStream thisArg = requestStream $ getPartModulesStreamReq thisArg 
 
 {-
  - The moment of inertia of the part inkg.m^2around its center of mass
  - in the parts reference frame (<see cref="T:SpaceCenter.ReferenceFrame" />).
  -}
-getPartMomentOfInertia :: KRPCHS.SpaceCenter.Part -> RPCContext ((Double, Double, Double))
+getPartMomentOfInertia :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m ((Double, Double, Double))
 getPartMomentOfInertia thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_MomentOfInertia" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11447,7 +11450,7 @@ getPartMomentOfInertiaStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_MomentOfInertia" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartMomentOfInertiaStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream ((Double, Double, Double)))
+getPartMomentOfInertiaStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream ((Double, Double, Double)))
 getPartMomentOfInertiaStream thisArg = requestStream $ getPartMomentOfInertiaStreamReq thisArg 
 
 {-
@@ -11455,7 +11458,7 @@ getPartMomentOfInertiaStream thisArg = requestStream $ getPartMomentOfInertiaStr
  - <a href="http://wiki.kerbalspaceprogram.com/wiki/CFG_File_Documentation">part cfg files.
  - For example "Mark1-2Pod".
  -}
-getPartName :: KRPCHS.SpaceCenter.Part -> RPCContext (Data.Text.Text)
+getPartName :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (Data.Text.Text)
 getPartName thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_Name" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11466,13 +11469,13 @@ getPartNameStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_Name" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartNameStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Data.Text.Text))
+getPartNameStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (Data.Text.Text))
 getPartNameStream thisArg = requestStream $ getPartNameStreamReq thisArg 
 
 {-
  - A <see cref="T:SpaceCenter.Parachute" /> if the part is a parachute, otherwisenull.
  -}
-getPartParachute :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.Parachute)
+getPartParachute :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCHS.SpaceCenter.Parachute)
 getPartParachute thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_Parachute" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11483,14 +11486,14 @@ getPartParachuteStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_Parachute" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartParachuteStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Parachute))
+getPartParachuteStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (KRPCHS.SpaceCenter.Parachute))
 getPartParachuteStream thisArg = requestStream $ getPartParachuteStreamReq thisArg 
 
 {-
  - The parts parent. Returnsnullif the part does not have a parent.
  - This, in combination with <see cref="M:SpaceCenter.Part.Children" />, can be used to traverse the vessels parts tree.
  -}
-getPartParent :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.Part)
+getPartParent :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCHS.SpaceCenter.Part)
 getPartParent thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_Parent" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11501,13 +11504,13 @@ getPartParentStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_Parent" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartParentStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getPartParentStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (KRPCHS.SpaceCenter.Part))
 getPartParentStream thisArg = requestStream $ getPartParentStreamReq thisArg 
 
 {-
  - A <see cref="T:SpaceCenter.RCS" /> if the part is an RCS block/thruster, otherwisenull.
  -}
-getPartRCS :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.RCS)
+getPartRCS :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCHS.SpaceCenter.RCS)
 getPartRCS thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_RCS" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11518,14 +11521,14 @@ getPartRCSStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_RCS" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartRCSStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.RCS))
+getPartRCSStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (KRPCHS.SpaceCenter.RCS))
 getPartRCSStream thisArg = requestStream $ getPartRCSStreamReq thisArg 
 
 {-
  - Whether the part is radially attached to its parent, i.e. on the side of its parent.
  - If the part has no parent, returnsfalse.
  -}
-getPartRadiallyAttached :: KRPCHS.SpaceCenter.Part -> RPCContext (Bool)
+getPartRadiallyAttached :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (Bool)
 getPartRadiallyAttached thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_RadiallyAttached" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11536,13 +11539,13 @@ getPartRadiallyAttachedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_RadiallyAttached" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartRadiallyAttachedStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Bool))
+getPartRadiallyAttachedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (Bool))
 getPartRadiallyAttachedStream thisArg = requestStream $ getPartRadiallyAttachedStreamReq thisArg 
 
 {-
  - A <see cref="T:SpaceCenter.Radiator" /> if the part is a radiator, otherwisenull.
  -}
-getPartRadiator :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.Radiator)
+getPartRadiator :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCHS.SpaceCenter.Radiator)
 getPartRadiator thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_Radiator" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11553,13 +11556,13 @@ getPartRadiatorStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_Radiator" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartRadiatorStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Radiator))
+getPartRadiatorStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (KRPCHS.SpaceCenter.Radiator))
 getPartRadiatorStream thisArg = requestStream $ getPartRadiatorStreamReq thisArg 
 
 {-
  - A <see cref="T:SpaceCenter.ReactionWheel" /> if the part is a reaction wheel, otherwisenull.
  -}
-getPartReactionWheel :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.ReactionWheel)
+getPartReactionWheel :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCHS.SpaceCenter.ReactionWheel)
 getPartReactionWheel thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_ReactionWheel" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11570,7 +11573,7 @@ getPartReactionWheelStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_ReactionWheel" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartReactionWheelStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReactionWheel))
+getPartReactionWheelStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (KRPCHS.SpaceCenter.ReactionWheel))
 getPartReactionWheelStream thisArg = requestStream $ getPartReactionWheelStreamReq thisArg 
 
 {-
@@ -11578,7 +11581,7 @@ getPartReactionWheelStream thisArg = requestStream $ getPartReactionWheelStreamR
  - <list type="bullet">The origin is at the position of the part, as returned by <see cref="M:SpaceCenter.Part.Position" />.The axes rotate with the part.The x, y and z axis directions depend on the design of the part.For docking port parts, this reference frame is not necessarily equivalent to the reference frame
  - for the docking port, returned by <see cref="M:SpaceCenter.DockingPort.ReferenceFrame" />.
  -}
-getPartReferenceFrame :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
+getPartReferenceFrame :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCHS.SpaceCenter.ReferenceFrame)
 getPartReferenceFrame thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_ReferenceFrame" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11589,13 +11592,13 @@ getPartReferenceFrameStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_ReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartReferenceFrameStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
+getPartReferenceFrameStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 getPartReferenceFrameStream thisArg = requestStream $ getPartReferenceFrameStreamReq thisArg 
 
 {-
  - A <see cref="T:SpaceCenter.ResourceConverter" /> if the part is a resource converter, otherwisenull.
  -}
-getPartResourceConverter :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.ResourceConverter)
+getPartResourceConverter :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCHS.SpaceCenter.ResourceConverter)
 getPartResourceConverter thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_ResourceConverter" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11606,13 +11609,13 @@ getPartResourceConverterStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_ResourceConverter" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartResourceConverterStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ResourceConverter))
+getPartResourceConverterStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (KRPCHS.SpaceCenter.ResourceConverter))
 getPartResourceConverterStream thisArg = requestStream $ getPartResourceConverterStreamReq thisArg 
 
 {-
  - A <see cref="T:SpaceCenter.ResourceHarvester" /> if the part is a resource harvester, otherwisenull.
  -}
-getPartResourceHarvester :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.ResourceHarvester)
+getPartResourceHarvester :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCHS.SpaceCenter.ResourceHarvester)
 getPartResourceHarvester thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_ResourceHarvester" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11623,13 +11626,13 @@ getPartResourceHarvesterStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_ResourceHarvester" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartResourceHarvesterStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ResourceHarvester))
+getPartResourceHarvesterStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (KRPCHS.SpaceCenter.ResourceHarvester))
 getPartResourceHarvesterStream thisArg = requestStream $ getPartResourceHarvesterStreamReq thisArg 
 
 {-
  - A <see cref="T:SpaceCenter.Resources" /> object for the part.
  -}
-getPartResources :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.Resources)
+getPartResources :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCHS.SpaceCenter.Resources)
 getPartResources thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_Resources" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11640,13 +11643,13 @@ getPartResourcesStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_Resources" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartResourcesStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Resources))
+getPartResourcesStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (KRPCHS.SpaceCenter.Resources))
 getPartResourcesStream thisArg = requestStream $ getPartResourcesStreamReq thisArg 
 
 {-
  - A <see cref="T:SpaceCenter.Sensor" /> if the part is a sensor, otherwisenull.
  -}
-getPartSensor :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.Sensor)
+getPartSensor :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCHS.SpaceCenter.Sensor)
 getPartSensor thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_Sensor" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11657,13 +11660,13 @@ getPartSensorStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_Sensor" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartSensorStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Sensor))
+getPartSensorStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (KRPCHS.SpaceCenter.Sensor))
 getPartSensorStream thisArg = requestStream $ getPartSensorStreamReq thisArg 
 
 {-
  - Whether the part is shielded from the exterior of the vessel, for example by a fairing.
  -}
-getPartShielded :: KRPCHS.SpaceCenter.Part -> RPCContext (Bool)
+getPartShielded :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (Bool)
 getPartShielded thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_Shielded" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11674,13 +11677,13 @@ getPartShieldedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_Shielded" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartShieldedStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Bool))
+getPartShieldedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (Bool))
 getPartShieldedStream thisArg = requestStream $ getPartShieldedStreamReq thisArg 
 
 {-
  - Temperature of the skin of the part, in Kelvin.
  -}
-getPartSkinTemperature :: KRPCHS.SpaceCenter.Part -> RPCContext (Double)
+getPartSkinTemperature :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (Double)
 getPartSkinTemperature thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_SkinTemperature" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11691,13 +11694,13 @@ getPartSkinTemperatureStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_SkinTemperature" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartSkinTemperatureStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Double))
+getPartSkinTemperatureStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (Double))
 getPartSkinTemperatureStream thisArg = requestStream $ getPartSkinTemperatureStreamReq thisArg 
 
 {-
  - A <see cref="T:SpaceCenter.SolarPanel" /> if the part is a solar panel, otherwisenull.
  -}
-getPartSolarPanel :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.SolarPanel)
+getPartSolarPanel :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCHS.SpaceCenter.SolarPanel)
 getPartSolarPanel thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_SolarPanel" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11708,13 +11711,13 @@ getPartSolarPanelStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_SolarPanel" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartSolarPanelStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.SolarPanel))
+getPartSolarPanelStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (KRPCHS.SpaceCenter.SolarPanel))
 getPartSolarPanelStream thisArg = requestStream $ getPartSolarPanelStreamReq thisArg 
 
 {-
  - The stage in which this part will be activated. Returns -1 if the part is not activated by staging.
  -}
-getPartStage :: KRPCHS.SpaceCenter.Part -> RPCContext (Data.Int.Int32)
+getPartStage :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (Data.Int.Int32)
 getPartStage thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_Stage" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11725,14 +11728,14 @@ getPartStageStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_Stage" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartStageStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Data.Int.Int32))
+getPartStageStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (Data.Int.Int32))
 getPartStageStream thisArg = requestStream $ getPartStageStreamReq thisArg 
 
 {-
  - The name tag for the part. Can be set to a custom string using the in-game user interface.This requires either the <a href="http://github.com/krpc/NameTag/releases/latest">NameTagor
  - <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/61827-/">kOSmods to be installed.
  -}
-getPartTag :: KRPCHS.SpaceCenter.Part -> RPCContext (Data.Text.Text)
+getPartTag :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (Data.Text.Text)
 getPartTag thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_Tag" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11743,13 +11746,13 @@ getPartTagStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_Tag" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartTagStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Data.Text.Text))
+getPartTagStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (Data.Text.Text))
 getPartTagStream thisArg = requestStream $ getPartTagStreamReq thisArg 
 
 {-
  - Temperature of the part, in Kelvin.
  -}
-getPartTemperature :: KRPCHS.SpaceCenter.Part -> RPCContext (Double)
+getPartTemperature :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (Double)
 getPartTemperature thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_Temperature" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11760,7 +11763,7 @@ getPartTemperatureStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_Temperature" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartTemperatureStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Double))
+getPartTemperatureStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (Double))
 getPartTemperatureStream thisArg = requestStream $ getPartTemperatureStreamReq thisArg 
 
 {-
@@ -11768,7 +11771,7 @@ getPartTemperatureStream thisArg = requestStream $ getPartTemperatureStreamReq t
  - Measured in energy per unit time, or power, in Watts.
  - A positive value means the part is gaining heat energy, and negative means it is losing heat energy.
  -}
-getPartThermalConductionFlux :: KRPCHS.SpaceCenter.Part -> RPCContext (Float)
+getPartThermalConductionFlux :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (Float)
 getPartThermalConductionFlux thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_ThermalConductionFlux" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11779,7 +11782,7 @@ getPartThermalConductionFluxStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_ThermalConductionFlux" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartThermalConductionFluxStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Float))
+getPartThermalConductionFluxStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (Float))
 getPartThermalConductionFluxStream thisArg = requestStream $ getPartThermalConductionFluxStreamReq thisArg 
 
 {-
@@ -11787,7 +11790,7 @@ getPartThermalConductionFluxStream thisArg = requestStream $ getPartThermalCondu
  - Measured in energy per unit time, or power, in Watts.
  - A positive value means the part is gaining heat energy, and negative means it is losing heat energy.
  -}
-getPartThermalConvectionFlux :: KRPCHS.SpaceCenter.Part -> RPCContext (Float)
+getPartThermalConvectionFlux :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (Float)
 getPartThermalConvectionFlux thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_ThermalConvectionFlux" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11798,7 +11801,7 @@ getPartThermalConvectionFluxStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_ThermalConvectionFlux" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartThermalConvectionFluxStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Float))
+getPartThermalConvectionFluxStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (Float))
 getPartThermalConvectionFluxStream thisArg = requestStream $ getPartThermalConvectionFluxStreamReq thisArg 
 
 {-
@@ -11807,7 +11810,7 @@ getPartThermalConvectionFluxStream thisArg = requestStream $ getPartThermalConve
  - Measured in energy per unit time, or power, in Watts.
  - A positive value means the part is gaining heat energy, and negative means it is losing heat energy.
  -}
-getPartThermalInternalFlux :: KRPCHS.SpaceCenter.Part -> RPCContext (Float)
+getPartThermalInternalFlux :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (Float)
 getPartThermalInternalFlux thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_ThermalInternalFlux" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11818,13 +11821,13 @@ getPartThermalInternalFluxStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_ThermalInternalFlux" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartThermalInternalFluxStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Float))
+getPartThermalInternalFluxStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (Float))
 getPartThermalInternalFluxStream thisArg = requestStream $ getPartThermalInternalFluxStreamReq thisArg 
 
 {-
  - A measure of how much energy it takes to increase the internal temperature of the part, in Joules per Kelvin.
  -}
-getPartThermalMass :: KRPCHS.SpaceCenter.Part -> RPCContext (Float)
+getPartThermalMass :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (Float)
 getPartThermalMass thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_ThermalMass" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11835,7 +11838,7 @@ getPartThermalMassStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_ThermalMass" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartThermalMassStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Float))
+getPartThermalMassStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (Float))
 getPartThermalMassStream thisArg = requestStream $ getPartThermalMassStreamReq thisArg 
 
 {-
@@ -11843,7 +11846,7 @@ getPartThermalMassStream thisArg = requestStream $ getPartThermalMassStreamReq t
  - Measured in energy per unit time, or power, in Watts.
  - A positive value means the part is gaining heat energy, and negative means it is losing heat energy.
  -}
-getPartThermalRadiationFlux :: KRPCHS.SpaceCenter.Part -> RPCContext (Float)
+getPartThermalRadiationFlux :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (Float)
 getPartThermalRadiationFlux thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_ThermalRadiationFlux" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11854,13 +11857,13 @@ getPartThermalRadiationFluxStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_ThermalRadiationFlux" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartThermalRadiationFluxStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Float))
+getPartThermalRadiationFluxStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (Float))
 getPartThermalRadiationFluxStream thisArg = requestStream $ getPartThermalRadiationFluxStreamReq thisArg 
 
 {-
  - A measure of how much energy it takes to increase the temperature of the resources contained in the part, in Joules per Kelvin.
  -}
-getPartThermalResourceMass :: KRPCHS.SpaceCenter.Part -> RPCContext (Float)
+getPartThermalResourceMass :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (Float)
 getPartThermalResourceMass thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_ThermalResourceMass" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11871,13 +11874,13 @@ getPartThermalResourceMassStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_ThermalResourceMass" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartThermalResourceMassStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Float))
+getPartThermalResourceMassStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (Float))
 getPartThermalResourceMassStream thisArg = requestStream $ getPartThermalResourceMassStreamReq thisArg 
 
 {-
  - A measure of how much energy it takes to increase the skin temperature of the part, in Joules per Kelvin.
  -}
-getPartThermalSkinMass :: KRPCHS.SpaceCenter.Part -> RPCContext (Float)
+getPartThermalSkinMass :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (Float)
 getPartThermalSkinMass thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_ThermalSkinMass" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11888,7 +11891,7 @@ getPartThermalSkinMassStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_ThermalSkinMass" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartThermalSkinMassStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Float))
+getPartThermalSkinMassStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (Float))
 getPartThermalSkinMassStream thisArg = requestStream $ getPartThermalSkinMassStreamReq thisArg 
 
 {-
@@ -11897,7 +11900,7 @@ getPartThermalSkinMassStream thisArg = requestStream $ getPartThermalSkinMassStr
  - A positive value means the part's internals are gaining heat energy,
  - and negative means its skin is gaining heat energy.
  -}
-getPartThermalSkinToInternalFlux :: KRPCHS.SpaceCenter.Part -> RPCContext (Float)
+getPartThermalSkinToInternalFlux :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (Float)
 getPartThermalSkinToInternalFlux thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_ThermalSkinToInternalFlux" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11908,13 +11911,13 @@ getPartThermalSkinToInternalFluxStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_ThermalSkinToInternalFlux" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartThermalSkinToInternalFluxStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Float))
+getPartThermalSkinToInternalFluxStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (Float))
 getPartThermalSkinToInternalFluxStream thisArg = requestStream $ getPartThermalSkinToInternalFluxStreamReq thisArg 
 
 {-
  - Title of the part, as shown when the part is right clicked in-game. For example "Mk1-2 Command Pod".
  -}
-getPartTitle :: KRPCHS.SpaceCenter.Part -> RPCContext (Data.Text.Text)
+getPartTitle :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (Data.Text.Text)
 getPartTitle thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_Title" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11925,13 +11928,13 @@ getPartTitleStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_Title" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartTitleStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (Data.Text.Text))
+getPartTitleStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (Data.Text.Text))
 getPartTitleStream thisArg = requestStream $ getPartTitleStreamReq thisArg 
 
 {-
  - The vessel that contains this part.
  -}
-getPartVessel :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.Vessel)
+getPartVessel :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCHS.SpaceCenter.Vessel)
 getPartVessel thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_Vessel" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11942,13 +11945,13 @@ getPartVesselStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_Vessel" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartVesselStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Vessel))
+getPartVesselStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (KRPCHS.SpaceCenter.Vessel))
 getPartVesselStream thisArg = requestStream $ getPartVesselStreamReq thisArg 
 
 {-
  - A <see cref="T:SpaceCenter.Wheel" /> if the part is a wheel, otherwisenull.
  -}
-getPartWheel :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCHS.SpaceCenter.Wheel)
+getPartWheel :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCHS.SpaceCenter.Wheel)
 getPartWheel thisArg = do
     let r = makeRequest "SpaceCenter" "Part_get_Wheel" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -11959,13 +11962,13 @@ getPartWheelStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Part_get_Wheel" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartWheelStream :: KRPCHS.SpaceCenter.Part -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Wheel))
+getPartWheelStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> m (KRPCStream (KRPCHS.SpaceCenter.Wheel))
 getPartWheelStream thisArg = requestStream $ getPartWheelStreamReq thisArg 
 
 {-
  - The color used to highlight the part.
  -}
-setPartHighlightColor :: KRPCHS.SpaceCenter.Part -> (Double, Double, Double) -> RPCContext ()
+setPartHighlightColor :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> (Double, Double, Double) -> m ()
 setPartHighlightColor thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Part_set_HighlightColor" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -11974,7 +11977,7 @@ setPartHighlightColor thisArg valueArg = do
 {-
  - Whether the part is highlighted.
  -}
-setPartHighlighted :: KRPCHS.SpaceCenter.Part -> Bool -> RPCContext ()
+setPartHighlighted :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> Bool -> m ()
 setPartHighlighted thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Part_set_Highlighted" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -11984,7 +11987,7 @@ setPartHighlighted thisArg valueArg = do
  - The name tag for the part. Can be set to a custom string using the in-game user interface.This requires either the <a href="http://github.com/krpc/NameTag/releases/latest">NameTagor
  - <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/61827-/">kOSmods to be installed.
  -}
-setPartTag :: KRPCHS.SpaceCenter.Part -> Data.Text.Text -> RPCContext ()
+setPartTag :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> Data.Text.Text -> m ()
 setPartTag thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Part_set_Tag" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -11993,7 +11996,7 @@ setPartTag thisArg valueArg = do
 {-
  - A list of all parts that are decoupled in the given <paramref name="stage" />.<param name="stage">
  -}
-partsInDecoupleStage :: KRPCHS.SpaceCenter.Parts -> Data.Int.Int32 -> RPCContext ([KRPCHS.SpaceCenter.Part])
+partsInDecoupleStage :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> Data.Int.Int32 -> m ([KRPCHS.SpaceCenter.Part])
 partsInDecoupleStage thisArg stageArg = do
     let r = makeRequest "SpaceCenter" "Parts_InDecoupleStage" [makeArgument 0 thisArg, makeArgument 1 stageArg]
     res <- sendRequest r
@@ -12004,13 +12007,13 @@ partsInDecoupleStageStreamReq thisArg stageArg =
     let req = makeRequest "SpaceCenter" "Parts_InDecoupleStage" [makeArgument 0 thisArg, makeArgument 1 stageArg]
     in  makeStream req
 
-partsInDecoupleStageStream :: KRPCHS.SpaceCenter.Parts -> Data.Int.Int32 -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
+partsInDecoupleStageStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> Data.Int.Int32 -> m (KRPCStream ([KRPCHS.SpaceCenter.Part]))
 partsInDecoupleStageStream thisArg stageArg = requestStream $ partsInDecoupleStageStreamReq thisArg stageArg 
 
 {-
  - A list of all parts that are activated in the given <paramref name="stage" />.<param name="stage">
  -}
-partsInStage :: KRPCHS.SpaceCenter.Parts -> Data.Int.Int32 -> RPCContext ([KRPCHS.SpaceCenter.Part])
+partsInStage :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> Data.Int.Int32 -> m ([KRPCHS.SpaceCenter.Part])
 partsInStage thisArg stageArg = do
     let r = makeRequest "SpaceCenter" "Parts_InStage" [makeArgument 0 thisArg, makeArgument 1 stageArg]
     res <- sendRequest r
@@ -12021,14 +12024,14 @@ partsInStageStreamReq thisArg stageArg =
     let req = makeRequest "SpaceCenter" "Parts_InStage" [makeArgument 0 thisArg, makeArgument 1 stageArg]
     in  makeStream req
 
-partsInStageStream :: KRPCHS.SpaceCenter.Parts -> Data.Int.Int32 -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
+partsInStageStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> Data.Int.Int32 -> m (KRPCStream ([KRPCHS.SpaceCenter.Part]))
 partsInStageStream thisArg stageArg = requestStream $ partsInStageStreamReq thisArg stageArg 
 
 {-
  - A list of modules (combined across all parts in the vessel) whose
  - <see cref="M:SpaceCenter.Module.Name" /> is <paramref name="moduleName" />.<param name="moduleName">
  -}
-partsModulesWithName :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> RPCContext ([KRPCHS.SpaceCenter.Module])
+partsModulesWithName :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> m ([KRPCHS.SpaceCenter.Module])
 partsModulesWithName thisArg moduleNameArg = do
     let r = makeRequest "SpaceCenter" "Parts_ModulesWithName" [makeArgument 0 thisArg, makeArgument 1 moduleNameArg]
     res <- sendRequest r
@@ -12039,14 +12042,14 @@ partsModulesWithNameStreamReq thisArg moduleNameArg =
     let req = makeRequest "SpaceCenter" "Parts_ModulesWithName" [makeArgument 0 thisArg, makeArgument 1 moduleNameArg]
     in  makeStream req
 
-partsModulesWithNameStream :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Module]))
+partsModulesWithNameStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> m (KRPCStream ([KRPCHS.SpaceCenter.Module]))
 partsModulesWithNameStream thisArg moduleNameArg = requestStream $ partsModulesWithNameStreamReq thisArg moduleNameArg 
 
 {-
  - A list of all parts that contain a <see cref="T:SpaceCenter.Module" /> whose
  - <see cref="M:SpaceCenter.Module.Name" /> is <paramref name="moduleName" />.<param name="moduleName">
  -}
-partsWithModule :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> RPCContext ([KRPCHS.SpaceCenter.Part])
+partsWithModule :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> m ([KRPCHS.SpaceCenter.Part])
 partsWithModule thisArg moduleNameArg = do
     let r = makeRequest "SpaceCenter" "Parts_WithModule" [makeArgument 0 thisArg, makeArgument 1 moduleNameArg]
     res <- sendRequest r
@@ -12057,13 +12060,13 @@ partsWithModuleStreamReq thisArg moduleNameArg =
     let req = makeRequest "SpaceCenter" "Parts_WithModule" [makeArgument 0 thisArg, makeArgument 1 moduleNameArg]
     in  makeStream req
 
-partsWithModuleStream :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
+partsWithModuleStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> m (KRPCStream ([KRPCHS.SpaceCenter.Part]))
 partsWithModuleStream thisArg moduleNameArg = requestStream $ partsWithModuleStreamReq thisArg moduleNameArg 
 
 {-
  - A list of parts whose <see cref="M:SpaceCenter.Part.Name" /> is <paramref name="name" />.<param name="name">
  -}
-partsWithName :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> RPCContext ([KRPCHS.SpaceCenter.Part])
+partsWithName :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> m ([KRPCHS.SpaceCenter.Part])
 partsWithName thisArg nameArg = do
     let r = makeRequest "SpaceCenter" "Parts_WithName" [makeArgument 0 thisArg, makeArgument 1 nameArg]
     res <- sendRequest r
@@ -12074,13 +12077,13 @@ partsWithNameStreamReq thisArg nameArg =
     let req = makeRequest "SpaceCenter" "Parts_WithName" [makeArgument 0 thisArg, makeArgument 1 nameArg]
     in  makeStream req
 
-partsWithNameStream :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
+partsWithNameStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> m (KRPCStream ([KRPCHS.SpaceCenter.Part]))
 partsWithNameStream thisArg nameArg = requestStream $ partsWithNameStreamReq thisArg nameArg 
 
 {-
  - A list of all parts whose <see cref="M:SpaceCenter.Part.Tag" /> is <paramref name="tag" />.<param name="tag">
  -}
-partsWithTag :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> RPCContext ([KRPCHS.SpaceCenter.Part])
+partsWithTag :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> m ([KRPCHS.SpaceCenter.Part])
 partsWithTag thisArg tagArg = do
     let r = makeRequest "SpaceCenter" "Parts_WithTag" [makeArgument 0 thisArg, makeArgument 1 tagArg]
     res <- sendRequest r
@@ -12091,13 +12094,13 @@ partsWithTagStreamReq thisArg tagArg =
     let req = makeRequest "SpaceCenter" "Parts_WithTag" [makeArgument 0 thisArg, makeArgument 1 tagArg]
     in  makeStream req
 
-partsWithTagStream :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
+partsWithTagStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> m (KRPCStream ([KRPCHS.SpaceCenter.Part]))
 partsWithTagStream thisArg tagArg = requestStream $ partsWithTagStreamReq thisArg tagArg 
 
 {-
  - A list of all parts whose <see cref="M:SpaceCenter.Part.Title" /> is <paramref name="title" />.<param name="title">
  -}
-partsWithTitle :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> RPCContext ([KRPCHS.SpaceCenter.Part])
+partsWithTitle :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> m ([KRPCHS.SpaceCenter.Part])
 partsWithTitle thisArg titleArg = do
     let r = makeRequest "SpaceCenter" "Parts_WithTitle" [makeArgument 0 thisArg, makeArgument 1 titleArg]
     res <- sendRequest r
@@ -12108,13 +12111,13 @@ partsWithTitleStreamReq thisArg titleArg =
     let req = makeRequest "SpaceCenter" "Parts_WithTitle" [makeArgument 0 thisArg, makeArgument 1 titleArg]
     in  makeStream req
 
-partsWithTitleStream :: KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
+partsWithTitleStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> Data.Text.Text -> m (KRPCStream ([KRPCHS.SpaceCenter.Part]))
 partsWithTitleStream thisArg titleArg = requestStream $ partsWithTitleStreamReq thisArg titleArg 
 
 {-
  - A list of all of the vessels parts.
  -}
-getPartsAll :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.Part])
+getPartsAll :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m ([KRPCHS.SpaceCenter.Part])
 getPartsAll thisArg = do
     let r = makeRequest "SpaceCenter" "Parts_get_All" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12125,13 +12128,13 @@ getPartsAllStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Parts_get_All" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartsAllStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Part]))
+getPartsAllStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m (KRPCStream ([KRPCHS.SpaceCenter.Part]))
 getPartsAllStream thisArg = requestStream $ getPartsAllStreamReq thisArg 
 
 {-
  - A list of all antennas in the vessel.
  -}
-getPartsAntennas :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.Antenna])
+getPartsAntennas :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m ([KRPCHS.SpaceCenter.Antenna])
 getPartsAntennas thisArg = do
     let r = makeRequest "SpaceCenter" "Parts_get_Antennas" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12142,13 +12145,13 @@ getPartsAntennasStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Parts_get_Antennas" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartsAntennasStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Antenna]))
+getPartsAntennasStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m (KRPCStream ([KRPCHS.SpaceCenter.Antenna]))
 getPartsAntennasStream thisArg = requestStream $ getPartsAntennasStreamReq thisArg 
 
 {-
  - A list of all cargo bays in the vessel.
  -}
-getPartsCargoBays :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.CargoBay])
+getPartsCargoBays :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m ([KRPCHS.SpaceCenter.CargoBay])
 getPartsCargoBays thisArg = do
     let r = makeRequest "SpaceCenter" "Parts_get_CargoBays" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12159,13 +12162,13 @@ getPartsCargoBaysStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Parts_get_CargoBays" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartsCargoBaysStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.CargoBay]))
+getPartsCargoBaysStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m (KRPCStream ([KRPCHS.SpaceCenter.CargoBay]))
 getPartsCargoBaysStream thisArg = requestStream $ getPartsCargoBaysStreamReq thisArg 
 
 {-
  - A list of all control surfaces in the vessel.
  -}
-getPartsControlSurfaces :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.ControlSurface])
+getPartsControlSurfaces :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m ([KRPCHS.SpaceCenter.ControlSurface])
 getPartsControlSurfaces thisArg = do
     let r = makeRequest "SpaceCenter" "Parts_get_ControlSurfaces" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12176,13 +12179,13 @@ getPartsControlSurfacesStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Parts_get_ControlSurfaces" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartsControlSurfacesStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.ControlSurface]))
+getPartsControlSurfacesStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m (KRPCStream ([KRPCHS.SpaceCenter.ControlSurface]))
 getPartsControlSurfacesStream thisArg = requestStream $ getPartsControlSurfacesStreamReq thisArg 
 
 {-
  - The part from which the vessel is controlled.
  -}
-getPartsControlling :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCHS.SpaceCenter.Part)
+getPartsControlling :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m (KRPCHS.SpaceCenter.Part)
 getPartsControlling thisArg = do
     let r = makeRequest "SpaceCenter" "Parts_get_Controlling" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12193,13 +12196,13 @@ getPartsControllingStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Parts_get_Controlling" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartsControllingStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getPartsControllingStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m (KRPCStream (KRPCHS.SpaceCenter.Part))
 getPartsControllingStream thisArg = requestStream $ getPartsControllingStreamReq thisArg 
 
 {-
  - A list of all decouplers in the vessel.
  -}
-getPartsDecouplers :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.Decoupler])
+getPartsDecouplers :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m ([KRPCHS.SpaceCenter.Decoupler])
 getPartsDecouplers thisArg = do
     let r = makeRequest "SpaceCenter" "Parts_get_Decouplers" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12210,13 +12213,13 @@ getPartsDecouplersStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Parts_get_Decouplers" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartsDecouplersStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Decoupler]))
+getPartsDecouplersStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m (KRPCStream ([KRPCHS.SpaceCenter.Decoupler]))
 getPartsDecouplersStream thisArg = requestStream $ getPartsDecouplersStreamReq thisArg 
 
 {-
  - A list of all docking ports in the vessel.
  -}
-getPartsDockingPorts :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.DockingPort])
+getPartsDockingPorts :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m ([KRPCHS.SpaceCenter.DockingPort])
 getPartsDockingPorts thisArg = do
     let r = makeRequest "SpaceCenter" "Parts_get_DockingPorts" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12227,14 +12230,14 @@ getPartsDockingPortsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Parts_get_DockingPorts" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartsDockingPortsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.DockingPort]))
+getPartsDockingPortsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m (KRPCStream ([KRPCHS.SpaceCenter.DockingPort]))
 getPartsDockingPortsStream thisArg = requestStream $ getPartsDockingPortsStreamReq thisArg 
 
 {-
  - A list of all engines in the vessel.This includes any part that generates thrust. This covers many different types of engine,
  - including liquid fuel rockets, solid rocket boosters, jet engines and RCS thrusters.
  -}
-getPartsEngines :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.Engine])
+getPartsEngines :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m ([KRPCHS.SpaceCenter.Engine])
 getPartsEngines thisArg = do
     let r = makeRequest "SpaceCenter" "Parts_get_Engines" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12245,13 +12248,13 @@ getPartsEnginesStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Parts_get_Engines" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartsEnginesStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Engine]))
+getPartsEnginesStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m (KRPCStream ([KRPCHS.SpaceCenter.Engine]))
 getPartsEnginesStream thisArg = requestStream $ getPartsEnginesStreamReq thisArg 
 
 {-
  - A list of all science experiments in the vessel.
  -}
-getPartsExperiments :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.Experiment])
+getPartsExperiments :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m ([KRPCHS.SpaceCenter.Experiment])
 getPartsExperiments thisArg = do
     let r = makeRequest "SpaceCenter" "Parts_get_Experiments" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12262,13 +12265,13 @@ getPartsExperimentsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Parts_get_Experiments" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartsExperimentsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Experiment]))
+getPartsExperimentsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m (KRPCStream ([KRPCHS.SpaceCenter.Experiment]))
 getPartsExperimentsStream thisArg = requestStream $ getPartsExperimentsStreamReq thisArg 
 
 {-
  - A list of all fairings in the vessel.
  -}
-getPartsFairings :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.Fairing])
+getPartsFairings :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m ([KRPCHS.SpaceCenter.Fairing])
 getPartsFairings thisArg = do
     let r = makeRequest "SpaceCenter" "Parts_get_Fairings" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12279,13 +12282,13 @@ getPartsFairingsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Parts_get_Fairings" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartsFairingsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Fairing]))
+getPartsFairingsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m (KRPCStream ([KRPCHS.SpaceCenter.Fairing]))
 getPartsFairingsStream thisArg = requestStream $ getPartsFairingsStreamReq thisArg 
 
 {-
  - A list of all intakes in the vessel.
  -}
-getPartsIntakes :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.Intake])
+getPartsIntakes :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m ([KRPCHS.SpaceCenter.Intake])
 getPartsIntakes thisArg = do
     let r = makeRequest "SpaceCenter" "Parts_get_Intakes" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12296,13 +12299,13 @@ getPartsIntakesStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Parts_get_Intakes" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartsIntakesStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Intake]))
+getPartsIntakesStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m (KRPCStream ([KRPCHS.SpaceCenter.Intake]))
 getPartsIntakesStream thisArg = requestStream $ getPartsIntakesStreamReq thisArg 
 
 {-
  - A list of all launch clamps attached to the vessel.
  -}
-getPartsLaunchClamps :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.LaunchClamp])
+getPartsLaunchClamps :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m ([KRPCHS.SpaceCenter.LaunchClamp])
 getPartsLaunchClamps thisArg = do
     let r = makeRequest "SpaceCenter" "Parts_get_LaunchClamps" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12313,13 +12316,13 @@ getPartsLaunchClampsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Parts_get_LaunchClamps" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartsLaunchClampsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.LaunchClamp]))
+getPartsLaunchClampsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m (KRPCStream ([KRPCHS.SpaceCenter.LaunchClamp]))
 getPartsLaunchClampsStream thisArg = requestStream $ getPartsLaunchClampsStreamReq thisArg 
 
 {-
  - A list of all landing legs attached to the vessel.
  -}
-getPartsLegs :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.Leg])
+getPartsLegs :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m ([KRPCHS.SpaceCenter.Leg])
 getPartsLegs thisArg = do
     let r = makeRequest "SpaceCenter" "Parts_get_Legs" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12330,13 +12333,13 @@ getPartsLegsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Parts_get_Legs" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartsLegsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Leg]))
+getPartsLegsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m (KRPCStream ([KRPCHS.SpaceCenter.Leg]))
 getPartsLegsStream thisArg = requestStream $ getPartsLegsStreamReq thisArg 
 
 {-
  - A list of all lights in the vessel.
  -}
-getPartsLights :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.Light])
+getPartsLights :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m ([KRPCHS.SpaceCenter.Light])
 getPartsLights thisArg = do
     let r = makeRequest "SpaceCenter" "Parts_get_Lights" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12347,13 +12350,13 @@ getPartsLightsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Parts_get_Lights" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartsLightsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Light]))
+getPartsLightsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m (KRPCStream ([KRPCHS.SpaceCenter.Light]))
 getPartsLightsStream thisArg = requestStream $ getPartsLightsStreamReq thisArg 
 
 {-
  - A list of all parachutes in the vessel.
  -}
-getPartsParachutes :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.Parachute])
+getPartsParachutes :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m ([KRPCHS.SpaceCenter.Parachute])
 getPartsParachutes thisArg = do
     let r = makeRequest "SpaceCenter" "Parts_get_Parachutes" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12364,13 +12367,13 @@ getPartsParachutesStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Parts_get_Parachutes" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartsParachutesStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Parachute]))
+getPartsParachutesStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m (KRPCStream ([KRPCHS.SpaceCenter.Parachute]))
 getPartsParachutesStream thisArg = requestStream $ getPartsParachutesStreamReq thisArg 
 
 {-
  - A list of all RCS blocks/thrusters in the vessel.
  -}
-getPartsRCS :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.RCS])
+getPartsRCS :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m ([KRPCHS.SpaceCenter.RCS])
 getPartsRCS thisArg = do
     let r = makeRequest "SpaceCenter" "Parts_get_RCS" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12381,13 +12384,13 @@ getPartsRCSStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Parts_get_RCS" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartsRCSStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.RCS]))
+getPartsRCSStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m (KRPCStream ([KRPCHS.SpaceCenter.RCS]))
 getPartsRCSStream thisArg = requestStream $ getPartsRCSStreamReq thisArg 
 
 {-
  - A list of all radiators in the vessel.
  -}
-getPartsRadiators :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.Radiator])
+getPartsRadiators :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m ([KRPCHS.SpaceCenter.Radiator])
 getPartsRadiators thisArg = do
     let r = makeRequest "SpaceCenter" "Parts_get_Radiators" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12398,13 +12401,13 @@ getPartsRadiatorsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Parts_get_Radiators" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartsRadiatorsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Radiator]))
+getPartsRadiatorsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m (KRPCStream ([KRPCHS.SpaceCenter.Radiator]))
 getPartsRadiatorsStream thisArg = requestStream $ getPartsRadiatorsStreamReq thisArg 
 
 {-
  - A list of all reaction wheels in the vessel.
  -}
-getPartsReactionWheels :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.ReactionWheel])
+getPartsReactionWheels :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m ([KRPCHS.SpaceCenter.ReactionWheel])
 getPartsReactionWheels thisArg = do
     let r = makeRequest "SpaceCenter" "Parts_get_ReactionWheels" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12415,13 +12418,13 @@ getPartsReactionWheelsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Parts_get_ReactionWheels" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartsReactionWheelsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.ReactionWheel]))
+getPartsReactionWheelsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m (KRPCStream ([KRPCHS.SpaceCenter.ReactionWheel]))
 getPartsReactionWheelsStream thisArg = requestStream $ getPartsReactionWheelsStreamReq thisArg 
 
 {-
  - A list of all resource converters in the vessel.
  -}
-getPartsResourceConverters :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.ResourceConverter])
+getPartsResourceConverters :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m ([KRPCHS.SpaceCenter.ResourceConverter])
 getPartsResourceConverters thisArg = do
     let r = makeRequest "SpaceCenter" "Parts_get_ResourceConverters" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12432,13 +12435,13 @@ getPartsResourceConvertersStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Parts_get_ResourceConverters" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartsResourceConvertersStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.ResourceConverter]))
+getPartsResourceConvertersStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m (KRPCStream ([KRPCHS.SpaceCenter.ResourceConverter]))
 getPartsResourceConvertersStream thisArg = requestStream $ getPartsResourceConvertersStreamReq thisArg 
 
 {-
  - A list of all resource harvesters in the vessel.
  -}
-getPartsResourceHarvesters :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.ResourceHarvester])
+getPartsResourceHarvesters :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m ([KRPCHS.SpaceCenter.ResourceHarvester])
 getPartsResourceHarvesters thisArg = do
     let r = makeRequest "SpaceCenter" "Parts_get_ResourceHarvesters" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12449,13 +12452,13 @@ getPartsResourceHarvestersStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Parts_get_ResourceHarvesters" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartsResourceHarvestersStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.ResourceHarvester]))
+getPartsResourceHarvestersStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m (KRPCStream ([KRPCHS.SpaceCenter.ResourceHarvester]))
 getPartsResourceHarvestersStream thisArg = requestStream $ getPartsResourceHarvestersStreamReq thisArg 
 
 {-
  - The vessels root part.
  -}
-getPartsRoot :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCHS.SpaceCenter.Part)
+getPartsRoot :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m (KRPCHS.SpaceCenter.Part)
 getPartsRoot thisArg = do
     let r = makeRequest "SpaceCenter" "Parts_get_Root" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12466,13 +12469,13 @@ getPartsRootStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Parts_get_Root" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartsRootStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getPartsRootStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m (KRPCStream (KRPCHS.SpaceCenter.Part))
 getPartsRootStream thisArg = requestStream $ getPartsRootStreamReq thisArg 
 
 {-
  - A list of all sensors in the vessel.
  -}
-getPartsSensors :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.Sensor])
+getPartsSensors :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m ([KRPCHS.SpaceCenter.Sensor])
 getPartsSensors thisArg = do
     let r = makeRequest "SpaceCenter" "Parts_get_Sensors" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12483,13 +12486,13 @@ getPartsSensorsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Parts_get_Sensors" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartsSensorsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Sensor]))
+getPartsSensorsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m (KRPCStream ([KRPCHS.SpaceCenter.Sensor]))
 getPartsSensorsStream thisArg = requestStream $ getPartsSensorsStreamReq thisArg 
 
 {-
  - A list of all solar panels in the vessel.
  -}
-getPartsSolarPanels :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.SolarPanel])
+getPartsSolarPanels :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m ([KRPCHS.SpaceCenter.SolarPanel])
 getPartsSolarPanels thisArg = do
     let r = makeRequest "SpaceCenter" "Parts_get_SolarPanels" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12500,13 +12503,13 @@ getPartsSolarPanelsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Parts_get_SolarPanels" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartsSolarPanelsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.SolarPanel]))
+getPartsSolarPanelsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m (KRPCStream ([KRPCHS.SpaceCenter.SolarPanel]))
 getPartsSolarPanelsStream thisArg = requestStream $ getPartsSolarPanelsStreamReq thisArg 
 
 {-
  - A list of all wheels in the vessel.
  -}
-getPartsWheels :: KRPCHS.SpaceCenter.Parts -> RPCContext ([KRPCHS.SpaceCenter.Wheel])
+getPartsWheels :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m ([KRPCHS.SpaceCenter.Wheel])
 getPartsWheels thisArg = do
     let r = makeRequest "SpaceCenter" "Parts_get_Wheels" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12517,13 +12520,13 @@ getPartsWheelsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Parts_get_Wheels" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPartsWheelsStream :: KRPCHS.SpaceCenter.Parts -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Wheel]))
+getPartsWheelsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> m (KRPCStream ([KRPCHS.SpaceCenter.Wheel]))
 getPartsWheelsStream thisArg = requestStream $ getPartsWheelsStreamReq thisArg 
 
 {-
  - The part from which the vessel is controlled.
  -}
-setPartsControlling :: KRPCHS.SpaceCenter.Parts -> KRPCHS.SpaceCenter.Part -> RPCContext ()
+setPartsControlling :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Parts -> KRPCHS.SpaceCenter.Part -> m ()
 setPartsControlling thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Parts_set_Controlling" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -12532,7 +12535,7 @@ setPartsControlling thisArg valueArg = do
 {-
  - The current amount of propellant.
  -}
-getPropellantCurrentAmount :: KRPCHS.SpaceCenter.Propellant -> RPCContext (Double)
+getPropellantCurrentAmount :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Propellant -> m (Double)
 getPropellantCurrentAmount thisArg = do
     let r = makeRequest "SpaceCenter" "Propellant_get_CurrentAmount" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12543,13 +12546,13 @@ getPropellantCurrentAmountStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Propellant_get_CurrentAmount" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPropellantCurrentAmountStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Double))
+getPropellantCurrentAmountStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Propellant -> m (KRPCStream (Double))
 getPropellantCurrentAmountStream thisArg = requestStream $ getPropellantCurrentAmountStreamReq thisArg 
 
 {-
  - The required amount of propellant.
  -}
-getPropellantCurrentRequirement :: KRPCHS.SpaceCenter.Propellant -> RPCContext (Double)
+getPropellantCurrentRequirement :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Propellant -> m (Double)
 getPropellantCurrentRequirement thisArg = do
     let r = makeRequest "SpaceCenter" "Propellant_get_CurrentRequirement" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12560,13 +12563,13 @@ getPropellantCurrentRequirementStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Propellant_get_CurrentRequirement" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPropellantCurrentRequirementStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Double))
+getPropellantCurrentRequirementStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Propellant -> m (KRPCStream (Double))
 getPropellantCurrentRequirementStream thisArg = requestStream $ getPropellantCurrentRequirementStreamReq thisArg 
 
 {-
  - If this propellant has a stack gauge or not.
  -}
-getPropellantDrawStackGauge :: KRPCHS.SpaceCenter.Propellant -> RPCContext (Bool)
+getPropellantDrawStackGauge :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Propellant -> m (Bool)
 getPropellantDrawStackGauge thisArg = do
     let r = makeRequest "SpaceCenter" "Propellant_get_DrawStackGauge" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12577,13 +12580,13 @@ getPropellantDrawStackGaugeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Propellant_get_DrawStackGauge" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPropellantDrawStackGaugeStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Bool))
+getPropellantDrawStackGaugeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Propellant -> m (KRPCStream (Bool))
 getPropellantDrawStackGaugeStream thisArg = requestStream $ getPropellantDrawStackGaugeStreamReq thisArg 
 
 {-
  - If this propellant should be ignored when calculating required mass flow given specific impulse.
  -}
-getPropellantIgnoreForIsp :: KRPCHS.SpaceCenter.Propellant -> RPCContext (Bool)
+getPropellantIgnoreForIsp :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Propellant -> m (Bool)
 getPropellantIgnoreForIsp thisArg = do
     let r = makeRequest "SpaceCenter" "Propellant_get_IgnoreForIsp" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12594,13 +12597,13 @@ getPropellantIgnoreForIspStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Propellant_get_IgnoreForIsp" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPropellantIgnoreForIspStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Bool))
+getPropellantIgnoreForIspStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Propellant -> m (KRPCStream (Bool))
 getPropellantIgnoreForIspStream thisArg = requestStream $ getPropellantIgnoreForIspStreamReq thisArg 
 
 {-
  - If this propellant should be ignored for thrust curve calculations.
  -}
-getPropellantIgnoreForThrustCurve :: KRPCHS.SpaceCenter.Propellant -> RPCContext (Bool)
+getPropellantIgnoreForThrustCurve :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Propellant -> m (Bool)
 getPropellantIgnoreForThrustCurve thisArg = do
     let r = makeRequest "SpaceCenter" "Propellant_get_IgnoreForThrustCurve" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12611,13 +12614,13 @@ getPropellantIgnoreForThrustCurveStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Propellant_get_IgnoreForThrustCurve" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPropellantIgnoreForThrustCurveStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Bool))
+getPropellantIgnoreForThrustCurveStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Propellant -> m (KRPCStream (Bool))
 getPropellantIgnoreForThrustCurveStream thisArg = requestStream $ getPropellantIgnoreForThrustCurveStreamReq thisArg 
 
 {-
  - If this propellant is deprived.
  -}
-getPropellantIsDeprived :: KRPCHS.SpaceCenter.Propellant -> RPCContext (Bool)
+getPropellantIsDeprived :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Propellant -> m (Bool)
 getPropellantIsDeprived thisArg = do
     let r = makeRequest "SpaceCenter" "Propellant_get_IsDeprived" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12628,13 +12631,13 @@ getPropellantIsDeprivedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Propellant_get_IsDeprived" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPropellantIsDeprivedStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Bool))
+getPropellantIsDeprivedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Propellant -> m (KRPCStream (Bool))
 getPropellantIsDeprivedStream thisArg = requestStream $ getPropellantIsDeprivedStreamReq thisArg 
 
 {-
  - The name of the propellant.
  -}
-getPropellantName :: KRPCHS.SpaceCenter.Propellant -> RPCContext (Data.Text.Text)
+getPropellantName :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Propellant -> m (Data.Text.Text)
 getPropellantName thisArg = do
     let r = makeRequest "SpaceCenter" "Propellant_get_Name" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12645,13 +12648,13 @@ getPropellantNameStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Propellant_get_Name" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPropellantNameStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Data.Text.Text))
+getPropellantNameStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Propellant -> m (KRPCStream (Data.Text.Text))
 getPropellantNameStream thisArg = requestStream $ getPropellantNameStreamReq thisArg 
 
 {-
  - The propellant ratio.
  -}
-getPropellantRatio :: KRPCHS.SpaceCenter.Propellant -> RPCContext (Float)
+getPropellantRatio :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Propellant -> m (Float)
 getPropellantRatio thisArg = do
     let r = makeRequest "SpaceCenter" "Propellant_get_Ratio" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12662,13 +12665,13 @@ getPropellantRatioStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Propellant_get_Ratio" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPropellantRatioStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Float))
+getPropellantRatioStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Propellant -> m (KRPCStream (Float))
 getPropellantRatioStream thisArg = requestStream $ getPropellantRatioStreamReq thisArg 
 
 {-
  - The total amount of the underlying resource currently reachable given resource flow rules.
  -}
-getPropellantTotalResourceAvailable :: KRPCHS.SpaceCenter.Propellant -> RPCContext (Double)
+getPropellantTotalResourceAvailable :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Propellant -> m (Double)
 getPropellantTotalResourceAvailable thisArg = do
     let r = makeRequest "SpaceCenter" "Propellant_get_TotalResourceAvailable" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12679,13 +12682,13 @@ getPropellantTotalResourceAvailableStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Propellant_get_TotalResourceAvailable" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPropellantTotalResourceAvailableStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Double))
+getPropellantTotalResourceAvailableStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Propellant -> m (KRPCStream (Double))
 getPropellantTotalResourceAvailableStream thisArg = requestStream $ getPropellantTotalResourceAvailableStreamReq thisArg 
 
 {-
  - The total vehicle capacity for the underlying propellant resource, restricted by resource flow rules.
  -}
-getPropellantTotalResourceCapacity :: KRPCHS.SpaceCenter.Propellant -> RPCContext (Double)
+getPropellantTotalResourceCapacity :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Propellant -> m (Double)
 getPropellantTotalResourceCapacity thisArg = do
     let r = makeRequest "SpaceCenter" "Propellant_get_TotalResourceCapacity" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12696,13 +12699,13 @@ getPropellantTotalResourceCapacityStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Propellant_get_TotalResourceCapacity" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPropellantTotalResourceCapacityStream :: KRPCHS.SpaceCenter.Propellant -> RPCContext (KRPCStream (Double))
+getPropellantTotalResourceCapacityStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Propellant -> m (KRPCStream (Double))
 getPropellantTotalResourceCapacityStream thisArg = requestStream $ getPropellantTotalResourceCapacityStreamReq thisArg 
 
 {-
  - Load a quicksave.This is the same as calling <see cref="M:SpaceCenter.Load" /> with the name "quicksave".
  -}
-quickload :: RPCContext ()
+quickload :: (MonadIO m, MonadThrow m, MonadRPC m) => m ()
 quickload  = do
     let r = makeRequest "SpaceCenter" "Quickload" []
     res <- sendRequest r
@@ -12711,7 +12714,7 @@ quickload  = do
 {-
  - Save a quicksave.This is the same as calling <see cref="M:SpaceCenter.Save" /> with the name "quicksave".
  -}
-quicksave :: RPCContext ()
+quicksave :: (MonadIO m, MonadThrow m, MonadRPC m) => m ()
 quicksave  = do
     let r = makeRequest "SpaceCenter" "Quicksave" []
     res <- sendRequest r
@@ -12723,7 +12726,7 @@ quicksave  = do
  - the RCS thruster itself is not enabled (<see cref="M:SpaceCenter.RCS.Enabled" />) or
  - it is covered by a fairing (<see cref="M:SpaceCenter.Part.Shielded" />).
  -}
-getRCSActive :: KRPCHS.SpaceCenter.RCS -> RPCContext (Bool)
+getRCSActive :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (Bool)
 getRCSActive thisArg = do
     let r = makeRequest "SpaceCenter" "RCS_get_Active" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12734,7 +12737,7 @@ getRCSActiveStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "RCS_get_Active" [makeArgument 0 thisArg]
     in  makeStream req
 
-getRCSActiveStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Bool))
+getRCSActiveStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (KRPCStream (Bool))
 getRCSActiveStream thisArg = requestStream $ getRCSActiveStreamReq thisArg 
 
 {-
@@ -12742,7 +12745,7 @@ getRCSActiveStream thisArg = requestStream $ getRCSActiveStreamReq thisArg
  - These axes correspond to the coordinate axes of the <see cref="M:SpaceCenter.Vessel.ReferenceFrame" />.
  - Returns zero if the RCS is inactive.
  -}
-getRCSAvailableTorque :: KRPCHS.SpaceCenter.RCS -> RPCContext (((Double, Double, Double), (Double, Double, Double)))
+getRCSAvailableTorque :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (((Double, Double, Double), (Double, Double, Double)))
 getRCSAvailableTorque thisArg = do
     let r = makeRequest "SpaceCenter" "RCS_get_AvailableTorque" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12753,13 +12756,13 @@ getRCSAvailableTorqueStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "RCS_get_AvailableTorque" [makeArgument 0 thisArg]
     in  makeStream req
 
-getRCSAvailableTorqueStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
+getRCSAvailableTorqueStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
 getRCSAvailableTorqueStream thisArg = requestStream $ getRCSAvailableTorqueStreamReq thisArg 
 
 {-
  - Whether the RCS thrusters are enabled.
  -}
-getRCSEnabled :: KRPCHS.SpaceCenter.RCS -> RPCContext (Bool)
+getRCSEnabled :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (Bool)
 getRCSEnabled thisArg = do
     let r = makeRequest "SpaceCenter" "RCS_get_Enabled" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12770,13 +12773,13 @@ getRCSEnabledStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "RCS_get_Enabled" [makeArgument 0 thisArg]
     in  makeStream req
 
-getRCSEnabledStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Bool))
+getRCSEnabledStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (KRPCStream (Bool))
 getRCSEnabledStream thisArg = requestStream $ getRCSEnabledStreamReq thisArg 
 
 {-
  - Whether the RCS thruster will fire when pitch control input is given.
  -}
-getRCSForwardEnabled :: KRPCHS.SpaceCenter.RCS -> RPCContext (Bool)
+getRCSForwardEnabled :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (Bool)
 getRCSForwardEnabled thisArg = do
     let r = makeRequest "SpaceCenter" "RCS_get_ForwardEnabled" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12787,13 +12790,13 @@ getRCSForwardEnabledStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "RCS_get_ForwardEnabled" [makeArgument 0 thisArg]
     in  makeStream req
 
-getRCSForwardEnabledStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Bool))
+getRCSForwardEnabledStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (KRPCStream (Bool))
 getRCSForwardEnabledStream thisArg = requestStream $ getRCSForwardEnabledStreamReq thisArg 
 
 {-
  - Whether the RCS has fuel available.The RCS thruster must be activated for this property to update correctly.
  -}
-getRCSHasFuel :: KRPCHS.SpaceCenter.RCS -> RPCContext (Bool)
+getRCSHasFuel :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (Bool)
 getRCSHasFuel thisArg = do
     let r = makeRequest "SpaceCenter" "RCS_get_HasFuel" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12804,13 +12807,13 @@ getRCSHasFuelStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "RCS_get_HasFuel" [makeArgument 0 thisArg]
     in  makeStream req
 
-getRCSHasFuelStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Bool))
+getRCSHasFuelStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (KRPCStream (Bool))
 getRCSHasFuelStream thisArg = requestStream $ getRCSHasFuelStreamReq thisArg 
 
 {-
  - The specific impulse of the RCS at sea level on Kerbin, in seconds.
  -}
-getRCSKerbinSeaLevelSpecificImpulse :: KRPCHS.SpaceCenter.RCS -> RPCContext (Float)
+getRCSKerbinSeaLevelSpecificImpulse :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (Float)
 getRCSKerbinSeaLevelSpecificImpulse thisArg = do
     let r = makeRequest "SpaceCenter" "RCS_get_KerbinSeaLevelSpecificImpulse" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12821,13 +12824,13 @@ getRCSKerbinSeaLevelSpecificImpulseStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "RCS_get_KerbinSeaLevelSpecificImpulse" [makeArgument 0 thisArg]
     in  makeStream req
 
-getRCSKerbinSeaLevelSpecificImpulseStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Float))
+getRCSKerbinSeaLevelSpecificImpulseStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (KRPCStream (Float))
 getRCSKerbinSeaLevelSpecificImpulseStream thisArg = requestStream $ getRCSKerbinSeaLevelSpecificImpulseStreamReq thisArg 
 
 {-
  - The maximum amount of thrust that can be produced by the RCS thrusters when active, in Newtons.
  -}
-getRCSMaxThrust :: KRPCHS.SpaceCenter.RCS -> RPCContext (Float)
+getRCSMaxThrust :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (Float)
 getRCSMaxThrust thisArg = do
     let r = makeRequest "SpaceCenter" "RCS_get_MaxThrust" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12838,13 +12841,13 @@ getRCSMaxThrustStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "RCS_get_MaxThrust" [makeArgument 0 thisArg]
     in  makeStream req
 
-getRCSMaxThrustStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Float))
+getRCSMaxThrustStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (KRPCStream (Float))
 getRCSMaxThrustStream thisArg = requestStream $ getRCSMaxThrustStreamReq thisArg 
 
 {-
  - The maximum amount of thrust that can be produced by the RCS thrusters when active in a vacuum, in Newtons.
  -}
-getRCSMaxVacuumThrust :: KRPCHS.SpaceCenter.RCS -> RPCContext (Float)
+getRCSMaxVacuumThrust :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (Float)
 getRCSMaxVacuumThrust thisArg = do
     let r = makeRequest "SpaceCenter" "RCS_get_MaxVacuumThrust" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12855,13 +12858,13 @@ getRCSMaxVacuumThrustStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "RCS_get_MaxVacuumThrust" [makeArgument 0 thisArg]
     in  makeStream req
 
-getRCSMaxVacuumThrustStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Float))
+getRCSMaxVacuumThrustStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (KRPCStream (Float))
 getRCSMaxVacuumThrustStream thisArg = requestStream $ getRCSMaxVacuumThrustStreamReq thisArg 
 
 {-
  - The part object for this RCS.
  -}
-getRCSPart :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCHS.SpaceCenter.Part)
+getRCSPart :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (KRPCHS.SpaceCenter.Part)
 getRCSPart thisArg = do
     let r = makeRequest "SpaceCenter" "RCS_get_Part" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12872,13 +12875,13 @@ getRCSPartStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "RCS_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
-getRCSPartStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getRCSPartStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (KRPCStream (KRPCHS.SpaceCenter.Part))
 getRCSPartStream thisArg = requestStream $ getRCSPartStreamReq thisArg 
 
 {-
  - Whether the RCS thruster will fire when pitch control input is given.
  -}
-getRCSPitchEnabled :: KRPCHS.SpaceCenter.RCS -> RPCContext (Bool)
+getRCSPitchEnabled :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (Bool)
 getRCSPitchEnabled thisArg = do
     let r = makeRequest "SpaceCenter" "RCS_get_PitchEnabled" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12889,14 +12892,14 @@ getRCSPitchEnabledStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "RCS_get_PitchEnabled" [makeArgument 0 thisArg]
     in  makeStream req
 
-getRCSPitchEnabledStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Bool))
+getRCSPitchEnabledStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (KRPCStream (Bool))
 getRCSPitchEnabledStream thisArg = requestStream $ getRCSPitchEnabledStreamReq thisArg 
 
 {-
  - The ratios of resources that the RCS consumes. A dictionary mapping resource names
  - to the ratios at which they are consumed by the RCS.
  -}
-getRCSPropellantRatios :: KRPCHS.SpaceCenter.RCS -> RPCContext (Data.Map.Map (Data.Text.Text) (Float))
+getRCSPropellantRatios :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (Data.Map.Map (Data.Text.Text) (Float))
 getRCSPropellantRatios thisArg = do
     let r = makeRequest "SpaceCenter" "RCS_get_PropellantRatios" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12907,13 +12910,13 @@ getRCSPropellantRatiosStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "RCS_get_PropellantRatios" [makeArgument 0 thisArg]
     in  makeStream req
 
-getRCSPropellantRatiosStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Data.Map.Map (Data.Text.Text) (Float)))
+getRCSPropellantRatiosStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (KRPCStream (Data.Map.Map (Data.Text.Text) (Float)))
 getRCSPropellantRatiosStream thisArg = requestStream $ getRCSPropellantRatiosStreamReq thisArg 
 
 {-
  - The names of resources that the RCS consumes.
  -}
-getRCSPropellants :: KRPCHS.SpaceCenter.RCS -> RPCContext ([Data.Text.Text])
+getRCSPropellants :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m ([Data.Text.Text])
 getRCSPropellants thisArg = do
     let r = makeRequest "SpaceCenter" "RCS_get_Propellants" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12924,13 +12927,13 @@ getRCSPropellantsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "RCS_get_Propellants" [makeArgument 0 thisArg]
     in  makeStream req
 
-getRCSPropellantsStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream ([Data.Text.Text]))
+getRCSPropellantsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (KRPCStream ([Data.Text.Text]))
 getRCSPropellantsStream thisArg = requestStream $ getRCSPropellantsStreamReq thisArg 
 
 {-
  - Whether the RCS thruster will fire when roll control input is given.
  -}
-getRCSRightEnabled :: KRPCHS.SpaceCenter.RCS -> RPCContext (Bool)
+getRCSRightEnabled :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (Bool)
 getRCSRightEnabled thisArg = do
     let r = makeRequest "SpaceCenter" "RCS_get_RightEnabled" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12941,13 +12944,13 @@ getRCSRightEnabledStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "RCS_get_RightEnabled" [makeArgument 0 thisArg]
     in  makeStream req
 
-getRCSRightEnabledStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Bool))
+getRCSRightEnabledStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (KRPCStream (Bool))
 getRCSRightEnabledStream thisArg = requestStream $ getRCSRightEnabledStreamReq thisArg 
 
 {-
  - Whether the RCS thruster will fire when roll control input is given.
  -}
-getRCSRollEnabled :: KRPCHS.SpaceCenter.RCS -> RPCContext (Bool)
+getRCSRollEnabled :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (Bool)
 getRCSRollEnabled thisArg = do
     let r = makeRequest "SpaceCenter" "RCS_get_RollEnabled" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12958,14 +12961,14 @@ getRCSRollEnabledStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "RCS_get_RollEnabled" [makeArgument 0 thisArg]
     in  makeStream req
 
-getRCSRollEnabledStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Bool))
+getRCSRollEnabledStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (KRPCStream (Bool))
 getRCSRollEnabledStream thisArg = requestStream $ getRCSRollEnabledStreamReq thisArg 
 
 {-
  - The current specific impulse of the RCS, in seconds. Returns zero
  - if the RCS is not active.
  -}
-getRCSSpecificImpulse :: KRPCHS.SpaceCenter.RCS -> RPCContext (Float)
+getRCSSpecificImpulse :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (Float)
 getRCSSpecificImpulse thisArg = do
     let r = makeRequest "SpaceCenter" "RCS_get_SpecificImpulse" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12976,13 +12979,13 @@ getRCSSpecificImpulseStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "RCS_get_SpecificImpulse" [makeArgument 0 thisArg]
     in  makeStream req
 
-getRCSSpecificImpulseStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Float))
+getRCSSpecificImpulseStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (KRPCStream (Float))
 getRCSSpecificImpulseStream thisArg = requestStream $ getRCSSpecificImpulseStreamReq thisArg 
 
 {-
  - A list of thrusters, one of each nozzel in the RCS part.
  -}
-getRCSThrusters :: KRPCHS.SpaceCenter.RCS -> RPCContext ([KRPCHS.SpaceCenter.Thruster])
+getRCSThrusters :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m ([KRPCHS.SpaceCenter.Thruster])
 getRCSThrusters thisArg = do
     let r = makeRequest "SpaceCenter" "RCS_get_Thrusters" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -12993,13 +12996,13 @@ getRCSThrustersStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "RCS_get_Thrusters" [makeArgument 0 thisArg]
     in  makeStream req
 
-getRCSThrustersStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Thruster]))
+getRCSThrustersStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (KRPCStream ([KRPCHS.SpaceCenter.Thruster]))
 getRCSThrustersStream thisArg = requestStream $ getRCSThrustersStreamReq thisArg 
 
 {-
  - Whether the RCS thruster will fire when yaw control input is given.
  -}
-getRCSUpEnabled :: KRPCHS.SpaceCenter.RCS -> RPCContext (Bool)
+getRCSUpEnabled :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (Bool)
 getRCSUpEnabled thisArg = do
     let r = makeRequest "SpaceCenter" "RCS_get_UpEnabled" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13010,13 +13013,13 @@ getRCSUpEnabledStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "RCS_get_UpEnabled" [makeArgument 0 thisArg]
     in  makeStream req
 
-getRCSUpEnabledStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Bool))
+getRCSUpEnabledStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (KRPCStream (Bool))
 getRCSUpEnabledStream thisArg = requestStream $ getRCSUpEnabledStreamReq thisArg 
 
 {-
  - The vacuum specific impulse of the RCS, in seconds.
  -}
-getRCSVacuumSpecificImpulse :: KRPCHS.SpaceCenter.RCS -> RPCContext (Float)
+getRCSVacuumSpecificImpulse :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (Float)
 getRCSVacuumSpecificImpulse thisArg = do
     let r = makeRequest "SpaceCenter" "RCS_get_VacuumSpecificImpulse" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13027,13 +13030,13 @@ getRCSVacuumSpecificImpulseStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "RCS_get_VacuumSpecificImpulse" [makeArgument 0 thisArg]
     in  makeStream req
 
-getRCSVacuumSpecificImpulseStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Float))
+getRCSVacuumSpecificImpulseStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (KRPCStream (Float))
 getRCSVacuumSpecificImpulseStream thisArg = requestStream $ getRCSVacuumSpecificImpulseStreamReq thisArg 
 
 {-
  - Whether the RCS thruster will fire when yaw control input is given.
  -}
-getRCSYawEnabled :: KRPCHS.SpaceCenter.RCS -> RPCContext (Bool)
+getRCSYawEnabled :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (Bool)
 getRCSYawEnabled thisArg = do
     let r = makeRequest "SpaceCenter" "RCS_get_YawEnabled" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13044,13 +13047,13 @@ getRCSYawEnabledStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "RCS_get_YawEnabled" [makeArgument 0 thisArg]
     in  makeStream req
 
-getRCSYawEnabledStream :: KRPCHS.SpaceCenter.RCS -> RPCContext (KRPCStream (Bool))
+getRCSYawEnabledStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> m (KRPCStream (Bool))
 getRCSYawEnabledStream thisArg = requestStream $ getRCSYawEnabledStreamReq thisArg 
 
 {-
  - Whether the RCS thrusters are enabled.
  -}
-setRCSEnabled :: KRPCHS.SpaceCenter.RCS -> Bool -> RPCContext ()
+setRCSEnabled :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> Bool -> m ()
 setRCSEnabled thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "RCS_set_Enabled" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -13059,7 +13062,7 @@ setRCSEnabled thisArg valueArg = do
 {-
  - Whether the RCS thruster will fire when pitch control input is given.
  -}
-setRCSForwardEnabled :: KRPCHS.SpaceCenter.RCS -> Bool -> RPCContext ()
+setRCSForwardEnabled :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> Bool -> m ()
 setRCSForwardEnabled thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "RCS_set_ForwardEnabled" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -13068,7 +13071,7 @@ setRCSForwardEnabled thisArg valueArg = do
 {-
  - Whether the RCS thruster will fire when pitch control input is given.
  -}
-setRCSPitchEnabled :: KRPCHS.SpaceCenter.RCS -> Bool -> RPCContext ()
+setRCSPitchEnabled :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> Bool -> m ()
 setRCSPitchEnabled thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "RCS_set_PitchEnabled" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -13077,7 +13080,7 @@ setRCSPitchEnabled thisArg valueArg = do
 {-
  - Whether the RCS thruster will fire when roll control input is given.
  -}
-setRCSRightEnabled :: KRPCHS.SpaceCenter.RCS -> Bool -> RPCContext ()
+setRCSRightEnabled :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> Bool -> m ()
 setRCSRightEnabled thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "RCS_set_RightEnabled" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -13086,7 +13089,7 @@ setRCSRightEnabled thisArg valueArg = do
 {-
  - Whether the RCS thruster will fire when roll control input is given.
  -}
-setRCSRollEnabled :: KRPCHS.SpaceCenter.RCS -> Bool -> RPCContext ()
+setRCSRollEnabled :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> Bool -> m ()
 setRCSRollEnabled thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "RCS_set_RollEnabled" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -13095,7 +13098,7 @@ setRCSRollEnabled thisArg valueArg = do
 {-
  - Whether the RCS thruster will fire when yaw control input is given.
  -}
-setRCSUpEnabled :: KRPCHS.SpaceCenter.RCS -> Bool -> RPCContext ()
+setRCSUpEnabled :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> Bool -> m ()
 setRCSUpEnabled thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "RCS_set_UpEnabled" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -13104,7 +13107,7 @@ setRCSUpEnabled thisArg valueArg = do
 {-
  - Whether the RCS thruster will fire when yaw control input is given.
  -}
-setRCSYawEnabled :: KRPCHS.SpaceCenter.RCS -> Bool -> RPCContext ()
+setRCSYawEnabled :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.RCS -> Bool -> m ()
 setRCSYawEnabled thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "RCS_set_YawEnabled" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -13113,7 +13116,7 @@ setRCSYawEnabled thisArg valueArg = do
 {-
  - Whether the radiator is deployable.
  -}
-getRadiatorDeployable :: KRPCHS.SpaceCenter.Radiator -> RPCContext (Bool)
+getRadiatorDeployable :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Radiator -> m (Bool)
 getRadiatorDeployable thisArg = do
     let r = makeRequest "SpaceCenter" "Radiator_get_Deployable" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13124,14 +13127,14 @@ getRadiatorDeployableStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Radiator_get_Deployable" [makeArgument 0 thisArg]
     in  makeStream req
 
-getRadiatorDeployableStream :: KRPCHS.SpaceCenter.Radiator -> RPCContext (KRPCStream (Bool))
+getRadiatorDeployableStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Radiator -> m (KRPCStream (Bool))
 getRadiatorDeployableStream thisArg = requestStream $ getRadiatorDeployableStreamReq thisArg 
 
 {-
  - For a deployable radiator,trueif the radiator is extended.
  - If the radiator is not deployable, this is alwaystrue.
  -}
-getRadiatorDeployed :: KRPCHS.SpaceCenter.Radiator -> RPCContext (Bool)
+getRadiatorDeployed :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Radiator -> m (Bool)
 getRadiatorDeployed thisArg = do
     let r = makeRequest "SpaceCenter" "Radiator_get_Deployed" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13142,13 +13145,13 @@ getRadiatorDeployedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Radiator_get_Deployed" [makeArgument 0 thisArg]
     in  makeStream req
 
-getRadiatorDeployedStream :: KRPCHS.SpaceCenter.Radiator -> RPCContext (KRPCStream (Bool))
+getRadiatorDeployedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Radiator -> m (KRPCStream (Bool))
 getRadiatorDeployedStream thisArg = requestStream $ getRadiatorDeployedStreamReq thisArg 
 
 {-
  - The part object for this radiator.
  -}
-getRadiatorPart :: KRPCHS.SpaceCenter.Radiator -> RPCContext (KRPCHS.SpaceCenter.Part)
+getRadiatorPart :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Radiator -> m (KRPCHS.SpaceCenter.Part)
 getRadiatorPart thisArg = do
     let r = makeRequest "SpaceCenter" "Radiator_get_Part" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13159,13 +13162,13 @@ getRadiatorPartStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Radiator_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
-getRadiatorPartStream :: KRPCHS.SpaceCenter.Radiator -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getRadiatorPartStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Radiator -> m (KRPCStream (KRPCHS.SpaceCenter.Part))
 getRadiatorPartStream thisArg = requestStream $ getRadiatorPartStreamReq thisArg 
 
 {-
  - The current state of the radiator.A fixed radiator is always <see cref="M:SpaceCenter.RadiatorState.Extended" />.
  -}
-getRadiatorState :: KRPCHS.SpaceCenter.Radiator -> RPCContext (KRPCHS.SpaceCenter.RadiatorState)
+getRadiatorState :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Radiator -> m (KRPCHS.SpaceCenter.RadiatorState)
 getRadiatorState thisArg = do
     let r = makeRequest "SpaceCenter" "Radiator_get_State" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13176,14 +13179,14 @@ getRadiatorStateStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Radiator_get_State" [makeArgument 0 thisArg]
     in  makeStream req
 
-getRadiatorStateStream :: KRPCHS.SpaceCenter.Radiator -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.RadiatorState))
+getRadiatorStateStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Radiator -> m (KRPCStream (KRPCHS.SpaceCenter.RadiatorState))
 getRadiatorStateStream thisArg = requestStream $ getRadiatorStateStreamReq thisArg 
 
 {-
  - For a deployable radiator,trueif the radiator is extended.
  - If the radiator is not deployable, this is alwaystrue.
  -}
-setRadiatorDeployed :: KRPCHS.SpaceCenter.Radiator -> Bool -> RPCContext ()
+setRadiatorDeployed :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Radiator -> Bool -> m ()
 setRadiatorDeployed thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Radiator_set_Deployed" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -13192,7 +13195,7 @@ setRadiatorDeployed thisArg valueArg = do
 {-
  - Whether the reaction wheel is active.
  -}
-getReactionWheelActive :: KRPCHS.SpaceCenter.ReactionWheel -> RPCContext (Bool)
+getReactionWheelActive :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ReactionWheel -> m (Bool)
 getReactionWheelActive thisArg = do
     let r = makeRequest "SpaceCenter" "ReactionWheel_get_Active" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13203,7 +13206,7 @@ getReactionWheelActiveStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ReactionWheel_get_Active" [makeArgument 0 thisArg]
     in  makeStream req
 
-getReactionWheelActiveStream :: KRPCHS.SpaceCenter.ReactionWheel -> RPCContext (KRPCStream (Bool))
+getReactionWheelActiveStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ReactionWheel -> m (KRPCStream (Bool))
 getReactionWheelActiveStream thisArg = requestStream $ getReactionWheelActiveStreamReq thisArg 
 
 {-
@@ -13211,7 +13214,7 @@ getReactionWheelActiveStream thisArg = requestStream $ getReactionWheelActiveStr
  - These axes correspond to the coordinate axes of the <see cref="M:SpaceCenter.Vessel.ReferenceFrame" />.
  - Returns zero if the reaction wheel is inactive or broken.
  -}
-getReactionWheelAvailableTorque :: KRPCHS.SpaceCenter.ReactionWheel -> RPCContext (((Double, Double, Double), (Double, Double, Double)))
+getReactionWheelAvailableTorque :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ReactionWheel -> m (((Double, Double, Double), (Double, Double, Double)))
 getReactionWheelAvailableTorque thisArg = do
     let r = makeRequest "SpaceCenter" "ReactionWheel_get_AvailableTorque" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13222,13 +13225,13 @@ getReactionWheelAvailableTorqueStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ReactionWheel_get_AvailableTorque" [makeArgument 0 thisArg]
     in  makeStream req
 
-getReactionWheelAvailableTorqueStream :: KRPCHS.SpaceCenter.ReactionWheel -> RPCContext (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
+getReactionWheelAvailableTorqueStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ReactionWheel -> m (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
 getReactionWheelAvailableTorqueStream thisArg = requestStream $ getReactionWheelAvailableTorqueStreamReq thisArg 
 
 {-
  - Whether the reaction wheel is broken.
  -}
-getReactionWheelBroken :: KRPCHS.SpaceCenter.ReactionWheel -> RPCContext (Bool)
+getReactionWheelBroken :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ReactionWheel -> m (Bool)
 getReactionWheelBroken thisArg = do
     let r = makeRequest "SpaceCenter" "ReactionWheel_get_Broken" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13239,7 +13242,7 @@ getReactionWheelBrokenStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ReactionWheel_get_Broken" [makeArgument 0 thisArg]
     in  makeStream req
 
-getReactionWheelBrokenStream :: KRPCHS.SpaceCenter.ReactionWheel -> RPCContext (KRPCStream (Bool))
+getReactionWheelBrokenStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ReactionWheel -> m (KRPCStream (Bool))
 getReactionWheelBrokenStream thisArg = requestStream $ getReactionWheelBrokenStreamReq thisArg 
 
 {-
@@ -13247,7 +13250,7 @@ getReactionWheelBrokenStream thisArg = requestStream $ getReactionWheelBrokenStr
  - in the pitch, roll and yaw axes of the vessel, in Newton meters.
  - These axes correspond to the coordinate axes of the <see cref="M:SpaceCenter.Vessel.ReferenceFrame" />.
  -}
-getReactionWheelMaxTorque :: KRPCHS.SpaceCenter.ReactionWheel -> RPCContext (((Double, Double, Double), (Double, Double, Double)))
+getReactionWheelMaxTorque :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ReactionWheel -> m (((Double, Double, Double), (Double, Double, Double)))
 getReactionWheelMaxTorque thisArg = do
     let r = makeRequest "SpaceCenter" "ReactionWheel_get_MaxTorque" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13258,13 +13261,13 @@ getReactionWheelMaxTorqueStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ReactionWheel_get_MaxTorque" [makeArgument 0 thisArg]
     in  makeStream req
 
-getReactionWheelMaxTorqueStream :: KRPCHS.SpaceCenter.ReactionWheel -> RPCContext (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
+getReactionWheelMaxTorqueStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ReactionWheel -> m (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
 getReactionWheelMaxTorqueStream thisArg = requestStream $ getReactionWheelMaxTorqueStreamReq thisArg 
 
 {-
  - The part object for this reaction wheel.
  -}
-getReactionWheelPart :: KRPCHS.SpaceCenter.ReactionWheel -> RPCContext (KRPCHS.SpaceCenter.Part)
+getReactionWheelPart :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ReactionWheel -> m (KRPCHS.SpaceCenter.Part)
 getReactionWheelPart thisArg = do
     let r = makeRequest "SpaceCenter" "ReactionWheel_get_Part" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13275,13 +13278,13 @@ getReactionWheelPartStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ReactionWheel_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
-getReactionWheelPartStream :: KRPCHS.SpaceCenter.ReactionWheel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getReactionWheelPartStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ReactionWheel -> m (KRPCStream (KRPCHS.SpaceCenter.Part))
 getReactionWheelPartStream thisArg = requestStream $ getReactionWheelPartStreamReq thisArg 
 
 {-
  - Whether the reaction wheel is active.
  -}
-setReactionWheelActive :: KRPCHS.SpaceCenter.ReactionWheel -> Bool -> RPCContext ()
+setReactionWheelActive :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ReactionWheel -> Bool -> m ()
 setReactionWheelActive thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "ReactionWheel_set_Active" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -13292,7 +13295,7 @@ setReactionWheelActive thisArg valueArg = do
  - whose components are inherited from other reference frames.<param name="position">The reference frame providing the position of the origin.<param name="rotation">The reference frame providing the orientation of the frame.<param name="velocity">The reference frame providing the linear velocity of the frame.<param name="angularVelocity">The reference frame providing the angular velocity of the frame.The <paramref name="position" /> is required but all other reference frames are optional.
  - If omitted, they are set to the <paramref name="position" /> reference frame.
  -}
-referenceFrameCreateHybrid :: KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
+referenceFrameCreateHybrid :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCHS.SpaceCenter.ReferenceFrame)
 referenceFrameCreateHybrid positionArg rotationArg velocityArg angularVelocityArg = do
     let r = makeRequest "SpaceCenter" "ReferenceFrame_CreateHybrid" [makeArgument 0 positionArg, makeArgument 1 rotationArg, makeArgument 2 velocityArg, makeArgument 3 angularVelocityArg]
     res <- sendRequest r
@@ -13303,13 +13306,13 @@ referenceFrameCreateHybridStreamReq positionArg rotationArg velocityArg angularV
     let req = makeRequest "SpaceCenter" "ReferenceFrame_CreateHybrid" [makeArgument 0 positionArg, makeArgument 1 rotationArg, makeArgument 2 velocityArg, makeArgument 3 angularVelocityArg]
     in  makeStream req
 
-referenceFrameCreateHybridStream :: KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
+referenceFrameCreateHybridStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 referenceFrameCreateHybridStream positionArg rotationArg velocityArg angularVelocityArg = requestStream $ referenceFrameCreateHybridStreamReq positionArg rotationArg velocityArg angularVelocityArg 
 
 {-
  - Create a relative reference frame.<param name="referenceFrame">The parent reference frame.<param name="position">The offset of the position of the origin.<param name="rotation">The rotation to apply to the parent frames rotation, as a quaternion. Defaults to zero.<param name="velocity">The linear velocity to offset the parent frame by. Defaults to zero.<param name="angularVelocity">The angular velocity to offset the parent frame by. Defaults to zero.
  -}
-referenceFrameCreateRelative :: KRPCHS.SpaceCenter.ReferenceFrame -> (Double, Double, Double) -> (Double, Double, Double, Double) -> (Double, Double, Double) -> (Double, Double, Double) -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
+referenceFrameCreateRelative :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ReferenceFrame -> (Double, Double, Double) -> (Double, Double, Double, Double) -> (Double, Double, Double) -> (Double, Double, Double) -> m (KRPCHS.SpaceCenter.ReferenceFrame)
 referenceFrameCreateRelative referenceFrameArg positionArg rotationArg velocityArg angularVelocityArg = do
     let r = makeRequest "SpaceCenter" "ReferenceFrame_CreateRelative" [makeArgument 0 referenceFrameArg, makeArgument 1 positionArg, makeArgument 2 rotationArg, makeArgument 3 velocityArg, makeArgument 4 angularVelocityArg]
     res <- sendRequest r
@@ -13320,13 +13323,13 @@ referenceFrameCreateRelativeStreamReq referenceFrameArg positionArg rotationArg 
     let req = makeRequest "SpaceCenter" "ReferenceFrame_CreateRelative" [makeArgument 0 referenceFrameArg, makeArgument 1 positionArg, makeArgument 2 rotationArg, makeArgument 3 velocityArg, makeArgument 4 angularVelocityArg]
     in  makeStream req
 
-referenceFrameCreateRelativeStream :: KRPCHS.SpaceCenter.ReferenceFrame -> (Double, Double, Double) -> (Double, Double, Double, Double) -> (Double, Double, Double) -> (Double, Double, Double) -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
+referenceFrameCreateRelativeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ReferenceFrame -> (Double, Double, Double) -> (Double, Double, Double, Double) -> (Double, Double, Double) -> (Double, Double, Double) -> m (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 referenceFrameCreateRelativeStream referenceFrameArg positionArg rotationArg velocityArg angularVelocityArg = requestStream $ referenceFrameCreateRelativeStreamReq referenceFrameArg positionArg rotationArg velocityArg angularVelocityArg 
 
 {-
  - True if the specified converter is active.<param name="index">Index of the converter.
  -}
-resourceConverterActive :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext (Bool)
+resourceConverterActive :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> m (Bool)
 resourceConverterActive thisArg indexArg = do
     let r = makeRequest "SpaceCenter" "ResourceConverter_Active" [makeArgument 0 thisArg, makeArgument 1 indexArg]
     res <- sendRequest r
@@ -13337,13 +13340,13 @@ resourceConverterActiveStreamReq thisArg indexArg =
     let req = makeRequest "SpaceCenter" "ResourceConverter_Active" [makeArgument 0 thisArg, makeArgument 1 indexArg]
     in  makeStream req
 
-resourceConverterActiveStream :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext (KRPCStream (Bool))
+resourceConverterActiveStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> m (KRPCStream (Bool))
 resourceConverterActiveStream thisArg indexArg = requestStream $ resourceConverterActiveStreamReq thisArg indexArg 
 
 {-
  - List of the names of resources consumed by the specified converter.<param name="index">Index of the converter.
  -}
-resourceConverterInputs :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext ([Data.Text.Text])
+resourceConverterInputs :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> m ([Data.Text.Text])
 resourceConverterInputs thisArg indexArg = do
     let r = makeRequest "SpaceCenter" "ResourceConverter_Inputs" [makeArgument 0 thisArg, makeArgument 1 indexArg]
     res <- sendRequest r
@@ -13354,13 +13357,13 @@ resourceConverterInputsStreamReq thisArg indexArg =
     let req = makeRequest "SpaceCenter" "ResourceConverter_Inputs" [makeArgument 0 thisArg, makeArgument 1 indexArg]
     in  makeStream req
 
-resourceConverterInputsStream :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext (KRPCStream ([Data.Text.Text]))
+resourceConverterInputsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> m (KRPCStream ([Data.Text.Text]))
 resourceConverterInputsStream thisArg indexArg = requestStream $ resourceConverterInputsStreamReq thisArg indexArg 
 
 {-
  - The name of the specified converter.<param name="index">Index of the converter.
  -}
-resourceConverterName :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext (Data.Text.Text)
+resourceConverterName :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> m (Data.Text.Text)
 resourceConverterName thisArg indexArg = do
     let r = makeRequest "SpaceCenter" "ResourceConverter_Name" [makeArgument 0 thisArg, makeArgument 1 indexArg]
     res <- sendRequest r
@@ -13371,13 +13374,13 @@ resourceConverterNameStreamReq thisArg indexArg =
     let req = makeRequest "SpaceCenter" "ResourceConverter_Name" [makeArgument 0 thisArg, makeArgument 1 indexArg]
     in  makeStream req
 
-resourceConverterNameStream :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext (KRPCStream (Data.Text.Text))
+resourceConverterNameStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> m (KRPCStream (Data.Text.Text))
 resourceConverterNameStream thisArg indexArg = requestStream $ resourceConverterNameStreamReq thisArg indexArg 
 
 {-
  - List of the names of resources produced by the specified converter.<param name="index">Index of the converter.
  -}
-resourceConverterOutputs :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext ([Data.Text.Text])
+resourceConverterOutputs :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> m ([Data.Text.Text])
 resourceConverterOutputs thisArg indexArg = do
     let r = makeRequest "SpaceCenter" "ResourceConverter_Outputs" [makeArgument 0 thisArg, makeArgument 1 indexArg]
     res <- sendRequest r
@@ -13388,13 +13391,13 @@ resourceConverterOutputsStreamReq thisArg indexArg =
     let req = makeRequest "SpaceCenter" "ResourceConverter_Outputs" [makeArgument 0 thisArg, makeArgument 1 indexArg]
     in  makeStream req
 
-resourceConverterOutputsStream :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext (KRPCStream ([Data.Text.Text]))
+resourceConverterOutputsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> m (KRPCStream ([Data.Text.Text]))
 resourceConverterOutputsStream thisArg indexArg = requestStream $ resourceConverterOutputsStreamReq thisArg indexArg 
 
 {-
  - Start the specified converter.<param name="index">Index of the converter.
  -}
-resourceConverterStart :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext ()
+resourceConverterStart :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> m ()
 resourceConverterStart thisArg indexArg = do
     let r = makeRequest "SpaceCenter" "ResourceConverter_Start" [makeArgument 0 thisArg, makeArgument 1 indexArg]
     res <- sendRequest r
@@ -13403,7 +13406,7 @@ resourceConverterStart thisArg indexArg = do
 {-
  - The state of the specified converter.<param name="index">Index of the converter.
  -}
-resourceConverterState :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext (KRPCHS.SpaceCenter.ResourceConverterState)
+resourceConverterState :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> m (KRPCHS.SpaceCenter.ResourceConverterState)
 resourceConverterState thisArg indexArg = do
     let r = makeRequest "SpaceCenter" "ResourceConverter_State" [makeArgument 0 thisArg, makeArgument 1 indexArg]
     res <- sendRequest r
@@ -13414,14 +13417,14 @@ resourceConverterStateStreamReq thisArg indexArg =
     let req = makeRequest "SpaceCenter" "ResourceConverter_State" [makeArgument 0 thisArg, makeArgument 1 indexArg]
     in  makeStream req
 
-resourceConverterStateStream :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ResourceConverterState))
+resourceConverterStateStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> m (KRPCStream (KRPCHS.SpaceCenter.ResourceConverterState))
 resourceConverterStateStream thisArg indexArg = requestStream $ resourceConverterStateStreamReq thisArg indexArg 
 
 {-
  - Status information for the specified converter.
  - This is the full status message shown in the in-game UI.<param name="index">Index of the converter.
  -}
-resourceConverterStatusInfo :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext (Data.Text.Text)
+resourceConverterStatusInfo :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> m (Data.Text.Text)
 resourceConverterStatusInfo thisArg indexArg = do
     let r = makeRequest "SpaceCenter" "ResourceConverter_StatusInfo" [makeArgument 0 thisArg, makeArgument 1 indexArg]
     res <- sendRequest r
@@ -13432,13 +13435,13 @@ resourceConverterStatusInfoStreamReq thisArg indexArg =
     let req = makeRequest "SpaceCenter" "ResourceConverter_StatusInfo" [makeArgument 0 thisArg, makeArgument 1 indexArg]
     in  makeStream req
 
-resourceConverterStatusInfoStream :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext (KRPCStream (Data.Text.Text))
+resourceConverterStatusInfoStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> m (KRPCStream (Data.Text.Text))
 resourceConverterStatusInfoStream thisArg indexArg = requestStream $ resourceConverterStatusInfoStreamReq thisArg indexArg 
 
 {-
  - Stop the specified converter.<param name="index">Index of the converter.
  -}
-resourceConverterStop :: KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> RPCContext ()
+resourceConverterStop :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceConverter -> Data.Int.Int32 -> m ()
 resourceConverterStop thisArg indexArg = do
     let r = makeRequest "SpaceCenter" "ResourceConverter_Stop" [makeArgument 0 thisArg, makeArgument 1 indexArg]
     res <- sendRequest r
@@ -13447,7 +13450,7 @@ resourceConverterStop thisArg indexArg = do
 {-
  - The number of converters in the part.
  -}
-getResourceConverterCount :: KRPCHS.SpaceCenter.ResourceConverter -> RPCContext (Data.Int.Int32)
+getResourceConverterCount :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceConverter -> m (Data.Int.Int32)
 getResourceConverterCount thisArg = do
     let r = makeRequest "SpaceCenter" "ResourceConverter_get_Count" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13458,13 +13461,13 @@ getResourceConverterCountStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ResourceConverter_get_Count" [makeArgument 0 thisArg]
     in  makeStream req
 
-getResourceConverterCountStream :: KRPCHS.SpaceCenter.ResourceConverter -> RPCContext (KRPCStream (Data.Int.Int32))
+getResourceConverterCountStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceConverter -> m (KRPCStream (Data.Int.Int32))
 getResourceConverterCountStream thisArg = requestStream $ getResourceConverterCountStreamReq thisArg 
 
 {-
  - The part object for this converter.
  -}
-getResourceConverterPart :: KRPCHS.SpaceCenter.ResourceConverter -> RPCContext (KRPCHS.SpaceCenter.Part)
+getResourceConverterPart :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceConverter -> m (KRPCHS.SpaceCenter.Part)
 getResourceConverterPart thisArg = do
     let r = makeRequest "SpaceCenter" "ResourceConverter_get_Part" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13475,13 +13478,13 @@ getResourceConverterPartStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ResourceConverter_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
-getResourceConverterPartStream :: KRPCHS.SpaceCenter.ResourceConverter -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getResourceConverterPartStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceConverter -> m (KRPCStream (KRPCHS.SpaceCenter.Part))
 getResourceConverterPartStream thisArg = requestStream $ getResourceConverterPartStreamReq thisArg 
 
 {-
  - Whether the harvester is actively drilling.
  -}
-getResourceHarvesterActive :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (Bool)
+getResourceHarvesterActive :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceHarvester -> m (Bool)
 getResourceHarvesterActive thisArg = do
     let r = makeRequest "SpaceCenter" "ResourceHarvester_get_Active" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13492,13 +13495,13 @@ getResourceHarvesterActiveStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ResourceHarvester_get_Active" [makeArgument 0 thisArg]
     in  makeStream req
 
-getResourceHarvesterActiveStream :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (KRPCStream (Bool))
+getResourceHarvesterActiveStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceHarvester -> m (KRPCStream (Bool))
 getResourceHarvesterActiveStream thisArg = requestStream $ getResourceHarvesterActiveStreamReq thisArg 
 
 {-
  - The core temperature of the drill, in Kelvin.
  -}
-getResourceHarvesterCoreTemperature :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (Float)
+getResourceHarvesterCoreTemperature :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceHarvester -> m (Float)
 getResourceHarvesterCoreTemperature thisArg = do
     let r = makeRequest "SpaceCenter" "ResourceHarvester_get_CoreTemperature" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13509,13 +13512,13 @@ getResourceHarvesterCoreTemperatureStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ResourceHarvester_get_CoreTemperature" [makeArgument 0 thisArg]
     in  makeStream req
 
-getResourceHarvesterCoreTemperatureStream :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (KRPCStream (Float))
+getResourceHarvesterCoreTemperatureStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceHarvester -> m (KRPCStream (Float))
 getResourceHarvesterCoreTemperatureStream thisArg = requestStream $ getResourceHarvesterCoreTemperatureStreamReq thisArg 
 
 {-
  - Whether the harvester is deployed.
  -}
-getResourceHarvesterDeployed :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (Bool)
+getResourceHarvesterDeployed :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceHarvester -> m (Bool)
 getResourceHarvesterDeployed thisArg = do
     let r = makeRequest "SpaceCenter" "ResourceHarvester_get_Deployed" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13526,13 +13529,13 @@ getResourceHarvesterDeployedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ResourceHarvester_get_Deployed" [makeArgument 0 thisArg]
     in  makeStream req
 
-getResourceHarvesterDeployedStream :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (KRPCStream (Bool))
+getResourceHarvesterDeployedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceHarvester -> m (KRPCStream (Bool))
 getResourceHarvesterDeployedStream thisArg = requestStream $ getResourceHarvesterDeployedStreamReq thisArg 
 
 {-
  - The rate at which the drill is extracting ore, in units per second.
  -}
-getResourceHarvesterExtractionRate :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (Float)
+getResourceHarvesterExtractionRate :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceHarvester -> m (Float)
 getResourceHarvesterExtractionRate thisArg = do
     let r = makeRequest "SpaceCenter" "ResourceHarvester_get_ExtractionRate" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13543,13 +13546,13 @@ getResourceHarvesterExtractionRateStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ResourceHarvester_get_ExtractionRate" [makeArgument 0 thisArg]
     in  makeStream req
 
-getResourceHarvesterExtractionRateStream :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (KRPCStream (Float))
+getResourceHarvesterExtractionRateStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceHarvester -> m (KRPCStream (Float))
 getResourceHarvesterExtractionRateStream thisArg = requestStream $ getResourceHarvesterExtractionRateStreamReq thisArg 
 
 {-
  - The core temperature at which the drill will operate with peak efficiency, in Kelvin.
  -}
-getResourceHarvesterOptimumCoreTemperature :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (Float)
+getResourceHarvesterOptimumCoreTemperature :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceHarvester -> m (Float)
 getResourceHarvesterOptimumCoreTemperature thisArg = do
     let r = makeRequest "SpaceCenter" "ResourceHarvester_get_OptimumCoreTemperature" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13560,13 +13563,13 @@ getResourceHarvesterOptimumCoreTemperatureStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ResourceHarvester_get_OptimumCoreTemperature" [makeArgument 0 thisArg]
     in  makeStream req
 
-getResourceHarvesterOptimumCoreTemperatureStream :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (KRPCStream (Float))
+getResourceHarvesterOptimumCoreTemperatureStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceHarvester -> m (KRPCStream (Float))
 getResourceHarvesterOptimumCoreTemperatureStream thisArg = requestStream $ getResourceHarvesterOptimumCoreTemperatureStreamReq thisArg 
 
 {-
  - The part object for this harvester.
  -}
-getResourceHarvesterPart :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (KRPCHS.SpaceCenter.Part)
+getResourceHarvesterPart :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceHarvester -> m (KRPCHS.SpaceCenter.Part)
 getResourceHarvesterPart thisArg = do
     let r = makeRequest "SpaceCenter" "ResourceHarvester_get_Part" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13577,13 +13580,13 @@ getResourceHarvesterPartStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ResourceHarvester_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
-getResourceHarvesterPartStream :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getResourceHarvesterPartStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceHarvester -> m (KRPCStream (KRPCHS.SpaceCenter.Part))
 getResourceHarvesterPartStream thisArg = requestStream $ getResourceHarvesterPartStreamReq thisArg 
 
 {-
  - The state of the harvester.
  -}
-getResourceHarvesterState :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (KRPCHS.SpaceCenter.ResourceHarvesterState)
+getResourceHarvesterState :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceHarvester -> m (KRPCHS.SpaceCenter.ResourceHarvesterState)
 getResourceHarvesterState thisArg = do
     let r = makeRequest "SpaceCenter" "ResourceHarvester_get_State" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13594,13 +13597,13 @@ getResourceHarvesterStateStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ResourceHarvester_get_State" [makeArgument 0 thisArg]
     in  makeStream req
 
-getResourceHarvesterStateStream :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ResourceHarvesterState))
+getResourceHarvesterStateStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceHarvester -> m (KRPCStream (KRPCHS.SpaceCenter.ResourceHarvesterState))
 getResourceHarvesterStateStream thisArg = requestStream $ getResourceHarvesterStateStreamReq thisArg 
 
 {-
  - The thermal efficiency of the drill, as a percentage of its maximum.
  -}
-getResourceHarvesterThermalEfficiency :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (Float)
+getResourceHarvesterThermalEfficiency :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceHarvester -> m (Float)
 getResourceHarvesterThermalEfficiency thisArg = do
     let r = makeRequest "SpaceCenter" "ResourceHarvester_get_ThermalEfficiency" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13611,13 +13614,13 @@ getResourceHarvesterThermalEfficiencyStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ResourceHarvester_get_ThermalEfficiency" [makeArgument 0 thisArg]
     in  makeStream req
 
-getResourceHarvesterThermalEfficiencyStream :: KRPCHS.SpaceCenter.ResourceHarvester -> RPCContext (KRPCStream (Float))
+getResourceHarvesterThermalEfficiencyStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceHarvester -> m (KRPCStream (Float))
 getResourceHarvesterThermalEfficiencyStream thisArg = requestStream $ getResourceHarvesterThermalEfficiencyStreamReq thisArg 
 
 {-
  - Whether the harvester is actively drilling.
  -}
-setResourceHarvesterActive :: KRPCHS.SpaceCenter.ResourceHarvester -> Bool -> RPCContext ()
+setResourceHarvesterActive :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceHarvester -> Bool -> m ()
 setResourceHarvesterActive thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "ResourceHarvester_set_Active" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -13626,7 +13629,7 @@ setResourceHarvesterActive thisArg valueArg = do
 {-
  - Whether the harvester is deployed.
  -}
-setResourceHarvesterDeployed :: KRPCHS.SpaceCenter.ResourceHarvester -> Bool -> RPCContext ()
+setResourceHarvesterDeployed :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceHarvester -> Bool -> m ()
 setResourceHarvesterDeployed thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "ResourceHarvester_set_Deployed" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -13639,7 +13642,7 @@ setResourceHarvesterDeployed thisArg valueArg = do
  - Use <see cref="M:SpaceCenter.ResourceTransfer.Complete" /> to check if the transfer is complete.
  - Use <see cref="M:SpaceCenter.ResourceTransfer.Amount" /> to see how much of the resource has been transferred.<param name="fromPart">The part to transfer to.<param name="toPart">The part to transfer from.<param name="resource">The name of the resource to transfer.<param name="maxAmount">The maximum amount of resource to transfer.
  -}
-resourceTransferStart :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.Part -> Data.Text.Text -> Float -> RPCContext (KRPCHS.SpaceCenter.ResourceTransfer)
+resourceTransferStart :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.Part -> Data.Text.Text -> Float -> m (KRPCHS.SpaceCenter.ResourceTransfer)
 resourceTransferStart fromPartArg toPartArg resourceArg maxAmountArg = do
     let r = makeRequest "SpaceCenter" "ResourceTransfer_Start" [makeArgument 0 fromPartArg, makeArgument 1 toPartArg, makeArgument 2 resourceArg, makeArgument 3 maxAmountArg]
     res <- sendRequest r
@@ -13650,13 +13653,13 @@ resourceTransferStartStreamReq fromPartArg toPartArg resourceArg maxAmountArg =
     let req = makeRequest "SpaceCenter" "ResourceTransfer_Start" [makeArgument 0 fromPartArg, makeArgument 1 toPartArg, makeArgument 2 resourceArg, makeArgument 3 maxAmountArg]
     in  makeStream req
 
-resourceTransferStartStream :: KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.Part -> Data.Text.Text -> Float -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ResourceTransfer))
+resourceTransferStartStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Part -> KRPCHS.SpaceCenter.Part -> Data.Text.Text -> Float -> m (KRPCStream (KRPCHS.SpaceCenter.ResourceTransfer))
 resourceTransferStartStream fromPartArg toPartArg resourceArg maxAmountArg = requestStream $ resourceTransferStartStreamReq fromPartArg toPartArg resourceArg maxAmountArg 
 
 {-
  - The amount of the resource that has been transferred.
  -}
-getResourceTransferAmount :: KRPCHS.SpaceCenter.ResourceTransfer -> RPCContext (Float)
+getResourceTransferAmount :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceTransfer -> m (Float)
 getResourceTransferAmount thisArg = do
     let r = makeRequest "SpaceCenter" "ResourceTransfer_get_Amount" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13667,13 +13670,13 @@ getResourceTransferAmountStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ResourceTransfer_get_Amount" [makeArgument 0 thisArg]
     in  makeStream req
 
-getResourceTransferAmountStream :: KRPCHS.SpaceCenter.ResourceTransfer -> RPCContext (KRPCStream (Float))
+getResourceTransferAmountStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceTransfer -> m (KRPCStream (Float))
 getResourceTransferAmountStream thisArg = requestStream $ getResourceTransferAmountStreamReq thisArg 
 
 {-
  - Whether the transfer has completed.
  -}
-getResourceTransferComplete :: KRPCHS.SpaceCenter.ResourceTransfer -> RPCContext (Bool)
+getResourceTransferComplete :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceTransfer -> m (Bool)
 getResourceTransferComplete thisArg = do
     let r = makeRequest "SpaceCenter" "ResourceTransfer_get_Complete" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13684,13 +13687,13 @@ getResourceTransferCompleteStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ResourceTransfer_get_Complete" [makeArgument 0 thisArg]
     in  makeStream req
 
-getResourceTransferCompleteStream :: KRPCHS.SpaceCenter.ResourceTransfer -> RPCContext (KRPCStream (Bool))
+getResourceTransferCompleteStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ResourceTransfer -> m (KRPCStream (Bool))
 getResourceTransferCompleteStream thisArg = requestStream $ getResourceTransferCompleteStreamReq thisArg 
 
 {-
  - The amount of the resource that is currently stored in the part.
  -}
-getResourceAmount :: KRPCHS.SpaceCenter.Resource -> RPCContext (Float)
+getResourceAmount :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Resource -> m (Float)
 getResourceAmount thisArg = do
     let r = makeRequest "SpaceCenter" "Resource_get_Amount" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13701,13 +13704,13 @@ getResourceAmountStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Resource_get_Amount" [makeArgument 0 thisArg]
     in  makeStream req
 
-getResourceAmountStream :: KRPCHS.SpaceCenter.Resource -> RPCContext (KRPCStream (Float))
+getResourceAmountStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Resource -> m (KRPCStream (Float))
 getResourceAmountStream thisArg = requestStream $ getResourceAmountStreamReq thisArg 
 
 {-
  - The density of the resource, inkg/l.
  -}
-getResourceDensity :: KRPCHS.SpaceCenter.Resource -> RPCContext (Float)
+getResourceDensity :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Resource -> m (Float)
 getResourceDensity thisArg = do
     let r = makeRequest "SpaceCenter" "Resource_get_Density" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13718,13 +13721,13 @@ getResourceDensityStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Resource_get_Density" [makeArgument 0 thisArg]
     in  makeStream req
 
-getResourceDensityStream :: KRPCHS.SpaceCenter.Resource -> RPCContext (KRPCStream (Float))
+getResourceDensityStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Resource -> m (KRPCStream (Float))
 getResourceDensityStream thisArg = requestStream $ getResourceDensityStreamReq thisArg 
 
 {-
  - Whether use of this resource is enabled.
  -}
-getResourceEnabled :: KRPCHS.SpaceCenter.Resource -> RPCContext (Bool)
+getResourceEnabled :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Resource -> m (Bool)
 getResourceEnabled thisArg = do
     let r = makeRequest "SpaceCenter" "Resource_get_Enabled" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13735,13 +13738,13 @@ getResourceEnabledStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Resource_get_Enabled" [makeArgument 0 thisArg]
     in  makeStream req
 
-getResourceEnabledStream :: KRPCHS.SpaceCenter.Resource -> RPCContext (KRPCStream (Bool))
+getResourceEnabledStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Resource -> m (KRPCStream (Bool))
 getResourceEnabledStream thisArg = requestStream $ getResourceEnabledStreamReq thisArg 
 
 {-
  - The flow mode of the resource.
  -}
-getResourceFlowMode :: KRPCHS.SpaceCenter.Resource -> RPCContext (KRPCHS.SpaceCenter.ResourceFlowMode)
+getResourceFlowMode :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Resource -> m (KRPCHS.SpaceCenter.ResourceFlowMode)
 getResourceFlowMode thisArg = do
     let r = makeRequest "SpaceCenter" "Resource_get_FlowMode" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13752,13 +13755,13 @@ getResourceFlowModeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Resource_get_FlowMode" [makeArgument 0 thisArg]
     in  makeStream req
 
-getResourceFlowModeStream :: KRPCHS.SpaceCenter.Resource -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ResourceFlowMode))
+getResourceFlowModeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Resource -> m (KRPCStream (KRPCHS.SpaceCenter.ResourceFlowMode))
 getResourceFlowModeStream thisArg = requestStream $ getResourceFlowModeStreamReq thisArg 
 
 {-
  - The total amount of the resource that can be stored in the part.
  -}
-getResourceMax :: KRPCHS.SpaceCenter.Resource -> RPCContext (Float)
+getResourceMax :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Resource -> m (Float)
 getResourceMax thisArg = do
     let r = makeRequest "SpaceCenter" "Resource_get_Max" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13769,13 +13772,13 @@ getResourceMaxStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Resource_get_Max" [makeArgument 0 thisArg]
     in  makeStream req
 
-getResourceMaxStream :: KRPCHS.SpaceCenter.Resource -> RPCContext (KRPCStream (Float))
+getResourceMaxStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Resource -> m (KRPCStream (Float))
 getResourceMaxStream thisArg = requestStream $ getResourceMaxStreamReq thisArg 
 
 {-
  - The name of the resource.
  -}
-getResourceName :: KRPCHS.SpaceCenter.Resource -> RPCContext (Data.Text.Text)
+getResourceName :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Resource -> m (Data.Text.Text)
 getResourceName thisArg = do
     let r = makeRequest "SpaceCenter" "Resource_get_Name" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13786,13 +13789,13 @@ getResourceNameStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Resource_get_Name" [makeArgument 0 thisArg]
     in  makeStream req
 
-getResourceNameStream :: KRPCHS.SpaceCenter.Resource -> RPCContext (KRPCStream (Data.Text.Text))
+getResourceNameStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Resource -> m (KRPCStream (Data.Text.Text))
 getResourceNameStream thisArg = requestStream $ getResourceNameStreamReq thisArg 
 
 {-
  - The part containing the resource.
  -}
-getResourcePart :: KRPCHS.SpaceCenter.Resource -> RPCContext (KRPCHS.SpaceCenter.Part)
+getResourcePart :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Resource -> m (KRPCHS.SpaceCenter.Part)
 getResourcePart thisArg = do
     let r = makeRequest "SpaceCenter" "Resource_get_Part" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13803,13 +13806,13 @@ getResourcePartStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Resource_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
-getResourcePartStream :: KRPCHS.SpaceCenter.Resource -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getResourcePartStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Resource -> m (KRPCStream (KRPCHS.SpaceCenter.Part))
 getResourcePartStream thisArg = requestStream $ getResourcePartStreamReq thisArg 
 
 {-
  - Whether use of this resource is enabled.
  -}
-setResourceEnabled :: KRPCHS.SpaceCenter.Resource -> Bool -> RPCContext ()
+setResourceEnabled :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Resource -> Bool -> m ()
 setResourceEnabled thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Resource_set_Enabled" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -13818,7 +13821,7 @@ setResourceEnabled thisArg valueArg = do
 {-
  - Returns the amount of a resource that is currently stored.<param name="name">The name of the resource.
  -}
-resourcesAmount :: KRPCHS.SpaceCenter.Resources -> Data.Text.Text -> RPCContext (Float)
+resourcesAmount :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Resources -> Data.Text.Text -> m (Float)
 resourcesAmount thisArg nameArg = do
     let r = makeRequest "SpaceCenter" "Resources_Amount" [makeArgument 0 thisArg, makeArgument 1 nameArg]
     res <- sendRequest r
@@ -13829,13 +13832,13 @@ resourcesAmountStreamReq thisArg nameArg =
     let req = makeRequest "SpaceCenter" "Resources_Amount" [makeArgument 0 thisArg, makeArgument 1 nameArg]
     in  makeStream req
 
-resourcesAmountStream :: KRPCHS.SpaceCenter.Resources -> Data.Text.Text -> RPCContext (KRPCStream (Float))
+resourcesAmountStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Resources -> Data.Text.Text -> m (KRPCStream (Float))
 resourcesAmountStream thisArg nameArg = requestStream $ resourcesAmountStreamReq thisArg nameArg 
 
 {-
  - Returns the density of a resource, in kg/l.<param name="name">The name of the resource.
  -}
-resourcesDensity :: Data.Text.Text -> RPCContext (Float)
+resourcesDensity :: (MonadIO m, MonadThrow m, MonadRPC m) => Data.Text.Text -> m (Float)
 resourcesDensity nameArg = do
     let r = makeRequest "SpaceCenter" "Resources_Density" [makeArgument 0 nameArg]
     res <- sendRequest r
@@ -13846,13 +13849,13 @@ resourcesDensityStreamReq nameArg =
     let req = makeRequest "SpaceCenter" "Resources_Density" [makeArgument 0 nameArg]
     in  makeStream req
 
-resourcesDensityStream :: Data.Text.Text -> RPCContext (KRPCStream (Float))
+resourcesDensityStream :: (MonadIO m, MonadThrow m, MonadRPC m) => Data.Text.Text -> m (KRPCStream (Float))
 resourcesDensityStream nameArg = requestStream $ resourcesDensityStreamReq nameArg 
 
 {-
  - Returns the flow mode of a resource.<param name="name">The name of the resource.
  -}
-resourcesFlowMode :: Data.Text.Text -> RPCContext (KRPCHS.SpaceCenter.ResourceFlowMode)
+resourcesFlowMode :: (MonadIO m, MonadThrow m, MonadRPC m) => Data.Text.Text -> m (KRPCHS.SpaceCenter.ResourceFlowMode)
 resourcesFlowMode nameArg = do
     let r = makeRequest "SpaceCenter" "Resources_FlowMode" [makeArgument 0 nameArg]
     res <- sendRequest r
@@ -13863,13 +13866,13 @@ resourcesFlowModeStreamReq nameArg =
     let req = makeRequest "SpaceCenter" "Resources_FlowMode" [makeArgument 0 nameArg]
     in  makeStream req
 
-resourcesFlowModeStream :: Data.Text.Text -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ResourceFlowMode))
+resourcesFlowModeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => Data.Text.Text -> m (KRPCStream (KRPCHS.SpaceCenter.ResourceFlowMode))
 resourcesFlowModeStream nameArg = requestStream $ resourcesFlowModeStreamReq nameArg 
 
 {-
  - Check whether the named resource can be stored.<param name="name">The name of the resource.
  -}
-resourcesHasResource :: KRPCHS.SpaceCenter.Resources -> Data.Text.Text -> RPCContext (Bool)
+resourcesHasResource :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Resources -> Data.Text.Text -> m (Bool)
 resourcesHasResource thisArg nameArg = do
     let r = makeRequest "SpaceCenter" "Resources_HasResource" [makeArgument 0 thisArg, makeArgument 1 nameArg]
     res <- sendRequest r
@@ -13880,13 +13883,13 @@ resourcesHasResourceStreamReq thisArg nameArg =
     let req = makeRequest "SpaceCenter" "Resources_HasResource" [makeArgument 0 thisArg, makeArgument 1 nameArg]
     in  makeStream req
 
-resourcesHasResourceStream :: KRPCHS.SpaceCenter.Resources -> Data.Text.Text -> RPCContext (KRPCStream (Bool))
+resourcesHasResourceStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Resources -> Data.Text.Text -> m (KRPCStream (Bool))
 resourcesHasResourceStream thisArg nameArg = requestStream $ resourcesHasResourceStreamReq thisArg nameArg 
 
 {-
  - Returns the amount of a resource that can be stored.<param name="name">The name of the resource.
  -}
-resourcesMax :: KRPCHS.SpaceCenter.Resources -> Data.Text.Text -> RPCContext (Float)
+resourcesMax :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Resources -> Data.Text.Text -> m (Float)
 resourcesMax thisArg nameArg = do
     let r = makeRequest "SpaceCenter" "Resources_Max" [makeArgument 0 thisArg, makeArgument 1 nameArg]
     res <- sendRequest r
@@ -13897,13 +13900,13 @@ resourcesMaxStreamReq thisArg nameArg =
     let req = makeRequest "SpaceCenter" "Resources_Max" [makeArgument 0 thisArg, makeArgument 1 nameArg]
     in  makeStream req
 
-resourcesMaxStream :: KRPCHS.SpaceCenter.Resources -> Data.Text.Text -> RPCContext (KRPCStream (Float))
+resourcesMaxStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Resources -> Data.Text.Text -> m (KRPCStream (Float))
 resourcesMaxStream thisArg nameArg = requestStream $ resourcesMaxStreamReq thisArg nameArg 
 
 {-
  - All the individual resources with the given name that can be stored.
  -}
-resourcesWithResource :: KRPCHS.SpaceCenter.Resources -> Data.Text.Text -> RPCContext ([KRPCHS.SpaceCenter.Resource])
+resourcesWithResource :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Resources -> Data.Text.Text -> m ([KRPCHS.SpaceCenter.Resource])
 resourcesWithResource thisArg nameArg = do
     let r = makeRequest "SpaceCenter" "Resources_WithResource" [makeArgument 0 thisArg, makeArgument 1 nameArg]
     res <- sendRequest r
@@ -13914,13 +13917,13 @@ resourcesWithResourceStreamReq thisArg nameArg =
     let req = makeRequest "SpaceCenter" "Resources_WithResource" [makeArgument 0 thisArg, makeArgument 1 nameArg]
     in  makeStream req
 
-resourcesWithResourceStream :: KRPCHS.SpaceCenter.Resources -> Data.Text.Text -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Resource]))
+resourcesWithResourceStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Resources -> Data.Text.Text -> m (KRPCStream ([KRPCHS.SpaceCenter.Resource]))
 resourcesWithResourceStream thisArg nameArg = requestStream $ resourcesWithResourceStreamReq thisArg nameArg 
 
 {-
  - All the individual resources that can be stored.
  -}
-getResourcesAll :: KRPCHS.SpaceCenter.Resources -> RPCContext ([KRPCHS.SpaceCenter.Resource])
+getResourcesAll :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Resources -> m ([KRPCHS.SpaceCenter.Resource])
 getResourcesAll thisArg = do
     let r = makeRequest "SpaceCenter" "Resources_get_All" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13931,13 +13934,13 @@ getResourcesAllStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Resources_get_All" [makeArgument 0 thisArg]
     in  makeStream req
 
-getResourcesAllStream :: KRPCHS.SpaceCenter.Resources -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Resource]))
+getResourcesAllStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Resources -> m (KRPCStream ([KRPCHS.SpaceCenter.Resource]))
 getResourcesAllStream thisArg = requestStream $ getResourcesAllStreamReq thisArg 
 
 {-
  - Whether use of all the resources are enabled.This is true if all of the resources are enabled. If any of the resources are not enabled, this is false.
  -}
-getResourcesEnabled :: KRPCHS.SpaceCenter.Resources -> RPCContext (Bool)
+getResourcesEnabled :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Resources -> m (Bool)
 getResourcesEnabled thisArg = do
     let r = makeRequest "SpaceCenter" "Resources_get_Enabled" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13948,13 +13951,13 @@ getResourcesEnabledStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Resources_get_Enabled" [makeArgument 0 thisArg]
     in  makeStream req
 
-getResourcesEnabledStream :: KRPCHS.SpaceCenter.Resources -> RPCContext (KRPCStream (Bool))
+getResourcesEnabledStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Resources -> m (KRPCStream (Bool))
 getResourcesEnabledStream thisArg = requestStream $ getResourcesEnabledStreamReq thisArg 
 
 {-
  - A list of resource names that can be stored.
  -}
-getResourcesNames :: KRPCHS.SpaceCenter.Resources -> RPCContext ([Data.Text.Text])
+getResourcesNames :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Resources -> m ([Data.Text.Text])
 getResourcesNames thisArg = do
     let r = makeRequest "SpaceCenter" "Resources_get_Names" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -13965,13 +13968,13 @@ getResourcesNamesStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Resources_get_Names" [makeArgument 0 thisArg]
     in  makeStream req
 
-getResourcesNamesStream :: KRPCHS.SpaceCenter.Resources -> RPCContext (KRPCStream ([Data.Text.Text]))
+getResourcesNamesStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Resources -> m (KRPCStream ([Data.Text.Text]))
 getResourcesNamesStream thisArg = requestStream $ getResourcesNamesStreamReq thisArg 
 
 {-
  - Whether use of all the resources are enabled.This is true if all of the resources are enabled. If any of the resources are not enabled, this is false.
  -}
-setResourcesEnabled :: KRPCHS.SpaceCenter.Resources -> Bool -> RPCContext ()
+setResourcesEnabled :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Resources -> Bool -> m ()
 setResourcesEnabled thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Resources_set_Enabled" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -13981,7 +13984,7 @@ setResourcesEnabled thisArg valueArg = do
  - Save the game with a given name.
  - This will create a save file calledname.sfsin the folder of the current save game.
  -}
-save :: Data.Text.Text -> RPCContext ()
+save :: (MonadIO m, MonadThrow m, MonadRPC m) => Data.Text.Text -> m ()
 save nameArg = do
     let r = makeRequest "SpaceCenter" "Save" [makeArgument 0 nameArg]
     res <- sendRequest r
@@ -13990,7 +13993,7 @@ save nameArg = do
 {-
  - Data amount.
  -}
-getScienceDataDataAmount :: KRPCHS.SpaceCenter.ScienceData -> RPCContext (Float)
+getScienceDataDataAmount :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ScienceData -> m (Float)
 getScienceDataDataAmount thisArg = do
     let r = makeRequest "SpaceCenter" "ScienceData_get_DataAmount" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14001,13 +14004,13 @@ getScienceDataDataAmountStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ScienceData_get_DataAmount" [makeArgument 0 thisArg]
     in  makeStream req
 
-getScienceDataDataAmountStream :: KRPCHS.SpaceCenter.ScienceData -> RPCContext (KRPCStream (Float))
+getScienceDataDataAmountStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ScienceData -> m (KRPCStream (Float))
 getScienceDataDataAmountStream thisArg = requestStream $ getScienceDataDataAmountStreamReq thisArg 
 
 {-
  - Science value.
  -}
-getScienceDataScienceValue :: KRPCHS.SpaceCenter.ScienceData -> RPCContext (Float)
+getScienceDataScienceValue :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ScienceData -> m (Float)
 getScienceDataScienceValue thisArg = do
     let r = makeRequest "SpaceCenter" "ScienceData_get_ScienceValue" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14018,13 +14021,13 @@ getScienceDataScienceValueStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ScienceData_get_ScienceValue" [makeArgument 0 thisArg]
     in  makeStream req
 
-getScienceDataScienceValueStream :: KRPCHS.SpaceCenter.ScienceData -> RPCContext (KRPCStream (Float))
+getScienceDataScienceValueStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ScienceData -> m (KRPCStream (Float))
 getScienceDataScienceValueStream thisArg = requestStream $ getScienceDataScienceValueStreamReq thisArg 
 
 {-
  - Transmit value.
  -}
-getScienceDataTransmitValue :: KRPCHS.SpaceCenter.ScienceData -> RPCContext (Float)
+getScienceDataTransmitValue :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ScienceData -> m (Float)
 getScienceDataTransmitValue thisArg = do
     let r = makeRequest "SpaceCenter" "ScienceData_get_TransmitValue" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14035,13 +14038,13 @@ getScienceDataTransmitValueStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ScienceData_get_TransmitValue" [makeArgument 0 thisArg]
     in  makeStream req
 
-getScienceDataTransmitValueStream :: KRPCHS.SpaceCenter.ScienceData -> RPCContext (KRPCStream (Float))
+getScienceDataTransmitValueStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ScienceData -> m (KRPCStream (Float))
 getScienceDataTransmitValueStream thisArg = requestStream $ getScienceDataTransmitValueStreamReq thisArg 
 
 {-
  - Multiply science value by this to determine data amount in mits.
  -}
-getScienceSubjectDataScale :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (Float)
+getScienceSubjectDataScale :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ScienceSubject -> m (Float)
 getScienceSubjectDataScale thisArg = do
     let r = makeRequest "SpaceCenter" "ScienceSubject_get_DataScale" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14052,13 +14055,13 @@ getScienceSubjectDataScaleStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ScienceSubject_get_DataScale" [makeArgument 0 thisArg]
     in  makeStream req
 
-getScienceSubjectDataScaleStream :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (KRPCStream (Float))
+getScienceSubjectDataScaleStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ScienceSubject -> m (KRPCStream (Float))
 getScienceSubjectDataScaleStream thisArg = requestStream $ getScienceSubjectDataScaleStreamReq thisArg 
 
 {-
  - Whether the experiment has been completed.
  -}
-getScienceSubjectIsComplete :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (Bool)
+getScienceSubjectIsComplete :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ScienceSubject -> m (Bool)
 getScienceSubjectIsComplete thisArg = do
     let r = makeRequest "SpaceCenter" "ScienceSubject_get_IsComplete" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14069,13 +14072,13 @@ getScienceSubjectIsCompleteStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ScienceSubject_get_IsComplete" [makeArgument 0 thisArg]
     in  makeStream req
 
-getScienceSubjectIsCompleteStream :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (KRPCStream (Bool))
+getScienceSubjectIsCompleteStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ScienceSubject -> m (KRPCStream (Bool))
 getScienceSubjectIsCompleteStream thisArg = requestStream $ getScienceSubjectIsCompleteStreamReq thisArg 
 
 {-
  - Amount of science already earned from this subject, not updated until after transmission/recovery.
  -}
-getScienceSubjectScience :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (Float)
+getScienceSubjectScience :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ScienceSubject -> m (Float)
 getScienceSubjectScience thisArg = do
     let r = makeRequest "SpaceCenter" "ScienceSubject_get_Science" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14086,13 +14089,13 @@ getScienceSubjectScienceStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ScienceSubject_get_Science" [makeArgument 0 thisArg]
     in  makeStream req
 
-getScienceSubjectScienceStream :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (KRPCStream (Float))
+getScienceSubjectScienceStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ScienceSubject -> m (KRPCStream (Float))
 getScienceSubjectScienceStream thisArg = requestStream $ getScienceSubjectScienceStreamReq thisArg 
 
 {-
  - Total science allowable for this subject.
  -}
-getScienceSubjectScienceCap :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (Float)
+getScienceSubjectScienceCap :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ScienceSubject -> m (Float)
 getScienceSubjectScienceCap thisArg = do
     let r = makeRequest "SpaceCenter" "ScienceSubject_get_ScienceCap" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14103,13 +14106,13 @@ getScienceSubjectScienceCapStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ScienceSubject_get_ScienceCap" [makeArgument 0 thisArg]
     in  makeStream req
 
-getScienceSubjectScienceCapStream :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (KRPCStream (Float))
+getScienceSubjectScienceCapStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ScienceSubject -> m (KRPCStream (Float))
 getScienceSubjectScienceCapStream thisArg = requestStream $ getScienceSubjectScienceCapStreamReq thisArg 
 
 {-
  - Diminishing value multiplier for decreasing the science value returned from repeated experiments.
  -}
-getScienceSubjectScientificValue :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (Float)
+getScienceSubjectScientificValue :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ScienceSubject -> m (Float)
 getScienceSubjectScientificValue thisArg = do
     let r = makeRequest "SpaceCenter" "ScienceSubject_get_ScientificValue" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14120,13 +14123,13 @@ getScienceSubjectScientificValueStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ScienceSubject_get_ScientificValue" [makeArgument 0 thisArg]
     in  makeStream req
 
-getScienceSubjectScientificValueStream :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (KRPCStream (Float))
+getScienceSubjectScientificValueStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ScienceSubject -> m (KRPCStream (Float))
 getScienceSubjectScientificValueStream thisArg = requestStream $ getScienceSubjectScientificValueStreamReq thisArg 
 
 {-
  - Multiplier for specific Celestial Body/Experiment Situation combination.
  -}
-getScienceSubjectSubjectValue :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (Float)
+getScienceSubjectSubjectValue :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ScienceSubject -> m (Float)
 getScienceSubjectSubjectValue thisArg = do
     let r = makeRequest "SpaceCenter" "ScienceSubject_get_SubjectValue" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14137,13 +14140,13 @@ getScienceSubjectSubjectValueStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ScienceSubject_get_SubjectValue" [makeArgument 0 thisArg]
     in  makeStream req
 
-getScienceSubjectSubjectValueStream :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (KRPCStream (Float))
+getScienceSubjectSubjectValueStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ScienceSubject -> m (KRPCStream (Float))
 getScienceSubjectSubjectValueStream thisArg = requestStream $ getScienceSubjectSubjectValueStreamReq thisArg 
 
 {-
  - Title of science subject, displayed in science archives
  -}
-getScienceSubjectTitle :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (Data.Text.Text)
+getScienceSubjectTitle :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ScienceSubject -> m (Data.Text.Text)
 getScienceSubjectTitle thisArg = do
     let r = makeRequest "SpaceCenter" "ScienceSubject_get_Title" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14154,13 +14157,13 @@ getScienceSubjectTitleStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "ScienceSubject_get_Title" [makeArgument 0 thisArg]
     in  makeStream req
 
-getScienceSubjectTitleStream :: KRPCHS.SpaceCenter.ScienceSubject -> RPCContext (KRPCStream (Data.Text.Text))
+getScienceSubjectTitleStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.ScienceSubject -> m (KRPCStream (Data.Text.Text))
 getScienceSubjectTitleStream thisArg = requestStream $ getScienceSubjectTitleStreamReq thisArg 
 
 {-
  - Whether the sensor is active.
  -}
-getSensorActive :: KRPCHS.SpaceCenter.Sensor -> RPCContext (Bool)
+getSensorActive :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Sensor -> m (Bool)
 getSensorActive thisArg = do
     let r = makeRequest "SpaceCenter" "Sensor_get_Active" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14171,13 +14174,13 @@ getSensorActiveStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Sensor_get_Active" [makeArgument 0 thisArg]
     in  makeStream req
 
-getSensorActiveStream :: KRPCHS.SpaceCenter.Sensor -> RPCContext (KRPCStream (Bool))
+getSensorActiveStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Sensor -> m (KRPCStream (Bool))
 getSensorActiveStream thisArg = requestStream $ getSensorActiveStreamReq thisArg 
 
 {-
  - The part object for this sensor.
  -}
-getSensorPart :: KRPCHS.SpaceCenter.Sensor -> RPCContext (KRPCHS.SpaceCenter.Part)
+getSensorPart :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Sensor -> m (KRPCHS.SpaceCenter.Part)
 getSensorPart thisArg = do
     let r = makeRequest "SpaceCenter" "Sensor_get_Part" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14188,13 +14191,13 @@ getSensorPartStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Sensor_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
-getSensorPartStream :: KRPCHS.SpaceCenter.Sensor -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getSensorPartStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Sensor -> m (KRPCStream (KRPCHS.SpaceCenter.Part))
 getSensorPartStream thisArg = requestStream $ getSensorPartStreamReq thisArg 
 
 {-
  - The current value of the sensor.
  -}
-getSensorValue :: KRPCHS.SpaceCenter.Sensor -> RPCContext (Data.Text.Text)
+getSensorValue :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Sensor -> m (Data.Text.Text)
 getSensorValue thisArg = do
     let r = makeRequest "SpaceCenter" "Sensor_get_Value" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14205,13 +14208,13 @@ getSensorValueStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Sensor_get_Value" [makeArgument 0 thisArg]
     in  makeStream req
 
-getSensorValueStream :: KRPCHS.SpaceCenter.Sensor -> RPCContext (KRPCStream (Data.Text.Text))
+getSensorValueStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Sensor -> m (KRPCStream (Data.Text.Text))
 getSensorValueStream thisArg = requestStream $ getSensorValueStreamReq thisArg 
 
 {-
  - Whether the sensor is active.
  -}
-setSensorActive :: KRPCHS.SpaceCenter.Sensor -> Bool -> RPCContext ()
+setSensorActive :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Sensor -> Bool -> m ()
 setSensorActive thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Sensor_set_Active" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -14220,7 +14223,7 @@ setSensorActive thisArg valueArg = do
 {-
  - Whether the solar panel is deployable.
  -}
-getSolarPanelDeployable :: KRPCHS.SpaceCenter.SolarPanel -> RPCContext (Bool)
+getSolarPanelDeployable :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.SolarPanel -> m (Bool)
 getSolarPanelDeployable thisArg = do
     let r = makeRequest "SpaceCenter" "SolarPanel_get_Deployable" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14231,13 +14234,13 @@ getSolarPanelDeployableStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "SolarPanel_get_Deployable" [makeArgument 0 thisArg]
     in  makeStream req
 
-getSolarPanelDeployableStream :: KRPCHS.SpaceCenter.SolarPanel -> RPCContext (KRPCStream (Bool))
+getSolarPanelDeployableStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.SolarPanel -> m (KRPCStream (Bool))
 getSolarPanelDeployableStream thisArg = requestStream $ getSolarPanelDeployableStreamReq thisArg 
 
 {-
  - Whether the solar panel is extended.
  -}
-getSolarPanelDeployed :: KRPCHS.SpaceCenter.SolarPanel -> RPCContext (Bool)
+getSolarPanelDeployed :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.SolarPanel -> m (Bool)
 getSolarPanelDeployed thisArg = do
     let r = makeRequest "SpaceCenter" "SolarPanel_get_Deployed" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14248,14 +14251,14 @@ getSolarPanelDeployedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "SolarPanel_get_Deployed" [makeArgument 0 thisArg]
     in  makeStream req
 
-getSolarPanelDeployedStream :: KRPCHS.SpaceCenter.SolarPanel -> RPCContext (KRPCStream (Bool))
+getSolarPanelDeployedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.SolarPanel -> m (KRPCStream (Bool))
 getSolarPanelDeployedStream thisArg = requestStream $ getSolarPanelDeployedStreamReq thisArg 
 
 {-
  - The current amount of energy being generated by the solar panel, in
  - units of charge per second.
  -}
-getSolarPanelEnergyFlow :: KRPCHS.SpaceCenter.SolarPanel -> RPCContext (Float)
+getSolarPanelEnergyFlow :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.SolarPanel -> m (Float)
 getSolarPanelEnergyFlow thisArg = do
     let r = makeRequest "SpaceCenter" "SolarPanel_get_EnergyFlow" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14266,13 +14269,13 @@ getSolarPanelEnergyFlowStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "SolarPanel_get_EnergyFlow" [makeArgument 0 thisArg]
     in  makeStream req
 
-getSolarPanelEnergyFlowStream :: KRPCHS.SpaceCenter.SolarPanel -> RPCContext (KRPCStream (Float))
+getSolarPanelEnergyFlowStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.SolarPanel -> m (KRPCStream (Float))
 getSolarPanelEnergyFlowStream thisArg = requestStream $ getSolarPanelEnergyFlowStreamReq thisArg 
 
 {-
  - The part object for this solar panel.
  -}
-getSolarPanelPart :: KRPCHS.SpaceCenter.SolarPanel -> RPCContext (KRPCHS.SpaceCenter.Part)
+getSolarPanelPart :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.SolarPanel -> m (KRPCHS.SpaceCenter.Part)
 getSolarPanelPart thisArg = do
     let r = makeRequest "SpaceCenter" "SolarPanel_get_Part" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14283,13 +14286,13 @@ getSolarPanelPartStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "SolarPanel_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
-getSolarPanelPartStream :: KRPCHS.SpaceCenter.SolarPanel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getSolarPanelPartStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.SolarPanel -> m (KRPCStream (KRPCHS.SpaceCenter.Part))
 getSolarPanelPartStream thisArg = requestStream $ getSolarPanelPartStreamReq thisArg 
 
 {-
  - The current state of the solar panel.
  -}
-getSolarPanelState :: KRPCHS.SpaceCenter.SolarPanel -> RPCContext (KRPCHS.SpaceCenter.SolarPanelState)
+getSolarPanelState :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.SolarPanel -> m (KRPCHS.SpaceCenter.SolarPanelState)
 getSolarPanelState thisArg = do
     let r = makeRequest "SpaceCenter" "SolarPanel_get_State" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14300,14 +14303,14 @@ getSolarPanelStateStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "SolarPanel_get_State" [makeArgument 0 thisArg]
     in  makeStream req
 
-getSolarPanelStateStream :: KRPCHS.SpaceCenter.SolarPanel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.SolarPanelState))
+getSolarPanelStateStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.SolarPanel -> m (KRPCStream (KRPCHS.SpaceCenter.SolarPanelState))
 getSolarPanelStateStream thisArg = requestStream $ getSolarPanelStateStreamReq thisArg 
 
 {-
  - The current amount of sunlight that is incident on the solar panel,
  - as a percentage. A value between 0 and 1.
  -}
-getSolarPanelSunExposure :: KRPCHS.SpaceCenter.SolarPanel -> RPCContext (Float)
+getSolarPanelSunExposure :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.SolarPanel -> m (Float)
 getSolarPanelSunExposure thisArg = do
     let r = makeRequest "SpaceCenter" "SolarPanel_get_SunExposure" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14318,13 +14321,13 @@ getSolarPanelSunExposureStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "SolarPanel_get_SunExposure" [makeArgument 0 thisArg]
     in  makeStream req
 
-getSolarPanelSunExposureStream :: KRPCHS.SpaceCenter.SolarPanel -> RPCContext (KRPCStream (Float))
+getSolarPanelSunExposureStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.SolarPanel -> m (KRPCStream (Float))
 getSolarPanelSunExposureStream thisArg = requestStream $ getSolarPanelSunExposureStreamReq thisArg 
 
 {-
  - Whether the solar panel is extended.
  -}
-setSolarPanelDeployed :: KRPCHS.SpaceCenter.SolarPanel -> Bool -> RPCContext ()
+setSolarPanelDeployed :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.SolarPanel -> Bool -> m ()
 setSolarPanelDeployed thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "SolarPanel_set_Deployed" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -14333,7 +14336,7 @@ setSolarPanelDeployed thisArg valueArg = do
 {-
  - Position around which the gimbal pivots.
  -}
-thrusterGimbalPosition :: KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
+thrusterGimbalPosition :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double))
 thrusterGimbalPosition thisArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "Thruster_GimbalPosition" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     res <- sendRequest r
@@ -14344,7 +14347,7 @@ thrusterGimbalPositionStreamReq thisArg referenceFrameArg =
     let req = makeRequest "SpaceCenter" "Thruster_GimbalPosition" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
-thrusterGimbalPositionStream :: KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
+thrusterGimbalPositionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double)))
 thrusterGimbalPositionStream thisArg referenceFrameArg = requestStream $ thrusterGimbalPositionStreamReq thisArg referenceFrameArg 
 
 {-
@@ -14352,7 +14355,7 @@ thrusterGimbalPositionStream thisArg referenceFrameArg = requestStream $ thruste
  - initial position (no gimballing), in the given reference frame.
  - This is opposite to the direction in which the thruster expels propellant.<param name="referenceFrame">
  -}
-thrusterInitialThrustDirection :: KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
+thrusterInitialThrustDirection :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double))
 thrusterInitialThrustDirection thisArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "Thruster_InitialThrustDirection" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     res <- sendRequest r
@@ -14363,7 +14366,7 @@ thrusterInitialThrustDirectionStreamReq thisArg referenceFrameArg =
     let req = makeRequest "SpaceCenter" "Thruster_InitialThrustDirection" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
-thrusterInitialThrustDirectionStream :: KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
+thrusterInitialThrustDirectionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double)))
 thrusterInitialThrustDirectionStream thisArg referenceFrameArg = requestStream $ thrusterInitialThrustDirectionStreamReq thisArg referenceFrameArg 
 
 {-
@@ -14371,7 +14374,7 @@ thrusterInitialThrustDirectionStream thisArg referenceFrameArg = requestStream $
  - initial position (no gimballing), in the given reference frame.<param name="referenceFrame">This position can move when the gimbal rotates. This is because the thrust position and
  - gimbal position are not necessarily the same.
  -}
-thrusterInitialThrustPosition :: KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
+thrusterInitialThrustPosition :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double))
 thrusterInitialThrustPosition thisArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "Thruster_InitialThrustPosition" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     res <- sendRequest r
@@ -14382,7 +14385,7 @@ thrusterInitialThrustPositionStreamReq thisArg referenceFrameArg =
     let req = makeRequest "SpaceCenter" "Thruster_InitialThrustPosition" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
-thrusterInitialThrustPositionStream :: KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
+thrusterInitialThrustPositionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double)))
 thrusterInitialThrustPositionStream thisArg referenceFrameArg = requestStream $ thrusterInitialThrustPositionStreamReq thisArg referenceFrameArg 
 
 {-
@@ -14390,7 +14393,7 @@ thrusterInitialThrustPositionStream thisArg referenceFrameArg = requestStream $ 
  - This is opposite to the direction in which the thruster expels propellant.
  - For gimballed engines, this takes into account the current rotation of the gimbal.<param name="referenceFrame">
  -}
-thrusterThrustDirection :: KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
+thrusterThrustDirection :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double))
 thrusterThrustDirection thisArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "Thruster_ThrustDirection" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     res <- sendRequest r
@@ -14401,14 +14404,14 @@ thrusterThrustDirectionStreamReq thisArg referenceFrameArg =
     let req = makeRequest "SpaceCenter" "Thruster_ThrustDirection" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
-thrusterThrustDirectionStream :: KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
+thrusterThrustDirectionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double)))
 thrusterThrustDirectionStream thisArg referenceFrameArg = requestStream $ thrusterThrustDirectionStreamReq thisArg referenceFrameArg 
 
 {-
  - The position at which the thruster generates thrust, in the given reference frame.
  - For gimballed engines, this takes into account the current rotation of the gimbal.<param name="referenceFrame">
  -}
-thrusterThrustPosition :: KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
+thrusterThrustPosition :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double))
 thrusterThrustPosition thisArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "Thruster_ThrustPosition" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     res <- sendRequest r
@@ -14419,13 +14422,13 @@ thrusterThrustPositionStreamReq thisArg referenceFrameArg =
     let req = makeRequest "SpaceCenter" "Thruster_ThrustPosition" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
-thrusterThrustPositionStream :: KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
+thrusterThrustPositionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Thruster -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double)))
 thrusterThrustPositionStream thisArg referenceFrameArg = requestStream $ thrusterThrustPositionStreamReq thisArg referenceFrameArg 
 
 {-
  - The current gimbal angle in the pitch, roll and yaw axes.
  -}
-getThrusterGimbalAngle :: KRPCHS.SpaceCenter.Thruster -> RPCContext ((Double, Double, Double))
+getThrusterGimbalAngle :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Thruster -> m ((Double, Double, Double))
 getThrusterGimbalAngle thisArg = do
     let r = makeRequest "SpaceCenter" "Thruster_get_GimbalAngle" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14436,13 +14439,13 @@ getThrusterGimbalAngleStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Thruster_get_GimbalAngle" [makeArgument 0 thisArg]
     in  makeStream req
 
-getThrusterGimbalAngleStream :: KRPCHS.SpaceCenter.Thruster -> RPCContext (KRPCStream ((Double, Double, Double)))
+getThrusterGimbalAngleStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Thruster -> m (KRPCStream ((Double, Double, Double)))
 getThrusterGimbalAngleStream thisArg = requestStream $ getThrusterGimbalAngleStreamReq thisArg 
 
 {-
  - Whether the thruster is gimballed.
  -}
-getThrusterGimballed :: KRPCHS.SpaceCenter.Thruster -> RPCContext (Bool)
+getThrusterGimballed :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Thruster -> m (Bool)
 getThrusterGimballed thisArg = do
     let r = makeRequest "SpaceCenter" "Thruster_get_Gimballed" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14453,13 +14456,13 @@ getThrusterGimballedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Thruster_get_Gimballed" [makeArgument 0 thisArg]
     in  makeStream req
 
-getThrusterGimballedStream :: KRPCHS.SpaceCenter.Thruster -> RPCContext (KRPCStream (Bool))
+getThrusterGimballedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Thruster -> m (KRPCStream (Bool))
 getThrusterGimballedStream thisArg = requestStream $ getThrusterGimballedStreamReq thisArg 
 
 {-
  - The <see cref="T:SpaceCenter.Part" /> that contains this thruster.
  -}
-getThrusterPart :: KRPCHS.SpaceCenter.Thruster -> RPCContext (KRPCHS.SpaceCenter.Part)
+getThrusterPart :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Thruster -> m (KRPCHS.SpaceCenter.Part)
 getThrusterPart thisArg = do
     let r = makeRequest "SpaceCenter" "Thruster_get_Part" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14470,7 +14473,7 @@ getThrusterPartStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Thruster_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
-getThrusterPartStream :: KRPCHS.SpaceCenter.Thruster -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getThrusterPartStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Thruster -> m (KRPCStream (KRPCHS.SpaceCenter.Part))
 getThrusterPartStream thisArg = requestStream $ getThrusterPartStreamReq thisArg 
 
 {-
@@ -14480,7 +14483,7 @@ getThrusterPartStream thisArg = requestStream $ getThrusterPartStreamReq thisArg
  - <list type="bullet">The origin is at the position of thrust for this thruster (<see cref="M:SpaceCenter.Thruster.ThrustPosition" />).The axes rotate with the thrust direction.
  - This is the direction in which the thruster expels propellant, including any gimballing.The y-axis points along the thrust direction.The x-axis and z-axis are perpendicular to the thrust direction.
  -}
-getThrusterThrustReferenceFrame :: KRPCHS.SpaceCenter.Thruster -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
+getThrusterThrustReferenceFrame :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Thruster -> m (KRPCHS.SpaceCenter.ReferenceFrame)
 getThrusterThrustReferenceFrame thisArg = do
     let r = makeRequest "SpaceCenter" "Thruster_get_ThrustReferenceFrame" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14491,13 +14494,13 @@ getThrusterThrustReferenceFrameStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Thruster_get_ThrustReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
-getThrusterThrustReferenceFrameStream :: KRPCHS.SpaceCenter.Thruster -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
+getThrusterThrustReferenceFrameStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Thruster -> m (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 getThrusterThrustReferenceFrameStream thisArg = requestStream $ getThrusterThrustReferenceFrameStreamReq thisArg 
 
 {-
  - Converts a direction vector from one reference frame to another.<param name="direction">Direction vector in reference frame <paramref name="from" />.<param name="from">The reference frame that the direction vector is in.<param name="to">The reference frame to covert the direction vector to.The corresponding direction vector in reference frame <paramref name="to" />.
  -}
-transformDirection :: (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
+transformDirection :: (MonadIO m, MonadThrow m, MonadRPC m) => (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double))
 transformDirection directionArg fromArg toArg = do
     let r = makeRequest "SpaceCenter" "TransformDirection" [makeArgument 0 directionArg, makeArgument 1 fromArg, makeArgument 2 toArg]
     res <- sendRequest r
@@ -14508,13 +14511,13 @@ transformDirectionStreamReq directionArg fromArg toArg =
     let req = makeRequest "SpaceCenter" "TransformDirection" [makeArgument 0 directionArg, makeArgument 1 fromArg, makeArgument 2 toArg]
     in  makeStream req
 
-transformDirectionStream :: (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
+transformDirectionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double)))
 transformDirectionStream directionArg fromArg toArg = requestStream $ transformDirectionStreamReq directionArg fromArg toArg 
 
 {-
  - Converts a position vector from one reference frame to another.<param name="position">Position vector in reference frame <paramref name="from" />.<param name="from">The reference frame that the position vector is in.<param name="to">The reference frame to covert the position vector to.The corresponding position vector in reference frame <paramref name="to" />.
  -}
-transformPosition :: (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
+transformPosition :: (MonadIO m, MonadThrow m, MonadRPC m) => (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double))
 transformPosition positionArg fromArg toArg = do
     let r = makeRequest "SpaceCenter" "TransformPosition" [makeArgument 0 positionArg, makeArgument 1 fromArg, makeArgument 2 toArg]
     res <- sendRequest r
@@ -14525,13 +14528,13 @@ transformPositionStreamReq positionArg fromArg toArg =
     let req = makeRequest "SpaceCenter" "TransformPosition" [makeArgument 0 positionArg, makeArgument 1 fromArg, makeArgument 2 toArg]
     in  makeStream req
 
-transformPositionStream :: (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
+transformPositionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double)))
 transformPositionStream positionArg fromArg toArg = requestStream $ transformPositionStreamReq positionArg fromArg toArg 
 
 {-
  - Converts a rotation from one reference frame to another.<param name="rotation">Rotation in reference frame <paramref name="from" />.<param name="from">The reference frame that the rotation is in.<param name="to">The corresponding rotation in reference frame <paramref name="to" />.The corresponding rotation in reference frame <paramref name="to" />.
  -}
-transformRotation :: (Double, Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double, Double))
+transformRotation :: (MonadIO m, MonadThrow m, MonadRPC m) => (Double, Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double, Double))
 transformRotation rotationArg fromArg toArg = do
     let r = makeRequest "SpaceCenter" "TransformRotation" [makeArgument 0 rotationArg, makeArgument 1 fromArg, makeArgument 2 toArg]
     res <- sendRequest r
@@ -14542,7 +14545,7 @@ transformRotationStreamReq rotationArg fromArg toArg =
     let req = makeRequest "SpaceCenter" "TransformRotation" [makeArgument 0 rotationArg, makeArgument 1 fromArg, makeArgument 2 toArg]
     in  makeStream req
 
-transformRotationStream :: (Double, Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double, Double)))
+transformRotationStream :: (MonadIO m, MonadThrow m, MonadRPC m) => (Double, Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double, Double)))
 transformRotationStream rotationArg fromArg toArg = requestStream $ transformRotationStreamReq rotationArg fromArg toArg 
 
 {-
@@ -14550,7 +14553,7 @@ transformRotationStream rotationArg fromArg toArg = requestStream $ transformRot
  - reference frame to another. The position vector is required to take the
  - relative angular velocity of the reference frames into account.<param name="position">Position vector in reference frame <paramref name="from" />.<param name="velocity">Velocity vector in reference frame <paramref name="from" />.<param name="from">The reference frame that the position and velocity vectors are in.<param name="to">The reference frame to covert the velocity vector to.The corresponding velocity in reference frame <paramref name="to" />.
  -}
-transformVelocity :: (Double, Double, Double) -> (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
+transformVelocity :: (MonadIO m, MonadThrow m, MonadRPC m) => (Double, Double, Double) -> (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double))
 transformVelocity positionArg velocityArg fromArg toArg = do
     let r = makeRequest "SpaceCenter" "TransformVelocity" [makeArgument 0 positionArg, makeArgument 1 velocityArg, makeArgument 2 fromArg, makeArgument 3 toArg]
     res <- sendRequest r
@@ -14561,7 +14564,7 @@ transformVelocityStreamReq positionArg velocityArg fromArg toArg =
     let req = makeRequest "SpaceCenter" "TransformVelocity" [makeArgument 0 positionArg, makeArgument 1 velocityArg, makeArgument 2 fromArg, makeArgument 3 toArg]
     in  makeStream req
 
-transformVelocityStream :: (Double, Double, Double) -> (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
+transformVelocityStream :: (MonadIO m, MonadThrow m, MonadRPC m) => (Double, Double, Double) -> (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double)))
 transformVelocityStream positionArg velocityArg fromArg toArg = requestStream $ transformVelocityStreamReq positionArg velocityArg fromArg toArg 
 
 {-
@@ -14569,7 +14572,7 @@ transformVelocityStream positionArg velocityArg fromArg toArg = requestStream $ 
  - vector is the rotational speed in radians per second, and the direction of the vector indicates the
  - axis of rotation (using the right hand rule).<param name="referenceFrame">
  -}
-vesselAngularVelocity :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
+vesselAngularVelocity :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double))
 vesselAngularVelocity thisArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "Vessel_AngularVelocity" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     res <- sendRequest r
@@ -14580,14 +14583,14 @@ vesselAngularVelocityStreamReq thisArg referenceFrameArg =
     let req = makeRequest "SpaceCenter" "Vessel_AngularVelocity" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
-vesselAngularVelocityStream :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
+vesselAngularVelocityStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double)))
 vesselAngularVelocityStream thisArg referenceFrameArg = requestStream $ vesselAngularVelocityStreamReq thisArg referenceFrameArg 
 
 {-
  - The axis-aligned bounding box of the vessel in the given reference frame.
  - Returns the minimum and maximum vertices of the box.<param name="referenceFrame">
  -}
-vesselBoundingBox :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (((Double, Double, Double), (Double, Double, Double)))
+vesselBoundingBox :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> m (((Double, Double, Double), (Double, Double, Double)))
 vesselBoundingBox thisArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "Vessel_BoundingBox" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     res <- sendRequest r
@@ -14598,13 +14601,13 @@ vesselBoundingBoxStreamReq thisArg referenceFrameArg =
     let req = makeRequest "SpaceCenter" "Vessel_BoundingBox" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
-vesselBoundingBoxStream :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
+vesselBoundingBoxStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
 vesselBoundingBoxStream thisArg referenceFrameArg = requestStream $ vesselBoundingBoxStreamReq thisArg referenceFrameArg 
 
 {-
  - Returns the direction in which the vessel is pointing, as a unit vector, in the given reference frame.<param name="referenceFrame">
  -}
-vesselDirection :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
+vesselDirection :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double))
 vesselDirection thisArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "Vessel_Direction" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     res <- sendRequest r
@@ -14615,7 +14618,7 @@ vesselDirectionStreamReq thisArg referenceFrameArg =
     let req = makeRequest "SpaceCenter" "Vessel_Direction" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
-vesselDirectionStream :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
+vesselDirectionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double)))
 vesselDirectionStream thisArg referenceFrameArg = requestStream $ vesselDirectionStreamReq thisArg referenceFrameArg 
 
 {-
@@ -14623,7 +14626,7 @@ vesselDirectionStream thisArg referenceFrameArg = requestStream $ vesselDirectio
  - telemetry for the vessel, in the specified reference frame.<param name="referenceFrame">
  - Reference frame. Defaults to the vessel's surface reference frame (<see cref="M:SpaceCenter.Vessel.SurfaceReferenceFrame" />).
  -}
-vesselFlight :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCHS.SpaceCenter.Flight)
+vesselFlight :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCHS.SpaceCenter.Flight)
 vesselFlight thisArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "Vessel_Flight" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     res <- sendRequest r
@@ -14634,13 +14637,13 @@ vesselFlightStreamReq thisArg referenceFrameArg =
     let req = makeRequest "SpaceCenter" "Vessel_Flight" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
-vesselFlightStream :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Flight))
+vesselFlightStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream (KRPCHS.SpaceCenter.Flight))
 vesselFlightStream thisArg referenceFrameArg = requestStream $ vesselFlightStreamReq thisArg referenceFrameArg 
 
 {-
  - Returns the position vector of the center of mass of the vessel in the given reference frame.<param name="referenceFrame">
  -}
-vesselPosition :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
+vesselPosition :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double))
 vesselPosition thisArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "Vessel_Position" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     res <- sendRequest r
@@ -14651,13 +14654,13 @@ vesselPositionStreamReq thisArg referenceFrameArg =
     let req = makeRequest "SpaceCenter" "Vessel_Position" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
-vesselPositionStream :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
+vesselPositionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double)))
 vesselPositionStream thisArg referenceFrameArg = requestStream $ vesselPositionStreamReq thisArg referenceFrameArg 
 
 {-
  - Recover the vessel.
  -}
-vesselRecover :: KRPCHS.SpaceCenter.Vessel -> RPCContext ()
+vesselRecover :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m ()
 vesselRecover thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_Recover" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14669,7 +14672,7 @@ vesselRecover thisArg = do
  - decoupled in just the given stage. Whentruereturns the resources decoupled in
  - the given stage and all subsequent stages combined.
  -}
-vesselResourcesInDecoupleStage :: KRPCHS.SpaceCenter.Vessel -> Data.Int.Int32 -> Bool -> RPCContext (KRPCHS.SpaceCenter.Resources)
+vesselResourcesInDecoupleStage :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> Data.Int.Int32 -> Bool -> m (KRPCHS.SpaceCenter.Resources)
 vesselResourcesInDecoupleStage thisArg stageArg cumulativeArg = do
     let r = makeRequest "SpaceCenter" "Vessel_ResourcesInDecoupleStage" [makeArgument 0 thisArg, makeArgument 1 stageArg, makeArgument 2 cumulativeArg]
     res <- sendRequest r
@@ -14680,13 +14683,13 @@ vesselResourcesInDecoupleStageStreamReq thisArg stageArg cumulativeArg =
     let req = makeRequest "SpaceCenter" "Vessel_ResourcesInDecoupleStage" [makeArgument 0 thisArg, makeArgument 1 stageArg, makeArgument 2 cumulativeArg]
     in  makeStream req
 
-vesselResourcesInDecoupleStageStream :: KRPCHS.SpaceCenter.Vessel -> Data.Int.Int32 -> Bool -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Resources))
+vesselResourcesInDecoupleStageStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> Data.Int.Int32 -> Bool -> m (KRPCStream (KRPCHS.SpaceCenter.Resources))
 vesselResourcesInDecoupleStageStream thisArg stageArg cumulativeArg = requestStream $ vesselResourcesInDecoupleStageStreamReq thisArg stageArg cumulativeArg 
 
 {-
  - Returns the rotation of the center of mass of the vessel in the given reference frame.<param name="referenceFrame">
  -}
-vesselRotation :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double, Double))
+vesselRotation :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double, Double))
 vesselRotation thisArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "Vessel_Rotation" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     res <- sendRequest r
@@ -14697,13 +14700,13 @@ vesselRotationStreamReq thisArg referenceFrameArg =
     let req = makeRequest "SpaceCenter" "Vessel_Rotation" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
-vesselRotationStream :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double, Double)))
+vesselRotationStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double, Double)))
 vesselRotationStream thisArg referenceFrameArg = requestStream $ vesselRotationStreamReq thisArg referenceFrameArg 
 
 {-
  - Returns the velocity vector of the center of mass of the vessel in the given reference frame.<param name="referenceFrame">
  -}
-vesselVelocity :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ((Double, Double, Double))
+vesselVelocity :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> m ((Double, Double, Double))
 vesselVelocity thisArg referenceFrameArg = do
     let r = makeRequest "SpaceCenter" "Vessel_Velocity" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     res <- sendRequest r
@@ -14714,14 +14717,14 @@ vesselVelocityStreamReq thisArg referenceFrameArg =
     let req = makeRequest "SpaceCenter" "Vessel_Velocity" [makeArgument 0 thisArg, makeArgument 1 referenceFrameArg]
     in  makeStream req
 
-vesselVelocityStream :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext (KRPCStream ((Double, Double, Double)))
+vesselVelocityStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.ReferenceFrame -> m (KRPCStream ((Double, Double, Double)))
 vesselVelocityStream thisArg referenceFrameArg = requestStream $ vesselVelocityStreamReq thisArg referenceFrameArg 
 
 {-
  - An <see cref="T:SpaceCenter.AutoPilot" /> object, that can be used to perform
  - simple auto-piloting of the vessel.
  -}
-getVesselAutoPilot :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCHS.SpaceCenter.AutoPilot)
+getVesselAutoPilot :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCHS.SpaceCenter.AutoPilot)
 getVesselAutoPilot thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_AutoPilot" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14732,7 +14735,7 @@ getVesselAutoPilotStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_AutoPilot" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselAutoPilotStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.AutoPilot))
+getVesselAutoPilotStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCStream (KRPCHS.SpaceCenter.AutoPilot))
 getVesselAutoPilotStream thisArg = requestStream $ getVesselAutoPilotStreamReq thisArg 
 
 {-
@@ -14741,7 +14744,7 @@ getVesselAutoPilotStream thisArg = requestStream $ getVesselAutoPilotStreamReq t
  - vessels reference frame (<see cref="T:SpaceCenter.ReferenceFrame" />).
  - These axes are equivalent to the pitch, roll and yaw axes of the vessel.
  -}
-getVesselAvailableControlSurfaceTorque :: KRPCHS.SpaceCenter.Vessel -> RPCContext (((Double, Double, Double), (Double, Double, Double)))
+getVesselAvailableControlSurfaceTorque :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (((Double, Double, Double), (Double, Double, Double)))
 getVesselAvailableControlSurfaceTorque thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_AvailableControlSurfaceTorque" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14752,7 +14755,7 @@ getVesselAvailableControlSurfaceTorqueStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_AvailableControlSurfaceTorque" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselAvailableControlSurfaceTorqueStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
+getVesselAvailableControlSurfaceTorqueStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
 getVesselAvailableControlSurfaceTorqueStream thisArg = requestStream $ getVesselAvailableControlSurfaceTorqueStreamReq thisArg 
 
 {-
@@ -14761,7 +14764,7 @@ getVesselAvailableControlSurfaceTorqueStream thisArg = requestStream $ getVessel
  - vessels reference frame (<see cref="T:SpaceCenter.ReferenceFrame" />).
  - These axes are equivalent to the pitch, roll and yaw axes of the vessel.
  -}
-getVesselAvailableEngineTorque :: KRPCHS.SpaceCenter.Vessel -> RPCContext (((Double, Double, Double), (Double, Double, Double)))
+getVesselAvailableEngineTorque :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (((Double, Double, Double), (Double, Double, Double)))
 getVesselAvailableEngineTorque thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_AvailableEngineTorque" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14772,7 +14775,7 @@ getVesselAvailableEngineTorqueStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_AvailableEngineTorque" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselAvailableEngineTorqueStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
+getVesselAvailableEngineTorqueStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
 getVesselAvailableEngineTorqueStream thisArg = requestStream $ getVesselAvailableEngineTorqueStreamReq thisArg 
 
 {-
@@ -14781,7 +14784,7 @@ getVesselAvailableEngineTorqueStream thisArg = requestStream $ getVesselAvailabl
  - vessels reference frame (<see cref="T:SpaceCenter.ReferenceFrame" />).
  - These axes are equivalent to the pitch, roll and yaw axes of the vessel.
  -}
-getVesselAvailableOtherTorque :: KRPCHS.SpaceCenter.Vessel -> RPCContext (((Double, Double, Double), (Double, Double, Double)))
+getVesselAvailableOtherTorque :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (((Double, Double, Double), (Double, Double, Double)))
 getVesselAvailableOtherTorque thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_AvailableOtherTorque" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14792,7 +14795,7 @@ getVesselAvailableOtherTorqueStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_AvailableOtherTorque" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselAvailableOtherTorqueStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
+getVesselAvailableOtherTorqueStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
 getVesselAvailableOtherTorqueStream thisArg = requestStream $ getVesselAvailableOtherTorqueStreamReq thisArg 
 
 {-
@@ -14801,7 +14804,7 @@ getVesselAvailableOtherTorqueStream thisArg = requestStream $ getVesselAvailable
  - vessels reference frame (<see cref="T:SpaceCenter.ReferenceFrame" />).
  - These axes are equivalent to the pitch, roll and yaw axes of the vessel.
  -}
-getVesselAvailableRCSTorque :: KRPCHS.SpaceCenter.Vessel -> RPCContext (((Double, Double, Double), (Double, Double, Double)))
+getVesselAvailableRCSTorque :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (((Double, Double, Double), (Double, Double, Double)))
 getVesselAvailableRCSTorque thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_AvailableRCSTorque" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14812,7 +14815,7 @@ getVesselAvailableRCSTorqueStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_AvailableRCSTorque" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselAvailableRCSTorqueStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
+getVesselAvailableRCSTorqueStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
 getVesselAvailableRCSTorqueStream thisArg = requestStream $ getVesselAvailableRCSTorqueStreamReq thisArg 
 
 {-
@@ -14821,7 +14824,7 @@ getVesselAvailableRCSTorqueStream thisArg = requestStream $ getVesselAvailableRC
  - vessels reference frame (<see cref="T:SpaceCenter.ReferenceFrame" />).
  - These axes are equivalent to the pitch, roll and yaw axes of the vessel.
  -}
-getVesselAvailableReactionWheelTorque :: KRPCHS.SpaceCenter.Vessel -> RPCContext (((Double, Double, Double), (Double, Double, Double)))
+getVesselAvailableReactionWheelTorque :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (((Double, Double, Double), (Double, Double, Double)))
 getVesselAvailableReactionWheelTorque thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_AvailableReactionWheelTorque" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14832,7 +14835,7 @@ getVesselAvailableReactionWheelTorqueStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_AvailableReactionWheelTorque" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselAvailableReactionWheelTorqueStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
+getVesselAvailableReactionWheelTorqueStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
 getVesselAvailableReactionWheelTorqueStream thisArg = requestStream $ getVesselAvailableReactionWheelTorqueStreamReq thisArg 
 
 {-
@@ -14840,7 +14843,7 @@ getVesselAvailableReactionWheelTorqueStream thisArg = requestStream $ getVesselA
  - active engines, in Newtons. This is computed by summing
  - <see cref="M:SpaceCenter.Engine.AvailableThrust" /> for every active engine in the vessel.
  -}
-getVesselAvailableThrust :: KRPCHS.SpaceCenter.Vessel -> RPCContext (Float)
+getVesselAvailableThrust :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (Float)
 getVesselAvailableThrust thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_AvailableThrust" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14851,7 +14854,7 @@ getVesselAvailableThrustStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_AvailableThrust" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselAvailableThrustStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Float))
+getVesselAvailableThrustStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCStream (Float))
 getVesselAvailableThrustStream thisArg = requestStream $ getVesselAvailableThrustStreamReq thisArg 
 
 {-
@@ -14861,7 +14864,7 @@ getVesselAvailableThrustStream thisArg = requestStream $ getVesselAvailableThrus
  - vessels reference frame (<see cref="T:SpaceCenter.ReferenceFrame" />).
  - These axes are equivalent to the pitch, roll and yaw axes of the vessel.
  -}
-getVesselAvailableTorque :: KRPCHS.SpaceCenter.Vessel -> RPCContext (((Double, Double, Double), (Double, Double, Double)))
+getVesselAvailableTorque :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (((Double, Double, Double), (Double, Double, Double)))
 getVesselAvailableTorque thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_AvailableTorque" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14872,13 +14875,13 @@ getVesselAvailableTorqueStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_AvailableTorque" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselAvailableTorqueStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
+getVesselAvailableTorqueStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCStream (((Double, Double, Double), (Double, Double, Double))))
 getVesselAvailableTorqueStream thisArg = requestStream $ getVesselAvailableTorqueStreamReq thisArg 
 
 {-
  - The name of the biome the vessel is currently in.
  -}
-getVesselBiome :: KRPCHS.SpaceCenter.Vessel -> RPCContext (Data.Text.Text)
+getVesselBiome :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (Data.Text.Text)
 getVesselBiome thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_Biome" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14889,14 +14892,14 @@ getVesselBiomeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_Biome" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselBiomeStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Data.Text.Text))
+getVesselBiomeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCStream (Data.Text.Text))
 getVesselBiomeStream thisArg = requestStream $ getVesselBiomeStreamReq thisArg 
 
 {-
  - Returns a <see cref="T:SpaceCenter.Comms" /> object that can be used to interact
  - with CommNet for this vessel.
  -}
-getVesselComms :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCHS.SpaceCenter.Comms)
+getVesselComms :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCHS.SpaceCenter.Comms)
 getVesselComms thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_Comms" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14907,7 +14910,7 @@ getVesselCommsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_Comms" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselCommsStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Comms))
+getVesselCommsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCStream (KRPCHS.SpaceCenter.Comms))
 getVesselCommsStream thisArg = requestStream $ getVesselCommsStreamReq thisArg 
 
 {-
@@ -14915,7 +14918,7 @@ getVesselCommsStream thisArg = requestStream $ getVesselCommsStreamReq thisArg
  - the vessel's control inputs. For example, its pitch/yaw/roll controls,
  - RCS and thrust.
  -}
-getVesselControl :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCHS.SpaceCenter.Control)
+getVesselControl :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCHS.SpaceCenter.Control)
 getVesselControl thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_Control" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14926,13 +14929,13 @@ getVesselControlStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_Control" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselControlStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Control))
+getVesselControlStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCStream (KRPCHS.SpaceCenter.Control))
 getVesselControlStream thisArg = requestStream $ getVesselControlStreamReq thisArg 
 
 {-
  - The total mass of the vessel, excluding resources, in kg.
  -}
-getVesselDryMass :: KRPCHS.SpaceCenter.Vessel -> RPCContext (Float)
+getVesselDryMass :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (Float)
 getVesselDryMass thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_DryMass" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14943,14 +14946,14 @@ getVesselDryMassStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_DryMass" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselDryMassStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Float))
+getVesselDryMassStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCStream (Float))
 getVesselDryMassStream thisArg = requestStream $ getVesselDryMassStreamReq thisArg 
 
 {-
  - The inertia tensor of the vessel around its center of mass, in the vessels reference frame (<see cref="T:SpaceCenter.ReferenceFrame" />).
  - Returns the 3x3 matrix as a list of elements, in row-major order.
  -}
-getVesselInertiaTensor :: KRPCHS.SpaceCenter.Vessel -> RPCContext ([Double])
+getVesselInertiaTensor :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m ([Double])
 getVesselInertiaTensor thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_InertiaTensor" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14961,7 +14964,7 @@ getVesselInertiaTensorStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_InertiaTensor" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselInertiaTensorStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream ([Double]))
+getVesselInertiaTensorStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCStream ([Double]))
 getVesselInertiaTensorStream thisArg = requestStream $ getVesselInertiaTensorStreamReq thisArg 
 
 {-
@@ -14969,7 +14972,7 @@ getVesselInertiaTensorStream thisArg = requestStream $ getVesselInertiaTensorStr
  - This is computed using the formula
  - <a href="http://wiki.kerbalspaceprogram.com/wiki/Specific_impulse#Multiple_engines">described here.
  -}
-getVesselKerbinSeaLevelSpecificImpulse :: KRPCHS.SpaceCenter.Vessel -> RPCContext (Float)
+getVesselKerbinSeaLevelSpecificImpulse :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (Float)
 getVesselKerbinSeaLevelSpecificImpulse thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_KerbinSeaLevelSpecificImpulse" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14980,13 +14983,13 @@ getVesselKerbinSeaLevelSpecificImpulseStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_KerbinSeaLevelSpecificImpulse" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselKerbinSeaLevelSpecificImpulseStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Float))
+getVesselKerbinSeaLevelSpecificImpulseStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCStream (Float))
 getVesselKerbinSeaLevelSpecificImpulseStream thisArg = requestStream $ getVesselKerbinSeaLevelSpecificImpulseStreamReq thisArg 
 
 {-
  - The mission elapsed time in seconds.
  -}
-getVesselMET :: KRPCHS.SpaceCenter.Vessel -> RPCContext (Double)
+getVesselMET :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (Double)
 getVesselMET thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_MET" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -14997,13 +15000,13 @@ getVesselMETStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_MET" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselMETStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Double))
+getVesselMETStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCStream (Double))
 getVesselMETStream thisArg = requestStream $ getVesselMETStreamReq thisArg 
 
 {-
  - The total mass of the vessel, including resources, in kg.
  -}
-getVesselMass :: KRPCHS.SpaceCenter.Vessel -> RPCContext (Float)
+getVesselMass :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (Float)
 getVesselMass thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_Mass" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15014,7 +15017,7 @@ getVesselMassStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_Mass" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselMassStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Float))
+getVesselMassStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCStream (Float))
 getVesselMassStream thisArg = requestStream $ getVesselMassStreamReq thisArg 
 
 {-
@@ -15022,7 +15025,7 @@ getVesselMassStream thisArg = requestStream $ getVesselMassStreamReq thisArg
  - engines, in Newtons. This is computed by summing
  - <see cref="M:SpaceCenter.Engine.MaxThrust" /> for every active engine.
  -}
-getVesselMaxThrust :: KRPCHS.SpaceCenter.Vessel -> RPCContext (Float)
+getVesselMaxThrust :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (Float)
 getVesselMaxThrust thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_MaxThrust" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15033,7 +15036,7 @@ getVesselMaxThrustStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_MaxThrust" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselMaxThrustStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Float))
+getVesselMaxThrustStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCStream (Float))
 getVesselMaxThrustStream thisArg = requestStream $ getVesselMaxThrustStreamReq thisArg 
 
 {-
@@ -15041,7 +15044,7 @@ getVesselMaxThrustStream thisArg = requestStream $ getVesselMaxThrustStreamReq t
  - engines when the vessel is in a vacuum, in Newtons. This is computed by
  - summing <see cref="M:SpaceCenter.Engine.MaxVacuumThrust" /> for every active engine.
  -}
-getVesselMaxVacuumThrust :: KRPCHS.SpaceCenter.Vessel -> RPCContext (Float)
+getVesselMaxVacuumThrust :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (Float)
 getVesselMaxVacuumThrust thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_MaxVacuumThrust" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15052,7 +15055,7 @@ getVesselMaxVacuumThrustStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_MaxVacuumThrust" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselMaxVacuumThrustStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Float))
+getVesselMaxVacuumThrustStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCStream (Float))
 getVesselMaxVacuumThrustStream thisArg = requestStream $ getVesselMaxVacuumThrustStreamReq thisArg 
 
 {-
@@ -15060,7 +15063,7 @@ getVesselMaxVacuumThrustStream thisArg = requestStream $ getVesselMaxVacuumThrus
  - The inertia values are around the pitch, roll and yaw directions respectively.
  - This corresponds to the vessels reference frame (<see cref="T:SpaceCenter.ReferenceFrame" />).
  -}
-getVesselMomentOfInertia :: KRPCHS.SpaceCenter.Vessel -> RPCContext ((Double, Double, Double))
+getVesselMomentOfInertia :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m ((Double, Double, Double))
 getVesselMomentOfInertia thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_MomentOfInertia" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15071,13 +15074,13 @@ getVesselMomentOfInertiaStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_MomentOfInertia" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselMomentOfInertiaStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream ((Double, Double, Double)))
+getVesselMomentOfInertiaStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCStream ((Double, Double, Double)))
 getVesselMomentOfInertiaStream thisArg = requestStream $ getVesselMomentOfInertiaStreamReq thisArg 
 
 {-
  - The name of the vessel.
  -}
-getVesselName :: KRPCHS.SpaceCenter.Vessel -> RPCContext (Data.Text.Text)
+getVesselName :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (Data.Text.Text)
 getVesselName thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_Name" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15088,13 +15091,13 @@ getVesselNameStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_Name" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselNameStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Data.Text.Text))
+getVesselNameStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCStream (Data.Text.Text))
 getVesselNameStream thisArg = requestStream $ getVesselNameStreamReq thisArg 
 
 {-
  - The current orbit of the vessel.
  -}
-getVesselOrbit :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCHS.SpaceCenter.Orbit)
+getVesselOrbit :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCHS.SpaceCenter.Orbit)
 getVesselOrbit thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_Orbit" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15105,7 +15108,7 @@ getVesselOrbitStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_Orbit" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselOrbitStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Orbit))
+getVesselOrbitStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCStream (KRPCHS.SpaceCenter.Orbit))
 getVesselOrbitStream thisArg = requestStream $ getVesselOrbitStreamReq thisArg 
 
 {-
@@ -15113,7 +15116,7 @@ getVesselOrbitStream thisArg = requestStream $ getVesselOrbitStreamReq thisArg
  - orbital prograde/normal/radial directions.
  - <list type="bullet">The origin is at the center of mass of the vessel.The axes rotate with the orbital prograde/normal/radial directions.The x-axis points in the orbital anti-radial direction.The y-axis points in the orbital prograde direction.The z-axis points in the orbital normal direction.Be careful not to confuse this with 'orbit' mode on the navball.
  -}
-getVesselOrbitalReferenceFrame :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
+getVesselOrbitalReferenceFrame :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCHS.SpaceCenter.ReferenceFrame)
 getVesselOrbitalReferenceFrame thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_OrbitalReferenceFrame" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15124,13 +15127,13 @@ getVesselOrbitalReferenceFrameStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_OrbitalReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselOrbitalReferenceFrameStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
+getVesselOrbitalReferenceFrameStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 getVesselOrbitalReferenceFrameStream thisArg = requestStream $ getVesselOrbitalReferenceFrameStreamReq thisArg 
 
 {-
  - A <see cref="T:SpaceCenter.Parts" /> object, that can used to interact with the parts that make up this vessel.
  -}
-getVesselParts :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCHS.SpaceCenter.Parts)
+getVesselParts :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCHS.SpaceCenter.Parts)
 getVesselParts thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_Parts" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15141,13 +15144,13 @@ getVesselPartsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_Parts" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselPartsStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Parts))
+getVesselPartsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCStream (KRPCHS.SpaceCenter.Parts))
 getVesselPartsStream thisArg = requestStream $ getVesselPartsStreamReq thisArg 
 
 {-
  - Whether the vessel is recoverable.
  -}
-getVesselRecoverable :: KRPCHS.SpaceCenter.Vessel -> RPCContext (Bool)
+getVesselRecoverable :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (Bool)
 getVesselRecoverable thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_Recoverable" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15158,14 +15161,14 @@ getVesselRecoverableStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_Recoverable" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselRecoverableStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Bool))
+getVesselRecoverableStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCStream (Bool))
 getVesselRecoverableStream thisArg = requestStream $ getVesselRecoverableStreamReq thisArg 
 
 {-
  - The reference frame that is fixed relative to the vessel, and orientated with the vessel.
  - <list type="bullet">The origin is at the center of mass of the vessel.The axes rotate with the vessel.The x-axis points out to the right of the vessel.The y-axis points in the forward direction of the vessel.The z-axis points out of the bottom off the vessel.
  -}
-getVesselReferenceFrame :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
+getVesselReferenceFrame :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCHS.SpaceCenter.ReferenceFrame)
 getVesselReferenceFrame thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_ReferenceFrame" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15176,14 +15179,14 @@ getVesselReferenceFrameStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_ReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselReferenceFrameStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
+getVesselReferenceFrameStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 getVesselReferenceFrameStream thisArg = requestStream $ getVesselReferenceFrameStreamReq thisArg 
 
 {-
  - A <see cref="T:SpaceCenter.Resources" /> object, that can used to get information
  - about resources stored in the vessel.
  -}
-getVesselResources :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCHS.SpaceCenter.Resources)
+getVesselResources :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCHS.SpaceCenter.Resources)
 getVesselResources thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_Resources" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15194,13 +15197,13 @@ getVesselResourcesStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_Resources" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselResourcesStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Resources))
+getVesselResourcesStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCStream (KRPCHS.SpaceCenter.Resources))
 getVesselResourcesStream thisArg = requestStream $ getVesselResourcesStreamReq thisArg 
 
 {-
  - The situation the vessel is in.
  -}
-getVesselSituation :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCHS.SpaceCenter.VesselSituation)
+getVesselSituation :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCHS.SpaceCenter.VesselSituation)
 getVesselSituation thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_Situation" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15211,14 +15214,14 @@ getVesselSituationStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_Situation" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselSituationStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.VesselSituation))
+getVesselSituationStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCStream (KRPCHS.SpaceCenter.VesselSituation))
 getVesselSituationStream thisArg = requestStream $ getVesselSituationStreamReq thisArg 
 
 {-
  - The combined specific impulse of all active engines, in seconds. This is computed using the formula
  - <a href="http://wiki.kerbalspaceprogram.com/wiki/Specific_impulse#Multiple_engines">described here.
  -}
-getVesselSpecificImpulse :: KRPCHS.SpaceCenter.Vessel -> RPCContext (Float)
+getVesselSpecificImpulse :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (Float)
 getVesselSpecificImpulse thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_SpecificImpulse" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15229,7 +15232,7 @@ getVesselSpecificImpulseStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_SpecificImpulse" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselSpecificImpulseStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Float))
+getVesselSpecificImpulseStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCStream (Float))
 getVesselSpecificImpulseStream thisArg = requestStream $ getVesselSpecificImpulseStreamReq thisArg 
 
 {-
@@ -15242,7 +15245,7 @@ getVesselSpecificImpulseStream thisArg = requestStream $ getVesselSpecificImpuls
  - <a href="https://en.wikipedia.org/wiki/Horizon">astronomical horizon(east, and tangential to the
  - surface of the body -- east on a compass when on the surface).Be careful not to confuse this with 'surface' mode on the navball.
  -}
-getVesselSurfaceReferenceFrame :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
+getVesselSurfaceReferenceFrame :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCHS.SpaceCenter.ReferenceFrame)
 getVesselSurfaceReferenceFrame thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_SurfaceReferenceFrame" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15253,7 +15256,7 @@ getVesselSurfaceReferenceFrameStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_SurfaceReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselSurfaceReferenceFrameStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
+getVesselSurfaceReferenceFrameStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 getVesselSurfaceReferenceFrameStream thisArg = requestStream $ getVesselSurfaceReferenceFrameStreamReq thisArg 
 
 {-
@@ -15263,7 +15266,7 @@ getVesselSurfaceReferenceFrameStream thisArg = requestStream $ getVesselSurfaceR
  - relative to the surface of the body being orbited.The z-axis is in the plane of the
  - <a href="https://en.wikipedia.org/wiki/Horizon">astronomical horizon.The x-axis is orthogonal to the other two axes.
  -}
-getVesselSurfaceVelocityReferenceFrame :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
+getVesselSurfaceVelocityReferenceFrame :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCHS.SpaceCenter.ReferenceFrame)
 getVesselSurfaceVelocityReferenceFrame thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_SurfaceVelocityReferenceFrame" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15274,7 +15277,7 @@ getVesselSurfaceVelocityReferenceFrameStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_SurfaceVelocityReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselSurfaceVelocityReferenceFrameStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
+getVesselSurfaceVelocityReferenceFrameStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 getVesselSurfaceVelocityReferenceFrameStream thisArg = requestStream $ getVesselSurfaceVelocityReferenceFrameStreamReq thisArg 
 
 {-
@@ -15282,7 +15285,7 @@ getVesselSurfaceVelocityReferenceFrameStream thisArg = requestStream $ getVessel
  - Newtons. This is computed by summing <see cref="M:SpaceCenter.Engine.Thrust" /> for
  - every engine in the vessel.
  -}
-getVesselThrust :: KRPCHS.SpaceCenter.Vessel -> RPCContext (Float)
+getVesselThrust :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (Float)
 getVesselThrust thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_Thrust" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15293,13 +15296,13 @@ getVesselThrustStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_Thrust" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselThrustStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Float))
+getVesselThrustStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCStream (Float))
 getVesselThrustStream thisArg = requestStream $ getVesselThrustStreamReq thisArg 
 
 {-
  - The type of the vessel.
  -}
-getVesselType :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCHS.SpaceCenter.VesselType)
+getVesselType :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCHS.SpaceCenter.VesselType)
 getVesselType thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_Type" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15310,14 +15313,14 @@ getVesselTypeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_Type" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselTypeStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.VesselType))
+getVesselTypeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCStream (KRPCHS.SpaceCenter.VesselType))
 getVesselTypeStream thisArg = requestStream $ getVesselTypeStreamReq thisArg 
 
 {-
  - The combined vacuum specific impulse of all active engines, in seconds. This is computed using the formula
  - <a href="http://wiki.kerbalspaceprogram.com/wiki/Specific_impulse#Multiple_engines">described here.
  -}
-getVesselVacuumSpecificImpulse :: KRPCHS.SpaceCenter.Vessel -> RPCContext (Float)
+getVesselVacuumSpecificImpulse :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (Float)
 getVesselVacuumSpecificImpulse thisArg = do
     let r = makeRequest "SpaceCenter" "Vessel_get_VacuumSpecificImpulse" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15328,13 +15331,13 @@ getVesselVacuumSpecificImpulseStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Vessel_get_VacuumSpecificImpulse" [makeArgument 0 thisArg]
     in  makeStream req
 
-getVesselVacuumSpecificImpulseStream :: KRPCHS.SpaceCenter.Vessel -> RPCContext (KRPCStream (Float))
+getVesselVacuumSpecificImpulseStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m (KRPCStream (Float))
 getVesselVacuumSpecificImpulseStream thisArg = requestStream $ getVesselVacuumSpecificImpulseStreamReq thisArg 
 
 {-
  - The name of the vessel.
  -}
-setVesselName :: KRPCHS.SpaceCenter.Vessel -> Data.Text.Text -> RPCContext ()
+setVesselName :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> Data.Text.Text -> m ()
 setVesselName thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Vessel_set_Name" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -15343,7 +15346,7 @@ setVesselName thisArg valueArg = do
 {-
  - The type of the vessel.
  -}
-setVesselType :: KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.VesselType -> RPCContext ()
+setVesselType :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> KRPCHS.SpaceCenter.VesselType -> m ()
 setVesselType thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Vessel_set_Type" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -15358,7 +15361,7 @@ setVesselType thisArg valueArg = do
  - rate is limited by <paramref name="maxRailsRate" />, and when using physical
  - time warp, the warp rate is limited by <paramref name="maxPhysicsRate" />.<param name="ut">The universal time to warp to, in seconds.<param name="maxRailsRate">The maximum warp rate in regular "on-rails" time warp.<param name="maxPhysicsRate">The maximum warp rate in physical time warp.When the time warp is complete.
  -}
-warpTo :: Double -> Float -> Float -> RPCContext ()
+warpTo :: (MonadIO m, MonadThrow m, MonadRPC m) => Double -> Float -> Float -> m ()
 warpTo utArg maxRailsRateArg maxPhysicsRateArg = do
     let r = makeRequest "SpaceCenter" "WarpTo" [makeArgument 0 utArg, makeArgument 1 maxRailsRateArg, makeArgument 2 maxPhysicsRateArg]
     res <- sendRequest r
@@ -15368,7 +15371,7 @@ warpTo utArg maxRailsRateArg maxPhysicsRateArg = do
  - Creates a waypoint at the given position at ground level, and returns a
  - <see cref="T:SpaceCenter.Waypoint" /> object that can be used to modify it.<param name="latitude">Latitude of the waypoint.<param name="longitude">Longitude of the waypoint.<param name="body">Celestial body the waypoint is attached to.<param name="name">Name of the waypoint.
  -}
-waypointManagerAddWaypoint :: KRPCHS.SpaceCenter.WaypointManager -> Double -> Double -> KRPCHS.SpaceCenter.CelestialBody -> Data.Text.Text -> RPCContext (KRPCHS.SpaceCenter.Waypoint)
+waypointManagerAddWaypoint :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.WaypointManager -> Double -> Double -> KRPCHS.SpaceCenter.CelestialBody -> Data.Text.Text -> m (KRPCHS.SpaceCenter.Waypoint)
 waypointManagerAddWaypoint thisArg latitudeArg longitudeArg bodyArg nameArg = do
     let r = makeRequest "SpaceCenter" "WaypointManager_AddWaypoint" [makeArgument 0 thisArg, makeArgument 1 latitudeArg, makeArgument 2 longitudeArg, makeArgument 3 bodyArg, makeArgument 4 nameArg]
     res <- sendRequest r
@@ -15379,14 +15382,14 @@ waypointManagerAddWaypointStreamReq thisArg latitudeArg longitudeArg bodyArg nam
     let req = makeRequest "SpaceCenter" "WaypointManager_AddWaypoint" [makeArgument 0 thisArg, makeArgument 1 latitudeArg, makeArgument 2 longitudeArg, makeArgument 3 bodyArg, makeArgument 4 nameArg]
     in  makeStream req
 
-waypointManagerAddWaypointStream :: KRPCHS.SpaceCenter.WaypointManager -> Double -> Double -> KRPCHS.SpaceCenter.CelestialBody -> Data.Text.Text -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Waypoint))
+waypointManagerAddWaypointStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.WaypointManager -> Double -> Double -> KRPCHS.SpaceCenter.CelestialBody -> Data.Text.Text -> m (KRPCStream (KRPCHS.SpaceCenter.Waypoint))
 waypointManagerAddWaypointStream thisArg latitudeArg longitudeArg bodyArg nameArg = requestStream $ waypointManagerAddWaypointStreamReq thisArg latitudeArg longitudeArg bodyArg nameArg 
 
 {-
  - An example map of known color - seed pairs.
  - Any other integers may be used as seed.
  -}
-getWaypointManagerColors :: KRPCHS.SpaceCenter.WaypointManager -> RPCContext (Data.Map.Map (Data.Text.Text) (Data.Int.Int32))
+getWaypointManagerColors :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.WaypointManager -> m (Data.Map.Map (Data.Text.Text) (Data.Int.Int32))
 getWaypointManagerColors thisArg = do
     let r = makeRequest "SpaceCenter" "WaypointManager_get_Colors" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15397,13 +15400,13 @@ getWaypointManagerColorsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "WaypointManager_get_Colors" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWaypointManagerColorsStream :: KRPCHS.SpaceCenter.WaypointManager -> RPCContext (KRPCStream (Data.Map.Map (Data.Text.Text) (Data.Int.Int32)))
+getWaypointManagerColorsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.WaypointManager -> m (KRPCStream (Data.Map.Map (Data.Text.Text) (Data.Int.Int32)))
 getWaypointManagerColorsStream thisArg = requestStream $ getWaypointManagerColorsStreamReq thisArg 
 
 {-
  - Returns all available icons (from "GameData/Squad/Contracts/Icons/").
  -}
-getWaypointManagerIcons :: KRPCHS.SpaceCenter.WaypointManager -> RPCContext ([Data.Text.Text])
+getWaypointManagerIcons :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.WaypointManager -> m ([Data.Text.Text])
 getWaypointManagerIcons thisArg = do
     let r = makeRequest "SpaceCenter" "WaypointManager_get_Icons" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15414,13 +15417,13 @@ getWaypointManagerIconsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "WaypointManager_get_Icons" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWaypointManagerIconsStream :: KRPCHS.SpaceCenter.WaypointManager -> RPCContext (KRPCStream ([Data.Text.Text]))
+getWaypointManagerIconsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.WaypointManager -> m (KRPCStream ([Data.Text.Text]))
 getWaypointManagerIconsStream thisArg = requestStream $ getWaypointManagerIconsStreamReq thisArg 
 
 {-
  - A list of all existing waypoints.
  -}
-getWaypointManagerWaypoints :: KRPCHS.SpaceCenter.WaypointManager -> RPCContext ([KRPCHS.SpaceCenter.Waypoint])
+getWaypointManagerWaypoints :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.WaypointManager -> m ([KRPCHS.SpaceCenter.Waypoint])
 getWaypointManagerWaypoints thisArg = do
     let r = makeRequest "SpaceCenter" "WaypointManager_get_Waypoints" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15431,13 +15434,13 @@ getWaypointManagerWaypointsStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "WaypointManager_get_Waypoints" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWaypointManagerWaypointsStream :: KRPCHS.SpaceCenter.WaypointManager -> RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Waypoint]))
+getWaypointManagerWaypointsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.WaypointManager -> m (KRPCStream ([KRPCHS.SpaceCenter.Waypoint]))
 getWaypointManagerWaypointsStream thisArg = requestStream $ getWaypointManagerWaypointsStreamReq thisArg 
 
 {-
  - Removes the waypoint.
  -}
-waypointRemove :: KRPCHS.SpaceCenter.Waypoint -> RPCContext ()
+waypointRemove :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> m ()
 waypointRemove thisArg = do
     let r = makeRequest "SpaceCenter" "Waypoint_Remove" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15446,7 +15449,7 @@ waypointRemove thisArg = do
 {-
  - The altitude of the waypoint above the surface of the body, in meters. When over water, this is the altitude above the sea floor.
  -}
-getWaypointBedrockAltitude :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Double)
+getWaypointBedrockAltitude :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> m (Double)
 getWaypointBedrockAltitude thisArg = do
     let r = makeRequest "SpaceCenter" "Waypoint_get_BedrockAltitude" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15457,13 +15460,13 @@ getWaypointBedrockAltitudeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Waypoint_get_BedrockAltitude" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWaypointBedrockAltitudeStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Double))
+getWaypointBedrockAltitudeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> m (KRPCStream (Double))
 getWaypointBedrockAltitudeStream thisArg = requestStream $ getWaypointBedrockAltitudeStreamReq thisArg 
 
 {-
  - Celestial body the waypoint is attached to.
  -}
-getWaypointBody :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCHS.SpaceCenter.CelestialBody)
+getWaypointBody :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> m (KRPCHS.SpaceCenter.CelestialBody)
 getWaypointBody thisArg = do
     let r = makeRequest "SpaceCenter" "Waypoint_get_Body" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15474,14 +15477,14 @@ getWaypointBodyStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Waypoint_get_Body" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWaypointBodyStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.CelestialBody))
+getWaypointBodyStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> m (KRPCStream (KRPCHS.SpaceCenter.CelestialBody))
 getWaypointBodyStream thisArg = requestStream $ getWaypointBodyStreamReq thisArg 
 
 {-
  - True if this waypoint is part of a set of clustered waypoints with greek letter names appended (Alpha, Beta, Gamma, etc).
  - If true, there is a one-to-one correspondence with the greek letter name and the <see cref="M:SpaceCenter.Waypoint.Index" />.
  -}
-getWaypointClustered :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Bool)
+getWaypointClustered :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> m (Bool)
 getWaypointClustered thisArg = do
     let r = makeRequest "SpaceCenter" "Waypoint_get_Clustered" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15492,13 +15495,13 @@ getWaypointClusteredStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Waypoint_get_Clustered" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWaypointClusteredStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Bool))
+getWaypointClusteredStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> m (KRPCStream (Bool))
 getWaypointClusteredStream thisArg = requestStream $ getWaypointClusteredStreamReq thisArg 
 
 {-
  - The seed of the icon color. See <see cref="M:SpaceCenter.WaypointManager.Colors" /> for example colors.
  -}
-getWaypointColor :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Data.Int.Int32)
+getWaypointColor :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> m (Data.Int.Int32)
 getWaypointColor thisArg = do
     let r = makeRequest "SpaceCenter" "Waypoint_get_Color" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15509,13 +15512,13 @@ getWaypointColorStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Waypoint_get_Color" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWaypointColorStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Data.Int.Int32))
+getWaypointColorStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> m (KRPCStream (Data.Int.Int32))
 getWaypointColorStream thisArg = requestStream $ getWaypointColorStreamReq thisArg 
 
 {-
  - The associated contract.
  -}
-getWaypointContract :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCHS.SpaceCenter.Contract)
+getWaypointContract :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> m (KRPCHS.SpaceCenter.Contract)
 getWaypointContract thisArg = do
     let r = makeRequest "SpaceCenter" "Waypoint_get_Contract" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15526,13 +15529,13 @@ getWaypointContractStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Waypoint_get_Contract" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWaypointContractStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Contract))
+getWaypointContractStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> m (KRPCStream (KRPCHS.SpaceCenter.Contract))
 getWaypointContractStream thisArg = requestStream $ getWaypointContractStreamReq thisArg 
 
 {-
  - True if waypoint is actually glued to the ground.
  -}
-getWaypointGrounded :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Bool)
+getWaypointGrounded :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> m (Bool)
 getWaypointGrounded thisArg = do
     let r = makeRequest "SpaceCenter" "Waypoint_get_Grounded" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15543,13 +15546,13 @@ getWaypointGroundedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Waypoint_get_Grounded" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWaypointGroundedStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Bool))
+getWaypointGroundedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> m (KRPCStream (Bool))
 getWaypointGroundedStream thisArg = requestStream $ getWaypointGroundedStreamReq thisArg 
 
 {-
  - Whether the waypoint belongs to a contract.
  -}
-getWaypointHasContract :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Bool)
+getWaypointHasContract :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> m (Bool)
 getWaypointHasContract thisArg = do
     let r = makeRequest "SpaceCenter" "Waypoint_get_HasContract" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15560,13 +15563,13 @@ getWaypointHasContractStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Waypoint_get_HasContract" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWaypointHasContractStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Bool))
+getWaypointHasContractStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> m (KRPCStream (Bool))
 getWaypointHasContractStream thisArg = requestStream $ getWaypointHasContractStreamReq thisArg 
 
 {-
  - The icon of the waypoint.
  -}
-getWaypointIcon :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Data.Text.Text)
+getWaypointIcon :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> m (Data.Text.Text)
 getWaypointIcon thisArg = do
     let r = makeRequest "SpaceCenter" "Waypoint_get_Icon" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15577,7 +15580,7 @@ getWaypointIconStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Waypoint_get_Icon" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWaypointIconStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Data.Text.Text))
+getWaypointIconStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> m (KRPCStream (Data.Text.Text))
 getWaypointIconStream thisArg = requestStream $ getWaypointIconStreamReq thisArg 
 
 {-
@@ -15586,7 +15589,7 @@ getWaypointIconStream thisArg = requestStream $ getWaypointIconStreamReq thisArg
  - then the alpha site has index 0, the beta site has index 1 and the gamma site has index 2.
  - When <see cref="M:SpaceCenter.Waypoint.Clustered" /> is false, this value is zero but meaningless.
  -}
-getWaypointIndex :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Data.Int.Int32)
+getWaypointIndex :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> m (Data.Int.Int32)
 getWaypointIndex thisArg = do
     let r = makeRequest "SpaceCenter" "Waypoint_get_Index" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15597,13 +15600,13 @@ getWaypointIndexStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Waypoint_get_Index" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWaypointIndexStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Data.Int.Int32))
+getWaypointIndexStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> m (KRPCStream (Data.Int.Int32))
 getWaypointIndexStream thisArg = requestStream $ getWaypointIndexStreamReq thisArg 
 
 {-
  - The latitude of the waypoint.
  -}
-getWaypointLatitude :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Double)
+getWaypointLatitude :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> m (Double)
 getWaypointLatitude thisArg = do
     let r = makeRequest "SpaceCenter" "Waypoint_get_Latitude" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15614,13 +15617,13 @@ getWaypointLatitudeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Waypoint_get_Latitude" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWaypointLatitudeStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Double))
+getWaypointLatitudeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> m (KRPCStream (Double))
 getWaypointLatitudeStream thisArg = requestStream $ getWaypointLatitudeStreamReq thisArg 
 
 {-
  - The longitude of the waypoint.
  -}
-getWaypointLongitude :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Double)
+getWaypointLongitude :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> m (Double)
 getWaypointLongitude thisArg = do
     let r = makeRequest "SpaceCenter" "Waypoint_get_Longitude" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15631,13 +15634,13 @@ getWaypointLongitudeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Waypoint_get_Longitude" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWaypointLongitudeStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Double))
+getWaypointLongitudeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> m (KRPCStream (Double))
 getWaypointLongitudeStream thisArg = requestStream $ getWaypointLongitudeStreamReq thisArg 
 
 {-
  - The altitude of the waypoint above sea level, in meters.
  -}
-getWaypointMeanAltitude :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Double)
+getWaypointMeanAltitude :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> m (Double)
 getWaypointMeanAltitude thisArg = do
     let r = makeRequest "SpaceCenter" "Waypoint_get_MeanAltitude" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15648,13 +15651,13 @@ getWaypointMeanAltitudeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Waypoint_get_MeanAltitude" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWaypointMeanAltitudeStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Double))
+getWaypointMeanAltitudeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> m (KRPCStream (Double))
 getWaypointMeanAltitudeStream thisArg = requestStream $ getWaypointMeanAltitudeStreamReq thisArg 
 
 {-
  - Name of the waypoint as it appears on the map and the contract.
  -}
-getWaypointName :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Data.Text.Text)
+getWaypointName :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> m (Data.Text.Text)
 getWaypointName thisArg = do
     let r = makeRequest "SpaceCenter" "Waypoint_get_Name" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15665,13 +15668,13 @@ getWaypointNameStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Waypoint_get_Name" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWaypointNameStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Data.Text.Text))
+getWaypointNameStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> m (KRPCStream (Data.Text.Text))
 getWaypointNameStream thisArg = requestStream $ getWaypointNameStreamReq thisArg 
 
 {-
  - True if waypoint is a point near or on the body rather than high in orbit.
  -}
-getWaypointNearSurface :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Bool)
+getWaypointNearSurface :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> m (Bool)
 getWaypointNearSurface thisArg = do
     let r = makeRequest "SpaceCenter" "Waypoint_get_NearSurface" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15682,13 +15685,13 @@ getWaypointNearSurfaceStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Waypoint_get_NearSurface" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWaypointNearSurfaceStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Bool))
+getWaypointNearSurfaceStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> m (KRPCStream (Bool))
 getWaypointNearSurfaceStream thisArg = requestStream $ getWaypointNearSurfaceStreamReq thisArg 
 
 {-
  - The altitude of the waypoint above the surface of the body or sea level, whichever is closer, in meters.
  -}
-getWaypointSurfaceAltitude :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (Double)
+getWaypointSurfaceAltitude :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> m (Double)
 getWaypointSurfaceAltitude thisArg = do
     let r = makeRequest "SpaceCenter" "Waypoint_get_SurfaceAltitude" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15699,13 +15702,13 @@ getWaypointSurfaceAltitudeStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Waypoint_get_SurfaceAltitude" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWaypointSurfaceAltitudeStream :: KRPCHS.SpaceCenter.Waypoint -> RPCContext (KRPCStream (Double))
+getWaypointSurfaceAltitudeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> m (KRPCStream (Double))
 getWaypointSurfaceAltitudeStream thisArg = requestStream $ getWaypointSurfaceAltitudeStreamReq thisArg 
 
 {-
  - The altitude of the waypoint above the surface of the body, in meters. When over water, this is the altitude above the sea floor.
  -}
-setWaypointBedrockAltitude :: KRPCHS.SpaceCenter.Waypoint -> Double -> RPCContext ()
+setWaypointBedrockAltitude :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> Double -> m ()
 setWaypointBedrockAltitude thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Waypoint_set_BedrockAltitude" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -15714,7 +15717,7 @@ setWaypointBedrockAltitude thisArg valueArg = do
 {-
  - Celestial body the waypoint is attached to.
  -}
-setWaypointBody :: KRPCHS.SpaceCenter.Waypoint -> KRPCHS.SpaceCenter.CelestialBody -> RPCContext ()
+setWaypointBody :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> KRPCHS.SpaceCenter.CelestialBody -> m ()
 setWaypointBody thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Waypoint_set_Body" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -15723,7 +15726,7 @@ setWaypointBody thisArg valueArg = do
 {-
  - The seed of the icon color. See <see cref="M:SpaceCenter.WaypointManager.Colors" /> for example colors.
  -}
-setWaypointColor :: KRPCHS.SpaceCenter.Waypoint -> Data.Int.Int32 -> RPCContext ()
+setWaypointColor :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> Data.Int.Int32 -> m ()
 setWaypointColor thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Waypoint_set_Color" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -15732,7 +15735,7 @@ setWaypointColor thisArg valueArg = do
 {-
  - The icon of the waypoint.
  -}
-setWaypointIcon :: KRPCHS.SpaceCenter.Waypoint -> Data.Text.Text -> RPCContext ()
+setWaypointIcon :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> Data.Text.Text -> m ()
 setWaypointIcon thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Waypoint_set_Icon" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -15741,7 +15744,7 @@ setWaypointIcon thisArg valueArg = do
 {-
  - The latitude of the waypoint.
  -}
-setWaypointLatitude :: KRPCHS.SpaceCenter.Waypoint -> Double -> RPCContext ()
+setWaypointLatitude :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> Double -> m ()
 setWaypointLatitude thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Waypoint_set_Latitude" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -15750,7 +15753,7 @@ setWaypointLatitude thisArg valueArg = do
 {-
  - The longitude of the waypoint.
  -}
-setWaypointLongitude :: KRPCHS.SpaceCenter.Waypoint -> Double -> RPCContext ()
+setWaypointLongitude :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> Double -> m ()
 setWaypointLongitude thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Waypoint_set_Longitude" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -15759,7 +15762,7 @@ setWaypointLongitude thisArg valueArg = do
 {-
  - The altitude of the waypoint above sea level, in meters.
  -}
-setWaypointMeanAltitude :: KRPCHS.SpaceCenter.Waypoint -> Double -> RPCContext ()
+setWaypointMeanAltitude :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> Double -> m ()
 setWaypointMeanAltitude thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Waypoint_set_MeanAltitude" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -15768,7 +15771,7 @@ setWaypointMeanAltitude thisArg valueArg = do
 {-
  - Name of the waypoint as it appears on the map and the contract.
  -}
-setWaypointName :: KRPCHS.SpaceCenter.Waypoint -> Data.Text.Text -> RPCContext ()
+setWaypointName :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> Data.Text.Text -> m ()
 setWaypointName thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Waypoint_set_Name" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -15777,7 +15780,7 @@ setWaypointName thisArg valueArg = do
 {-
  - The altitude of the waypoint above the surface of the body or sea level, whichever is closer, in meters.
  -}
-setWaypointSurfaceAltitude :: KRPCHS.SpaceCenter.Waypoint -> Double -> RPCContext ()
+setWaypointSurfaceAltitude :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Waypoint -> Double -> m ()
 setWaypointSurfaceAltitude thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Waypoint_set_SurfaceAltitude" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -15786,7 +15789,7 @@ setWaypointSurfaceAltitude thisArg valueArg = do
 {-
  - Whether automatic friction control is enabled.
  -}
-getWheelAutoFrictionControl :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Bool)
+getWheelAutoFrictionControl :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (Bool)
 getWheelAutoFrictionControl thisArg = do
     let r = makeRequest "SpaceCenter" "Wheel_get_AutoFrictionControl" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15797,13 +15800,13 @@ getWheelAutoFrictionControlStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Wheel_get_AutoFrictionControl" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWheelAutoFrictionControlStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Bool))
+getWheelAutoFrictionControlStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCStream (Bool))
 getWheelAutoFrictionControlStream thisArg = requestStream $ getWheelAutoFrictionControlStreamReq thisArg 
 
 {-
  - The braking force, as a percentage of maximum, when the brakes are applied.
  -}
-getWheelBrakes :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Float)
+getWheelBrakes :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (Float)
 getWheelBrakes thisArg = do
     let r = makeRequest "SpaceCenter" "Wheel_get_Brakes" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15814,13 +15817,13 @@ getWheelBrakesStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Wheel_get_Brakes" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWheelBrakesStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Float))
+getWheelBrakesStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCStream (Float))
 getWheelBrakesStream thisArg = requestStream $ getWheelBrakesStreamReq thisArg 
 
 {-
  - Whether the wheel is broken.
  -}
-getWheelBroken :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Bool)
+getWheelBroken :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (Bool)
 getWheelBroken thisArg = do
     let r = makeRequest "SpaceCenter" "Wheel_get_Broken" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15831,13 +15834,13 @@ getWheelBrokenStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Wheel_get_Broken" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWheelBrokenStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Bool))
+getWheelBrokenStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCStream (Bool))
 getWheelBrokenStream thisArg = requestStream $ getWheelBrokenStreamReq thisArg 
 
 {-
  - Current deflection of the wheel.
  -}
-getWheelDeflection :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Float)
+getWheelDeflection :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (Float)
 getWheelDeflection thisArg = do
     let r = makeRequest "SpaceCenter" "Wheel_get_Deflection" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15848,13 +15851,13 @@ getWheelDeflectionStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Wheel_get_Deflection" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWheelDeflectionStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Float))
+getWheelDeflectionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCStream (Float))
 getWheelDeflectionStream thisArg = requestStream $ getWheelDeflectionStreamReq thisArg 
 
 {-
  - Whether the wheel is deployable.
  -}
-getWheelDeployable :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Bool)
+getWheelDeployable :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (Bool)
 getWheelDeployable thisArg = do
     let r = makeRequest "SpaceCenter" "Wheel_get_Deployable" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15865,13 +15868,13 @@ getWheelDeployableStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Wheel_get_Deployable" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWheelDeployableStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Bool))
+getWheelDeployableStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCStream (Bool))
 getWheelDeployableStream thisArg = requestStream $ getWheelDeployableStreamReq thisArg 
 
 {-
  - Whether the wheel is deployed.
  -}
-getWheelDeployed :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Bool)
+getWheelDeployed :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (Bool)
 getWheelDeployed thisArg = do
     let r = makeRequest "SpaceCenter" "Wheel_get_Deployed" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15882,7 +15885,7 @@ getWheelDeployedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Wheel_get_Deployed" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWheelDeployedStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Bool))
+getWheelDeployedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCStream (Bool))
 getWheelDeployedStream thisArg = requestStream $ getWheelDeployedStreamReq thisArg 
 
 {-
@@ -15890,7 +15893,7 @@ getWheelDeployedStream thisArg = requestStream $ getWheelDeployedStreamReq thisA
  - Only takes effect if the wheel has automatic traction control disabled.
  - A value between 0 and 100 inclusive.
  -}
-getWheelDriveLimiter :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Float)
+getWheelDriveLimiter :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (Float)
 getWheelDriveLimiter thisArg = do
     let r = makeRequest "SpaceCenter" "Wheel_get_DriveLimiter" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15901,13 +15904,13 @@ getWheelDriveLimiterStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Wheel_get_DriveLimiter" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWheelDriveLimiterStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Float))
+getWheelDriveLimiterStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCStream (Float))
 getWheelDriveLimiterStream thisArg = requestStream $ getWheelDriveLimiterStreamReq thisArg 
 
 {-
  - Whether the wheel is touching the ground.
  -}
-getWheelGrounded :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Bool)
+getWheelGrounded :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (Bool)
 getWheelGrounded thisArg = do
     let r = makeRequest "SpaceCenter" "Wheel_get_Grounded" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15918,13 +15921,13 @@ getWheelGroundedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Wheel_get_Grounded" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWheelGroundedStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Bool))
+getWheelGroundedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCStream (Bool))
 getWheelGroundedStream thisArg = requestStream $ getWheelGroundedStreamReq thisArg 
 
 {-
  - Whether the wheel has brakes.
  -}
-getWheelHasBrakes :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Bool)
+getWheelHasBrakes :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (Bool)
 getWheelHasBrakes thisArg = do
     let r = makeRequest "SpaceCenter" "Wheel_get_HasBrakes" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15935,13 +15938,13 @@ getWheelHasBrakesStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Wheel_get_HasBrakes" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWheelHasBrakesStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Bool))
+getWheelHasBrakesStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCStream (Bool))
 getWheelHasBrakesStream thisArg = requestStream $ getWheelHasBrakesStreamReq thisArg 
 
 {-
  - Whether the wheel has suspension.
  -}
-getWheelHasSuspension :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Bool)
+getWheelHasSuspension :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (Bool)
 getWheelHasSuspension thisArg = do
     let r = makeRequest "SpaceCenter" "Wheel_get_HasSuspension" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15952,14 +15955,14 @@ getWheelHasSuspensionStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Wheel_get_HasSuspension" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWheelHasSuspensionStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Bool))
+getWheelHasSuspensionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCStream (Bool))
 getWheelHasSuspensionStream thisArg = requestStream $ getWheelHasSuspensionStreamReq thisArg 
 
 {-
  - Manual friction control value. Only has an effect if automatic friction control is disabled.
  - A value between 0 and 5 inclusive.
  -}
-getWheelManualFrictionControl :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Float)
+getWheelManualFrictionControl :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (Float)
 getWheelManualFrictionControl thisArg = do
     let r = makeRequest "SpaceCenter" "Wheel_get_ManualFrictionControl" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15970,13 +15973,13 @@ getWheelManualFrictionControlStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Wheel_get_ManualFrictionControl" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWheelManualFrictionControlStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Float))
+getWheelManualFrictionControlStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCStream (Float))
 getWheelManualFrictionControlStream thisArg = requestStream $ getWheelManualFrictionControlStreamReq thisArg 
 
 {-
  - Whether the motor is enabled.
  -}
-getWheelMotorEnabled :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Bool)
+getWheelMotorEnabled :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (Bool)
 getWheelMotorEnabled thisArg = do
     let r = makeRequest "SpaceCenter" "Wheel_get_MotorEnabled" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -15987,13 +15990,13 @@ getWheelMotorEnabledStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Wheel_get_MotorEnabled" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWheelMotorEnabledStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Bool))
+getWheelMotorEnabledStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCStream (Bool))
 getWheelMotorEnabledStream thisArg = requestStream $ getWheelMotorEnabledStreamReq thisArg 
 
 {-
  - Whether the direction of the motor is inverted.
  -}
-getWheelMotorInverted :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Bool)
+getWheelMotorInverted :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (Bool)
 getWheelMotorInverted thisArg = do
     let r = makeRequest "SpaceCenter" "Wheel_get_MotorInverted" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -16004,13 +16007,13 @@ getWheelMotorInvertedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Wheel_get_MotorInverted" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWheelMotorInvertedStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Bool))
+getWheelMotorInvertedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCStream (Bool))
 getWheelMotorInvertedStream thisArg = requestStream $ getWheelMotorInvertedStreamReq thisArg 
 
 {-
  - The output of the motor. This is the torque currently being generated, in Newton meters.
  -}
-getWheelMotorOutput :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Float)
+getWheelMotorOutput :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (Float)
 getWheelMotorOutput thisArg = do
     let r = makeRequest "SpaceCenter" "Wheel_get_MotorOutput" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -16021,13 +16024,13 @@ getWheelMotorOutputStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Wheel_get_MotorOutput" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWheelMotorOutputStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Float))
+getWheelMotorOutputStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCStream (Float))
 getWheelMotorOutputStream thisArg = requestStream $ getWheelMotorOutputStreamReq thisArg 
 
 {-
  - Whether the direction of the motor is inverted.
  -}
-getWheelMotorState :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCHS.SpaceCenter.MotorState)
+getWheelMotorState :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCHS.SpaceCenter.MotorState)
 getWheelMotorState thisArg = do
     let r = makeRequest "SpaceCenter" "Wheel_get_MotorState" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -16038,13 +16041,13 @@ getWheelMotorStateStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Wheel_get_MotorState" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWheelMotorStateStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.MotorState))
+getWheelMotorStateStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCStream (KRPCHS.SpaceCenter.MotorState))
 getWheelMotorStateStream thisArg = requestStream $ getWheelMotorStateStreamReq thisArg 
 
 {-
  - The part object for this wheel.
  -}
-getWheelPart :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCHS.SpaceCenter.Part)
+getWheelPart :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCHS.SpaceCenter.Part)
 getWheelPart thisArg = do
     let r = makeRequest "SpaceCenter" "Wheel_get_Part" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -16055,13 +16058,13 @@ getWheelPartStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Wheel_get_Part" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWheelPartStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.Part))
+getWheelPartStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCStream (KRPCHS.SpaceCenter.Part))
 getWheelPartStream thisArg = requestStream $ getWheelPartStreamReq thisArg 
 
 {-
  - Whether the wheel is powered by a motor.
  -}
-getWheelPowered :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Bool)
+getWheelPowered :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (Bool)
 getWheelPowered thisArg = do
     let r = makeRequest "SpaceCenter" "Wheel_get_Powered" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -16072,13 +16075,13 @@ getWheelPoweredStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Wheel_get_Powered" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWheelPoweredStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Bool))
+getWheelPoweredStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCStream (Bool))
 getWheelPoweredStream thisArg = requestStream $ getWheelPoweredStreamReq thisArg 
 
 {-
  - Radius of the wheel, in meters.
  -}
-getWheelRadius :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Float)
+getWheelRadius :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (Float)
 getWheelRadius thisArg = do
     let r = makeRequest "SpaceCenter" "Wheel_get_Radius" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -16089,13 +16092,13 @@ getWheelRadiusStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Wheel_get_Radius" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWheelRadiusStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Float))
+getWheelRadiusStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCStream (Float))
 getWheelRadiusStream thisArg = requestStream $ getWheelRadiusStreamReq thisArg 
 
 {-
  - Whether the wheel is repairable.
  -}
-getWheelRepairable :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Bool)
+getWheelRepairable :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (Bool)
 getWheelRepairable thisArg = do
     let r = makeRequest "SpaceCenter" "Wheel_get_Repairable" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -16106,13 +16109,13 @@ getWheelRepairableStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Wheel_get_Repairable" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWheelRepairableStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Bool))
+getWheelRepairableStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCStream (Bool))
 getWheelRepairableStream thisArg = requestStream $ getWheelRepairableStreamReq thisArg 
 
 {-
  - Current slip of the wheel.
  -}
-getWheelSlip :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Float)
+getWheelSlip :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (Float)
 getWheelSlip thisArg = do
     let r = makeRequest "SpaceCenter" "Wheel_get_Slip" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -16123,13 +16126,13 @@ getWheelSlipStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Wheel_get_Slip" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWheelSlipStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Float))
+getWheelSlipStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCStream (Float))
 getWheelSlipStream thisArg = requestStream $ getWheelSlipStreamReq thisArg 
 
 {-
  - The current state of the wheel.
  -}
-getWheelState :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCHS.SpaceCenter.WheelState)
+getWheelState :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCHS.SpaceCenter.WheelState)
 getWheelState thisArg = do
     let r = makeRequest "SpaceCenter" "Wheel_get_State" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -16140,13 +16143,13 @@ getWheelStateStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Wheel_get_State" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWheelStateStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.WheelState))
+getWheelStateStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCStream (KRPCHS.SpaceCenter.WheelState))
 getWheelStateStream thisArg = requestStream $ getWheelStateStreamReq thisArg 
 
 {-
  - Whether the wheel has steering.
  -}
-getWheelSteerable :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Bool)
+getWheelSteerable :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (Bool)
 getWheelSteerable thisArg = do
     let r = makeRequest "SpaceCenter" "Wheel_get_Steerable" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -16157,13 +16160,13 @@ getWheelSteerableStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Wheel_get_Steerable" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWheelSteerableStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Bool))
+getWheelSteerableStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCStream (Bool))
 getWheelSteerableStream thisArg = requestStream $ getWheelSteerableStreamReq thisArg 
 
 {-
  - Whether the wheel steering is enabled.
  -}
-getWheelSteeringEnabled :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Bool)
+getWheelSteeringEnabled :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (Bool)
 getWheelSteeringEnabled thisArg = do
     let r = makeRequest "SpaceCenter" "Wheel_get_SteeringEnabled" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -16174,13 +16177,13 @@ getWheelSteeringEnabledStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Wheel_get_SteeringEnabled" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWheelSteeringEnabledStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Bool))
+getWheelSteeringEnabledStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCStream (Bool))
 getWheelSteeringEnabledStream thisArg = requestStream $ getWheelSteeringEnabledStreamReq thisArg 
 
 {-
  - Whether the wheel steering is inverted.
  -}
-getWheelSteeringInverted :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Bool)
+getWheelSteeringInverted :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (Bool)
 getWheelSteeringInverted thisArg = do
     let r = makeRequest "SpaceCenter" "Wheel_get_SteeringInverted" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -16191,13 +16194,13 @@ getWheelSteeringInvertedStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Wheel_get_SteeringInverted" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWheelSteeringInvertedStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Bool))
+getWheelSteeringInvertedStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCStream (Bool))
 getWheelSteeringInvertedStream thisArg = requestStream $ getWheelSteeringInvertedStreamReq thisArg 
 
 {-
  - Current stress on the wheel.
  -}
-getWheelStress :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Float)
+getWheelStress :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (Float)
 getWheelStress thisArg = do
     let r = makeRequest "SpaceCenter" "Wheel_get_Stress" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -16208,13 +16211,13 @@ getWheelStressStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Wheel_get_Stress" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWheelStressStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Float))
+getWheelStressStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCStream (Float))
 getWheelStressStream thisArg = requestStream $ getWheelStressStreamReq thisArg 
 
 {-
  - Current stress on the wheel as a percentage of its stress tolerance.
  -}
-getWheelStressPercentage :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Float)
+getWheelStressPercentage :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (Float)
 getWheelStressPercentage thisArg = do
     let r = makeRequest "SpaceCenter" "Wheel_get_StressPercentage" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -16225,13 +16228,13 @@ getWheelStressPercentageStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Wheel_get_StressPercentage" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWheelStressPercentageStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Float))
+getWheelStressPercentageStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCStream (Float))
 getWheelStressPercentageStream thisArg = requestStream $ getWheelStressPercentageStreamReq thisArg 
 
 {-
  - Stress tolerance of the wheel.
  -}
-getWheelStressTolerance :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Float)
+getWheelStressTolerance :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (Float)
 getWheelStressTolerance thisArg = do
     let r = makeRequest "SpaceCenter" "Wheel_get_StressTolerance" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -16242,13 +16245,13 @@ getWheelStressToleranceStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Wheel_get_StressTolerance" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWheelStressToleranceStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Float))
+getWheelStressToleranceStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCStream (Float))
 getWheelStressToleranceStream thisArg = requestStream $ getWheelStressToleranceStreamReq thisArg 
 
 {-
  - Suspension damper strength, as set in the editor.
  -}
-getWheelSuspensionDamperStrength :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Float)
+getWheelSuspensionDamperStrength :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (Float)
 getWheelSuspensionDamperStrength thisArg = do
     let r = makeRequest "SpaceCenter" "Wheel_get_SuspensionDamperStrength" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -16259,13 +16262,13 @@ getWheelSuspensionDamperStrengthStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Wheel_get_SuspensionDamperStrength" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWheelSuspensionDamperStrengthStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Float))
+getWheelSuspensionDamperStrengthStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCStream (Float))
 getWheelSuspensionDamperStrengthStream thisArg = requestStream $ getWheelSuspensionDamperStrengthStreamReq thisArg 
 
 {-
  - Suspension spring strength, as set in the editor.
  -}
-getWheelSuspensionSpringStrength :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Float)
+getWheelSuspensionSpringStrength :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (Float)
 getWheelSuspensionSpringStrength thisArg = do
     let r = makeRequest "SpaceCenter" "Wheel_get_SuspensionSpringStrength" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -16276,7 +16279,7 @@ getWheelSuspensionSpringStrengthStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Wheel_get_SuspensionSpringStrength" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWheelSuspensionSpringStrengthStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Float))
+getWheelSuspensionSpringStrengthStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCStream (Float))
 getWheelSuspensionSpringStrengthStream thisArg = requestStream $ getWheelSuspensionSpringStrengthStreamReq thisArg 
 
 {-
@@ -16284,7 +16287,7 @@ getWheelSuspensionSpringStrengthStream thisArg = requestStream $ getWheelSuspens
  - Only takes effect if the wheel has automatic traction control enabled.
  - A value between 0 and 5 inclusive.
  -}
-getWheelTractionControl :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Float)
+getWheelTractionControl :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (Float)
 getWheelTractionControl thisArg = do
     let r = makeRequest "SpaceCenter" "Wheel_get_TractionControl" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -16295,14 +16298,14 @@ getWheelTractionControlStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Wheel_get_TractionControl" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWheelTractionControlStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Float))
+getWheelTractionControlStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCStream (Float))
 getWheelTractionControlStream thisArg = requestStream $ getWheelTractionControlStreamReq thisArg 
 
 {-
  - Whether automatic traction control is enabled.
  - A wheel only has traction control if it is powered.
  -}
-getWheelTractionControlEnabled :: KRPCHS.SpaceCenter.Wheel -> RPCContext (Bool)
+getWheelTractionControlEnabled :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (Bool)
 getWheelTractionControlEnabled thisArg = do
     let r = makeRequest "SpaceCenter" "Wheel_get_TractionControlEnabled" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -16313,13 +16316,13 @@ getWheelTractionControlEnabledStreamReq thisArg =
     let req = makeRequest "SpaceCenter" "Wheel_get_TractionControlEnabled" [makeArgument 0 thisArg]
     in  makeStream req
 
-getWheelTractionControlEnabledStream :: KRPCHS.SpaceCenter.Wheel -> RPCContext (KRPCStream (Bool))
+getWheelTractionControlEnabledStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> m (KRPCStream (Bool))
 getWheelTractionControlEnabledStream thisArg = requestStream $ getWheelTractionControlEnabledStreamReq thisArg 
 
 {-
  - Whether automatic friction control is enabled.
  -}
-setWheelAutoFrictionControl :: KRPCHS.SpaceCenter.Wheel -> Bool -> RPCContext ()
+setWheelAutoFrictionControl :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> Bool -> m ()
 setWheelAutoFrictionControl thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Wheel_set_AutoFrictionControl" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -16328,7 +16331,7 @@ setWheelAutoFrictionControl thisArg valueArg = do
 {-
  - The braking force, as a percentage of maximum, when the brakes are applied.
  -}
-setWheelBrakes :: KRPCHS.SpaceCenter.Wheel -> Float -> RPCContext ()
+setWheelBrakes :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> Float -> m ()
 setWheelBrakes thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Wheel_set_Brakes" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -16337,7 +16340,7 @@ setWheelBrakes thisArg valueArg = do
 {-
  - Whether the wheel is deployed.
  -}
-setWheelDeployed :: KRPCHS.SpaceCenter.Wheel -> Bool -> RPCContext ()
+setWheelDeployed :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> Bool -> m ()
 setWheelDeployed thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Wheel_set_Deployed" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -16348,7 +16351,7 @@ setWheelDeployed thisArg valueArg = do
  - Only takes effect if the wheel has automatic traction control disabled.
  - A value between 0 and 100 inclusive.
  -}
-setWheelDriveLimiter :: KRPCHS.SpaceCenter.Wheel -> Float -> RPCContext ()
+setWheelDriveLimiter :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> Float -> m ()
 setWheelDriveLimiter thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Wheel_set_DriveLimiter" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -16358,7 +16361,7 @@ setWheelDriveLimiter thisArg valueArg = do
  - Manual friction control value. Only has an effect if automatic friction control is disabled.
  - A value between 0 and 5 inclusive.
  -}
-setWheelManualFrictionControl :: KRPCHS.SpaceCenter.Wheel -> Float -> RPCContext ()
+setWheelManualFrictionControl :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> Float -> m ()
 setWheelManualFrictionControl thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Wheel_set_ManualFrictionControl" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -16367,7 +16370,7 @@ setWheelManualFrictionControl thisArg valueArg = do
 {-
  - Whether the motor is enabled.
  -}
-setWheelMotorEnabled :: KRPCHS.SpaceCenter.Wheel -> Bool -> RPCContext ()
+setWheelMotorEnabled :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> Bool -> m ()
 setWheelMotorEnabled thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Wheel_set_MotorEnabled" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -16376,7 +16379,7 @@ setWheelMotorEnabled thisArg valueArg = do
 {-
  - Whether the direction of the motor is inverted.
  -}
-setWheelMotorInverted :: KRPCHS.SpaceCenter.Wheel -> Bool -> RPCContext ()
+setWheelMotorInverted :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> Bool -> m ()
 setWheelMotorInverted thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Wheel_set_MotorInverted" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -16385,7 +16388,7 @@ setWheelMotorInverted thisArg valueArg = do
 {-
  - Whether the wheel steering is enabled.
  -}
-setWheelSteeringEnabled :: KRPCHS.SpaceCenter.Wheel -> Bool -> RPCContext ()
+setWheelSteeringEnabled :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> Bool -> m ()
 setWheelSteeringEnabled thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Wheel_set_SteeringEnabled" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -16394,7 +16397,7 @@ setWheelSteeringEnabled thisArg valueArg = do
 {-
  - Whether the wheel steering is inverted.
  -}
-setWheelSteeringInverted :: KRPCHS.SpaceCenter.Wheel -> Bool -> RPCContext ()
+setWheelSteeringInverted :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> Bool -> m ()
 setWheelSteeringInverted thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Wheel_set_SteeringInverted" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -16405,7 +16408,7 @@ setWheelSteeringInverted thisArg valueArg = do
  - Only takes effect if the wheel has automatic traction control enabled.
  - A value between 0 and 5 inclusive.
  -}
-setWheelTractionControl :: KRPCHS.SpaceCenter.Wheel -> Float -> RPCContext ()
+setWheelTractionControl :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> Float -> m ()
 setWheelTractionControl thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Wheel_set_TractionControl" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -16415,7 +16418,7 @@ setWheelTractionControl thisArg valueArg = do
  - Whether automatic traction control is enabled.
  - A wheel only has traction control if it is powered.
  -}
-setWheelTractionControlEnabled :: KRPCHS.SpaceCenter.Wheel -> Bool -> RPCContext ()
+setWheelTractionControlEnabled :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Wheel -> Bool -> m ()
 setWheelTractionControlEnabled thisArg valueArg = do
     let r = makeRequest "SpaceCenter" "Wheel_set_TractionControlEnabled" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -16424,7 +16427,7 @@ setWheelTractionControlEnabled thisArg valueArg = do
 {-
  - The currently active vessel.
  -}
-getActiveVessel :: RPCContext (KRPCHS.SpaceCenter.Vessel)
+getActiveVessel :: (MonadIO m, MonadThrow m, MonadRPC m) => m (KRPCHS.SpaceCenter.Vessel)
 getActiveVessel  = do
     let r = makeRequest "SpaceCenter" "get_ActiveVessel" []
     res <- sendRequest r
@@ -16435,14 +16438,14 @@ getActiveVesselStreamReq  =
     let req = makeRequest "SpaceCenter" "get_ActiveVessel" []
     in  makeStream req
 
-getActiveVesselStream :: RPCContext (KRPCStream (KRPCHS.SpaceCenter.Vessel))
+getActiveVesselStream :: (MonadIO m, MonadThrow m, MonadRPC m) => m (KRPCStream (KRPCHS.SpaceCenter.Vessel))
 getActiveVesselStream  = requestStream $ getActiveVesselStreamReq  
 
 {-
  - A dictionary of all celestial bodies (planets, moons, etc.) in the game,
  - keyed by the name of the body.
  -}
-getBodies :: RPCContext (Data.Map.Map (Data.Text.Text) (KRPCHS.SpaceCenter.CelestialBody))
+getBodies :: (MonadIO m, MonadThrow m, MonadRPC m) => m (Data.Map.Map (Data.Text.Text) (KRPCHS.SpaceCenter.CelestialBody))
 getBodies  = do
     let r = makeRequest "SpaceCenter" "get_Bodies" []
     res <- sendRequest r
@@ -16453,13 +16456,13 @@ getBodiesStreamReq  =
     let req = makeRequest "SpaceCenter" "get_Bodies" []
     in  makeStream req
 
-getBodiesStream :: RPCContext (KRPCStream (Data.Map.Map (Data.Text.Text) (KRPCHS.SpaceCenter.CelestialBody)))
+getBodiesStream :: (MonadIO m, MonadThrow m, MonadRPC m) => m (KRPCStream (Data.Map.Map (Data.Text.Text) (KRPCHS.SpaceCenter.CelestialBody)))
 getBodiesStream  = requestStream $ getBodiesStreamReq  
 
 {-
  - An object that can be used to control the camera.
  -}
-getCamera :: RPCContext (KRPCHS.SpaceCenter.Camera)
+getCamera :: (MonadIO m, MonadThrow m, MonadRPC m) => m (KRPCHS.SpaceCenter.Camera)
 getCamera  = do
     let r = makeRequest "SpaceCenter" "get_Camera" []
     res <- sendRequest r
@@ -16470,13 +16473,13 @@ getCameraStreamReq  =
     let req = makeRequest "SpaceCenter" "get_Camera" []
     in  makeStream req
 
-getCameraStream :: RPCContext (KRPCStream (KRPCHS.SpaceCenter.Camera))
+getCameraStream :: (MonadIO m, MonadThrow m, MonadRPC m) => m (KRPCStream (KRPCHS.SpaceCenter.Camera))
 getCameraStream  = requestStream $ getCameraStreamReq  
 
 {-
  - The contract manager.
  -}
-getContractManager :: RPCContext (KRPCHS.SpaceCenter.ContractManager)
+getContractManager :: (MonadIO m, MonadThrow m, MonadRPC m) => m (KRPCHS.SpaceCenter.ContractManager)
 getContractManager  = do
     let r = makeRequest "SpaceCenter" "get_ContractManager" []
     res <- sendRequest r
@@ -16487,13 +16490,13 @@ getContractManagerStreamReq  =
     let req = makeRequest "SpaceCenter" "get_ContractManager" []
     in  makeStream req
 
-getContractManagerStream :: RPCContext (KRPCStream (KRPCHS.SpaceCenter.ContractManager))
+getContractManagerStream :: (MonadIO m, MonadThrow m, MonadRPC m) => m (KRPCStream (KRPCHS.SpaceCenter.ContractManager))
 getContractManagerStream  = requestStream $ getContractManagerStreamReq  
 
 {-
  - Whether <a href="http://forum.kerbalspaceprogram.com/index.php?/topic/19321-105-ferram-aerospace-research-v01557-johnson-21816/">Ferram Aerospace Researchis installed.
  -}
-getFARAvailable :: RPCContext (Bool)
+getFARAvailable :: (MonadIO m, MonadThrow m, MonadRPC m) => m (Bool)
 getFARAvailable  = do
     let r = makeRequest "SpaceCenter" "get_FARAvailable" []
     res <- sendRequest r
@@ -16504,13 +16507,13 @@ getFARAvailableStreamReq  =
     let req = makeRequest "SpaceCenter" "get_FARAvailable" []
     in  makeStream req
 
-getFARAvailableStream :: RPCContext (KRPCStream (Bool))
+getFARAvailableStream :: (MonadIO m, MonadThrow m, MonadRPC m) => m (KRPCStream (Bool))
 getFARAvailableStream  = requestStream $ getFARAvailableStreamReq  
 
 {-
  - The value of the <a href="https://en.wikipedia.org/wiki/Gravitational_constant">gravitational constantG inN(m/kg)^2.
  -}
-getG :: RPCContext (Double)
+getG :: (MonadIO m, MonadThrow m, MonadRPC m) => m (Double)
 getG  = do
     let r = makeRequest "SpaceCenter" "get_G" []
     res <- sendRequest r
@@ -16521,7 +16524,7 @@ getGStreamReq  =
     let req = makeRequest "SpaceCenter" "get_G" []
     in  makeStream req
 
-getGStream :: RPCContext (KRPCStream (Double))
+getGStream :: (MonadIO m, MonadThrow m, MonadRPC m) => m (KRPCStream (Double))
 getGStream  = requestStream $ getGStreamReq  
 
 {-
@@ -16529,7 +16532,7 @@ getGStream  = requestStream $ getGStreamReq
  - A value between 0 and 7 inclusive. See
  - <a href="http://wiki.kerbalspaceprogram.com/wiki/Time_warp">the KSP wikifor details.
  -}
-getMaximumRailsWarpFactor :: RPCContext (Data.Int.Int32)
+getMaximumRailsWarpFactor :: (MonadIO m, MonadThrow m, MonadRPC m) => m (Data.Int.Int32)
 getMaximumRailsWarpFactor  = do
     let r = makeRequest "SpaceCenter" "get_MaximumRailsWarpFactor" []
     res <- sendRequest r
@@ -16540,13 +16543,13 @@ getMaximumRailsWarpFactorStreamReq  =
     let req = makeRequest "SpaceCenter" "get_MaximumRailsWarpFactor" []
     in  makeStream req
 
-getMaximumRailsWarpFactorStream :: RPCContext (KRPCStream (Data.Int.Int32))
+getMaximumRailsWarpFactorStream :: (MonadIO m, MonadThrow m, MonadRPC m) => m (KRPCStream (Data.Int.Int32))
 getMaximumRailsWarpFactorStream  = requestStream $ getMaximumRailsWarpFactorStreamReq  
 
 {-
  - Whether the navball is visible.
  -}
-getNavball :: RPCContext (Bool)
+getNavball :: (MonadIO m, MonadThrow m, MonadRPC m) => m (Bool)
 getNavball  = do
     let r = makeRequest "SpaceCenter" "get_Navball" []
     res <- sendRequest r
@@ -16557,14 +16560,14 @@ getNavballStreamReq  =
     let req = makeRequest "SpaceCenter" "get_Navball" []
     in  makeStream req
 
-getNavballStream :: RPCContext (KRPCStream (Bool))
+getNavballStream :: (MonadIO m, MonadThrow m, MonadRPC m) => m (KRPCStream (Bool))
 getNavballStream  = requestStream $ getNavballStreamReq  
 
 {-
  - The physical time warp rate. A value between 0 and 3 inclusive. 0 means
  - no time warp. Returns 0 if regular "on-rails" time warp is active.
  -}
-getPhysicsWarpFactor :: RPCContext (Data.Int.Int32)
+getPhysicsWarpFactor :: (MonadIO m, MonadThrow m, MonadRPC m) => m (Data.Int.Int32)
 getPhysicsWarpFactor  = do
     let r = makeRequest "SpaceCenter" "get_PhysicsWarpFactor" []
     res <- sendRequest r
@@ -16575,7 +16578,7 @@ getPhysicsWarpFactorStreamReq  =
     let req = makeRequest "SpaceCenter" "get_PhysicsWarpFactor" []
     in  makeStream req
 
-getPhysicsWarpFactorStream :: RPCContext (KRPCStream (Data.Int.Int32))
+getPhysicsWarpFactorStream :: (MonadIO m, MonadThrow m, MonadRPC m) => m (KRPCStream (Data.Int.Int32))
 getPhysicsWarpFactorStream  = requestStream $ getPhysicsWarpFactorStreamReq  
 
 {-
@@ -16588,7 +16591,7 @@ getPhysicsWarpFactorStream  = requestStream $ getPhysicsWarpFactorStreamReq
  - planet. See <a href="http://wiki.kerbalspaceprogram.com/wiki/Time_warp">
  - the KSP wikifor details.
  -}
-getRailsWarpFactor :: RPCContext (Data.Int.Int32)
+getRailsWarpFactor :: (MonadIO m, MonadThrow m, MonadRPC m) => m (Data.Int.Int32)
 getRailsWarpFactor  = do
     let r = makeRequest "SpaceCenter" "get_RailsWarpFactor" []
     res <- sendRequest r
@@ -16599,13 +16602,13 @@ getRailsWarpFactorStreamReq  =
     let req = makeRequest "SpaceCenter" "get_RailsWarpFactor" []
     in  makeStream req
 
-getRailsWarpFactorStream :: RPCContext (KRPCStream (Data.Int.Int32))
+getRailsWarpFactorStream :: (MonadIO m, MonadThrow m, MonadRPC m) => m (KRPCStream (Data.Int.Int32))
 getRailsWarpFactorStream  = requestStream $ getRailsWarpFactorStreamReq  
 
 {-
  - The currently targeted celestial body.
  -}
-getTargetBody :: RPCContext (KRPCHS.SpaceCenter.CelestialBody)
+getTargetBody :: (MonadIO m, MonadThrow m, MonadRPC m) => m (KRPCHS.SpaceCenter.CelestialBody)
 getTargetBody  = do
     let r = makeRequest "SpaceCenter" "get_TargetBody" []
     res <- sendRequest r
@@ -16616,13 +16619,13 @@ getTargetBodyStreamReq  =
     let req = makeRequest "SpaceCenter" "get_TargetBody" []
     in  makeStream req
 
-getTargetBodyStream :: RPCContext (KRPCStream (KRPCHS.SpaceCenter.CelestialBody))
+getTargetBodyStream :: (MonadIO m, MonadThrow m, MonadRPC m) => m (KRPCStream (KRPCHS.SpaceCenter.CelestialBody))
 getTargetBodyStream  = requestStream $ getTargetBodyStreamReq  
 
 {-
  - The currently targeted docking port.
  -}
-getTargetDockingPort :: RPCContext (KRPCHS.SpaceCenter.DockingPort)
+getTargetDockingPort :: (MonadIO m, MonadThrow m, MonadRPC m) => m (KRPCHS.SpaceCenter.DockingPort)
 getTargetDockingPort  = do
     let r = makeRequest "SpaceCenter" "get_TargetDockingPort" []
     res <- sendRequest r
@@ -16633,13 +16636,13 @@ getTargetDockingPortStreamReq  =
     let req = makeRequest "SpaceCenter" "get_TargetDockingPort" []
     in  makeStream req
 
-getTargetDockingPortStream :: RPCContext (KRPCStream (KRPCHS.SpaceCenter.DockingPort))
+getTargetDockingPortStream :: (MonadIO m, MonadThrow m, MonadRPC m) => m (KRPCStream (KRPCHS.SpaceCenter.DockingPort))
 getTargetDockingPortStream  = requestStream $ getTargetDockingPortStreamReq  
 
 {-
  - The currently targeted vessel.
  -}
-getTargetVessel :: RPCContext (KRPCHS.SpaceCenter.Vessel)
+getTargetVessel :: (MonadIO m, MonadThrow m, MonadRPC m) => m (KRPCHS.SpaceCenter.Vessel)
 getTargetVessel  = do
     let r = makeRequest "SpaceCenter" "get_TargetVessel" []
     res <- sendRequest r
@@ -16650,13 +16653,13 @@ getTargetVesselStreamReq  =
     let req = makeRequest "SpaceCenter" "get_TargetVessel" []
     in  makeStream req
 
-getTargetVesselStream :: RPCContext (KRPCStream (KRPCHS.SpaceCenter.Vessel))
+getTargetVesselStream :: (MonadIO m, MonadThrow m, MonadRPC m) => m (KRPCStream (KRPCHS.SpaceCenter.Vessel))
 getTargetVesselStream  = requestStream $ getTargetVesselStreamReq  
 
 {-
  - Whether the UI is visible.
  -}
-getUIVisible :: RPCContext (Bool)
+getUIVisible :: (MonadIO m, MonadThrow m, MonadRPC m) => m (Bool)
 getUIVisible  = do
     let r = makeRequest "SpaceCenter" "get_UIVisible" []
     res <- sendRequest r
@@ -16667,13 +16670,13 @@ getUIVisibleStreamReq  =
     let req = makeRequest "SpaceCenter" "get_UIVisible" []
     in  makeStream req
 
-getUIVisibleStream :: RPCContext (KRPCStream (Bool))
+getUIVisibleStream :: (MonadIO m, MonadThrow m, MonadRPC m) => m (KRPCStream (Bool))
 getUIVisibleStream  = requestStream $ getUIVisibleStreamReq  
 
 {-
  - The current universal time in seconds.
  -}
-getUT :: RPCContext (Double)
+getUT :: (MonadIO m, MonadThrow m, MonadRPC m) => m (Double)
 getUT  = do
     let r = makeRequest "SpaceCenter" "get_UT" []
     res <- sendRequest r
@@ -16684,13 +16687,13 @@ getUTStreamReq  =
     let req = makeRequest "SpaceCenter" "get_UT" []
     in  makeStream req
 
-getUTStream :: RPCContext (KRPCStream (Double))
+getUTStream :: (MonadIO m, MonadThrow m, MonadRPC m) => m (KRPCStream (Double))
 getUTStream  = requestStream $ getUTStreamReq  
 
 {-
  - A list of all the vessels in the game.
  -}
-getVessels :: RPCContext ([KRPCHS.SpaceCenter.Vessel])
+getVessels :: (MonadIO m, MonadThrow m, MonadRPC m) => m ([KRPCHS.SpaceCenter.Vessel])
 getVessels  = do
     let r = makeRequest "SpaceCenter" "get_Vessels" []
     res <- sendRequest r
@@ -16701,7 +16704,7 @@ getVesselsStreamReq  =
     let req = makeRequest "SpaceCenter" "get_Vessels" []
     in  makeStream req
 
-getVesselsStream :: RPCContext (KRPCStream ([KRPCHS.SpaceCenter.Vessel]))
+getVesselsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => m (KRPCStream ([KRPCHS.SpaceCenter.Vessel]))
 getVesselsStream  = requestStream $ getVesselsStreamReq  
 
 {-
@@ -16711,7 +16714,7 @@ getVesselsStream  = requestStream $ getVesselsStreamReq
  - <see cref="M:SpaceCenter.RailsWarpFactor" />, and in physics time warp, this is equal to
  - <see cref="M:SpaceCenter.PhysicsWarpFactor" />.
  -}
-getWarpFactor :: RPCContext (Float)
+getWarpFactor :: (MonadIO m, MonadThrow m, MonadRPC m) => m (Float)
 getWarpFactor  = do
     let r = makeRequest "SpaceCenter" "get_WarpFactor" []
     res <- sendRequest r
@@ -16722,7 +16725,7 @@ getWarpFactorStreamReq  =
     let req = makeRequest "SpaceCenter" "get_WarpFactor" []
     in  makeStream req
 
-getWarpFactorStream :: RPCContext (KRPCStream (Float))
+getWarpFactorStream :: (MonadIO m, MonadThrow m, MonadRPC m) => m (KRPCStream (Float))
 getWarpFactorStream  = requestStream $ getWarpFactorStreamReq  
 
 {-
@@ -16730,7 +16733,7 @@ getWarpFactorStream  = requestStream $ getWarpFactorStreamReq
  - warp is not active, <see cref="M:SpaceCenter.WarpMode.Rails" /> if regular "on-rails" time warp
  - is active, or <see cref="M:SpaceCenter.WarpMode.Physics" /> if physical time warp is active.
  -}
-getWarpMode :: RPCContext (KRPCHS.SpaceCenter.WarpMode)
+getWarpMode :: (MonadIO m, MonadThrow m, MonadRPC m) => m (KRPCHS.SpaceCenter.WarpMode)
 getWarpMode  = do
     let r = makeRequest "SpaceCenter" "get_WarpMode" []
     res <- sendRequest r
@@ -16741,7 +16744,7 @@ getWarpModeStreamReq  =
     let req = makeRequest "SpaceCenter" "get_WarpMode" []
     in  makeStream req
 
-getWarpModeStream :: RPCContext (KRPCStream (KRPCHS.SpaceCenter.WarpMode))
+getWarpModeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => m (KRPCStream (KRPCHS.SpaceCenter.WarpMode))
 getWarpModeStream  = requestStream $ getWarpModeStreamReq  
 
 {-
@@ -16750,7 +16753,7 @@ getWarpModeStream  = requestStream $ getWarpModeStreamReq
  - time is passing 10x faster than normal. Returns 1 if time warp is not
  - active.
  -}
-getWarpRate :: RPCContext (Float)
+getWarpRate :: (MonadIO m, MonadThrow m, MonadRPC m) => m (Float)
 getWarpRate  = do
     let r = makeRequest "SpaceCenter" "get_WarpRate" []
     res <- sendRequest r
@@ -16761,13 +16764,13 @@ getWarpRateStreamReq  =
     let req = makeRequest "SpaceCenter" "get_WarpRate" []
     in  makeStream req
 
-getWarpRateStream :: RPCContext (KRPCStream (Float))
+getWarpRateStream :: (MonadIO m, MonadThrow m, MonadRPC m) => m (KRPCStream (Float))
 getWarpRateStream  = requestStream $ getWarpRateStreamReq  
 
 {-
  - The waypoint manager.
  -}
-getWaypointManager :: RPCContext (KRPCHS.SpaceCenter.WaypointManager)
+getWaypointManager :: (MonadIO m, MonadThrow m, MonadRPC m) => m (KRPCHS.SpaceCenter.WaypointManager)
 getWaypointManager  = do
     let r = makeRequest "SpaceCenter" "get_WaypointManager" []
     res <- sendRequest r
@@ -16778,13 +16781,13 @@ getWaypointManagerStreamReq  =
     let req = makeRequest "SpaceCenter" "get_WaypointManager" []
     in  makeStream req
 
-getWaypointManagerStream :: RPCContext (KRPCStream (KRPCHS.SpaceCenter.WaypointManager))
+getWaypointManagerStream :: (MonadIO m, MonadThrow m, MonadRPC m) => m (KRPCStream (KRPCHS.SpaceCenter.WaypointManager))
 getWaypointManagerStream  = requestStream $ getWaypointManagerStreamReq  
 
 {-
  - The currently active vessel.
  -}
-setActiveVessel :: KRPCHS.SpaceCenter.Vessel -> RPCContext ()
+setActiveVessel :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m ()
 setActiveVessel valueArg = do
     let r = makeRequest "SpaceCenter" "set_ActiveVessel" [makeArgument 0 valueArg]
     res <- sendRequest r
@@ -16793,7 +16796,7 @@ setActiveVessel valueArg = do
 {-
  - Whether the navball is visible.
  -}
-setNavball :: Bool -> RPCContext ()
+setNavball :: (MonadIO m, MonadThrow m, MonadRPC m) => Bool -> m ()
 setNavball valueArg = do
     let r = makeRequest "SpaceCenter" "set_Navball" [makeArgument 0 valueArg]
     res <- sendRequest r
@@ -16803,7 +16806,7 @@ setNavball valueArg = do
  - The physical time warp rate. A value between 0 and 3 inclusive. 0 means
  - no time warp. Returns 0 if regular "on-rails" time warp is active.
  -}
-setPhysicsWarpFactor :: Data.Int.Int32 -> RPCContext ()
+setPhysicsWarpFactor :: (MonadIO m, MonadThrow m, MonadRPC m) => Data.Int.Int32 -> m ()
 setPhysicsWarpFactor valueArg = do
     let r = makeRequest "SpaceCenter" "set_PhysicsWarpFactor" [makeArgument 0 valueArg]
     res <- sendRequest r
@@ -16819,7 +16822,7 @@ setPhysicsWarpFactor valueArg = do
  - planet. See <a href="http://wiki.kerbalspaceprogram.com/wiki/Time_warp">
  - the KSP wikifor details.
  -}
-setRailsWarpFactor :: Data.Int.Int32 -> RPCContext ()
+setRailsWarpFactor :: (MonadIO m, MonadThrow m, MonadRPC m) => Data.Int.Int32 -> m ()
 setRailsWarpFactor valueArg = do
     let r = makeRequest "SpaceCenter" "set_RailsWarpFactor" [makeArgument 0 valueArg]
     res <- sendRequest r
@@ -16828,7 +16831,7 @@ setRailsWarpFactor valueArg = do
 {-
  - The currently targeted celestial body.
  -}
-setTargetBody :: KRPCHS.SpaceCenter.CelestialBody -> RPCContext ()
+setTargetBody :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.CelestialBody -> m ()
 setTargetBody valueArg = do
     let r = makeRequest "SpaceCenter" "set_TargetBody" [makeArgument 0 valueArg]
     res <- sendRequest r
@@ -16837,7 +16840,7 @@ setTargetBody valueArg = do
 {-
  - The currently targeted docking port.
  -}
-setTargetDockingPort :: KRPCHS.SpaceCenter.DockingPort -> RPCContext ()
+setTargetDockingPort :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.DockingPort -> m ()
 setTargetDockingPort valueArg = do
     let r = makeRequest "SpaceCenter" "set_TargetDockingPort" [makeArgument 0 valueArg]
     res <- sendRequest r
@@ -16846,7 +16849,7 @@ setTargetDockingPort valueArg = do
 {-
  - The currently targeted vessel.
  -}
-setTargetVessel :: KRPCHS.SpaceCenter.Vessel -> RPCContext ()
+setTargetVessel :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.SpaceCenter.Vessel -> m ()
 setTargetVessel valueArg = do
     let r = makeRequest "SpaceCenter" "set_TargetVessel" [makeArgument 0 valueArg]
     res <- sendRequest r
@@ -16855,7 +16858,7 @@ setTargetVessel valueArg = do
 {-
  - Whether the UI is visible.
  -}
-setUIVisible :: Bool -> RPCContext ()
+setUIVisible :: (MonadIO m, MonadThrow m, MonadRPC m) => Bool -> m ()
 setUIVisible valueArg = do
     let r = makeRequest "SpaceCenter" "set_UIVisible" [makeArgument 0 valueArg]
     res <- sendRequest r

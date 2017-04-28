@@ -136,6 +136,9 @@ import qualified Data.Text
 import qualified KRPCHS.SpaceCenter
 import qualified KRPCHS.UI
 
+import Control.Monad.Catch
+import Control.Monad.IO.Class
+
 import KRPCHS.Internal.Requests
 import KRPCHS.Internal.SerializeUtils
 
@@ -181,7 +184,7 @@ instance KRPCResponseExtractable Text
 {-
  - Draw a direction vector in the scene, from the center of mass of the active vessel.<param name="direction">Direction to draw the line in.<param name="referenceFrame">Reference frame that the direction is in.<param name="length">The length of the line.<param name="visible">Whether the line is visible.
  -}
-addDirection :: (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> Float -> Bool -> RPCContext (KRPCHS.Drawing.Line)
+addDirection :: (MonadIO m, MonadThrow m, MonadRPC m) => (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> Float -> Bool -> m (KRPCHS.Drawing.Line)
 addDirection directionArg referenceFrameArg lengthArg visibleArg = do
     let r = makeRequest "Drawing" "AddDirection" [makeArgument 0 directionArg, makeArgument 1 referenceFrameArg, makeArgument 2 lengthArg, makeArgument 3 visibleArg]
     res <- sendRequest r
@@ -192,13 +195,13 @@ addDirectionStreamReq directionArg referenceFrameArg lengthArg visibleArg =
     let req = makeRequest "Drawing" "AddDirection" [makeArgument 0 directionArg, makeArgument 1 referenceFrameArg, makeArgument 2 lengthArg, makeArgument 3 visibleArg]
     in  makeStream req
 
-addDirectionStream :: (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> Float -> Bool -> RPCContext (KRPCStream (KRPCHS.Drawing.Line))
+addDirectionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> Float -> Bool -> m (KRPCStream (KRPCHS.Drawing.Line))
 addDirectionStream directionArg referenceFrameArg lengthArg visibleArg = requestStream $ addDirectionStreamReq directionArg referenceFrameArg lengthArg visibleArg 
 
 {-
  - Draw a line in the scene.<param name="start">Position of the start of the line.<param name="end">Position of the end of the line.<param name="referenceFrame">Reference frame that the positions are in.<param name="visible">Whether the line is visible.
  -}
-addLine :: (Double, Double, Double) -> (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> Bool -> RPCContext (KRPCHS.Drawing.Line)
+addLine :: (MonadIO m, MonadThrow m, MonadRPC m) => (Double, Double, Double) -> (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> Bool -> m (KRPCHS.Drawing.Line)
 addLine startArg endArg referenceFrameArg visibleArg = do
     let r = makeRequest "Drawing" "AddLine" [makeArgument 0 startArg, makeArgument 1 endArg, makeArgument 2 referenceFrameArg, makeArgument 3 visibleArg]
     res <- sendRequest r
@@ -209,13 +212,13 @@ addLineStreamReq startArg endArg referenceFrameArg visibleArg =
     let req = makeRequest "Drawing" "AddLine" [makeArgument 0 startArg, makeArgument 1 endArg, makeArgument 2 referenceFrameArg, makeArgument 3 visibleArg]
     in  makeStream req
 
-addLineStream :: (Double, Double, Double) -> (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> Bool -> RPCContext (KRPCStream (KRPCHS.Drawing.Line))
+addLineStream :: (MonadIO m, MonadThrow m, MonadRPC m) => (Double, Double, Double) -> (Double, Double, Double) -> KRPCHS.SpaceCenter.ReferenceFrame -> Bool -> m (KRPCStream (KRPCHS.Drawing.Line))
 addLineStream startArg endArg referenceFrameArg visibleArg = requestStream $ addLineStreamReq startArg endArg referenceFrameArg visibleArg 
 
 {-
  - Draw a polygon in the scene, defined by a list of vertices.<param name="vertices">Vertices of the polygon.<param name="referenceFrame">Reference frame that the vertices are in.<param name="visible">Whether the polygon is visible.
  -}
-addPolygon :: [(Double, Double, Double)] -> KRPCHS.SpaceCenter.ReferenceFrame -> Bool -> RPCContext (KRPCHS.Drawing.Polygon)
+addPolygon :: (MonadIO m, MonadThrow m, MonadRPC m) => [(Double, Double, Double)] -> KRPCHS.SpaceCenter.ReferenceFrame -> Bool -> m (KRPCHS.Drawing.Polygon)
 addPolygon verticesArg referenceFrameArg visibleArg = do
     let r = makeRequest "Drawing" "AddPolygon" [makeArgument 0 verticesArg, makeArgument 1 referenceFrameArg, makeArgument 2 visibleArg]
     res <- sendRequest r
@@ -226,13 +229,13 @@ addPolygonStreamReq verticesArg referenceFrameArg visibleArg =
     let req = makeRequest "Drawing" "AddPolygon" [makeArgument 0 verticesArg, makeArgument 1 referenceFrameArg, makeArgument 2 visibleArg]
     in  makeStream req
 
-addPolygonStream :: [(Double, Double, Double)] -> KRPCHS.SpaceCenter.ReferenceFrame -> Bool -> RPCContext (KRPCStream (KRPCHS.Drawing.Polygon))
+addPolygonStream :: (MonadIO m, MonadThrow m, MonadRPC m) => [(Double, Double, Double)] -> KRPCHS.SpaceCenter.ReferenceFrame -> Bool -> m (KRPCStream (KRPCHS.Drawing.Polygon))
 addPolygonStream verticesArg referenceFrameArg visibleArg = requestStream $ addPolygonStreamReq verticesArg referenceFrameArg visibleArg 
 
 {-
  - Draw text in the scene.<param name="text">The string to draw.<param name="referenceFrame">Reference frame that the text position is in.<param name="position">Position of the text.<param name="rotation">Rotation of the text, as a quaternion.<param name="visible">Whether the text is visible.
  -}
-addText :: Data.Text.Text -> KRPCHS.SpaceCenter.ReferenceFrame -> (Double, Double, Double) -> (Double, Double, Double, Double) -> Bool -> RPCContext (KRPCHS.Drawing.Text)
+addText :: (MonadIO m, MonadThrow m, MonadRPC m) => Data.Text.Text -> KRPCHS.SpaceCenter.ReferenceFrame -> (Double, Double, Double) -> (Double, Double, Double, Double) -> Bool -> m (KRPCHS.Drawing.Text)
 addText textArg referenceFrameArg positionArg rotationArg visibleArg = do
     let r = makeRequest "Drawing" "AddText" [makeArgument 0 textArg, makeArgument 1 referenceFrameArg, makeArgument 2 positionArg, makeArgument 3 rotationArg, makeArgument 4 visibleArg]
     res <- sendRequest r
@@ -243,13 +246,13 @@ addTextStreamReq textArg referenceFrameArg positionArg rotationArg visibleArg =
     let req = makeRequest "Drawing" "AddText" [makeArgument 0 textArg, makeArgument 1 referenceFrameArg, makeArgument 2 positionArg, makeArgument 3 rotationArg, makeArgument 4 visibleArg]
     in  makeStream req
 
-addTextStream :: Data.Text.Text -> KRPCHS.SpaceCenter.ReferenceFrame -> (Double, Double, Double) -> (Double, Double, Double, Double) -> Bool -> RPCContext (KRPCStream (KRPCHS.Drawing.Text))
+addTextStream :: (MonadIO m, MonadThrow m, MonadRPC m) => Data.Text.Text -> KRPCHS.SpaceCenter.ReferenceFrame -> (Double, Double, Double) -> (Double, Double, Double, Double) -> Bool -> m (KRPCStream (KRPCHS.Drawing.Text))
 addTextStream textArg referenceFrameArg positionArg rotationArg visibleArg = requestStream $ addTextStreamReq textArg referenceFrameArg positionArg rotationArg visibleArg 
 
 {-
  - Remove all objects being drawn.<param name="clientOnly">If true, only remove objects created by the calling client.
  -}
-clear :: Bool -> RPCContext ()
+clear :: (MonadIO m, MonadThrow m, MonadRPC m) => Bool -> m ()
 clear clientOnlyArg = do
     let r = makeRequest "Drawing" "Clear" [makeArgument 0 clientOnlyArg]
     res <- sendRequest r
@@ -258,7 +261,7 @@ clear clientOnlyArg = do
 {-
  - Remove the object.
  -}
-lineRemove :: KRPCHS.Drawing.Line -> RPCContext ()
+lineRemove :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Line -> m ()
 lineRemove thisArg = do
     let r = makeRequest "Drawing" "Line_Remove" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -267,7 +270,7 @@ lineRemove thisArg = do
 {-
  - Set the color
  -}
-getLineColor :: KRPCHS.Drawing.Line -> RPCContext ((Double, Double, Double))
+getLineColor :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Line -> m ((Double, Double, Double))
 getLineColor thisArg = do
     let r = makeRequest "Drawing" "Line_get_Color" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -278,13 +281,13 @@ getLineColorStreamReq thisArg =
     let req = makeRequest "Drawing" "Line_get_Color" [makeArgument 0 thisArg]
     in  makeStream req
 
-getLineColorStream :: KRPCHS.Drawing.Line -> RPCContext (KRPCStream ((Double, Double, Double)))
+getLineColorStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Line -> m (KRPCStream ((Double, Double, Double)))
 getLineColorStream thisArg = requestStream $ getLineColorStreamReq thisArg 
 
 {-
  - End position of the line.
  -}
-getLineEnd :: KRPCHS.Drawing.Line -> RPCContext ((Double, Double, Double))
+getLineEnd :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Line -> m ((Double, Double, Double))
 getLineEnd thisArg = do
     let r = makeRequest "Drawing" "Line_get_End" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -295,14 +298,14 @@ getLineEndStreamReq thisArg =
     let req = makeRequest "Drawing" "Line_get_End" [makeArgument 0 thisArg]
     in  makeStream req
 
-getLineEndStream :: KRPCHS.Drawing.Line -> RPCContext (KRPCStream ((Double, Double, Double)))
+getLineEndStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Line -> m (KRPCStream ((Double, Double, Double)))
 getLineEndStream thisArg = requestStream $ getLineEndStreamReq thisArg 
 
 {-
  - Material used to render the object.
  - Creates the material from a shader with the given name.
  -}
-getLineMaterial :: KRPCHS.Drawing.Line -> RPCContext (Data.Text.Text)
+getLineMaterial :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Line -> m (Data.Text.Text)
 getLineMaterial thisArg = do
     let r = makeRequest "Drawing" "Line_get_Material" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -313,13 +316,13 @@ getLineMaterialStreamReq thisArg =
     let req = makeRequest "Drawing" "Line_get_Material" [makeArgument 0 thisArg]
     in  makeStream req
 
-getLineMaterialStream :: KRPCHS.Drawing.Line -> RPCContext (KRPCStream (Data.Text.Text))
+getLineMaterialStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Line -> m (KRPCStream (Data.Text.Text))
 getLineMaterialStream thisArg = requestStream $ getLineMaterialStreamReq thisArg 
 
 {-
  - Reference frame for the positions of the object.
  -}
-getLineReferenceFrame :: KRPCHS.Drawing.Line -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
+getLineReferenceFrame :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Line -> m (KRPCHS.SpaceCenter.ReferenceFrame)
 getLineReferenceFrame thisArg = do
     let r = makeRequest "Drawing" "Line_get_ReferenceFrame" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -330,13 +333,13 @@ getLineReferenceFrameStreamReq thisArg =
     let req = makeRequest "Drawing" "Line_get_ReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
-getLineReferenceFrameStream :: KRPCHS.Drawing.Line -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
+getLineReferenceFrameStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Line -> m (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 getLineReferenceFrameStream thisArg = requestStream $ getLineReferenceFrameStreamReq thisArg 
 
 {-
  - Start position of the line.
  -}
-getLineStart :: KRPCHS.Drawing.Line -> RPCContext ((Double, Double, Double))
+getLineStart :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Line -> m ((Double, Double, Double))
 getLineStart thisArg = do
     let r = makeRequest "Drawing" "Line_get_Start" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -347,13 +350,13 @@ getLineStartStreamReq thisArg =
     let req = makeRequest "Drawing" "Line_get_Start" [makeArgument 0 thisArg]
     in  makeStream req
 
-getLineStartStream :: KRPCHS.Drawing.Line -> RPCContext (KRPCStream ((Double, Double, Double)))
+getLineStartStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Line -> m (KRPCStream ((Double, Double, Double)))
 getLineStartStream thisArg = requestStream $ getLineStartStreamReq thisArg 
 
 {-
  - Set the thickness
  -}
-getLineThickness :: KRPCHS.Drawing.Line -> RPCContext (Float)
+getLineThickness :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Line -> m (Float)
 getLineThickness thisArg = do
     let r = makeRequest "Drawing" "Line_get_Thickness" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -364,13 +367,13 @@ getLineThicknessStreamReq thisArg =
     let req = makeRequest "Drawing" "Line_get_Thickness" [makeArgument 0 thisArg]
     in  makeStream req
 
-getLineThicknessStream :: KRPCHS.Drawing.Line -> RPCContext (KRPCStream (Float))
+getLineThicknessStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Line -> m (KRPCStream (Float))
 getLineThicknessStream thisArg = requestStream $ getLineThicknessStreamReq thisArg 
 
 {-
  - Whether the object is visible.
  -}
-getLineVisible :: KRPCHS.Drawing.Line -> RPCContext (Bool)
+getLineVisible :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Line -> m (Bool)
 getLineVisible thisArg = do
     let r = makeRequest "Drawing" "Line_get_Visible" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -381,13 +384,13 @@ getLineVisibleStreamReq thisArg =
     let req = makeRequest "Drawing" "Line_get_Visible" [makeArgument 0 thisArg]
     in  makeStream req
 
-getLineVisibleStream :: KRPCHS.Drawing.Line -> RPCContext (KRPCStream (Bool))
+getLineVisibleStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Line -> m (KRPCStream (Bool))
 getLineVisibleStream thisArg = requestStream $ getLineVisibleStreamReq thisArg 
 
 {-
  - Set the color
  -}
-setLineColor :: KRPCHS.Drawing.Line -> (Double, Double, Double) -> RPCContext ()
+setLineColor :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Line -> (Double, Double, Double) -> m ()
 setLineColor thisArg valueArg = do
     let r = makeRequest "Drawing" "Line_set_Color" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -396,7 +399,7 @@ setLineColor thisArg valueArg = do
 {-
  - End position of the line.
  -}
-setLineEnd :: KRPCHS.Drawing.Line -> (Double, Double, Double) -> RPCContext ()
+setLineEnd :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Line -> (Double, Double, Double) -> m ()
 setLineEnd thisArg valueArg = do
     let r = makeRequest "Drawing" "Line_set_End" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -406,7 +409,7 @@ setLineEnd thisArg valueArg = do
  - Material used to render the object.
  - Creates the material from a shader with the given name.
  -}
-setLineMaterial :: KRPCHS.Drawing.Line -> Data.Text.Text -> RPCContext ()
+setLineMaterial :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Line -> Data.Text.Text -> m ()
 setLineMaterial thisArg valueArg = do
     let r = makeRequest "Drawing" "Line_set_Material" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -415,7 +418,7 @@ setLineMaterial thisArg valueArg = do
 {-
  - Reference frame for the positions of the object.
  -}
-setLineReferenceFrame :: KRPCHS.Drawing.Line -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ()
+setLineReferenceFrame :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Line -> KRPCHS.SpaceCenter.ReferenceFrame -> m ()
 setLineReferenceFrame thisArg valueArg = do
     let r = makeRequest "Drawing" "Line_set_ReferenceFrame" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -424,7 +427,7 @@ setLineReferenceFrame thisArg valueArg = do
 {-
  - Start position of the line.
  -}
-setLineStart :: KRPCHS.Drawing.Line -> (Double, Double, Double) -> RPCContext ()
+setLineStart :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Line -> (Double, Double, Double) -> m ()
 setLineStart thisArg valueArg = do
     let r = makeRequest "Drawing" "Line_set_Start" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -433,7 +436,7 @@ setLineStart thisArg valueArg = do
 {-
  - Set the thickness
  -}
-setLineThickness :: KRPCHS.Drawing.Line -> Float -> RPCContext ()
+setLineThickness :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Line -> Float -> m ()
 setLineThickness thisArg valueArg = do
     let r = makeRequest "Drawing" "Line_set_Thickness" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -442,7 +445,7 @@ setLineThickness thisArg valueArg = do
 {-
  - Whether the object is visible.
  -}
-setLineVisible :: KRPCHS.Drawing.Line -> Bool -> RPCContext ()
+setLineVisible :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Line -> Bool -> m ()
 setLineVisible thisArg valueArg = do
     let r = makeRequest "Drawing" "Line_set_Visible" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -451,7 +454,7 @@ setLineVisible thisArg valueArg = do
 {-
  - Remove the object.
  -}
-polygonRemove :: KRPCHS.Drawing.Polygon -> RPCContext ()
+polygonRemove :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Polygon -> m ()
 polygonRemove thisArg = do
     let r = makeRequest "Drawing" "Polygon_Remove" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -460,7 +463,7 @@ polygonRemove thisArg = do
 {-
  - Set the color
  -}
-getPolygonColor :: KRPCHS.Drawing.Polygon -> RPCContext ((Double, Double, Double))
+getPolygonColor :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Polygon -> m ((Double, Double, Double))
 getPolygonColor thisArg = do
     let r = makeRequest "Drawing" "Polygon_get_Color" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -471,14 +474,14 @@ getPolygonColorStreamReq thisArg =
     let req = makeRequest "Drawing" "Polygon_get_Color" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPolygonColorStream :: KRPCHS.Drawing.Polygon -> RPCContext (KRPCStream ((Double, Double, Double)))
+getPolygonColorStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Polygon -> m (KRPCStream ((Double, Double, Double)))
 getPolygonColorStream thisArg = requestStream $ getPolygonColorStreamReq thisArg 
 
 {-
  - Material used to render the object.
  - Creates the material from a shader with the given name.
  -}
-getPolygonMaterial :: KRPCHS.Drawing.Polygon -> RPCContext (Data.Text.Text)
+getPolygonMaterial :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Polygon -> m (Data.Text.Text)
 getPolygonMaterial thisArg = do
     let r = makeRequest "Drawing" "Polygon_get_Material" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -489,13 +492,13 @@ getPolygonMaterialStreamReq thisArg =
     let req = makeRequest "Drawing" "Polygon_get_Material" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPolygonMaterialStream :: KRPCHS.Drawing.Polygon -> RPCContext (KRPCStream (Data.Text.Text))
+getPolygonMaterialStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Polygon -> m (KRPCStream (Data.Text.Text))
 getPolygonMaterialStream thisArg = requestStream $ getPolygonMaterialStreamReq thisArg 
 
 {-
  - Reference frame for the positions of the object.
  -}
-getPolygonReferenceFrame :: KRPCHS.Drawing.Polygon -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
+getPolygonReferenceFrame :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Polygon -> m (KRPCHS.SpaceCenter.ReferenceFrame)
 getPolygonReferenceFrame thisArg = do
     let r = makeRequest "Drawing" "Polygon_get_ReferenceFrame" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -506,13 +509,13 @@ getPolygonReferenceFrameStreamReq thisArg =
     let req = makeRequest "Drawing" "Polygon_get_ReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPolygonReferenceFrameStream :: KRPCHS.Drawing.Polygon -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
+getPolygonReferenceFrameStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Polygon -> m (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 getPolygonReferenceFrameStream thisArg = requestStream $ getPolygonReferenceFrameStreamReq thisArg 
 
 {-
  - Set the thickness
  -}
-getPolygonThickness :: KRPCHS.Drawing.Polygon -> RPCContext (Float)
+getPolygonThickness :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Polygon -> m (Float)
 getPolygonThickness thisArg = do
     let r = makeRequest "Drawing" "Polygon_get_Thickness" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -523,13 +526,13 @@ getPolygonThicknessStreamReq thisArg =
     let req = makeRequest "Drawing" "Polygon_get_Thickness" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPolygonThicknessStream :: KRPCHS.Drawing.Polygon -> RPCContext (KRPCStream (Float))
+getPolygonThicknessStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Polygon -> m (KRPCStream (Float))
 getPolygonThicknessStream thisArg = requestStream $ getPolygonThicknessStreamReq thisArg 
 
 {-
  - Vertices for the polygon.
  -}
-getPolygonVertices :: KRPCHS.Drawing.Polygon -> RPCContext ([(Double, Double, Double)])
+getPolygonVertices :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Polygon -> m ([(Double, Double, Double)])
 getPolygonVertices thisArg = do
     let r = makeRequest "Drawing" "Polygon_get_Vertices" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -540,13 +543,13 @@ getPolygonVerticesStreamReq thisArg =
     let req = makeRequest "Drawing" "Polygon_get_Vertices" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPolygonVerticesStream :: KRPCHS.Drawing.Polygon -> RPCContext (KRPCStream ([(Double, Double, Double)]))
+getPolygonVerticesStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Polygon -> m (KRPCStream ([(Double, Double, Double)]))
 getPolygonVerticesStream thisArg = requestStream $ getPolygonVerticesStreamReq thisArg 
 
 {-
  - Whether the object is visible.
  -}
-getPolygonVisible :: KRPCHS.Drawing.Polygon -> RPCContext (Bool)
+getPolygonVisible :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Polygon -> m (Bool)
 getPolygonVisible thisArg = do
     let r = makeRequest "Drawing" "Polygon_get_Visible" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -557,13 +560,13 @@ getPolygonVisibleStreamReq thisArg =
     let req = makeRequest "Drawing" "Polygon_get_Visible" [makeArgument 0 thisArg]
     in  makeStream req
 
-getPolygonVisibleStream :: KRPCHS.Drawing.Polygon -> RPCContext (KRPCStream (Bool))
+getPolygonVisibleStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Polygon -> m (KRPCStream (Bool))
 getPolygonVisibleStream thisArg = requestStream $ getPolygonVisibleStreamReq thisArg 
 
 {-
  - Set the color
  -}
-setPolygonColor :: KRPCHS.Drawing.Polygon -> (Double, Double, Double) -> RPCContext ()
+setPolygonColor :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Polygon -> (Double, Double, Double) -> m ()
 setPolygonColor thisArg valueArg = do
     let r = makeRequest "Drawing" "Polygon_set_Color" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -573,7 +576,7 @@ setPolygonColor thisArg valueArg = do
  - Material used to render the object.
  - Creates the material from a shader with the given name.
  -}
-setPolygonMaterial :: KRPCHS.Drawing.Polygon -> Data.Text.Text -> RPCContext ()
+setPolygonMaterial :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Polygon -> Data.Text.Text -> m ()
 setPolygonMaterial thisArg valueArg = do
     let r = makeRequest "Drawing" "Polygon_set_Material" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -582,7 +585,7 @@ setPolygonMaterial thisArg valueArg = do
 {-
  - Reference frame for the positions of the object.
  -}
-setPolygonReferenceFrame :: KRPCHS.Drawing.Polygon -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ()
+setPolygonReferenceFrame :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Polygon -> KRPCHS.SpaceCenter.ReferenceFrame -> m ()
 setPolygonReferenceFrame thisArg valueArg = do
     let r = makeRequest "Drawing" "Polygon_set_ReferenceFrame" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -591,7 +594,7 @@ setPolygonReferenceFrame thisArg valueArg = do
 {-
  - Set the thickness
  -}
-setPolygonThickness :: KRPCHS.Drawing.Polygon -> Float -> RPCContext ()
+setPolygonThickness :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Polygon -> Float -> m ()
 setPolygonThickness thisArg valueArg = do
     let r = makeRequest "Drawing" "Polygon_set_Thickness" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -600,7 +603,7 @@ setPolygonThickness thisArg valueArg = do
 {-
  - Vertices for the polygon.
  -}
-setPolygonVertices :: KRPCHS.Drawing.Polygon -> [(Double, Double, Double)] -> RPCContext ()
+setPolygonVertices :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Polygon -> [(Double, Double, Double)] -> m ()
 setPolygonVertices thisArg valueArg = do
     let r = makeRequest "Drawing" "Polygon_set_Vertices" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -609,7 +612,7 @@ setPolygonVertices thisArg valueArg = do
 {-
  - Whether the object is visible.
  -}
-setPolygonVisible :: KRPCHS.Drawing.Polygon -> Bool -> RPCContext ()
+setPolygonVisible :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Polygon -> Bool -> m ()
 setPolygonVisible thisArg valueArg = do
     let r = makeRequest "Drawing" "Polygon_set_Visible" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -618,7 +621,7 @@ setPolygonVisible thisArg valueArg = do
 {-
  - Remove the object.
  -}
-textRemove :: KRPCHS.Drawing.Text -> RPCContext ()
+textRemove :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> m ()
 textRemove thisArg = do
     let r = makeRequest "Drawing" "Text_Remove" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -627,7 +630,7 @@ textRemove thisArg = do
 {-
  - Alignment.
  -}
-getTextAlignment :: KRPCHS.Drawing.Text -> RPCContext (KRPCHS.UI.TextAlignment)
+getTextAlignment :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> m (KRPCHS.UI.TextAlignment)
 getTextAlignment thisArg = do
     let r = makeRequest "Drawing" "Text_get_Alignment" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -638,13 +641,13 @@ getTextAlignmentStreamReq thisArg =
     let req = makeRequest "Drawing" "Text_get_Alignment" [makeArgument 0 thisArg]
     in  makeStream req
 
-getTextAlignmentStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream (KRPCHS.UI.TextAlignment))
+getTextAlignmentStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> m (KRPCStream (KRPCHS.UI.TextAlignment))
 getTextAlignmentStream thisArg = requestStream $ getTextAlignmentStreamReq thisArg 
 
 {-
  - Anchor.
  -}
-getTextAnchor :: KRPCHS.Drawing.Text -> RPCContext (KRPCHS.UI.TextAnchor)
+getTextAnchor :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> m (KRPCHS.UI.TextAnchor)
 getTextAnchor thisArg = do
     let r = makeRequest "Drawing" "Text_get_Anchor" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -655,13 +658,13 @@ getTextAnchorStreamReq thisArg =
     let req = makeRequest "Drawing" "Text_get_Anchor" [makeArgument 0 thisArg]
     in  makeStream req
 
-getTextAnchorStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream (KRPCHS.UI.TextAnchor))
+getTextAnchorStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> m (KRPCStream (KRPCHS.UI.TextAnchor))
 getTextAnchorStream thisArg = requestStream $ getTextAnchorStreamReq thisArg 
 
 {-
  - A list of all available fonts.
  -}
-getTextAvailableFonts :: KRPCHS.Drawing.Text -> RPCContext ([Data.Text.Text])
+getTextAvailableFonts :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> m ([Data.Text.Text])
 getTextAvailableFonts thisArg = do
     let r = makeRequest "Drawing" "Text_get_AvailableFonts" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -672,13 +675,13 @@ getTextAvailableFontsStreamReq thisArg =
     let req = makeRequest "Drawing" "Text_get_AvailableFonts" [makeArgument 0 thisArg]
     in  makeStream req
 
-getTextAvailableFontsStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream ([Data.Text.Text]))
+getTextAvailableFontsStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> m (KRPCStream ([Data.Text.Text]))
 getTextAvailableFontsStream thisArg = requestStream $ getTextAvailableFontsStreamReq thisArg 
 
 {-
  - Character size.
  -}
-getTextCharacterSize :: KRPCHS.Drawing.Text -> RPCContext (Float)
+getTextCharacterSize :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> m (Float)
 getTextCharacterSize thisArg = do
     let r = makeRequest "Drawing" "Text_get_CharacterSize" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -689,13 +692,13 @@ getTextCharacterSizeStreamReq thisArg =
     let req = makeRequest "Drawing" "Text_get_CharacterSize" [makeArgument 0 thisArg]
     in  makeStream req
 
-getTextCharacterSizeStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream (Float))
+getTextCharacterSizeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> m (KRPCStream (Float))
 getTextCharacterSizeStream thisArg = requestStream $ getTextCharacterSizeStreamReq thisArg 
 
 {-
  - Set the color
  -}
-getTextColor :: KRPCHS.Drawing.Text -> RPCContext ((Double, Double, Double))
+getTextColor :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> m ((Double, Double, Double))
 getTextColor thisArg = do
     let r = makeRequest "Drawing" "Text_get_Color" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -706,13 +709,13 @@ getTextColorStreamReq thisArg =
     let req = makeRequest "Drawing" "Text_get_Color" [makeArgument 0 thisArg]
     in  makeStream req
 
-getTextColorStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream ((Double, Double, Double)))
+getTextColorStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> m (KRPCStream ((Double, Double, Double)))
 getTextColorStream thisArg = requestStream $ getTextColorStreamReq thisArg 
 
 {-
  - The text string
  -}
-getTextContent :: KRPCHS.Drawing.Text -> RPCContext (Data.Text.Text)
+getTextContent :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> m (Data.Text.Text)
 getTextContent thisArg = do
     let r = makeRequest "Drawing" "Text_get_Content" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -723,13 +726,13 @@ getTextContentStreamReq thisArg =
     let req = makeRequest "Drawing" "Text_get_Content" [makeArgument 0 thisArg]
     in  makeStream req
 
-getTextContentStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream (Data.Text.Text))
+getTextContentStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> m (KRPCStream (Data.Text.Text))
 getTextContentStream thisArg = requestStream $ getTextContentStreamReq thisArg 
 
 {-
  - Name of the font
  -}
-getTextFont :: KRPCHS.Drawing.Text -> RPCContext (Data.Text.Text)
+getTextFont :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> m (Data.Text.Text)
 getTextFont thisArg = do
     let r = makeRequest "Drawing" "Text_get_Font" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -740,13 +743,13 @@ getTextFontStreamReq thisArg =
     let req = makeRequest "Drawing" "Text_get_Font" [makeArgument 0 thisArg]
     in  makeStream req
 
-getTextFontStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream (Data.Text.Text))
+getTextFontStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> m (KRPCStream (Data.Text.Text))
 getTextFontStream thisArg = requestStream $ getTextFontStreamReq thisArg 
 
 {-
  - Line spacing.
  -}
-getTextLineSpacing :: KRPCHS.Drawing.Text -> RPCContext (Float)
+getTextLineSpacing :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> m (Float)
 getTextLineSpacing thisArg = do
     let r = makeRequest "Drawing" "Text_get_LineSpacing" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -757,14 +760,14 @@ getTextLineSpacingStreamReq thisArg =
     let req = makeRequest "Drawing" "Text_get_LineSpacing" [makeArgument 0 thisArg]
     in  makeStream req
 
-getTextLineSpacingStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream (Float))
+getTextLineSpacingStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> m (KRPCStream (Float))
 getTextLineSpacingStream thisArg = requestStream $ getTextLineSpacingStreamReq thisArg 
 
 {-
  - Material used to render the object.
  - Creates the material from a shader with the given name.
  -}
-getTextMaterial :: KRPCHS.Drawing.Text -> RPCContext (Data.Text.Text)
+getTextMaterial :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> m (Data.Text.Text)
 getTextMaterial thisArg = do
     let r = makeRequest "Drawing" "Text_get_Material" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -775,13 +778,13 @@ getTextMaterialStreamReq thisArg =
     let req = makeRequest "Drawing" "Text_get_Material" [makeArgument 0 thisArg]
     in  makeStream req
 
-getTextMaterialStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream (Data.Text.Text))
+getTextMaterialStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> m (KRPCStream (Data.Text.Text))
 getTextMaterialStream thisArg = requestStream $ getTextMaterialStreamReq thisArg 
 
 {-
  - Position of the text.
  -}
-getTextPosition :: KRPCHS.Drawing.Text -> RPCContext ((Double, Double, Double))
+getTextPosition :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> m ((Double, Double, Double))
 getTextPosition thisArg = do
     let r = makeRequest "Drawing" "Text_get_Position" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -792,13 +795,13 @@ getTextPositionStreamReq thisArg =
     let req = makeRequest "Drawing" "Text_get_Position" [makeArgument 0 thisArg]
     in  makeStream req
 
-getTextPositionStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream ((Double, Double, Double)))
+getTextPositionStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> m (KRPCStream ((Double, Double, Double)))
 getTextPositionStream thisArg = requestStream $ getTextPositionStreamReq thisArg 
 
 {-
  - Reference frame for the positions of the object.
  -}
-getTextReferenceFrame :: KRPCHS.Drawing.Text -> RPCContext (KRPCHS.SpaceCenter.ReferenceFrame)
+getTextReferenceFrame :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> m (KRPCHS.SpaceCenter.ReferenceFrame)
 getTextReferenceFrame thisArg = do
     let r = makeRequest "Drawing" "Text_get_ReferenceFrame" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -809,13 +812,13 @@ getTextReferenceFrameStreamReq thisArg =
     let req = makeRequest "Drawing" "Text_get_ReferenceFrame" [makeArgument 0 thisArg]
     in  makeStream req
 
-getTextReferenceFrameStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
+getTextReferenceFrameStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> m (KRPCStream (KRPCHS.SpaceCenter.ReferenceFrame))
 getTextReferenceFrameStream thisArg = requestStream $ getTextReferenceFrameStreamReq thisArg 
 
 {-
  - Rotation of the text as a quaternion.
  -}
-getTextRotation :: KRPCHS.Drawing.Text -> RPCContext ((Double, Double, Double, Double))
+getTextRotation :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> m ((Double, Double, Double, Double))
 getTextRotation thisArg = do
     let r = makeRequest "Drawing" "Text_get_Rotation" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -826,13 +829,13 @@ getTextRotationStreamReq thisArg =
     let req = makeRequest "Drawing" "Text_get_Rotation" [makeArgument 0 thisArg]
     in  makeStream req
 
-getTextRotationStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream ((Double, Double, Double, Double)))
+getTextRotationStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> m (KRPCStream ((Double, Double, Double, Double)))
 getTextRotationStream thisArg = requestStream $ getTextRotationStreamReq thisArg 
 
 {-
  - Font size.
  -}
-getTextSize :: KRPCHS.Drawing.Text -> RPCContext (Data.Int.Int32)
+getTextSize :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> m (Data.Int.Int32)
 getTextSize thisArg = do
     let r = makeRequest "Drawing" "Text_get_Size" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -843,13 +846,13 @@ getTextSizeStreamReq thisArg =
     let req = makeRequest "Drawing" "Text_get_Size" [makeArgument 0 thisArg]
     in  makeStream req
 
-getTextSizeStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream (Data.Int.Int32))
+getTextSizeStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> m (KRPCStream (Data.Int.Int32))
 getTextSizeStream thisArg = requestStream $ getTextSizeStreamReq thisArg 
 
 {-
  - Font style.
  -}
-getTextStyle :: KRPCHS.Drawing.Text -> RPCContext (KRPCHS.UI.FontStyle)
+getTextStyle :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> m (KRPCHS.UI.FontStyle)
 getTextStyle thisArg = do
     let r = makeRequest "Drawing" "Text_get_Style" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -860,13 +863,13 @@ getTextStyleStreamReq thisArg =
     let req = makeRequest "Drawing" "Text_get_Style" [makeArgument 0 thisArg]
     in  makeStream req
 
-getTextStyleStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream (KRPCHS.UI.FontStyle))
+getTextStyleStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> m (KRPCStream (KRPCHS.UI.FontStyle))
 getTextStyleStream thisArg = requestStream $ getTextStyleStreamReq thisArg 
 
 {-
  - Whether the object is visible.
  -}
-getTextVisible :: KRPCHS.Drawing.Text -> RPCContext (Bool)
+getTextVisible :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> m (Bool)
 getTextVisible thisArg = do
     let r = makeRequest "Drawing" "Text_get_Visible" [makeArgument 0 thisArg]
     res <- sendRequest r
@@ -877,13 +880,13 @@ getTextVisibleStreamReq thisArg =
     let req = makeRequest "Drawing" "Text_get_Visible" [makeArgument 0 thisArg]
     in  makeStream req
 
-getTextVisibleStream :: KRPCHS.Drawing.Text -> RPCContext (KRPCStream (Bool))
+getTextVisibleStream :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> m (KRPCStream (Bool))
 getTextVisibleStream thisArg = requestStream $ getTextVisibleStreamReq thisArg 
 
 {-
  - Alignment.
  -}
-setTextAlignment :: KRPCHS.Drawing.Text -> KRPCHS.UI.TextAlignment -> RPCContext ()
+setTextAlignment :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> KRPCHS.UI.TextAlignment -> m ()
 setTextAlignment thisArg valueArg = do
     let r = makeRequest "Drawing" "Text_set_Alignment" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -892,7 +895,7 @@ setTextAlignment thisArg valueArg = do
 {-
  - Anchor.
  -}
-setTextAnchor :: KRPCHS.Drawing.Text -> KRPCHS.UI.TextAnchor -> RPCContext ()
+setTextAnchor :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> KRPCHS.UI.TextAnchor -> m ()
 setTextAnchor thisArg valueArg = do
     let r = makeRequest "Drawing" "Text_set_Anchor" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -901,7 +904,7 @@ setTextAnchor thisArg valueArg = do
 {-
  - Character size.
  -}
-setTextCharacterSize :: KRPCHS.Drawing.Text -> Float -> RPCContext ()
+setTextCharacterSize :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> Float -> m ()
 setTextCharacterSize thisArg valueArg = do
     let r = makeRequest "Drawing" "Text_set_CharacterSize" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -910,7 +913,7 @@ setTextCharacterSize thisArg valueArg = do
 {-
  - Set the color
  -}
-setTextColor :: KRPCHS.Drawing.Text -> (Double, Double, Double) -> RPCContext ()
+setTextColor :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> (Double, Double, Double) -> m ()
 setTextColor thisArg valueArg = do
     let r = makeRequest "Drawing" "Text_set_Color" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -919,7 +922,7 @@ setTextColor thisArg valueArg = do
 {-
  - The text string
  -}
-setTextContent :: KRPCHS.Drawing.Text -> Data.Text.Text -> RPCContext ()
+setTextContent :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> Data.Text.Text -> m ()
 setTextContent thisArg valueArg = do
     let r = makeRequest "Drawing" "Text_set_Content" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -928,7 +931,7 @@ setTextContent thisArg valueArg = do
 {-
  - Name of the font
  -}
-setTextFont :: KRPCHS.Drawing.Text -> Data.Text.Text -> RPCContext ()
+setTextFont :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> Data.Text.Text -> m ()
 setTextFont thisArg valueArg = do
     let r = makeRequest "Drawing" "Text_set_Font" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -937,7 +940,7 @@ setTextFont thisArg valueArg = do
 {-
  - Line spacing.
  -}
-setTextLineSpacing :: KRPCHS.Drawing.Text -> Float -> RPCContext ()
+setTextLineSpacing :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> Float -> m ()
 setTextLineSpacing thisArg valueArg = do
     let r = makeRequest "Drawing" "Text_set_LineSpacing" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -947,7 +950,7 @@ setTextLineSpacing thisArg valueArg = do
  - Material used to render the object.
  - Creates the material from a shader with the given name.
  -}
-setTextMaterial :: KRPCHS.Drawing.Text -> Data.Text.Text -> RPCContext ()
+setTextMaterial :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> Data.Text.Text -> m ()
 setTextMaterial thisArg valueArg = do
     let r = makeRequest "Drawing" "Text_set_Material" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -956,7 +959,7 @@ setTextMaterial thisArg valueArg = do
 {-
  - Position of the text.
  -}
-setTextPosition :: KRPCHS.Drawing.Text -> (Double, Double, Double) -> RPCContext ()
+setTextPosition :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> (Double, Double, Double) -> m ()
 setTextPosition thisArg valueArg = do
     let r = makeRequest "Drawing" "Text_set_Position" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -965,7 +968,7 @@ setTextPosition thisArg valueArg = do
 {-
  - Reference frame for the positions of the object.
  -}
-setTextReferenceFrame :: KRPCHS.Drawing.Text -> KRPCHS.SpaceCenter.ReferenceFrame -> RPCContext ()
+setTextReferenceFrame :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> KRPCHS.SpaceCenter.ReferenceFrame -> m ()
 setTextReferenceFrame thisArg valueArg = do
     let r = makeRequest "Drawing" "Text_set_ReferenceFrame" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -974,7 +977,7 @@ setTextReferenceFrame thisArg valueArg = do
 {-
  - Rotation of the text as a quaternion.
  -}
-setTextRotation :: KRPCHS.Drawing.Text -> (Double, Double, Double, Double) -> RPCContext ()
+setTextRotation :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> (Double, Double, Double, Double) -> m ()
 setTextRotation thisArg valueArg = do
     let r = makeRequest "Drawing" "Text_set_Rotation" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -983,7 +986,7 @@ setTextRotation thisArg valueArg = do
 {-
  - Font size.
  -}
-setTextSize :: KRPCHS.Drawing.Text -> Data.Int.Int32 -> RPCContext ()
+setTextSize :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> Data.Int.Int32 -> m ()
 setTextSize thisArg valueArg = do
     let r = makeRequest "Drawing" "Text_set_Size" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -992,7 +995,7 @@ setTextSize thisArg valueArg = do
 {-
  - Font style.
  -}
-setTextStyle :: KRPCHS.Drawing.Text -> KRPCHS.UI.FontStyle -> RPCContext ()
+setTextStyle :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> KRPCHS.UI.FontStyle -> m ()
 setTextStyle thisArg valueArg = do
     let r = makeRequest "Drawing" "Text_set_Style" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
@@ -1001,7 +1004,7 @@ setTextStyle thisArg valueArg = do
 {-
  - Whether the object is visible.
  -}
-setTextVisible :: KRPCHS.Drawing.Text -> Bool -> RPCContext ()
+setTextVisible :: (MonadIO m, MonadThrow m, MonadRPC m) => KRPCHS.Drawing.Text -> Bool -> m ()
 setTextVisible thisArg valueArg = do
     let r = makeRequest "Drawing" "Text_set_Visible" [makeArgument 0 thisArg, makeArgument 1 valueArg]
     res <- sendRequest r
