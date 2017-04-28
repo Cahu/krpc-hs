@@ -351,6 +351,9 @@ module KRPCHS.[% serviceName %]
 import qualified [% i %]
 [%- END %]
 
+import Control.Monad.Catch
+import Control.Monad.IO.Class
+
 import KRPCHS.Internal.Requests
 import KRPCHS.Internal.SerializeUtils
 
@@ -400,9 +403,9 @@ instance KRPCResponseExtractable [% enum.name %]
 [% proc.doc.replace('{-', '{ -') FILTER format(' - %s') %]
  -}
 [%- IF types.size > 0 %]
-[% proc.name %] :: [% types.join(' -> ') %] -> RPCContext ([% proc.ret %])
+[% proc.name %] :: (MonadIO m, MonadThrow m, MonadRPC m) => [% types.join(' -> ') %] -> m ([% proc.ret %])
 [%- ELSE %]
-[% proc.name %] :: RPCContext ([% proc.ret %])
+[% proc.name %] :: (MonadIO m, MonadThrow m, MonadRPC m) => m ([% proc.ret %])
 [%- END %]
 [% proc.name %] [% names.join(' ') %] = do
     let r = makeRequest "[% serviceName %]" "[% proc.rpcname %]" [[% args.join(', ') %]]
@@ -420,9 +423,9 @@ instance KRPCResponseExtractable [% enum.name %]
     in  makeStream req
 
 [%- IF types.size > 0 %]
-[% proc.name _ 'Stream' %] :: [% types.join(' -> ') %] -> RPCContext (KRPCStream ([% proc.ret %]))
+[% proc.name _ 'Stream' %] :: (MonadIO m, MonadThrow m, MonadRPC m) => [% types.join(' -> ') %] -> m (KRPCStream ([% proc.ret %]))
 [%- ELSE %]
-[% proc.name _ 'Stream' %] :: RPCContext (KRPCStream ([% proc.ret %]))
+[% proc.name _ 'Stream' %] :: (MonadIO m, MonadThrow m, MonadRPC m) => m (KRPCStream ([% proc.ret %]))
 [%- END %]
 [% proc.name _ 'Stream' %] [% names.join(' ') %] = requestStream $ [% proc.name _ 'StreamReq' %] [% names.join(' ') %]
 [%- END %] 

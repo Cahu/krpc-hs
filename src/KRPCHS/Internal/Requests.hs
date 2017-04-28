@@ -5,6 +5,7 @@ module KRPCHS.Internal.Requests
 ( RPCClient(..)
 , StreamClient(..)
 , RPCContext(..)
+, MonadRPC(..)
 
 , KRPCStream(..)
 , KRPCStreamReq(..)
@@ -61,17 +62,27 @@ data StreamClient = StreamClient { streamSocket :: Socket }
 newtype RPCContext a = RPCContext { runRPCContext :: ReaderT RPCClient IO a }
     deriving (Functor, Applicative, Monad, MonadIO, MonadReader RPCClient, MonadThrow, MonadCatch, MonadMask)
 
+class Monad m => MonadRPC m where
+  askClient :: m RPCClient
+
+instance MonadRPC RPCContext where
+  askClient = ask
+
+
 newtype KRPCStream a = KRPCStream { streamId :: Int }
     deriving (Show)
 
+
 newtype KRPCStreamReq a = KRPCStreamReq { streamReq :: KReq.Request }
     deriving (Show)
+
 
 newtype KRPCStreamMsg = KRPCStreamMsg { streamMsg :: M.Map Int KRes.Response }
     deriving (Show)
 
 emptyKRPCStreamMsg :: KRPCStreamMsg
 emptyKRPCStreamMsg = KRPCStreamMsg M.empty
+
 
 
 class (PbSerializable a) => KRPCResponseExtractable a where
@@ -128,13 +139,13 @@ checkError r = case (KRes.has_error r) of
     _         -> return ()
 
 
-processResponse :: (KRPCResponseExtractable a) => KRes.Response -> RPCContext a
+processResponse :: (MonadRPC m, MonadThrow m, KRPCResponseExtractable a) => KRes.Response -> m a
 processResponse res = either (throwM) (return) (extract res)
 
 
-sendRequest :: KReq.Request -> RPCContext KRes.Response
+sendRequest :: (MonadRPC m, MonadIO m) => KReq.Request -> m KRes.Response
 sendRequest r = do
-    sock <- asks rpcSocket
+    sock <- rpcSocket <$> askClient
     liftIO $ sendMsg sock r
     liftIO $ recvResponse sock
 
@@ -162,7 +173,7 @@ makeStream r = KRPCStreamReq $
     makeRequest "KRPC" "AddStream" [KArg.Argument (Just 0) (Just $ messagePut r)]
 
 
-requestStream :: KRPCStreamReq a -> RPCContext (KRPCStream a)
+requestStream :: (MonadRPC m, MonadIO m, MonadThrow m) => KRPCStreamReq a -> m (KRPCStream a)
 requestStream KRPCStreamReq{..} = do
     res <- sendRequest streamReq
     sid <- processResponse res

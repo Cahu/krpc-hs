@@ -4,6 +4,7 @@ module KRPCHS
 ( RPCClient
 , StreamClient
 , RPCContext
+, MonadRPC
 
 , KRPCStream
 , KRPCStreamReq
@@ -114,14 +115,14 @@ getServices = do
 -}
 
 
-getStreamMessage :: StreamClient -> RPCContext KRPCStreamMsg
-getStreamMessage = getStreamMessageIO
-
-
-getStreamMessageIO :: MonadIO m => StreamClient -> m KRPCStreamMsg
-getStreamMessageIO StreamClient{..} = unpackStreamMsg <$> liftIO (recvResponse streamSocket)
+getStreamMessage :: MonadIO m => StreamClient -> m KRPCStreamMsg
+getStreamMessage StreamClient{..} = unpackStreamMsg <$> liftIO (recvResponse streamSocket)
   where
     unpackStreamMsg res = KRPCStreamMsg $ M.fromList (extractStreamMessage res)
+
+-- Deprecated
+getStreamMessageIO :: MonadIO m => StreamClient -> m KRPCStreamMsg
+getStreamMessageIO = getStreamMessage
 
 
 messageResultsCount :: KRPCStreamMsg -> Int
@@ -133,24 +134,24 @@ messageHasResultFor KRPCStream{..} KRPCStreamMsg{..} =
     M.member streamId streamMsg
 
 
-getStreamResult :: (KRPCResponseExtractable a) => KRPCStream a -> KRPCStreamMsg -> RPCContext a
+getStreamResult :: (MonadRPC m, MonadThrow m, KRPCResponseExtractable a) => KRPCStream a -> KRPCStreamMsg -> m a
 getStreamResult KRPCStream{..} KRPCStreamMsg{..} =
     maybe (throwM NoSuchStream)
           (processResponse)
           (M.lookup streamId streamMsg)
 
 
-addStream :: (KRPCResponseExtractable a) => KRPCStreamReq a -> RPCContext (KRPCStream a)
+addStream :: (MonadRPC m, MonadThrow m, MonadIO m, KRPCResponseExtractable a) => KRPCStreamReq a -> m (KRPCStream a)
 addStream = requestStream
 
 
-removeStream :: KRPCStream a -> RPCContext ()
+removeStream :: (MonadRPC m, MonadThrow m, MonadIO m) => KRPCStream a -> m ()
 removeStream KRPCStream{..} = do
     resp <- sendRequest (makeRequest "KRPC" "RemoveStream" [ makeArgument 0 streamId ])
     processResponse resp
 
 
-withStream :: KRPCResponseExtractable a => KRPCStreamReq a -> (KRPCStream a -> RPCContext b) -> RPCContext b
+withStream :: (MonadMask m, MonadRPC m, MonadThrow m, MonadIO m, KRPCResponseExtractable a) => KRPCStreamReq a -> (KRPCStream a -> m b) -> m b
 withStream r f = mask $ \restore -> do
     s <- addStream r
     restore (f s) `finally` (removeStream s)
