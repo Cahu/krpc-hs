@@ -37,19 +37,16 @@ module KRPCHS
 
 import KRPCHS.Internal.Requests
 import KRPCHS.Internal.ProtocolError
-import KRPCHS.Internal.NetworkUtils
 
 import qualified PB.KRPC.Status   as KRPC
 import qualified PB.KRPC.Service  as KRPC
 import qualified PB.KRPC.Services as KRPC
 
-import Network.Socket
 import Control.Monad.Catch
 import Control.Monad.Reader
 
 import qualified Data.Map as M
-import qualified Data.ByteString.Char8 as BS
-import Network.Socket.ByteString
+
 
 
 runRPCProg :: RPCClient -> RPCContext a -> IO a
@@ -84,14 +81,14 @@ messageHasResultFor KRPCStream{..} KRPCStreamMsg{..} =
     M.member streamId streamMsg
 
 
-getStreamResult :: (MonadRPC m, MonadThrow m, KRPCResponseExtractable a) => KRPCStream a -> KRPCStreamMsg -> m a
+getStreamResult :: (MonadThrow m, KRPCResponseExtractable a) => KRPCStream a -> KRPCStreamMsg -> m a
 getStreamResult KRPCStream{..} KRPCStreamMsg{..} =
     maybe (throwM NoSuchStream)
           (processResponse)
           (M.lookup streamId streamMsg)
 
 
-addStream :: (MonadRPC m, MonadThrow m, MonadIO m, KRPCResponseExtractable a) => KRPCStreamReq a -> m (KRPCStream a)
+addStream :: (MonadRPC m, MonadThrow m, MonadIO m) => KRPCStreamReq a -> m (KRPCStream a)
 addStream = requestStream
 
 
@@ -101,7 +98,7 @@ removeStream KRPCStream{..} = do
     processResponse resp
 
 
-withStream :: (MonadMask m, MonadRPC m, MonadThrow m, MonadIO m, KRPCResponseExtractable a) => KRPCStreamReq a -> (KRPCStream a -> m b) -> m b
+withStream :: (MonadMask m, MonadRPC m, MonadIO m) => KRPCStreamReq a -> (KRPCStream a -> m b) -> m b
 withStream r f = mask $ \restore -> do
     s <- addStream r
     restore (f s) `finally` (removeStream s)
