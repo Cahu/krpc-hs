@@ -52,51 +52,6 @@ import qualified Data.ByteString.Char8 as BS
 import Network.Socket.ByteString
 
 
-getSocket :: HostName -> ServiceName -> IO Socket
-getSocket host service = do
-    -- establish connection
-    addr <- getAddrInfo Nothing (Just host) (Just service)
-    sock <- socket AF_INET Stream defaultProtocol
-    connect sock (addrAddress $ head addr)
-    return sock
-
-
-rpcHandshake :: Socket -> String -> IO BS.ByteString
-rpcHandshake sock name = do
-    sendAll sock helloMsg
-    sendAll sock (connNameMsg name)
-    recvId sock
-
-
-streamHandshake :: Socket -> BS.ByteString -> IO ()
-streamHandshake sock clientId = do
-    sendAll sock helloStreamMsg
-    sendAll sock clientId
-    res <- recvN sock 2
-    case BS.unpack res of
-        "OK" -> return ()
-        _    -> fail "Could not handshake with stream server"
-
-
-withRPCClient :: String -> HostName -> ServiceName -> (RPCClient -> IO a) -> IO a
-withRPCClient name host port func = do
-    sock <- getSocket host port
-    finally
-        (do clientId <- rpcHandshake sock name
-            func (RPCClient sock clientId)
-        )
-        (close sock)
-
-
-withStreamClient :: RPCClient -> HostName -> ServiceName -> (StreamClient -> IO a) -> IO a
-withStreamClient RPCClient{..} host port func = do
-    sock <- getSocket host port
-    finally
-        (do streamHandshake sock clientId
-            func (StreamClient sock))
-        (close sock)
-
-
 runRPCProg :: RPCClient -> RPCContext a -> IO a
 runRPCProg client ctx = runReaderT (runRPCContext ctx) client
 
@@ -115,15 +70,10 @@ getServices = do
 -}
 
 
-getStreamMessage :: MonadIO m => StreamClient -> m KRPCStreamMsg
-getStreamMessage StreamClient{..} = unpackStreamMsg <$> liftIO (recvResponse streamSocket)
-  where
-    unpackStreamMsg res = KRPCStreamMsg $ M.fromList (extractStreamMessage res)
-
 -- Deprecated
 getStreamMessageIO :: MonadIO m => StreamClient -> m KRPCStreamMsg
 getStreamMessageIO = getStreamMessage
-
+{-# DEPRECATED getStreamMessageIO "use 'getStreamMessage' instead" #-}
 
 messageResultsCount :: KRPCStreamMsg -> Int
 messageResultsCount = M.size . streamMsg
