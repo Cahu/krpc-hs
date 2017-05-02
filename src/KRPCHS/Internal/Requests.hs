@@ -94,7 +94,7 @@ withRPCClient name host port action = withSocket host port $ \sock -> do
   -- Fork off worker process for network IO (It's done inside bracket
   -- to ensure that we don't leak p
   ch <- newChan
-  bracket (forkIO $ networkIOWorker sock ch) killThread $ \_ ->
+  bracket (forkIOWithUnmask ($ networkIOWorker sock ch)) killThread $ \_ ->
     action RPCClient { rpcChan  = ch
                      , clientId = cid
                      }
