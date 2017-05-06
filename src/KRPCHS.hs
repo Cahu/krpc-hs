@@ -4,7 +4,7 @@ module KRPCHS
 ( RPCClient
 , StreamClient
 , RPCContext
-, MonadRPC
+, MonadRPC(..)
 
 , KRPCStream
 , KRPCStreamReq

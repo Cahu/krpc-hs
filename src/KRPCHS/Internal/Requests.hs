@@ -62,6 +62,8 @@ data StreamClient = StreamClient { streamSocket :: Socket }
 newtype RPCContext a = RPCContext { runRPCContext :: ReaderT RPCClient IO a }
     deriving (Functor, Applicative, Monad, MonadIO, MonadReader RPCClient, MonadThrow, MonadCatch, MonadMask)
 
+-- | Type class for monad which keep connection to RPC server as
+--   context
 class Monad m => MonadRPC m where
   askClient :: m RPCClient
 
