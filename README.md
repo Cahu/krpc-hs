@@ -1,3 +1,5 @@
+**This is no longer actively maintained.**
+
 # KRPC Hors-Service
 
 KRPC Hors-Service is a client for [kRPC] -- a mod for Kerbal Space Program --
